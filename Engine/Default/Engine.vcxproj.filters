@@ -34,6 +34,9 @@
     <Filter Include="01.Timers\Manager">
       <UniqueIdentifier>{d96f9e76-82af-4b86-a420-9b1229278015}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Level\Manager">
+      <UniqueIdentifier>{8036fe02-2c42-4403-868d-4373baadf174}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -64,6 +67,18 @@
     <ClInclude Include="..\Public\Timer.h">
       <Filter>01.Timers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Timer_Manager.h">
+      <Filter>01.Timers\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level.h">
+      <Filter>03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Manager.h">
+      <Filter>03.Level\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameInstance.h">
+      <Filter>00.GameInstance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -80,6 +95,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Timer.cpp">
       <Filter>01.Timers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer_Manager.cpp">
+      <Filter>01.Timers\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level.cpp">
+      <Filter>03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Manager.cpp">
+      <Filter>03.Level\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameInstance.cpp">
+      <Filter>00.GameInstance</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
