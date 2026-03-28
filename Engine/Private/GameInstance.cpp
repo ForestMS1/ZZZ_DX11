@@ -3,7 +3,9 @@
 #include "Graphic_Device.h"
 #include "Level_Manager.h"
 #include"Timer_Manager.h"
-
+#include "Prototype_Manager.h"
+#include "Prototype.h"
+#include "Level.h"
 
 GameInstance::GameInstance()
 {
@@ -16,24 +18,22 @@ GameInstance::~GameInstance()
 HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device> pOutDevice, ComPtr<ID3D11DeviceContext> pOutDeviceContext)
 {
 	_graphicDevice = Graphic_Device::Create(EngineDesc.hWnd, EngineDesc.eWinMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pOutDevice, pOutDeviceContext);
-	
 	if (nullptr == _graphicDevice)
 		return E_FAIL;
 
 	_timerManager = Timer_Manager::Create();
-	
 	if (nullptr == _timerManager)
 		return E_FAIL;
 
-	//_prototypeManager = Prototype_Manager::Create(EngineDesc.iNumLevels);
-	//if (nullptr == _prototypeManager)
-	//	return E_FAIL;
+	_prototypeManager = Prototype_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == _prototypeManager)
+		return E_FAIL;
 
 	_levelManager = Level_Manager::Create();
-
 	if (nullptr == _levelManager)
 		return E_FAIL;
 
+	return S_OK;
 }
 
 void GameInstance::Update_Engine()
@@ -61,12 +61,12 @@ float GameInstance::Get_TimeDelta(const wstring& strTimerTag)
 	return _timerManager->Get_TimeDelta(strTimerTag);
 }
 
-void GameInstance::Set_TimeDelta(const wstring& strTimerTag)
+void GameInstance::Compute_TimeDelta(const wstring& strTimerTag)
 {
 	_timerManager->Set_TimeDelta(strTimerTag);
 }
 
-HRESULT GameInstance::Ready_Timer(const wstring& strTimerTag)
+HRESULT GameInstance::Add_Timer(const wstring& strTimerTag)
 {
 	return _timerManager->Ready_Timer(strTimerTag);
 }
@@ -75,7 +75,7 @@ HRESULT GameInstance::Ready_Timer(const wstring& strTimerTag)
 
 #pragma region LEVEL_MANAGER
 
-HRESULT GameInstance::Chanage_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel)
+HRESULT GameInstance::Chanage_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel)
 {
 	return _levelManager->Change_Level(iNewLevelIndex, std::move(pNewLevel));
 }
@@ -101,11 +101,23 @@ HRESULT GameInstance::Present()
 
 #pragma endregion
 
+#pragma region PROTOTYPE_MANAGER
+HRESULT GameInstance::Add_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, unique_ptr<Prototype> pPrototype)
+{
+	return _prototypeManager->Add_Prototype(iLevelIndex, strPrototypeTag, std::move(pPrototype));
+}
+
+shared_ptr<Prototype> GameInstance::Clone_Prototype(PROTOTYPE eType, uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg)
+{
+	return _prototypeManager->Clone_Prototype(eType, iLevelIndex, strPrototypeTag, pArg);
+}
+#pragma endregion
+
 void GameInstance::Release_Engine()
 {
 	_levelManager.reset();
 	_timerManager.reset();
-	//_prototypeManager.reset();
+	_prototypeManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();
 }

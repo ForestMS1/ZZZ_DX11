@@ -37,6 +37,9 @@
     <Filter Include="03.Level\Manager">
       <UniqueIdentifier>{8036fe02-2c42-4403-868d-4373baadf174}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Prototype\Manager">
+      <UniqueIdentifier>{ae128b7e-dccf-425c-b91c-c9efe833b92f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -79,6 +82,18 @@
     <ClInclude Include="..\Public\GameInstance.h">
       <Filter>00.GameInstance</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Prototype_Manager.h">
+      <Filter>04.Prototype\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Prototype.h">
+      <Filter>04.Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameObject.h">
+      <Filter>05.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>06.Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -107,6 +122,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\GameInstance.cpp">
       <Filter>00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Prototype_Manager.cpp">
+      <Filter>04.Prototype\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Prototype.cpp">
+      <Filter>04.Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameObject.cpp">
+      <Filter>05.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Component.cpp">
+      <Filter>06.Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
