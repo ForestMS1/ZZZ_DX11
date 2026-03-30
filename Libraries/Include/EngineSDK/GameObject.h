@@ -3,7 +3,7 @@
 
 NS_BEGIN(Engine)
 
-class ENGINE_DLL GameObject : public Prototype
+class ENGINE_DLL GameObject abstract : public Prototype
 {
 protected:
 	GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
@@ -28,7 +28,7 @@ protected:
 
 
 public:
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override;
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;
 };
 
 NS_END
