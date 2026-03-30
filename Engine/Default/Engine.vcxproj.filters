@@ -40,6 +40,12 @@
     <Filter Include="04.Prototype\Manager">
       <UniqueIdentifier>{ae128b7e-dccf-425c-b91c-c9efe833b92f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.GameObject\Manager">
+      <UniqueIdentifier>{1cf12083-1543-4676-88c8-18f11b01260f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.GameObject\Manager\Layer">
+      <UniqueIdentifier>{53efea8c-608c-4fab-806d-99d7cf154991}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -94,6 +100,12 @@
     <ClInclude Include="..\Public\Component.h">
       <Filter>06.Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Layer.h">
+      <Filter>05.GameObject\Manager\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Manager.h">
+      <Filter>05.GameObject\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -134,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Component.cpp">
       <Filter>06.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Layer.cpp">
+      <Filter>05.GameObject\Manager\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Manager.cpp">
+      <Filter>05.GameObject\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

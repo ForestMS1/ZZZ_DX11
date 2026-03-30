@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "MainApp.h"
 #include "GameInstance.h"
-
+#include "Level_Loading.h"
+#include "Level_Game.h"
 
 Client::MainApp::MainApp()
 {
@@ -9,6 +10,7 @@ Client::MainApp::MainApp()
 
 Client::MainApp::~MainApp()
 {
+	GameInstance::Get().Release_Engine();
 }
 
 HRESULT Client::MainApp::Initialize()
@@ -23,24 +25,42 @@ HRESULT Client::MainApp::Initialize()
 	if (FAILED(GameInstance::Get().Initialize_Engine(EngineDesc, _device, _deviceContext)))
 		return E_FAIL;
 
-	//if (FAILED(Start_Level(LEVEL::LOGO)))
-	//	return E_FAIL;
+	if (FAILED(Start_Level(LEVEL::LOGO)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 void Client::MainApp::Update()
 {
-
+	GameInstance::Get().Update_Engine();
 }
 
 HRESULT Client::MainApp::Render()
 {
+	Vec4 vClearColor = { 0.f, 0.f, 1.f, 1.f };
+
+	if (FAILED(GameInstance::Get().Clear_BackBuffer_View(&vClearColor)))
+		return E_FAIL;
+
+	if (FAILED(GameInstance::Get().Clear_DepthStencil_View()))
+		return E_FAIL;
+
+	if (FAILED(GameInstance::Get().Draw()))
+		return E_FAIL;
+
+	if (FAILED(GameInstance::Get().Present()))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
 HRESULT Client::MainApp::Start_Level(LEVEL eStartLevelIndex)
 {
+	if (FAILED(GameInstance::Get().Change_Level(static_cast<uint32>(LEVEL::LOGO),
+		Level_Loading::Create(_device, _deviceContext, eStartLevelIndex))))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -48,7 +68,10 @@ unique_ptr<MainApp> Client::MainApp::Create()
 {
 	auto pInstance = unique_ptr<MainApp>(new MainApp);
 	if (FAILED(pInstance->Initialize()))
+	{
+		MessageBox(g_hWnd, TEXT("Failed to Created : MainApp"), nullptr, MB_OK);
 		return nullptr;
+	}
 
 	return pInstance;
 }

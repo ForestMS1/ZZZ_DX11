@@ -26,13 +26,13 @@ HRESULT Prototype_Manager::Add_Prototype(uint32 iLevelIndex, const wstring& strP
 	return S_OK;
 }
 
-shared_ptr<Prototype> Prototype_Manager::Clone_Prototype(PROTOTYPE eType, uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg)
+shared_ptr<Prototype> Prototype_Manager::Clone_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg)
 {
 	Prototype* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
 	if (pPrototype == nullptr)
 		return nullptr;
 
-	return pPrototype->Clone();
+	return pPrototype->Clone(pArg);
 }
 
 Prototype* Prototype_Manager::Find_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag)
@@ -52,7 +52,7 @@ unique_ptr<Prototype_Manager> Prototype_Manager::Create(uint32 iNumLevels)
 	auto pInstance = unique_ptr<Prototype_Manager>(new Prototype_Manager);
 	if (FAILED(pInstance->Initialize(iNumLevels)))
 	{
-		MSG_BOX("Failed to Created : CPrototype_Manager");
+		MSG_BOX("Failed to Created : Prototype_Manager");
 		return nullptr;
 	}
 

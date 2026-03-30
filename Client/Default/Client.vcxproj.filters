@@ -10,6 +10,27 @@
     <Filter Include="99.Defines">
       <UniqueIdentifier>{a8fbda46-ed79-409c-a688-2f4de64d8396}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels">
+      <UniqueIdentifier>{826c6926-e538-4912-811b-25b5c2837684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading">
+      <UniqueIdentifier>{1f77c4d8-7720-45e7-b34d-bbe98b67570f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Logo">
+      <UniqueIdentifier>{83965f44-0170-4ff8-a2c2-bf4515254490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading\Loader">
+      <UniqueIdentifier>{38102851-2fa7-4b5d-bc1d-7e9e5c3bc238}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Game">
+      <UniqueIdentifier>{383fdff4-fec2-46e7-8e1a-e6839a90b257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject">
+      <UniqueIdentifier>{c4eb3d40-1cba-4cea-b036-f4aff2c5b039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\00.BackGround">
+      <UniqueIdentifier>{8c69836f-3f5c-4552-9758-53b41ac36483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -31,6 +52,21 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Levels\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Logo.h">
+      <Filter>01.Levels\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Levels\Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Game.h">
+      <Filter>01.Levels\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BackGround.h">
+      <Filter>02.GameObject\00.BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\MainApp.cpp">
@@ -40,6 +76,21 @@
       <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01.Levels\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Logo.cpp">
+      <Filter>01.Levels\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Levels\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Game.cpp">
+      <Filter>01.Levels\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BackGround.cpp">
+      <Filter>02.GameObject\00.BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

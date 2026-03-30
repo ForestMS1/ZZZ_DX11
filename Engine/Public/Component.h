@@ -23,7 +23,7 @@ enum
 
 class GameObject;
 
-class ENGINE_DLL Component : public Prototype
+class ENGINE_DLL Component abstract: public Prototype
 {
 protected:
 	Component(ComponentType eType);
@@ -42,7 +42,7 @@ public:
 	shared_ptr<GameObject>	GetGameObject();
 	//shared_ptr<class Transform>	GetTransform();
 
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override;
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;
 
 private:
 	friend class GameObject;

@@ -56,3 +56,5 @@
 			static CLASSNAME Instance;								\
 			return Instance;										\
 		}
+
+#define GAME GameInstance::Get()

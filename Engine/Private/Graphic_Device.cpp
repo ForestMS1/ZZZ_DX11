@@ -95,11 +95,10 @@ void Graphic_Device::ShutDown()
 	_depthStencilView.Reset();
 	_deviceContext.Reset();
 
-	//
-	//
+
 	//#if defined(DEBUG) || defined(_DEBUG)
 	//	ID3D11Debug* d3dDebug;
-	//	HRESULT hr = m_pDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
+	//	HRESULT hr = _device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
 	//	if (SUCCEEDED(hr))
 	//	{
 	//		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
@@ -114,7 +113,7 @@ void Graphic_Device::ShutDown()
 	//	}
 	//	if (d3dDebug != nullptr)            d3dDebug->Release();
 	//#endif
-	//
+
 
 	_device.Reset();
 }

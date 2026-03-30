@@ -6,6 +6,7 @@
 #include "Prototype_Manager.h"
 #include "Prototype.h"
 #include "Level.h"
+#include "Object_Manager.h"
 
 GameInstance::GameInstance()
 {
@@ -29,6 +30,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	if (nullptr == _prototypeManager)
 		return E_FAIL;
 
+	_objectManager = Object_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == _objectManager)
+		return E_FAIL;
+
 	_levelManager = Level_Manager::Create();
 	if (nullptr == _levelManager)
 		return E_FAIL;
@@ -38,6 +43,12 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 
 void GameInstance::Update_Engine()
 {
+	_objectManager->Update();
+
+	_objectManager->LateUpdate();
+
+	_objectManager->FixedUpdate();
+
 	_levelManager->Update();
 }
 
@@ -75,7 +86,7 @@ HRESULT GameInstance::Add_Timer(const wstring& strTimerTag)
 
 #pragma region LEVEL_MANAGER
 
-HRESULT GameInstance::Chanage_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel)
+HRESULT GameInstance::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel)
 {
 	return _levelManager->Change_Level(iNewLevelIndex, std::move(pNewLevel));
 }
@@ -107,9 +118,17 @@ HRESULT GameInstance::Add_Prototype(uint32 iLevelIndex, const wstring& strProtot
 	return _prototypeManager->Add_Prototype(iLevelIndex, strPrototypeTag, std::move(pPrototype));
 }
 
-shared_ptr<Prototype> GameInstance::Clone_Prototype(PROTOTYPE eType, uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg)
+shared_ptr<Prototype> GameInstance::Clone_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg)
 {
-	return _prototypeManager->Clone_Prototype(eType, iLevelIndex, strPrototypeTag, pArg);
+	return _prototypeManager->Clone_Prototype(iLevelIndex, strPrototypeTag, pArg);
+}
+#pragma endregion
+
+#pragma region OBJECT_MANAGER
+HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
+	uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg)
+{
+ 	return _objectManager->Add_GameObject_toLayer(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
 #pragma endregion
 
@@ -117,6 +136,7 @@ void GameInstance::Release_Engine()
 {
 	_levelManager.reset();
 	_timerManager.reset();
+	_objectManager.reset();
 	_prototypeManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();
