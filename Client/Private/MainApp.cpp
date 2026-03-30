@@ -4,12 +4,18 @@
 #include "Level_Loading.h"
 #include "Level_Game.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif
 Client::MainApp::MainApp()
 {
 }
 
 Client::MainApp::~MainApp()
 {
+#ifdef _DEBUG
+	ImGui_Manager::Release();
+#endif
 	GameInstance::Get().Release_Engine();
 }
 
@@ -25,6 +31,10 @@ HRESULT Client::MainApp::Initialize()
 	if (FAILED(GameInstance::Get().Initialize_Engine(EngineDesc, _device, _deviceContext)))
 		return E_FAIL;
 
+#ifdef _DEBUG
+	ImGui_Manager::Get().Initialize(GameInstance::Get().GetDevice(), GameInstance::Get().GetDeviceContext(), g_hWnd);
+#endif
+
 	if (FAILED(Start_Level(LEVEL::LOGO)))
 		return E_FAIL;
 
@@ -33,7 +43,12 @@ HRESULT Client::MainApp::Initialize()
 
 void Client::MainApp::Update()
 {
+
+#ifdef _DEBUG
+	ImGui_Manager::Get().Update();
+#endif
 	GameInstance::Get().Update_Engine();
+	
 }
 
 HRESULT Client::MainApp::Render()
@@ -48,6 +63,12 @@ HRESULT Client::MainApp::Render()
 
 	if (FAILED(GameInstance::Get().Draw()))
 		return E_FAIL;
+
+
+#ifdef _DEBUG
+	ImGui_Manager::Get().Render();
+#endif
+
 
 	if (FAILED(GameInstance::Get().Present()))
 		return E_FAIL;

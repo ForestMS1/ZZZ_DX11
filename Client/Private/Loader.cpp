@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "BackGround.h"
+#include "Transform.h"
 
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -85,6 +86,38 @@ void Loader::Output_LoadingText()
 	SetWindowText(g_hWnd, _loadingText.c_str());
 }
 #endif
+
+HRESULT Loader::Loading_For_Static()
+{
+	_loadingText = L"텍스쳐를 로딩 중 입니다.";
+	for (size_t i = 0; i < 99999999; i++)
+	{
+		int a = 10;
+	}
+
+	_loadingText = L"모델을 로딩 중 입니다.";
+	for (size_t i = 0; i < 99999999; i++)
+	{
+		int a = 10;
+	}
+	_loadingText = L"셰이더를 로딩 중 입니다.";
+	for (size_t i = 0; i < 99999999; i++)
+	{
+		int a = 10;
+	}
+
+	_loadingText = L"객체원형 생성 중 입니다.";
+	/* Prototype_Component_Transform */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::STATIC), L"Prototype_Component_Transform",
+		Transform::Create())))
+		return E_FAIL;
+
+	_loadingText = L"로딩이 완료되었습니다.";
+
+	_isFinished = true;
+
+	return S_OK;
+}
 
 HRESULT Loader::Loading_For_Logo()
 {

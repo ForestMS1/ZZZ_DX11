@@ -31,6 +31,12 @@
     <Filter Include="02.GameObject\00.BackGround">
       <UniqueIdentifier>{8c69836f-3f5c-4552-9758-53b41ac36483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\ImGUI">
+      <UniqueIdentifier>{ba040e49-0559-4bac-9b62-0a63f64bb837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\ImGUI\Manager">
+      <UniqueIdentifier>{9f77fb35-32fd-43f3-85d0-ccf7038f3b01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -67,6 +73,33 @@
     <ClInclude Include="..\Public\BackGround.h">
       <Filter>02.GameObject\00.BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui_Manager.h">
+      <Filter>99.Defines\ImGUI\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\MainApp.cpp">
@@ -90,6 +123,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.GameObject\00.BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui_Manager.cpp">
+      <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ public:
 	virtual ~GameInstance();
 
 public:
-	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device> pOutDevice, ComPtr<ID3D11DeviceContext> pOutDeviceContext);
+	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>& pOutDevice, ComPtr<ID3D11DeviceContext>& pOutDeviceContext);
 	void	Update_Engine();
 	HRESULT Draw();
 	void Clear_Resource(uint32 iClearLevelIndex);
@@ -33,6 +33,9 @@ public:
 	HRESULT Clear_BackBuffer_View(const Vec4* pClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+
+	ComPtr<ID3D11Device> GetDevice();
+	ComPtr<ID3D11DeviceContext> GetDeviceContext();
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

@@ -136,3 +136,8 @@ shared_ptr<Prototype> Transform::Clone(void* pArg)
 {
 	return shared_ptr<Prototype>();
 }
+
+unique_ptr<Transform> Transform::Create()
+{
+	return unique_ptr<Transform>(new Transform);
+}

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "MonoBehaviour.h"
+#include "Transform.h"
+#include "GameInstance.h"
 
 GameObject::GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -95,5 +97,50 @@ void	GameObject::FixedUpdate()
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
 		script->FixedUpdate();
+	}
+}
+
+
+shared_ptr<Component> GameObject::GetFixedComponent(ComponentType eType)
+{
+	uint8 index = static_cast<uint8>(eType);
+
+	assert(index < FIXED_COMPONENT_COUNT);
+
+	return _components[index];
+}
+
+shared_ptr<Transform> GameObject::GetTransform()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::Transform);
+	return static_pointer_cast<Transform>(component);
+}
+
+shared_ptr<Transform> GameObject::GetOrAddTransform()
+{
+	if (nullptr == GetTransform())
+	{
+		// TODO : make_shared 대신에 프로토타입에서 복사해오기
+		//shared_ptr<Transform> transform = make_shared<Transform>();
+		//shared_ptr<Transform> transform = dynamic_pointer_cast<Transform>
+		//	(GameInstance::Get().Clone_Prototype(0, L"Prototype_Component_Transform", nullptr));
+		//AddComponent(transform);
+	}
+
+	return GetTransform();
+}
+
+void GameObject::AddComponent(shared_ptr<Component> component)
+{
+	component->SetGameObject(shared_from_this());
+
+	uint8 index = static_cast<uint8>(component->GetType());
+	if (index < FIXED_COMPONENT_COUNT)
+	{
+		_components[index] = component;
+	}
+	else
+	{
+		_scripts.push_back(dynamic_pointer_cast<MonoBehaviour>(component));
 	}
 }

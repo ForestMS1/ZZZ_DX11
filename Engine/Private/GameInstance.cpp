@@ -16,7 +16,7 @@ GameInstance::~GameInstance()
 {
 }
 
-HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device> pOutDevice, ComPtr<ID3D11DeviceContext> pOutDeviceContext)
+HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>& pOutDevice, ComPtr<ID3D11DeviceContext>& pOutDeviceContext)
 {
 	_graphicDevice = Graphic_Device::Create(EngineDesc.hWnd, EngineDesc.eWinMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pOutDevice, pOutDeviceContext);
 	if (nullptr == _graphicDevice)
@@ -112,6 +112,15 @@ HRESULT GameInstance::Present()
 	return _graphicDevice->Present();
 }
 
+ComPtr<ID3D11Device> GameInstance::GetDevice()
+{
+	return _graphicDevice->GetDevice();
+}
+ComPtr<ID3D11DeviceContext> GameInstance::GetDeviceContext()
+{
+	return _graphicDevice->GetDeviceContext();
+}
+
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -133,6 +142,7 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
  	return _objectManager->Add_GameObject_toLayer(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
 }
 #pragma endregion
+
 
 void GameInstance::Release_Engine()
 {

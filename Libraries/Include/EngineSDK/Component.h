@@ -22,6 +22,7 @@ enum
 };
 
 class GameObject;
+class Transform;
 
 class ENGINE_DLL Component abstract: public Prototype
 {
@@ -40,7 +41,7 @@ public:
 	ComponentType GetType() { return _type; }
 
 	shared_ptr<GameObject>	GetGameObject();
-	//shared_ptr<class Transform>	GetTransform();
+	shared_ptr<Transform>	GetTransform();
 
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;
 

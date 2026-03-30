@@ -6,6 +6,13 @@
 
 #include "MainApp.h"
 #include "GameInstance.h"
+#include "imgui_impl_win32.h"
+
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+// ImGui 전용 메시지 핸들러 선언 (백엔드 파일에 정의되어 있음)
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif
 
 #define MAX_LOADSTRING 100
 
@@ -29,6 +36,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -171,6 +179,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
+#ifdef _DEBUG
+    // ImGui가 메시지를 먼저 가로채도록 함
+    // ImGui가 메시지를 처리했다면(반환값이 true라면) 시스템은 더 이상 처리하지 않고 리턴
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+#endif
+
     switch (message)
     {
     case WM_COMMAND:

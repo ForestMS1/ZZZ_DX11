@@ -2,6 +2,8 @@
 
 NS_BEGIN(Client)
 
+class ImGui_Manager;
+
 class MainApp
 {
 private:
@@ -17,6 +19,9 @@ public:
 private:
 	ComPtr<ID3D11Device> _device = { nullptr };
 	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
+
+	//unique_ptr<ImGui_Manager> _imGuiManager = { nullptr };
+
 
 private:
 	HRESULT Start_Level(LEVEL eStartLevelIndex);

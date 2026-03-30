@@ -3,10 +3,10 @@
 
 NS_BEGIN(Engine)
 
-class Component;
+class Transform;
 class MonoBehaviour;
 
-class ENGINE_DLL GameObject abstract : public Prototype
+class ENGINE_DLL GameObject abstract : public Prototype, public enable_shared_from_this<GameObject>
 {
 protected:
 	GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
@@ -27,8 +27,16 @@ public:
 
 	virtual HRESULT	Render() { return S_OK; }
 
+	// LIFESTATE
 	LIFESTATE GetLifeState() const { return _lifeState; }
 	void	  SetLifeState(LIFESTATE eLifeState) { _lifeState = eLifeState; }
+
+	// Component
+	shared_ptr<Component> GetFixedComponent(ComponentType eType);
+	shared_ptr<Transform> GetTransform();
+
+	shared_ptr<Transform> GetOrAddTransform();
+	void AddComponent(shared_ptr<Component> component);
 
 protected:
 	ComPtr<ID3D11Device> _device = { nullptr };

@@ -68,6 +68,8 @@ private:
 
 public:
 	shared_ptr<Prototype> Clone(void* pArg = nullptr) override;
+public:
+	static unique_ptr<Transform> Create();
 };
 
 NS_END

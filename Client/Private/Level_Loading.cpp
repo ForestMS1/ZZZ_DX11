@@ -54,8 +54,6 @@ void Level_Loading::Update()
 		if(FAILED(GameInstance::Get().Change_Level(ETOUI(_nextLevelIndex), std::move(pNewLevel))))
 			return;
 	}
-
-
 }
 
 HRESULT Level_Loading::Render()

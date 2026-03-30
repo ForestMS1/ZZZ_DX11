@@ -21,6 +21,9 @@ public:
 
 	void ShutDown();
 
+	ComPtr<ID3D11Device> GetDevice() { return _device; }
+	ComPtr<ID3D11DeviceContext> GetDeviceContext() { return _deviceContext; }
+
 
 private:
 	HRESULT Ready_SwapChain(HWND hWnd, WINMODE isWindowed, int32_t iWinCX, int32_t iWinCY);

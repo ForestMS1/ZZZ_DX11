@@ -33,6 +33,7 @@ private: // For.Loading
 	wstring		_loadingText = {};
 
 private:
+	HRESULT Loading_For_Static();
 	HRESULT Loading_For_Logo();
 	HRESULT Loading_FOR_Game();
 
