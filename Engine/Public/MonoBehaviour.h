@@ -3,7 +3,7 @@
 
 NS_BEGIN(Engine)
 
-class ENGINE_DLL MonoBehaviour : public Component
+class ENGINE_DLL MonoBehaviour abstract : public Component
 {
 private:
 	MonoBehaviour();

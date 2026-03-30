@@ -49,6 +49,9 @@
     <Filter Include="06.Component\MonoBehaviour">
       <UniqueIdentifier>{cabafe26-e5b7-46c6-a6b0-89e1ab975cec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Transform">
+      <UniqueIdentifier>{ef5bb1fb-51b8-4431-b98a-dee654269bb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -112,6 +115,9 @@
     <ClInclude Include="..\Public\MonoBehaviour.h">
       <Filter>06.Component\MonoBehaviour</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Transform.h">
+      <Filter>06.Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -161,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonoBehaviour.cpp">
       <Filter>06.Component\MonoBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform.cpp">
+      <Filter>06.Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
