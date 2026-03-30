@@ -25,31 +25,6 @@ HRESULT BackGround::Initialize(void* pArg)
 	return S_OK;
 }
 
-void BackGround::Awake()
-{
-	int a = 1;
-}
-
-void BackGround::Start()
-{
-	int a = 1;
-}
-
-void BackGround::Update()
-{
-	int a = 1;
-}
-
-void BackGround::LateUpdate()
-{
-	int a = 1;
-}
-
-void BackGround::FixedUpdate()
-{
-	int a = 1;
-}
-
 HRESULT BackGround::Render()
 {
 	return S_OK;
