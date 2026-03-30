@@ -17,8 +17,8 @@ public:
 
 public:
 	HRESULT Initialize(uint32 iNumLevels);
-	void Awake();
-	void Start();
+
+	void BeginFrame(); // 매 프레임마다 Awake, Start 호출안된 오브젝트들 호출해주는 함수
 	void Update();
 	void LateUpdate();
 	void FixedUpdate();

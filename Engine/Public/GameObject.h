@@ -14,7 +14,7 @@ public:
 
 public:
 	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
+	virtual HRESULT Initialize(void* pArg = nullptr);
 	virtual void	Awake() {}
 	virtual void	Start() {}
 	virtual void	Update() {}
@@ -22,10 +22,13 @@ public:
 	virtual void	FixedUpdate() {}
 	virtual HRESULT	Render() { return S_OK; }
 
+	LIFESTATE GetLifeState() const { return _lifeState; }
+	void	  SetLifeState(LIFESTATE eLifeState) { _lifeState = eLifeState; }
+
 protected:
 	ComPtr<ID3D11Device> _device = { nullptr };
 	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
-
+	LIFESTATE			_lifeState = { LIFESTATE::NONE };
 
 public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;

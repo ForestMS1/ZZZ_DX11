@@ -43,6 +43,8 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 
 void GameInstance::Update_Engine()
 {
+	_objectManager->BeginFrame();
+
 	_objectManager->Update();
 
 	_objectManager->LateUpdate();

@@ -20,30 +20,31 @@ HRESULT Layer::Add_GameObject(shared_ptr<GameObject> pGameObject)
 	return S_OK;
 }
 
-void Layer::Awake()
+void Layer::BeginFrame()
 {
 	for (auto& gameObject : _gameObjectList)
 	{
-		if (nullptr != gameObject)
+		switch (gameObject->GetLifeState())
+		{
+		case LIFESTATE::NONE:
 			gameObject->Awake();
-	}
-}
-
-void Layer::Start()
-{
-	for (auto& gameObject : _gameObjectList)
-	{
-		if (nullptr != gameObject)
+			gameObject->SetLifeState(LIFESTATE::AWAKED);
+			break;
+		case LIFESTATE::AWAKED:
 			gameObject->Start();
+			gameObject->SetLifeState(LIFESTATE::STARTED);
+			break;
+		default:
+			break;
+		}
 	}
 }
-
 
 void Layer::Update()
 {
 	for (auto& gameObject : _gameObjectList)
 	{
-		if (nullptr != gameObject)
+		if(LIFESTATE::STARTED == gameObject->GetLifeState())
 			gameObject->Update();
 	}
 }
@@ -53,7 +54,7 @@ void Layer::LateUpdate()
 {
 	for (auto& gameObject : _gameObjectList)
 	{
-		if (nullptr != gameObject)
+		if (LIFESTATE::STARTED == gameObject->GetLifeState())
 			gameObject->LateUpdate();
 	}
 }
@@ -62,7 +63,7 @@ void Layer::FixedUpdate()
 {
 	for (auto& gameObject : _gameObjectList)
 	{
-		if (nullptr != gameObject)
+		if (LIFESTATE::STARTED == gameObject->GetLifeState())
 			gameObject->FixedUpdate();
 	}
 }

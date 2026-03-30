@@ -3,6 +3,9 @@ namespace Engine
 {
 	enum class WINMODE { FULL, WIN };
 
+	// GameObject의 생명주기 상태
+	enum class LIFESTATE { NONE, AWAKED, STARTED, REMOVE, END };
+
 	//enum RENDERID { RENDER_PRIORITY, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END };
 
 

@@ -23,24 +23,14 @@ HRESULT Object_Manager::Initialize(uint32 iNumLevels)
 	return S_OK;
 }
 
-void Object_Manager::Awake()
-{
-	for (size_t i = 0; i < _numLevels; i++)
-	{
-		for (auto& pair : _layerMaps[i])
-		{
-			pair.second->Awake();
-		}
-	}
-}
 
-void Object_Manager::Start()
+void Object_Manager::BeginFrame()
 {
 	for (size_t i = 0; i < _numLevels; i++)
 	{
 		for (auto& pair : _layerMaps[i])
 		{
-			pair.second->Start();
+			pair.second->BeginFrame();
 		}
 	}
 }

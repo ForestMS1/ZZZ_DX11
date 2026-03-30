@@ -15,11 +15,11 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	//virtual void Awake() override;
-	//virtual void Start() override;
+	virtual void Awake() override;
+	virtual void Start() override;
 	virtual void Update() override;
-	//virtual void LateUpdate() override;
-	//virtual void FixedUpdate() override;
+	virtual void LateUpdate() override;
+	virtual void FixedUpdate() override;
 	virtual HRESULT Render() override;
 
 public:

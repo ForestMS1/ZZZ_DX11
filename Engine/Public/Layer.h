@@ -13,8 +13,8 @@ public:
 
 public:
 	HRESULT Add_GameObject(shared_ptr<GameObject> pGameObject);
-	void Awake();
-	void Start();
+
+	void BeginFrame();
 	void Update();
 	void LateUpdate();
 	void FixedUpdate();
