@@ -21,6 +21,7 @@
 #define ENGINE_DLL		_declspec(dllimport)
 #endif
 
+#define CHECK(hr)	assert(SUCCEEDED(hr))
 
 #define NULL_CHECK( _ptr)	\
 		{if( _ptr == 0){ return;}}
@@ -64,3 +65,5 @@
 #define GET(CLASSNAME)	CLASSNAME::Get()
 
 #define GAME			GET(GameInstance)
+#define DEVICE			GAME.GetDevice()
+#define DC				GAME.GetDeviceContext()

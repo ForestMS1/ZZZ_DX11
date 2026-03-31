@@ -67,6 +67,9 @@
     <Filter Include="97.Graphics\Buffer">
       <UniqueIdentifier>{3c6b182c-c0c1-4d46-966a-8d9f981e550f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Graphics\Shader">
+      <UniqueIdentifier>{d96b9645-aa2a-49e4-b63b-900f5a739efd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -151,6 +154,21 @@
     <ClInclude Include="..\Public\Geometry.h">
       <Filter>97.Graphics\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Shader.h">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Pass.h">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Technique.h">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Utils.h">
+      <Filter>98.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ConstantBuffer.h">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -220,6 +238,21 @@
       <Filter>97.Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Geometry.cpp">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shader.cpp">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Pass.cpp">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Technique.cpp">
+      <Filter>97.Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utils.cpp">
+      <Filter>98.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ConstantBuffer.cpp">
       <Filter>97.Graphics\Buffer</Filter>
     </ClCompile>
   </ItemGroup>

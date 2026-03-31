@@ -17,7 +17,7 @@ public:
 
 
 	template<typename T>
-	HRESULT CreateBuffer(const vector<T>& vertices, uint32 slot = 0, bool cpuWrite = false, bool gpuWrite = false)
+	void Create(const vector<T>& vertices, uint32 slot = 0, bool cpuWrite = false, bool gpuWrite = false)
 	{
 		_stride = sizeof(T);
 		_count = static_cast<uint32>(vertices.size());
@@ -55,13 +55,8 @@ public:
 		ZeroMemory(&data, sizeof(data));
 		data.pSysMem = vertices.data();
 
-		if (FAILED(GAME.GetDevice()->CreateBuffer(&desc, &data, _vertexBuffer.GetAddressOf())))
-		{
-			MSG_BOX("VertexBuffer Create Failed");
-			return E_FAIL;
-		}
-
-		return S_OK;
+		HRESULT hr = DEVICE->CreateBuffer(&desc, &data, _vertexBuffer.GetAddressOf());
+		CHECK(hr);
 	}
 
 	void PushData()

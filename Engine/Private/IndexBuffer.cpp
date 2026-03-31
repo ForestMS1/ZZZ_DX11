@@ -10,7 +10,7 @@ IndexBuffer::~IndexBuffer()
 {
 }
 
-HRESULT IndexBuffer::CreateBuffer(const vector<uint32>& indices)
+void IndexBuffer::Create(const vector<uint32>& indices)
 {
 	_stride = sizeof(uint32);
 	_count = static_cast<uint32>(indices.size());
@@ -25,13 +25,8 @@ HRESULT IndexBuffer::CreateBuffer(const vector<uint32>& indices)
 	ZeroMemory(&data, sizeof(data));
 	data.pSysMem = indices.data();
 
-	if (FAILED(GAME.GetDevice()->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf())))
-	{
-		MSG_BOX("IndexBuffer Create Failed");
-		return E_FAIL;
-	}
-
-	return S_OK;
+	HRESULT hr = DEVICE->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
+	CHECK(hr);
 }
 
 void IndexBuffer::PushData()

@@ -64,3 +64,5 @@
 #define GET(CLASSNAME)	CLASSNAME::Get()
 
 #define GAME			GET(GameInstance)
+#define DEVICE			GAME.GetDevice()
+#define DC				GAME.GetDeviceContext()

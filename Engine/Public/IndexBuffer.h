@@ -13,7 +13,7 @@ public:
 	uint32 GetOffset() const { return _offset; }
 	uint32 GetCount() const { return _count; }
 
-	HRESULT CreateBuffer(const vector<uint32>& indices);
+	void Create(const vector<uint32>& indices);
 
 	void PushData();
 

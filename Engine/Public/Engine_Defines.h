@@ -78,6 +78,7 @@ using namespace DirectX;
 #endif
 #endif
 
+#include "Utils.h"
 
 using namespace Engine;
 
