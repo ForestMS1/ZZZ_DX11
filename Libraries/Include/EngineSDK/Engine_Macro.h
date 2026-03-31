@@ -21,6 +21,7 @@
 #define ENGINE_DLL		_declspec(dllimport)
 #endif
 
+#define CHECK(hr)	assert(SUCCEEDED(hr))
 
 #define NULL_CHECK( _ptr)	\
 		{if( _ptr == 0){ return;}}

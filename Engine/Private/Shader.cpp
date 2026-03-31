@@ -11,11 +11,6 @@ Shader::~Shader()
 {
 }
 
-Shader::~Shader()
-{
-
-}
-
 void Shader::CreateEffect()
 {
 	_shaderDesc = ShaderManager::GetEffect(_file);
