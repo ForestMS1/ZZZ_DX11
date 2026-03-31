@@ -58,6 +58,15 @@
     <Filter Include="07.Renderer">
       <UniqueIdentifier>{e4d260c2-deed-43d7-98f0-174e8a02f1c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Graphics">
+      <UniqueIdentifier>{1e23ef45-423e-47c8-89e8-488c94d8cd45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Graphics\VertexData">
+      <UniqueIdentifier>{c2d78cab-5e57-4cd3-a415-f2621e33bd35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Graphics\Buffer">
+      <UniqueIdentifier>{3c6b182c-c0c1-4d46-966a-8d9f981e550f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -130,6 +139,18 @@
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>07.Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VertexData.h">
+      <Filter>97.Graphics\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VertexBuffer.h">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\IndexBuffer.h">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Geometry.h">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -188,6 +209,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>07.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VertexData.cpp">
+      <Filter>97.Graphics\VertexData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VertexBuffer.cpp">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\IndexBuffer.cpp">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Geometry.cpp">
+      <Filter>97.Graphics\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

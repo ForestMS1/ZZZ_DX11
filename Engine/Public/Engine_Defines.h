@@ -24,6 +24,9 @@ using namespace std;
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
 
+// VertexData
+#include "VertexData.h"
+
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 

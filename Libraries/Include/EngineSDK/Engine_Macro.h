@@ -61,4 +61,6 @@
 			return Instance;										\
 		}
 
-#define GAME GameInstance::Get()
+#define GET(CLASSNAME)	CLASSNAME::Get()
+
+#define GAME			GET(GameInstance)
