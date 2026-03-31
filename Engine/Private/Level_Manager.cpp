@@ -6,12 +6,12 @@ Level_Manager::Level_Manager()
 {
 }
 
-HRESULT Level_Manager::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel)
+HRESULT Level_Manager::Change_Level(uint32_t iNewLevelIndex, unique_ptr<Level> pNewLevel)
 {
-	if (pNewLevel == nullptr)
+	if (nullptr == pNewLevel)
 		return E_FAIL;
 
-	if (_currentLevel != nullptr)
+	if (nullptr != _currentLevel)
 	{
 		GameInstance::Get().Clear_Resource(_currentLevelIndex);
 		_currentLevel.reset();
@@ -21,23 +21,7 @@ HRESULT Level_Manager::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNe
 
 	_currentLevelIndex = iNewLevelIndex;
 
-
-	//Level_Manager::Awake();
-	//Level_Manager::Start();
-
 	return S_OK;
-}
-
-HRESULT Level_Manager::Change_Loading_toNext(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel)
-{
-	if (pNewLevel == nullptr)
-		return E_FAIL;
-
-	_currentLevel = std::move(pNewLevel);
-
-	_currentLevelIndex = iNewLevelIndex;
-
-	return S_OK;;
 }
 
 void Level_Manager::Awake()

@@ -79,7 +79,7 @@ HRESULT Client::MainApp::Render()
 
 HRESULT Client::MainApp::Start_Level(LEVEL eStartLevelIndex)
 {
-	if (FAILED(GameInstance::Get().Change_Level(static_cast<uint32>(LEVEL::LOGO),
+	if (FAILED(GameInstance::Get().Change_Level(static_cast<uint32>(LEVEL::LOADING),
 		Level_Loading::Create(_device, _deviceContext, eStartLevelIndex))))
 		return E_FAIL;
 	return S_OK;

@@ -108,10 +108,6 @@ uint32 GameInstance::GetCurrentLevelIndex()
 {
 	return _levelManager->GetCurrentLevelIndex();
 }
-HRESULT GameInstance::Change_Loading_toNext(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel)
-{
-	return _levelManager->Change_Loading_toNext(iNewLevelIndex, std::move(pNewLevel));
-}
 #pragma endregion
 
 #pragma region GRAPHIC_DEVICE
