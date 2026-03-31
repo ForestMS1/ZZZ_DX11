@@ -55,6 +55,9 @@
     <Filter Include="06.Component\Camera">
       <UniqueIdentifier>{0e0daa7c-5513-4536-8702-00ac1f5ffda8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.Renderer">
+      <UniqueIdentifier>{e4d260c2-deed-43d7-98f0-174e8a02f1c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -124,6 +127,9 @@
     <ClInclude Include="..\Public\Camera.h">
       <Filter>06.Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Renderer.h">
+      <Filter>07.Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -179,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera.cpp">
       <Filter>06.Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Renderer.cpp">
+      <Filter>07.Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

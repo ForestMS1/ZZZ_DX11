@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackGround.h"
+#include "BackGroundTestScript.h"
 
 BackGround::BackGround(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
@@ -22,6 +23,7 @@ HRESULT BackGround::Initialize_Prototype()
 
 HRESULT BackGround::Initialize(void* pArg)
 {
+	AddComponent(make_shared<BackGroundTestScript>());
 	return S_OK;
 }
 

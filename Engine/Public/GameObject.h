@@ -6,7 +6,7 @@ NS_BEGIN(Engine)
 class Transform;
 class MonoBehaviour;
 
-class ENGINE_DLL GameObject abstract : public Prototype, public enable_shared_from_this<GameObject>
+class ENGINE_DLL GameObject abstract : public Prototype
 {
 protected:
 	GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);

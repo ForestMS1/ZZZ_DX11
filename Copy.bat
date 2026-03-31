@@ -1,4 +1,3 @@
-
 xcopy /y /I ".\Engine\Public\*.h" ".\Libraries\Include\EngineSDK"
 xcopy /y /I ".\Engine\Public\*.inl" ".\Libraries\Include\EngineSDK"
 

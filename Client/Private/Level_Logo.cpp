@@ -34,6 +34,8 @@ HRESULT Level_Logo::Render()
 {
 #ifdef _DEBUG
 	SetWindowText(g_hWnd, L"로고 레벨임.");
+	ImGui::Begin("Logo Level");
+	ImGui::End();
 #endif
 	return S_OK;
 }

@@ -27,6 +27,8 @@ public:
 
 #pragma region LEVEL_MANAGER
 	HRESULT Change_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel);
+	uint32 GetCurrentLevelIndex();
+	HRESULT Change_Loading_toNext(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel);
 #pragma endregion
 
 #pragma region GRAPHIC_DEVICE
@@ -49,12 +51,17 @@ public:
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 #pragma endregion
 
+#pragma region RENDERER
+	HRESULT Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<class GameObject> pRenderObject);
+#pragma endregion
+
 private:
 	unique_ptr<class Graphic_Device> _graphicDevice = { nullptr };
 	unique_ptr<class Timer_Manager> _timerManager = { nullptr };
 	unique_ptr<class Level_Manager> _levelManager = { nullptr };
 	unique_ptr<class Prototype_Manager> _prototypeManager = { nullptr };
 	unique_ptr<class Object_Manager> _objectManager = { nullptr };
+	unique_ptr<class Renderer> _renderer = { nullptr };
 
 public:
 	void Release_Engine();

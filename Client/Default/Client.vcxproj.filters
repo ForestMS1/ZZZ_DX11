@@ -37,6 +37,9 @@
     <Filter Include="99.Defines\ImGUI\Manager">
       <UniqueIdentifier>{9f77fb35-32fd-43f3-85d0-ccf7038f3b01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\00.BackGround\Scripts">
+      <UniqueIdentifier>{7cd45b95-6e1c-4aef-9c71-9797cc257ab2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -100,6 +103,9 @@
     <ClInclude Include="ImGui_Manager.h">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BackGroundTestScript.h">
+      <Filter>02.GameObject\00.BackGround\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\MainApp.cpp">
@@ -147,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="ImGui_Manager.cpp">
       <Filter>99.Defines\ImGUI\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BackGroundTestScript.cpp">
+      <Filter>02.GameObject\00.BackGround\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

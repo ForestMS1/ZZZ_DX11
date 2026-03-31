@@ -51,7 +51,7 @@ void Level_Loading::Update()
 			break;
 		}
 
-		if(FAILED(GameInstance::Get().Change_Level(ETOUI(_nextLevelIndex), std::move(pNewLevel))))
+		if(FAILED(GameInstance::Get().Change_Loading_toNext(ETOUI(_nextLevelIndex), std::move(pNewLevel))))
 			return;
 	}
 }

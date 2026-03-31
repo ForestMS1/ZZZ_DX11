@@ -5,7 +5,7 @@ NS_BEGIN(Engine)
 
 class ENGINE_DLL MonoBehaviour abstract : public Component
 {
-private:
+protected:
 	MonoBehaviour();
 public:
 	virtual ~MonoBehaviour();

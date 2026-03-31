@@ -26,45 +26,36 @@ HRESULT Object_Manager::Initialize(uint32 iNumLevels)
 
 void Object_Manager::BeginFrame()
 {
-	for (size_t i = 0; i < _numLevels; i++)
+	_currentLevelIndex = GameInstance::Get().GetCurrentLevelIndex();
+
+	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
-		for (auto& pair : _layerMaps[i])
-		{
-			pair.second->BeginFrame();
-		}
+		pair.second->BeginFrame();
 	}
+
 }
 
 void Object_Manager::Update()
 {
-	for (size_t i = 0; i < _numLevels; i++)
+	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
-		for (auto& pair : _layerMaps[i])
-		{
-			pair.second->Update();
-		}
+		pair.second->Update();
 	}
 }
 
 void Object_Manager::LateUpdate()
 {
-	for (size_t i = 0; i < _numLevels; i++)
+	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
-		for (auto& pair : _layerMaps[i])
-		{
-			pair.second->LateUpdate();
-		}
+		pair.second->LateUpdate();
 	}
 }
 
 void Object_Manager::FixedUpdate()
 {
-	for (size_t i = 0; i < _numLevels; i++)
+	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
-		for (auto& pair : _layerMaps[i])
-		{
-			pair.second->FixedUpdate();
-		}
+		pair.second->FixedUpdate();
 	}
 }
 
@@ -99,6 +90,22 @@ HRESULT Object_Manager::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, cons
 
 
 	return S_OK;
+}
+
+void Object_Manager::Clear(uint32 iClearLevelIndex)
+{
+	if (iClearLevelIndex >= _numLevels ||
+		nullptr == _layerMaps)
+	{
+		MSG_BOX("Object_Manager Clear Failed!");
+		return;
+	}
+
+	for (auto& pair : _layerMaps[iClearLevelIndex])
+	{
+		pair.second.reset();
+	}
+	_layerMaps[iClearLevelIndex].clear();
 }
 
 

@@ -2,11 +2,13 @@
 #include "GameInstance.h"
 #include "Graphic_Device.h"
 #include "Level_Manager.h"
-#include"Timer_Manager.h"
+#include "Timer_Manager.h"
 #include "Prototype_Manager.h"
 #include "Prototype.h"
+#include "GameObject.h"
 #include "Level.h"
 #include "Object_Manager.h"
+#include "Renderer.h"
 
 GameInstance::GameInstance()
 {
@@ -34,6 +36,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	if (nullptr == _objectManager)
 		return E_FAIL;
 
+	_renderer = Renderer::Create(pOutDevice, pOutDeviceContext);
+	if (nullptr == _renderer)
+		return E_FAIL;
+
 	_levelManager = Level_Manager::Create();
 	if (nullptr == _levelManager)
 		return E_FAIL;
@@ -56,6 +62,9 @@ void GameInstance::Update_Engine()
 
 HRESULT GameInstance::Draw()
 {
+	if (FAILED(_renderer->Draw()))
+		return E_FAIL;
+
 	if (FAILED(_levelManager->Render()))
 		return E_FAIL;
 
@@ -64,7 +73,9 @@ HRESULT GameInstance::Draw()
 
 void GameInstance::Clear_Resource(uint32 iClearLevelIndex)
 {
+	_objectManager->Clear(iClearLevelIndex);
 
+	_prototypeManager->Clear(iClearLevelIndex);
 }
 
 #pragma region TIMER_MANAGER
@@ -93,6 +104,14 @@ HRESULT GameInstance::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNew
 	return _levelManager->Change_Level(iNewLevelIndex, std::move(pNewLevel));
 }
 
+uint32 GameInstance::GetCurrentLevelIndex()
+{
+	return _levelManager->GetCurrentLevelIndex();
+}
+HRESULT GameInstance::Change_Loading_toNext(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel)
+{
+	return _levelManager->Change_Loading_toNext(iNewLevelIndex, std::move(pNewLevel));
+}
 #pragma endregion
 
 #pragma region GRAPHIC_DEVICE
@@ -143,9 +162,18 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
 }
 #pragma endregion
 
+#pragma region RENDERER
+
+HRESULT GameInstance::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObject> pRenderObject)
+{
+	return _renderer->Add_RenderObject(eRenderGroup, pRenderObject);
+}
+#pragma endregion
+
 
 void GameInstance::Release_Engine()
 {
+	_renderer.reset();
 	_levelManager.reset();
 	_timerManager.reset();
 	_objectManager.reset();

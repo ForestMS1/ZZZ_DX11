@@ -35,6 +35,22 @@ shared_ptr<Prototype> Prototype_Manager::Clone_Prototype(uint32 iLevelIndex, con
 	return pPrototype->Clone(pArg);
 }
 
+void Prototype_Manager::Clear(uint32 iClearLevelIndex)
+{
+	if (iClearLevelIndex >= _numLevels ||
+		nullptr == _protoTypes)
+	{
+		MSG_BOX("ProtoType Clear Failed!");
+		return;
+	}
+
+	for (auto& pair : _protoTypes[iClearLevelIndex])
+	{
+		pair.second.reset();
+	}
+	_protoTypes[iClearLevelIndex].clear();
+}
+
 Prototype* Prototype_Manager::Find_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag)
 {
 	if (iLevelIndex >= _numLevels)

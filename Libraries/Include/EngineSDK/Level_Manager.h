@@ -10,13 +10,17 @@ public:
 	~Level_Manager() = default;
 
 public:
-	HRESULT Change_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel);
+	HRESULT Change_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel); // A씬 -> B씬 넘어갈때 호출하는 함수 pNewLevel은 로딩씬으로 넣어라.
+	HRESULT Change_Loading_toNext(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel); //로딩씬 -> B씬 넘어갈때 호출하는 함수
 	void Awake();
 	void Start();
 	void Update();
 	void LateUpdate();
 	void FixedUpdate();
 	HRESULT Render();
+
+public:
+	uint32 GetCurrentLevelIndex() const { return _currentLevelIndex; }
 
 private:
 	uint32 _currentLevelIndex = {};

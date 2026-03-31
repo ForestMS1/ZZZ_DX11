@@ -25,12 +25,14 @@ public:
 
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
-
+	void Clear(uint32 iClearLevelIndex);
 
 private:
 	uint32 _numLevels = { 0 };
 	unique_ptr<map<const wstring, unique_ptr<Layer>>[]> _layerMaps = { nullptr };
 	typedef map<const wstring, unique_ptr<Layer>> LAYERS;
+
+	uint32 _currentLevelIndex = { 0 };
 
 private:
 	Layer* Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);

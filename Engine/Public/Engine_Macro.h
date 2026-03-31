@@ -1,4 +1,8 @@
 #pragma once
+
+
+#define			SHARED_THIS(_type) static_pointer_cast<_type>(shared_from_this())
+
 #define			ETOI(_enum)			static_cast<int32_t>(_enum)
 #define			ETOUI(_enum)		static_cast<uint32_t>(_enum)
 
