@@ -1,6 +1,8 @@
 #pragma once
 #include "Pass.h"
 
+NS_BEGIN(Engine)
+
 struct Technique
 {
 	wstring name;
@@ -15,3 +17,5 @@ struct Technique
 
 	void Dispatch(UINT pass, UINT x, UINT y, UINT z);
 };
+
+NS_END

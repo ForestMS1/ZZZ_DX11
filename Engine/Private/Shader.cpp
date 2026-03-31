@@ -190,84 +190,84 @@ void Shader::Dispatch(UINT technique, UINT pass, UINT x, UINT y, UINT z)
 	_techniques[technique].passes[pass].Dispatch(x, y, z);
 }
 
-ComPtr<ID3DX11EffectVariable> Shader::GetVariable(string name)
+ComPtr<ID3DX11EffectVariable> Shader::GetVariable(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str());
 }
 
-ComPtr<ID3DX11EffectScalarVariable> Shader::GetScalar(string name)
+ComPtr<ID3DX11EffectScalarVariable> Shader::GetScalar(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsScalar();
 }
 
-ComPtr<ID3DX11EffectVectorVariable> Shader::GetVector(string name)
+ComPtr<ID3DX11EffectVectorVariable> Shader::GetVector(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsVector();
 }
 
-ComPtr<ID3DX11EffectMatrixVariable> Shader::GetMatrix(string name)
+ComPtr<ID3DX11EffectMatrixVariable> Shader::GetMatrix(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsMatrix();
 }
 
-ComPtr<ID3DX11EffectStringVariable> Shader::GetString(string name)
+ComPtr<ID3DX11EffectStringVariable> Shader::GetString(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsString();
 }
 
-ComPtr<ID3DX11EffectShaderResourceVariable> Shader::GetSRV(string name)
+ComPtr<ID3DX11EffectShaderResourceVariable> Shader::GetSRV(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsShaderResource();
 }
 
-ComPtr<ID3DX11EffectRenderTargetViewVariable> Shader::GetRTV(string name)
+ComPtr<ID3DX11EffectRenderTargetViewVariable> Shader::GetRTV(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsRenderTargetView();
 }
 
-ComPtr<ID3DX11EffectDepthStencilViewVariable> Shader::GetDSV(string name)
+ComPtr<ID3DX11EffectDepthStencilViewVariable> Shader::GetDSV(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsDepthStencilView();
 }
 
-ComPtr<ID3DX11EffectConstantBuffer> Shader::GetConstantBuffer(string name)
+ComPtr<ID3DX11EffectConstantBuffer> Shader::GetConstantBuffer(const string& name)
 {
 	return _shaderDesc.effect->GetConstantBufferByName(name.c_str());
 }
 
-ComPtr<ID3DX11EffectShaderVariable> Shader::GetShader(string name)
+ComPtr<ID3DX11EffectShaderVariable> Shader::GetShader(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsShader();
 }
 
-ComPtr<ID3DX11EffectBlendVariable> Shader::GetBlend(string name)
+ComPtr<ID3DX11EffectBlendVariable> Shader::GetBlend(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsBlend();
 }
 
-ComPtr<ID3DX11EffectDepthStencilVariable> Shader::GetDepthStencil(string name)
+ComPtr<ID3DX11EffectDepthStencilVariable> Shader::GetDepthStencil(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsDepthStencil();
 }
 
-ComPtr<ID3DX11EffectRasterizerVariable> Shader::GetRasterizer(string name)
+ComPtr<ID3DX11EffectRasterizerVariable> Shader::GetRasterizer(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsRasterizer();
 }
 
-ComPtr<ID3DX11EffectSamplerVariable> Shader::GetSampler(string name)
+ComPtr<ID3DX11EffectSamplerVariable> Shader::GetSampler(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsSampler();
 }
 
-ComPtr<ID3DX11EffectUnorderedAccessViewVariable> Shader::GetUAV(string name)
+ComPtr<ID3DX11EffectUnorderedAccessViewVariable> Shader::GetUAV(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsUnorderedAccessView();
 }
 
 unordered_map<wstring, ShaderDesc> ShaderManager::shaders;
 
-ShaderDesc ShaderManager::GetEffect(wstring fileName)
+ShaderDesc ShaderManager::GetEffect(const wstring& fileName)
 {
 	if (shaders.count(fileName) == 0)
 	{

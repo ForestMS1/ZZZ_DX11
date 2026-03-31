@@ -1,5 +1,7 @@
 #pragma once
 
+NS_BEGIN(Engine)
+
 struct StateBlock
 {
 	ComPtr<ID3D11RasterizerState> RSRasterizerState;
@@ -34,3 +36,5 @@ struct Pass
 
 	void Dispatch(UINT x, UINT y, UINT z);
 };
+
+NS_END

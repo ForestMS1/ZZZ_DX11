@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BackGroundTestScript.h"
-#include "GameInstance.h"
 
 BackGroundTestScript::BackGroundTestScript()
 {

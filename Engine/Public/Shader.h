@@ -27,21 +27,21 @@ public:
 
 	void Dispatch(UINT technique, UINT pass, UINT x, UINT y, UINT z);
 
-	ComPtr<ID3DX11EffectVariable> GetVariable(string name);
-	ComPtr<ID3DX11EffectScalarVariable> GetScalar(string name);
-	ComPtr<ID3DX11EffectVectorVariable> GetVector(string name);
-	ComPtr<ID3DX11EffectMatrixVariable> GetMatrix(string name);
-	ComPtr<ID3DX11EffectStringVariable> GetString(string name);
-	ComPtr<ID3DX11EffectShaderResourceVariable> GetSRV(string name);
-	ComPtr<ID3DX11EffectRenderTargetViewVariable> GetRTV(string name);
-	ComPtr<ID3DX11EffectDepthStencilViewVariable> GetDSV(string name);
-	ComPtr<ID3DX11EffectUnorderedAccessViewVariable> GetUAV(string name);
-	ComPtr<ID3DX11EffectConstantBuffer> GetConstantBuffer(string name);
-	ComPtr<ID3DX11EffectShaderVariable> GetShader(string name);
-	ComPtr<ID3DX11EffectBlendVariable> GetBlend(string name);
-	ComPtr<ID3DX11EffectDepthStencilVariable> GetDepthStencil(string name);
-	ComPtr<ID3DX11EffectRasterizerVariable> GetRasterizer(string name);
-	ComPtr<ID3DX11EffectSamplerVariable> GetSampler(string name);
+	ComPtr<ID3DX11EffectVariable> GetVariable(const string& name);
+	ComPtr<ID3DX11EffectScalarVariable> GetScalar(const string& name);
+	ComPtr<ID3DX11EffectVectorVariable> GetVector(const string& name);
+	ComPtr<ID3DX11EffectMatrixVariable> GetMatrix(const string& name);
+	ComPtr<ID3DX11EffectStringVariable> GetString(const string& name);
+	ComPtr<ID3DX11EffectShaderResourceVariable> GetSRV(const string& name);
+	ComPtr<ID3DX11EffectRenderTargetViewVariable> GetRTV(const string& name);
+	ComPtr<ID3DX11EffectDepthStencilViewVariable> GetDSV(const string& name);
+	ComPtr<ID3DX11EffectUnorderedAccessViewVariable> GetUAV(const string& name);
+	ComPtr<ID3DX11EffectConstantBuffer> GetConstantBuffer(const string& name);
+	ComPtr<ID3DX11EffectShaderVariable> GetShader(const string& name);
+	ComPtr<ID3DX11EffectBlendVariable> GetBlend(const string& name);
+	ComPtr<ID3DX11EffectDepthStencilVariable> GetDepthStencil(const string& name);
+	ComPtr<ID3DX11EffectRasterizerVariable> GetRasterizer(const string& name);
+	ComPtr<ID3DX11EffectSamplerVariable> GetSampler(const string& name);
 
 private:
 	void CreateEffect();
@@ -59,7 +59,7 @@ private:
 class ENGINE_DLL ShaderManager
 {
 public:
-	static ShaderDesc GetEffect(wstring fileName);
+	static ShaderDesc GetEffect(const wstring& fileName);
 
 private:
 	static unordered_map<wstring, ShaderDesc> shaders;

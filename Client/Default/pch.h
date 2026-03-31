@@ -17,3 +17,5 @@
 #include "Engine_Defines.h"
 #include "Client_Defines.h"
 
+#include "GameInstance.h"
+

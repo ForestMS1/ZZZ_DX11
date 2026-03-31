@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Utils.h"
 
-bool Utils::StartsWith(string str, string comp)
+bool Utils::StartsWith(const string& str, const string& comp)
 {
 	wstring::size_type index = str.find(comp);
 	if (index != wstring::npos && index == 0)
@@ -10,7 +10,7 @@ bool Utils::StartsWith(string str, string comp)
 	return false;
 }
 
-bool Utils::StartsWith(wstring str, wstring comp)
+bool Utils::StartsWith(const wstring& str, const wstring& comp)
 {
 	wstring::size_type index = str.find(comp);
 	if (index != wstring::npos && index == 0)
@@ -19,7 +19,7 @@ bool Utils::StartsWith(wstring str, wstring comp)
 	return false;
 }
 
-void Utils::Replace(OUT string& str, string comp, string rep)
+void Utils::Replace(OUT string& str, const string& comp, const string& rep)
 {
 	string temp = str;
 
@@ -33,7 +33,7 @@ void Utils::Replace(OUT string& str, string comp, string rep)
 	str = temp;
 }
 
-void Utils::Replace(OUT wstring& str, wstring comp, wstring rep)
+void Utils::Replace(OUT wstring& str, const wstring& comp, const wstring& rep)
 {
 	wstring temp = str;
 
@@ -47,12 +47,12 @@ void Utils::Replace(OUT wstring& str, wstring comp, wstring rep)
 	str = temp;
 }
 
-std::wstring Utils::ToWString(string value)
+std::wstring Utils::ToWString(const string& value)
 {
 	return wstring(value.begin(), value.end());
 }
 
-std::string Utils::ToString(wstring value)
+std::string Utils::ToString(const wstring& value)
 {
 	return string(value.begin(), value.end());
 }
