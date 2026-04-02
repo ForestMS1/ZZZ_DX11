@@ -8,5 +8,7 @@ xcopy /y /I ".\Engine\Bin\Engine.dll" ".\Libraries\Lib\EngineSDK"
 
 xcopy /y /I ".\Engine\Bin\Engine.lib" ".\Client\Bin"
 xcopy /y /I ".\Engine\Bin\Engine.dll" ".\Client\Bin"
+xcopy /y /I ".\Engine\Bin\Engine.lib" ".\AssimpTool\Bin"
+xcopy /y /I ".\Engine\Bin\Engine.dll" ".\AssimpTool\Bin"
 
 exit /b 0

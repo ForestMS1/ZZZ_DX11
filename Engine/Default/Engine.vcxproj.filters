@@ -94,6 +94,9 @@
     <Filter Include="50.Input">
       <UniqueIdentifier>{39d68389-c63f-4920-917c-13f99bd1a5fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Resource\Model">
+      <UniqueIdentifier>{ad79f400-19cc-4478-baea-a6ad2999cea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -220,6 +223,12 @@
     <ClInclude Include="..\Public\Input_Manager.h">
       <Filter>50.Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ModelMesh.h">
+      <Filter>96.Resource\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>96.Resource\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -332,6 +341,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Input_Manager.cpp">
       <Filter>50.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ModelMesh.cpp">
+      <Filter>96.Resource\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>96.Resource\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
