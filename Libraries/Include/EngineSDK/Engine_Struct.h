@@ -5,6 +5,7 @@ namespace Engine
 {
 	typedef struct tagEngineDesc
 	{
+		HINSTANCE	hInst;
 		HWND		hWnd;
 		WINMODE		eWinMode;
 		int32_t		iWinSizeX, iWinSizeY;

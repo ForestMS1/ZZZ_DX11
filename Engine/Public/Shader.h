@@ -3,6 +3,7 @@
 #include "Pass.h"
 #include "Technique.h"
 
+#include "ConstantBuffer.h"
 
 NS_BEGIN(Engine)
 
@@ -12,13 +13,13 @@ struct ShaderDesc
 	ComPtr<ID3DX11Effect> effect;
 };
 
-
-template<typename T> class ConstantBuffer;
-
 class ENGINE_DLL Shader
 {
 public:
-	Shader(wstring file);
+	friend struct Pass;
+
+public:
+	Shader(const wstring& file);
 	~Shader();
 
 	wstring GetFile() { return _file; }
@@ -51,7 +52,6 @@ private:
 	void CreateEffect();
 	ComPtr<ID3D11InputLayout> CreateInputLayout(ComPtr<ID3DBlob> fxBlob, D3DX11_EFFECT_SHADER_DESC* effectVsDesc, vector<D3D11_SIGNATURE_PARAMETER_DESC>& params);
 
-
 private:
 	wstring _file;
 	ShaderDesc _shaderDesc;
@@ -62,8 +62,12 @@ private:
 public:
 	void PushGlobalData(const Matrix& view, const Matrix& projection);
 	void PushTransformData(const TransformDesc& desc);
-	//void PushLightData(const LightDesc& desc);
+	void PushLightData(const LightDesc& desc);
 	void PushMaterialData(const MaterialDesc& desc);
+	void PushBoneData(const BoneDesc& desc);
+	void PushKeyframeData(const KeyframeDesc& desc);
+	void PushTweenData(const InstancedTweenDesc& desc);
+	void PushSnowData(const SnowBillboardDesc& desc);
 
 private:
 	GlobalDesc _globalDesc;
@@ -74,13 +78,29 @@ private:
 	shared_ptr<ConstantBuffer<TransformDesc>> _transformBuffer;
 	ComPtr<ID3DX11EffectConstantBuffer> _transformEffectBuffer;
 
-	//LightDesc _lightDesc;
-	//shared_ptr<ConstantBuffer<LightDesc>> _lightBuffer;
-	//ComPtr<ID3DX11EffectConstantBuffer> _lightEffectBuffer;
+	LightDesc _lightDesc;
+	shared_ptr<ConstantBuffer<LightDesc>> _lightBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _lightEffectBuffer;
 
 	MaterialDesc _materialDesc;
 	shared_ptr<ConstantBuffer<MaterialDesc>> _materialBuffer;
 	ComPtr<ID3DX11EffectConstantBuffer> _materialEffectBuffer;
+
+	BoneDesc _boneDesc;
+	shared_ptr<ConstantBuffer<BoneDesc>> _boneBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _boneEffectBuffer;
+
+	KeyframeDesc _keyframeDesc;
+	shared_ptr<ConstantBuffer<KeyframeDesc>> _keyframeBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _keyframeEffectBuffer;
+
+	InstancedTweenDesc _tweenDesc;
+	shared_ptr<ConstantBuffer<InstancedTweenDesc>> _tweenBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _tweenEffectBuffer;
+
+	SnowBillboardDesc _snowDesc;
+	shared_ptr<ConstantBuffer<SnowBillboardDesc>> _snowBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _snowEffectBuffer;
 };
 
 class ENGINE_DLL ShaderManager
@@ -90,6 +110,9 @@ public:
 
 private:
 	static unordered_map<wstring, ShaderDesc> shaders;
+
+public:
+	static void Clear();
 };
 
 NS_END

@@ -26,7 +26,7 @@ public:
 	void	LateUpdate();
 	void	FixedUpdate();
 
-	virtual HRESULT	Render() { return S_OK; }
+	virtual HRESULT	Render();
 
 	// LIFESTATE
 	LIFESTATE GetLifeState() const { return _lifeState; }

@@ -22,6 +22,7 @@ Client::MainApp::~MainApp()
 HRESULT Client::MainApp::Initialize()
 {
 	ENGINE_DESC EngineDesc{};
+	EngineDesc.hInst = g_hInstance;
 	EngineDesc.hWnd = g_hWnd;
 	EngineDesc.eWinMode = WINMODE::WIN;
 	EngineDesc.iWinSizeX = g_iWinSizeX;

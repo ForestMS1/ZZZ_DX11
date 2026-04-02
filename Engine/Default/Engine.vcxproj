@@ -35,6 +35,7 @@
     <ClInclude Include="..\Public\GeometryHelper.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\IndexBuffer.h" />
+    <ClInclude Include="..\Public\Input_Manager.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Level.h" />
     <ClInclude Include="..\Public\Level_Manager.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\ResourceBase.h" />
+    <ClInclude Include="..\Public\Resource_Manager.h" />
     <ClInclude Include="..\Public\Shader.h" />
     <ClInclude Include="..\Public\SimpleMath.h" />
     <ClInclude Include="..\Public\Technique.h" />
@@ -74,6 +76,7 @@
     <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\IndexBuffer.cpp" />
+    <ClCompile Include="..\Private\Input_Manager.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Level.cpp" />
     <ClCompile Include="..\Private\Level_Manager.cpp" />
@@ -87,6 +90,7 @@
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\ResourceBase.cpp" />
+    <ClCompile Include="..\Private\Resource_Manager.cpp" />
     <ClCompile Include="..\Private\Shader.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\Technique.cpp" />
@@ -200,7 +204,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -225,7 +229,7 @@ call $(SolutionDir)Copy.bat
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

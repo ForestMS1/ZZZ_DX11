@@ -14,6 +14,9 @@ Level_Logo::~Level_Logo()
 
 HRESULT Level_Logo::Initialize()
 {
+	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
@@ -34,9 +37,19 @@ HRESULT Level_Logo::Render()
 {
 #ifdef _DEBUG
 	SetWindowText(g_hWnd, L"로고 레벨임.");
-	ImGui::Begin("Logo Level");
+	ImGui::Begin("Logo_Level_Hierachy");
+
 	ImGui::End();
 #endif
+	return S_OK;
+}
+
+HRESULT Level_Logo::Ready_Layer_Basic(const wstring& strLayerTag)
+{
+	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::STATIC), L"Prototype_GameObject_MainCam",
+		ETOUI(LEVEL::LOGO), strLayerTag)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

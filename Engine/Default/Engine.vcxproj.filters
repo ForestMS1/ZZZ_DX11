@@ -88,6 +88,12 @@
     <Filter Include="06.Component\MeshRenderer">
       <UniqueIdentifier>{57a4e98b-3d1e-4d0a-b5e4-2539f11b0df4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Resource\Manager">
+      <UniqueIdentifier>{2981b1f0-4869-4475-bfde-75f37717441d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="50.Input">
+      <UniqueIdentifier>{39d68389-c63f-4920-917c-13f99bd1a5fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -208,6 +214,12 @@
     <ClInclude Include="..\Public\MeshRenderer.h">
       <Filter>06.Component\MeshRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Resource_Manager.h">
+      <Filter>96.Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Input_Manager.h">
+      <Filter>50.Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -314,6 +326,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MeshRenderer.cpp">
       <Filter>06.Component\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Resource_Manager.cpp">
+      <Filter>96.Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input_Manager.cpp">
+      <Filter>50.Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

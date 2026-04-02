@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "BackGround.h"
+#include "MainCam.h"
 #include "Transform.h"
 
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
@@ -136,6 +137,11 @@ HRESULT Loader::Loading_For_Logo()
 	}
 
 	_loadingText = L"객체원형 생성 중 입니다.";
+	/* Prototype_GameObject_MainCam */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::STATIC), L"Prototype_GameObject_MainCam",
+		MainCam::Create(_device, _deviceContext))))
+		return E_FAIL;
+
 	/* Prototype_GameObject_BackGround */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::LOGO), L"Prototype_GameObject_BackGround",
 		BackGround::Create(_device, _deviceContext))))

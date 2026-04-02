@@ -17,6 +17,7 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	HRESULT Ready_Layer_Basic(const wstring& strLayerTag);
 	HRESULT Ready_Layer_BackGround(const wstring& strLayerTag);
 public:
 	static unique_ptr<Level_Logo> Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);

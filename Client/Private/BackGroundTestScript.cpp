@@ -17,32 +17,22 @@ void BackGroundTestScript::Awake()
 
 void BackGroundTestScript::Start()
 {
-	int a = 1;
+
 }
 
 void BackGroundTestScript::Update()
 {
-	GameInstance::Get().Add_RenderObject(RENDERGROUP::UI, GetGameObject());
-	Vec3 pos = GetTransform()->GetPosition();
+	GAME.Add_RenderObject(RENDERGROUP::BLEND, GetGameObject());
 
-	if (GetKeyState(VK_UP) & 0x8000)
-	{
-		pos += Vec3(0.f, 1.f, 0.f) * DT;
-	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
-	{
-		pos += Vec3(0.f, -1.f, 0.f) * DT;
-	}
-	if (GetKeyState(VK_LEFT) & 0x8000)
-	{
-		pos += Vec3(-1.f, 0.f, 0.f) * DT;
-	}
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-	{
-		pos += Vec3(1.f, 0.f, 0.f) * DT;
-	}
+	ImGui::Begin("BackGround Transform");
+	Vec3 pos = GetTransform()->GetPosition();
+	Vec3 scale = GetTransform()->GetScale();
+	ImGui::DragFloat3("Position", (float*)&pos, 1.0f, -100.f, 100.f, "%.3f", 1);
+	ImGui::DragFloat3("Scale", (float*)&scale, 1.0f, -100.f, 100.f, "%.3f", 1);
 
 	GetTransform()->SetPosition(pos);
+	GetTransform()->SetScale(scale);
+	ImGui::End();
 }
 
 void BackGroundTestScript::LateUpdate()

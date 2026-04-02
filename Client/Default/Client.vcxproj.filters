@@ -40,6 +40,18 @@
     <Filter Include="02.GameObject\00.BackGround\Scripts">
       <UniqueIdentifier>{7cd45b95-6e1c-4aef-9c71-9797cc257ab2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\99.Camera">
+      <UniqueIdentifier>{999424b0-15a2-431f-983c-6873300ed918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\99.Camera\Scripts">
+      <UniqueIdentifier>{04e20a5e-bba4-44fe-9dcb-9ce8824a94ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Shaders">
+      <UniqueIdentifier>{d7398a92-999a-4f2c-af43-961f0bc3a877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Shaders\Common">
+      <UniqueIdentifier>{904b21b2-ae34-4349-b5f5-3e0489eafc6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -106,6 +118,12 @@
     <ClInclude Include="..\Public\BackGroundTestScript.h">
       <Filter>02.GameObject\00.BackGround\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MainCam.h">
+      <Filter>02.GameObject\99.Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CamController.h">
+      <Filter>02.GameObject\99.Camera\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\MainApp.cpp">
@@ -157,6 +175,12 @@
     <ClCompile Include="..\Private\BackGroundTestScript.cpp">
       <Filter>02.GameObject\00.BackGround\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MainCam.cpp">
+      <Filter>02.GameObject\99.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CamController.cpp">
+      <Filter>02.GameObject\99.Camera\Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -170,5 +194,16 @@
     <ResourceCompile Include="Client.rc">
       <Filter>98.Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Shaders\Global.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\Test.fx">
+      <Filter>97.Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\Light.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

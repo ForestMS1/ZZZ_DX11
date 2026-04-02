@@ -11,9 +11,8 @@ enum class ProjectionType
 
 class ENGINE_DLL Camera : public Component
 {
-private:
-	Camera();
 public:
+	Camera();
 	virtual ~Camera();
 
 	virtual void Update() override;

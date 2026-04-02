@@ -9,6 +9,9 @@
 #include "Level.h"
 #include "Object_Manager.h"
 #include "Renderer.h"
+#include "Resource_Manager.h"
+#include "Input_Manager.h"
+#include "Shader.h"
 
 GameInstance::GameInstance()
 {
@@ -20,12 +23,17 @@ GameInstance::~GameInstance()
 
 HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>& pOutDevice, ComPtr<ID3D11DeviceContext>& pOutDeviceContext)
 {
+	::memcpy(&_desc, &EngineDesc, sizeof(ENGINE_DESC));
 	_graphicDevice = Graphic_Device::Create(EngineDesc.hWnd, EngineDesc.eWinMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pOutDevice, pOutDeviceContext);
 	if (nullptr == _graphicDevice)
 		return E_FAIL;
 
 	_timerManager = Timer_Manager::Create();
 	if (nullptr == _timerManager)
+		return E_FAIL;
+
+	_resourceManager = Resource_Manager::Create();
+	if (nullptr == _resourceManager)
 		return E_FAIL;
 
 	_prototypeManager = Prototype_Manager::Create(EngineDesc.iNumLevels);
@@ -44,11 +52,17 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	if (nullptr == _levelManager)
 		return E_FAIL;
 
+	_inputManager = Input_Manager::Create(EngineDesc.hInst, EngineDesc.hWnd);
+	if (nullptr == _inputManager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void GameInstance::Update_Engine()
 {
+	_inputManager->Update_InputDev();
+
 	_objectManager->BeginFrame();
 
 	_objectManager->Update();
@@ -62,6 +76,8 @@ void GameInstance::Update_Engine()
 
 HRESULT GameInstance::Draw()
 {
+	DC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	if (FAILED(_renderer->Draw()))
 		return E_FAIL;
 
@@ -158,6 +174,12 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
 }
 #pragma endregion
 
+#pragma region RESOURCE_MANAGER
+shared_ptr<Texture> GameInstance::GetOrAddTexture(const wstring& key, const wstring& path)
+{
+	return _resourceManager->GetOrAddTexture(key, path);
+}
+#pragma endregion
 #pragma region RENDERER
 
 HRESULT GameInstance::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObject> pRenderObject)
@@ -166,14 +188,61 @@ HRESULT GameInstance::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<Game
 }
 #pragma endregion
 
+#pragma region INPUT_MANAGER
+signed char	GameInstance::Get_DIKeyState(unsigned char byKeyID)
+{
+	return _inputManager->Get_DIKeyState(byKeyID);
+}
+
+signed char	GameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
+{
+	return _inputManager->Get_DIMouseState(eMouse);
+}
+
+// 현재 마우스의 특정 축 좌표를 반환
+signed long	GameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
+{
+	return _inputManager->Get_DIMouseMove(eMouseState);
+}
+
+bool GameInstance::Key_Pressing(unsigned char byKeyID)
+{
+	return _inputManager->Key_Pressing(byKeyID);
+}
+bool GameInstance::Key_Up(unsigned char byKeyID)
+{
+	return _inputManager->Key_Up(byKeyID);
+}
+bool GameInstance::Key_Down(unsigned char byKeyID)
+{
+	return _inputManager->Key_Down(byKeyID);
+}
+
+bool GameInstance::Mouse_Pressing(MOUSEKEYSTATE eMouseState)
+{
+	return _inputManager->Mouse_Pressing(eMouseState);
+}
+bool GameInstance::Mouse_Up(MOUSEKEYSTATE eMouseState)
+{
+	return _inputManager->Mouse_Up(eMouseState);
+}
+bool GameInstance::Mouse_Down(MOUSEKEYSTATE eMouseState)
+{
+	return _inputManager->Mouse_Down(eMouseState);
+}
+#pragma endregion
+
 
 void GameInstance::Release_Engine()
 {
+	ShaderManager::Clear();
+	_inputManager.reset();
 	_renderer.reset();
 	_levelManager.reset();
 	_timerManager.reset();
 	_objectManager.reset();
 	_prototypeManager.reset();
+	_resourceManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();
 }

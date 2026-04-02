@@ -102,6 +102,11 @@ void	GameObject::FixedUpdate()
 	}
 }
 
+HRESULT	GameObject::Render()
+{
+	return _components[static_cast<uint8>(ComponentType::MeshRenderer)]->Render();
+}
+
 
 shared_ptr<Component> GameObject::GetFixedComponent(ComponentType eType)
 {

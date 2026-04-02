@@ -39,6 +39,7 @@ public:
 	virtual void Update() {}
 	virtual void LateUpdate() {}
 	virtual void FixedUpdate() {}
+	virtual HRESULT Render() { return S_OK; }
 
 public:
 	ComponentType GetType() { return _type; }
