@@ -3,6 +3,7 @@
 #include "Pass.h"
 #include "Technique.h"
 
+
 NS_BEGIN(Engine)
 
 struct ShaderDesc
@@ -10,6 +11,9 @@ struct ShaderDesc
 	ComPtr<ID3DBlob> blob;
 	ComPtr<ID3DX11Effect> effect;
 };
+
+
+template<typename T> class ConstantBuffer;
 
 class ENGINE_DLL Shader
 {
@@ -54,6 +58,29 @@ private:
 	D3DX11_EFFECT_DESC _effectDesc;
 	shared_ptr<StateBlock> _initialStateBlock;
 	vector<Technique> _techniques;
+
+public:
+	void PushGlobalData(const Matrix& view, const Matrix& projection);
+	void PushTransformData(const TransformDesc& desc);
+	//void PushLightData(const LightDesc& desc);
+	void PushMaterialData(const MaterialDesc& desc);
+
+private:
+	GlobalDesc _globalDesc;
+	shared_ptr<ConstantBuffer<GlobalDesc>> _globalBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _globalEffectBuffer;
+
+	TransformDesc _transformDesc;
+	shared_ptr<ConstantBuffer<TransformDesc>> _transformBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _transformEffectBuffer;
+
+	//LightDesc _lightDesc;
+	//shared_ptr<ConstantBuffer<LightDesc>> _lightBuffer;
+	//ComPtr<ID3DX11EffectConstantBuffer> _lightEffectBuffer;
+
+	MaterialDesc _materialDesc;
+	shared_ptr<ConstantBuffer<MaterialDesc>> _materialBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _materialEffectBuffer;
 };
 
 class ENGINE_DLL ShaderManager

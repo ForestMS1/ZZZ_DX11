@@ -70,6 +70,24 @@
     <Filter Include="97.Graphics\Shader">
       <UniqueIdentifier>{d96b9645-aa2a-49e4-b63b-900f5a739efd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Resource">
+      <UniqueIdentifier>{7463d1aa-9b15-49f2-a879-4972fcb980d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Resource\Texture">
+      <UniqueIdentifier>{08487506-5414-4afa-b9d9-92e536c9cab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Resource\Mesh">
+      <UniqueIdentifier>{38606a3e-41bd-4cdb-a703-44b2c52f7a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Resource\Material">
+      <UniqueIdentifier>{b593b5b5-cf62-41f1-a554-13e7d3fb1ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Graphics\Buffer\Geometry">
+      <UniqueIdentifier>{8d59b7f0-5c86-41c1-9144-89231558d2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\MeshRenderer">
+      <UniqueIdentifier>{57a4e98b-3d1e-4d0a-b5e4-2539f11b0df4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -151,9 +169,6 @@
     <ClInclude Include="..\Public\IndexBuffer.h">
       <Filter>97.Graphics\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Geometry.h">
-      <Filter>97.Graphics\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Shader.h">
       <Filter>97.Graphics\Shader</Filter>
     </ClInclude>
@@ -168,6 +183,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\ConstantBuffer.h">
       <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ResourceBase.h">
+      <Filter>96.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Texture.h">
+      <Filter>96.Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Geometry.h">
+      <Filter>97.Graphics\Buffer\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GeometryHelper.h">
+      <Filter>97.Graphics\Buffer\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mesh.h">
+      <Filter>96.Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Material.h">
+      <Filter>96.Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BindShaderDesc.h">
+      <Filter>98.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MeshRenderer.h">
+      <Filter>06.Component\MeshRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -237,9 +276,6 @@
     <ClCompile Include="..\Private\IndexBuffer.cpp">
       <Filter>97.Graphics\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Geometry.cpp">
-      <Filter>97.Graphics\Buffer</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Shader.cpp">
       <Filter>97.Graphics\Shader</Filter>
     </ClCompile>
@@ -254,6 +290,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\ConstantBuffer.cpp">
       <Filter>97.Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ResourceBase.cpp">
+      <Filter>96.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Texture.cpp">
+      <Filter>96.Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Geometry.cpp">
+      <Filter>97.Graphics\Buffer\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GeometryHelper.cpp">
+      <Filter>97.Graphics\Buffer\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>96.Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Material.cpp">
+      <Filter>96.Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BindShaderDesc.cpp">
+      <Filter>98.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MeshRenderer.cpp">
+      <Filter>06.Component\MeshRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

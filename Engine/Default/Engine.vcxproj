@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\BindShaderDesc.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ConstantBuffer.h" />
@@ -31,20 +32,26 @@
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Geometry.h" />
+    <ClInclude Include="..\Public\GeometryHelper.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\IndexBuffer.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Level.h" />
     <ClInclude Include="..\Public\Level_Manager.h" />
+    <ClInclude Include="..\Public\Material.h" />
+    <ClInclude Include="..\Public\Mesh.h" />
+    <ClInclude Include="..\Public\MeshRenderer.h" />
     <ClInclude Include="..\Public\MonoBehaviour.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\Pass.h" />
     <ClInclude Include="..\Public\Prototype.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\Public\Renderer.h" />
+    <ClInclude Include="..\Public\ResourceBase.h" />
     <ClInclude Include="..\Public\Shader.h" />
     <ClInclude Include="..\Public\SimpleMath.h" />
     <ClInclude Include="..\Public\Technique.h" />
+    <ClInclude Include="..\Public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\Transform.h" />
@@ -57,26 +64,33 @@
     <None Include="..\Public\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\BindShaderDesc.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ConstantBuffer.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Geometry.cpp" />
+    <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\IndexBuffer.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Level.cpp" />
     <ClCompile Include="..\Private\Level_Manager.cpp" />
+    <ClCompile Include="..\Private\Material.cpp" />
+    <ClCompile Include="..\Private\Mesh.cpp" />
+    <ClCompile Include="..\Private\MeshRenderer.cpp" />
     <ClCompile Include="..\Private\MonoBehaviour.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\Pass.cpp" />
     <ClCompile Include="..\Private\Prototype.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
+    <ClCompile Include="..\Private\ResourceBase.cpp" />
     <ClCompile Include="..\Private\Shader.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\Technique.cpp" />
+    <ClCompile Include="..\Private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />

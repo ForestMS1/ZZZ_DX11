@@ -34,7 +34,7 @@ public:
 
 		DC->Map(_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 		::memcpy(subResource.pData, &data, sizeof(data));
-		DC->Unmap();
+		DC->Unmap(_constantBuffer.Get(), 0);
 	}
 
 private:

@@ -1,10 +1,19 @@
 #include "pch.h"
 #include "Shader.h"
 #include "GameInstance.h"
+#include "ConstantBuffer.h"
 
 Shader::Shader(wstring file)
 	: _file(L"..\\Shaders\\" + file)
 {
+	_initialStateBlock = make_shared<StateBlock>();
+	{
+		DC->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());
+		DC->OMGetBlendState(_initialStateBlock->OMBlendState.GetAddressOf(), _initialStateBlock->OMBlendFactor, &_initialStateBlock->OMSampleMask);
+		DC->OMGetDepthStencilState(_initialStateBlock->OMDepthStencilState.GetAddressOf(), &_initialStateBlock->OMStencilRef);
+	}
+
+	CreateEffect();
 }
 
 Shader::~Shader()
@@ -258,6 +267,51 @@ ComPtr<ID3DX11EffectRasterizerVariable> Shader::GetRasterizer(const string& name
 ComPtr<ID3DX11EffectSamplerVariable> Shader::GetSampler(const string& name)
 {
 	return _shaderDesc.effect->GetVariableByName(name.c_str())->AsSampler();
+}
+
+void Shader::PushGlobalData(const Matrix& view, const Matrix& projection)
+{
+	if (_globalEffectBuffer == nullptr)
+	{
+		_globalBuffer = make_shared<ConstantBuffer<GlobalDesc>>();
+		_globalBuffer->Create();
+		_globalEffectBuffer = GetConstantBuffer("GlobalBuffer");
+	}
+
+	_globalDesc.V = view;
+	_globalDesc.P = projection;
+	_globalDesc.VP = view * projection;
+	_globalDesc.VInv = view.Invert();
+	_globalBuffer->CopyData(_globalDesc);
+	_globalEffectBuffer->SetConstantBuffer(_globalBuffer->GetComPtr().Get());
+}
+
+void Shader::PushTransformData(const TransformDesc& desc)
+{
+	if (_transformEffectBuffer == nullptr)
+	{
+		_transformBuffer = make_shared<ConstantBuffer<TransformDesc>>();
+		_transformBuffer->Create();
+		_transformEffectBuffer = GetConstantBuffer("TransformBuffer");
+	}
+
+	_transformDesc = desc;
+	_transformBuffer->CopyData(_transformDesc);
+	_transformEffectBuffer->SetConstantBuffer(_transformBuffer->GetComPtr().Get());
+}
+
+void Shader::PushMaterialData(const MaterialDesc& desc)
+{
+	if (_materialEffectBuffer == nullptr)
+	{
+		_materialBuffer = make_shared<ConstantBuffer<MaterialDesc>>();
+		_materialBuffer->Create();
+		_materialEffectBuffer = GetConstantBuffer("MaterialBuffer");
+	}
+
+	_materialDesc = desc;
+	_materialBuffer->CopyData(_materialDesc);
+	_materialEffectBuffer->SetConstantBuffer(_materialBuffer->GetComPtr().Get());
 }
 
 ComPtr<ID3DX11EffectUnorderedAccessViewVariable> Shader::GetUAV(const string& name)
