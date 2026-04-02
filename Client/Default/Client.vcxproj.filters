@@ -52,6 +52,12 @@
     <Filter Include="97.Shaders\Common">
       <UniqueIdentifier>{904b21b2-ae34-4349-b5f5-3e0489eafc6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\TestCube">
+      <UniqueIdentifier>{d77a5244-f447-42c6-ae09-d35fbf50573c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestCube\Scripts">
+      <UniqueIdentifier>{79ab626c-be9b-498a-b7d3-a54a8fa64785}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -124,6 +130,12 @@
     <ClInclude Include="..\Public\CamController.h">
       <Filter>02.GameObject\99.Camera\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TestCube.h">
+      <Filter>02.GameObject\TestCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CubeScritp.h">
+      <Filter>02.GameObject\TestCube\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\MainApp.cpp">
@@ -180,6 +192,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CamController.cpp">
       <Filter>02.GameObject\99.Camera\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCube.cpp">
+      <Filter>02.GameObject\TestCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CubeScritp.cpp">
+      <Filter>02.GameObject\TestCube\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,10 @@ HRESULT Level_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 		ETOUI(LEVEL::LOGO), strLayerTag)))
 		return E_FAIL;
 
+	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::LOGO), L"Prototype_GameObject_TestCube",
+		ETOUI(LEVEL::LOGO), strLayerTag)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

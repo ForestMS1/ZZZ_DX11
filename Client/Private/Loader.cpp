@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "BackGround.h"
+#include "TestCube.h"
 #include "MainCam.h"
 #include "Transform.h"
 
@@ -145,6 +146,11 @@ HRESULT Loader::Loading_For_Logo()
 	/* Prototype_GameObject_BackGround */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::LOGO), L"Prototype_GameObject_BackGround",
 		BackGround::Create(_device, _deviceContext))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_TestCube */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::LOGO), L"Prototype_GameObject_TestCube",
+		TestCube::Create(_device, _deviceContext))))
 		return E_FAIL;
 
 	_loadingText = L"로딩이 완료되었습니다.";

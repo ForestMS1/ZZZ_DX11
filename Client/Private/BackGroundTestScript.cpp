@@ -22,17 +22,7 @@ void BackGroundTestScript::Start()
 
 void BackGroundTestScript::Update()
 {
-	GAME.Add_RenderObject(RENDERGROUP::BLEND, GetGameObject());
-
-	ImGui::Begin("BackGround Transform");
-	Vec3 pos = GetTransform()->GetPosition();
-	Vec3 scale = GetTransform()->GetScale();
-	ImGui::DragFloat3("Position", (float*)&pos, 1.0f, -100.f, 100.f, "%.3f", 1);
-	ImGui::DragFloat3("Scale", (float*)&scale, 1.0f, -100.f, 100.f, "%.3f", 1);
-
-	GetTransform()->SetPosition(pos);
-	GetTransform()->SetScale(scale);
-	ImGui::End();
+	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
 }
 
 void BackGroundTestScript::LateUpdate()
