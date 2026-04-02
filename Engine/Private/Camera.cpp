@@ -34,8 +34,3 @@ void Camera::UpdateMatrix()
 
 	S_MatProjection = ::XMMatrixPerspectiveFovLH(_fov, _width / _height, _near, _far);
 }
-
-shared_ptr<Prototype> Camera::Clone(void* pArg)
-{
-	return shared_ptr<Prototype>();
-}

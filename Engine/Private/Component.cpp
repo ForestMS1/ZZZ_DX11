@@ -10,6 +10,16 @@ Component::~Component()
 {
 }
 
+HRESULT Component::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT Component::Initialize(void* pArg)
+{
+	return S_OK;
+}
+
 shared_ptr<GameObject> Component::GetGameObject()
 {
 	return _gameObject.lock();
@@ -18,10 +28,4 @@ shared_ptr<GameObject> Component::GetGameObject()
 shared_ptr<Transform> Component::GetTransform()
 {
 	return _gameObject.lock()->GetTransform();
-}
-
-
-shared_ptr<Prototype> Component::Clone(void* pArg)
-{
-	return shared_ptr<Prototype>();
 }

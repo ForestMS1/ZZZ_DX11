@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BackGround.h"
 #include "BackGroundTestScript.h"
+#include "Transform.h"
 
 BackGround::BackGround(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
@@ -23,12 +24,18 @@ HRESULT BackGround::Initialize_Prototype()
 
 HRESULT BackGround::Initialize(void* pArg)
 {
+	// 모든 게임 오브젝트는 Create 함수를 통해 생성한다. (자동 Init -> 트랜스폼 추가)
+	GameObject::Initialize(pArg);
 	AddComponent(make_shared<BackGroundTestScript>());
 	return S_OK;
 }
 
 HRESULT BackGround::Render()
 {
+	ImGui::Begin("BackGround Transform");
+	Vec3 pos = GetTransform()->GetPosition();
+	ImGui::DragFloat3("Transform", (float*)&pos, 1.0f, 0.f, 0.f, "%.3f", 0);
+	ImGui::End();
 	return S_OK;
 }
 

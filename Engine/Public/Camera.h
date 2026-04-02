@@ -45,7 +45,7 @@ public:
 
 
 public:
-	shared_ptr<Prototype> Clone(void* pArg) override;
+	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; }
 };
 
 NS_END

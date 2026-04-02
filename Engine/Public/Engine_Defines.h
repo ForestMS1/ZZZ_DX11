@@ -80,6 +80,7 @@ using namespace DirectX;
 #endif
 
 #include "Utils.h"
+#include "GameInstance.h"
 
 using namespace Engine;
 

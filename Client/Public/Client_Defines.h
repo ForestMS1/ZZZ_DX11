@@ -17,5 +17,5 @@ extern HINSTANCE	g_hInstance;
 using namespace std;
 using namespace Client;
 
-
-#define DT				GAME.Get_TimeDelta(L"Timer_60")
+#define TIMER_60		L"Timer_60"
+#define DT				GAME.Get_TimeDelta(TIMER_60)

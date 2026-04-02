@@ -17,7 +17,7 @@ public:
 	virtual void FixedUpdate() override {}
 
 public:
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 };
 
 NS_END

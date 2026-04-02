@@ -10,6 +10,16 @@ Transform::~Transform()
 {
 }
 
+HRESULT Transform::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT Transform::Initialize(void* pArg)
+{
+	return S_OK;
+}
+
 void Transform::Awake()
 {
 }
@@ -131,13 +141,15 @@ void Transform::SetPosition(const Vec3& worldPosition)
 	}
 }
 
-
-shared_ptr<Prototype> Transform::Clone(void* pArg)
+shared_ptr<Transform> Transform::Create()
 {
-	return shared_ptr<Prototype>();
-}
+	auto		pInstance = shared_ptr<Transform>(new Transform);
 
-unique_ptr<Transform> Transform::Create()
-{
-	return unique_ptr<Transform>(new Transform);
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : Transform");
+		return nullptr;
+	}
+
+	return pInstance;
 }

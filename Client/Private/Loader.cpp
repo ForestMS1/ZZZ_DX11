@@ -107,10 +107,7 @@ HRESULT Loader::Loading_For_Static()
 	}
 
 	_loadingText = L"객체원형 생성 중 입니다.";
-	/* Prototype_Component_Transform */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::STATIC), L"Prototype_Component_Transform",
-		Transform::Create())))
-		return E_FAIL;
+
 
 	_loadingText = L"로딩이 완료되었습니다.";
 

@@ -31,6 +31,9 @@ protected:
 public:
 	virtual ~Component();
 
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg = nullptr);
+
 	virtual void Awake() {}
 	virtual void Start() {}
 	virtual void Update() {}

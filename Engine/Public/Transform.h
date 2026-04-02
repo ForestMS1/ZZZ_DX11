@@ -10,6 +10,9 @@ private:
 public:
 	~Transform();
 
+	HRESULT Initialize_Prototype() override;
+	HRESULT Initialize(void* pArg = nullptr) override;
+
 	virtual void Awake() override;
 	virtual void Start() override;
 	virtual void Update() override;
@@ -67,9 +70,8 @@ private:
 	vector<shared_ptr<Transform>> _children;
 
 public:
-	shared_ptr<Prototype> Clone(void* pArg = nullptr) override;
-public:
-	static unique_ptr<Transform> Create();
+	static shared_ptr<Transform> Create();
+	shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 };
 
 NS_END

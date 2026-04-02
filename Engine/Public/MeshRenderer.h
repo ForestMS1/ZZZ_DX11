@@ -22,6 +22,7 @@ public:
 	//void RenderInstancing(shared_ptr<class InstancingBuffer>& buffer);
 	//InstanceID GetInstanceID();
 
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 private:
 	shared_ptr<Mesh> _mesh;
 	shared_ptr<Material> _material;

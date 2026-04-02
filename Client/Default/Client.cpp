@@ -91,7 +91,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         if (fTimeAcc >= 1.f / 60.f /*1초에 60번만 true */)
         {
-            GameInstance::Get().Compute_TimeDelta(TEXT("Timer_60"));
+            GameInstance::Get().Compute_TimeDelta(TIMER_60);
 
             //pMainApp->Update(GameInstance::Get().Get_TimeDelta(TEXT("Timer_Default")));
             pMainApp->Update();
