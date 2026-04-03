@@ -66,6 +66,9 @@ public:
 	void PushMaterialData(const MaterialDesc& desc);
 	void PushBoneData(const BoneDesc& desc);
 	void PushKeyframeData(const KeyframeDesc& desc);
+	//--------------------------------------TEMP---------------------------------
+	void PushTweenTempData(const TweenDesc& desc);
+	//--------------------------------------TEMP---------------------------------
 	void PushTweenData(const InstancedTweenDesc& desc);
 	void PushSnowData(const SnowBillboardDesc& desc);
 
@@ -93,6 +96,13 @@ private:
 	KeyframeDesc _keyframeDesc;
 	shared_ptr<ConstantBuffer<KeyframeDesc>> _keyframeBuffer;
 	ComPtr<ID3DX11EffectConstantBuffer> _keyframeEffectBuffer;
+
+	//--------------------------------------TEMP---------------------------------
+	TweenDesc _tweenTempDesc;
+	shared_ptr<ConstantBuffer<TweenDesc>> _tweenTempBuffer;
+	ComPtr<ID3DX11EffectConstantBuffer> _tweenTempEffectBuffer;
+	//--------------------------------------TEMP---------------------------------
+
 
 	InstancedTweenDesc _tweenDesc;
 	shared_ptr<ConstantBuffer<InstancedTweenDesc>> _tweenBuffer;

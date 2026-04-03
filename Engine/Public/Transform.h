@@ -8,7 +8,7 @@ class ENGINE_DLL Transform final : public Component
 private:
 	Transform();
 public:
-	~Transform();
+	virtual ~Transform();
 
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg = nullptr) override;

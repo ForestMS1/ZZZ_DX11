@@ -97,6 +97,15 @@
     <Filter Include="96.Resource\Model">
       <UniqueIdentifier>{ad79f400-19cc-4478-baea-a6ad2999cea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\ModelRenderer">
+      <UniqueIdentifier>{de14ba7d-8b97-4e9f-868f-a7979ccc26fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\ModelAnimator">
+      <UniqueIdentifier>{1e5c0a5a-dbe1-45dd-9466-edc9f7e1dad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Utils\ImGUI">
+      <UniqueIdentifier>{d7464b8c-0579-4b83-b952-7f682e7a80b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -229,6 +238,45 @@
     <ClInclude Include="..\Public\Model.h">
       <Filter>96.Resource\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ModelRenderer.h">
+      <Filter>06.Component\ModelRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FileUtils.h">
+      <Filter>98.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\tinyxml2.h">
+      <Filter>98.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ModelAnimation.h">
+      <Filter>96.Resource\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ModelAnimator.h">
+      <Filter>06.Component\ModelAnimator</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -347,6 +395,42 @@
     </ClCompile>
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>96.Resource\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ModelRenderer.cpp">
+      <Filter>06.Component\ModelRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FileUtils.cpp">
+      <Filter>98.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\tinyxml2.cpp">
+      <Filter>98.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ModelAnimation.cpp">
+      <Filter>96.Resource\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ModelAnimator.cpp">
+      <Filter>06.Component\ModelAnimator</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>98.Utils\ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

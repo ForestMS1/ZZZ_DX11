@@ -1,0 +1,32 @@
+#pragma once
+NS_BEGIN(AssimpTool)
+
+class ImGui_Manager;
+
+class ToolApp
+{
+private:
+	ToolApp();
+public:
+	~ToolApp();
+
+public:
+	HRESULT Initialize();
+	void	Update();
+	HRESULT Render();
+
+private:
+	ComPtr<ID3D11Device> _device = { nullptr };
+	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
+
+	//unique_ptr<ImGui_Manager> _imGuiManager = { nullptr };
+
+
+private:
+	HRESULT Start_Level(LEVEL eStartLevelIndex);
+
+public:
+	static unique_ptr<ToolApp> Create();
+};
+
+NS_END

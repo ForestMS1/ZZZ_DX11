@@ -3,6 +3,10 @@
 #include "MonoBehaviour.h"
 #include "Transform.h"
 #include "GameInstance.h"
+#include "Camera.h"
+#include "MeshRenderer.h"
+#include "ModelRenderer.h"
+#include "ModelAnimator.h"
 
 GameObject::GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -18,6 +22,7 @@ GameObject::GameObject(const GameObject& Prototype)
 
 GameObject::~GameObject()
 {
+
 }
 
 HRESULT GameObject::Initialize_Prototype()
@@ -104,7 +109,16 @@ void	GameObject::FixedUpdate()
 
 HRESULT	GameObject::Render()
 {
-	return _components[static_cast<uint8>(ComponentType::MeshRenderer)]->Render();
+	if (_components[static_cast<uint8>(ComponentType::MeshRenderer)])
+		return _components[static_cast<uint8>(ComponentType::MeshRenderer)]->Render();
+
+	if (_components[static_cast<uint8>(ComponentType::ModelRenderer)])
+		return _components[static_cast<uint8>(ComponentType::ModelRenderer)]->Render();
+
+	if (_components[static_cast<uint8>(ComponentType::Animator)])
+		return _components[static_cast<uint8>(ComponentType::Animator)]->Render();
+
+	return S_OK;
 }
 
 
@@ -123,15 +137,36 @@ shared_ptr<Transform> GameObject::GetTransform()
 	return static_pointer_cast<Transform>(component);
 }
 
+shared_ptr<Camera> GameObject::GetCamera()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::Camera);
+	return static_pointer_cast<Camera>(component);
+}
+
+shared_ptr<MeshRenderer> GameObject::GetMeshRenderer()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::MeshRenderer);
+	return static_pointer_cast<MeshRenderer>(component);
+}
+
+shared_ptr<ModelRenderer> GameObject::GetModelRenderer()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::ModelRenderer);
+	return static_pointer_cast<ModelRenderer>(component);
+}
+
+shared_ptr<ModelAnimator> GameObject::GetModelAnimator()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::Animator);
+	return static_pointer_cast<ModelAnimator>(component);
+}
+
 shared_ptr<Transform> GameObject::GetOrAddTransform()
 {
 	if (nullptr == GetTransform())
 	{
-		// TODO : make_shared 대신에 프로토타입에서 복사해오기
-		//shared_ptr<Transform> transform = make_shared<Transform>();
-		//shared_ptr<Transform> transform = dynamic_pointer_cast<Transform>
-		//	(GameInstance::Get().Clone_Prototype(0, L"Prototype_Component_Transform", nullptr));
-		//AddComponent(transform);
+		shared_ptr<Transform> transform = Transform::Create();
+		AddComponent(transform);
 	}
 
 	return GetTransform();

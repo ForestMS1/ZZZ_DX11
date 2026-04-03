@@ -13,6 +13,16 @@ CamController::~CamController()
 
 void CamController::Update()
 {
+	ImGui::Begin("MainCam Transform");
+	Vec3 pos = GetTransform()->GetPosition();
+	Vec3 look = GetTransform()->GetLook();
+	ImGui::DragFloat3("pos", (float*)&pos, 1.0f, 0.f, 0.f, "%.3f", 0);
+	ImGui::DragFloat3("look", (float*)&look, 1.0f, 0.f, 0.f, "%.3f", 0);
+	ImGui::End();
+}
+
+void CamController::LateUpdate()
+{
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
 	Vec3 right = GetTransform()->GetRight();
@@ -81,14 +91,4 @@ void CamController::Update()
 
 
 	GetTransform()->SetPosition(pos);
-}
-
-void CamController::LateUpdate()
-{
-	ImGui::Begin("MainCam Transform");
-	Vec3 pos = GetTransform()->GetPosition();
-	Vec3 look = GetTransform()->GetLook();
-	ImGui::DragFloat3("pos", (float*)&pos, 1.0f, 0.f, 0.f, "%.3f", 0);
-	ImGui::DragFloat3("look", (float*)&look, 1.0f, 0.f, 0.f, "%.3f", 0);
-	ImGui::End();
 }

@@ -58,6 +58,9 @@
     <Filter Include="02.GameObject\TestCube\Scripts">
       <UniqueIdentifier>{79ab626c-be9b-498a-b7d3-a54a8fa64785}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{e2144ea7-72c6-4ca0-8258-647d9415eeb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -199,6 +202,12 @@
     <ClCompile Include="imgui_impl_dx11.cpp">
       <Filter>99.Defines\ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\SimpleMath.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\tinyxml2.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -222,6 +231,12 @@
     </FxCompile>
     <FxCompile Include="..\..\Shaders\Light.fx">
       <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\AnimTest.fx">
+      <Filter>97.Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\TweenTest.fx">
+      <Filter>97.Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

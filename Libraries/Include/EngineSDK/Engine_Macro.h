@@ -68,3 +68,6 @@
 #define DEVICE			GAME.GetDevice()
 #define DC				GAME.GetDeviceContext()
 #define SWAPCHAIN		GAME.GetSwapChain()
+
+#define TIMER_60		L"Timer_60"
+#define DT				GAME.Get_TimeDelta(TIMER_60)

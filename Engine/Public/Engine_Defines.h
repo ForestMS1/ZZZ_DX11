@@ -1,7 +1,6 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
-
-
+#include "tinyxml2.h" // <- windows헤더보다 위에 있어야함
 #include "Engine_Typedef.h"
 
 #include <vector>
@@ -49,7 +48,9 @@ using namespace DirectX;
 #include <Assimp/scene.h>
 #include <Assimp/postprocess.h>
 
-
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
 
 // Libs
 #pragma comment(lib, "d3d11.lib")

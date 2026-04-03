@@ -8,7 +8,7 @@ namespace AssimpTool
 	static const unsigned int		g_iWinSizeX = { 1280 };
 	static const unsigned int		g_iWinSizeY = { 720 };
 
-	enum class LEVEL { STATIC, LOADING, LOGO, GAMEPLAY, END };
+	enum class LEVEL { STATIC, LOADING, CONVERT, TESTMESH, END };
 }
 
 extern HWND			g_hWnd;
@@ -17,5 +17,5 @@ extern HINSTANCE	g_hInstance;
 using namespace std;
 using namespace AssimpTool;
 
-#define TIMER_60		L"Timer_60"
-#define DT				GAME.Get_TimeDelta(TIMER_60)
+//#define TIMER_60		L"Timer_60"
+//#define DT				GAME.Get_TimeDelta(TIMER_60)

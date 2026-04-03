@@ -16,6 +16,45 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{57595ff5-d0b5-4d97-8474-1406e5ecce11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.ToolApp">
+      <UniqueIdentifier>{4852cac4-a3fd-45d9-b672-88daed87759e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels">
+      <UniqueIdentifier>{684c089a-8364-460a-884a-c5bb2ded7a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject">
+      <UniqueIdentifier>{cb215a62-aeee-431f-ab52-d77b10839455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Convert">
+      <UniqueIdentifier>{f5c592b9-6617-4798-90e3-9ac4b6b1a755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\StaticMeshTest">
+      <UniqueIdentifier>{02d5897f-2092-4bde-a8a8-bba1bed01790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestCorin">
+      <UniqueIdentifier>{cb62f88c-92fd-46a4-b4c6-55173fc513e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Camera">
+      <UniqueIdentifier>{ffff6ea4-1ce6-4d58-8290-ef7417dc244f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading">
+      <UniqueIdentifier>{286bb1ab-8a8c-49e0-afcc-a35d466d00a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading\Loader">
+      <UniqueIdentifier>{cf6cd715-1b99-427c-8b52-22a64b3410b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestCorin\Scripts">
+      <UniqueIdentifier>{1f8daec9-e4f1-48bf-a3ac-f14fa1ec3b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Camera\Scripts">
+      <UniqueIdentifier>{598f3b97-ff47-49c8-a61f-13286ab22826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestSphere">
+      <UniqueIdentifier>{84a7866b-1dd9-4496-84cb-c57d9f3a3c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\TestSphere\Scripts">
+      <UniqueIdentifier>{86bc7321-e802-4f5e-a5c3-39e4621d13a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -67,6 +106,39 @@
     <ClInclude Include="ImGui_Manager.h">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ToolApp.h">
+      <Filter>00.ToolApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Converter.h">
+      <Filter>01.Levels\Convert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_StaticMeshTest.h">
+      <Filter>01.Levels\StaticMeshTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCorin.h">
+      <Filter>02.GameObject\TestCorin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCam.h">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Levels\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Levels\Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCorinScript.h">
+      <Filter>02.GameObject\TestCorin\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCamScript.h">
+      <Filter>02.GameObject\Camera\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestSphere.h">
+      <Filter>02.GameObject\TestSphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestSphereScript.h">
+      <Filter>02.GameObject\TestSphere\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AssimpTool.ico">
@@ -115,6 +187,45 @@
     </ClCompile>
     <ClCompile Include="ImGui_Manager.cpp">
       <Filter>99.Defines\ImGUI\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolApp.cpp">
+      <Filter>00.ToolApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Converter.cpp">
+      <Filter>01.Levels\Convert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SimpleMath.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_StaticMeshTest.cpp">
+      <Filter>01.Levels\StaticMeshTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCorin.cpp">
+      <Filter>02.GameObject\TestCorin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCam.cpp">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\tinyxml2.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01.Levels\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Levels\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCorinScript.cpp">
+      <Filter>02.GameObject\TestCorin\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCamScript.cpp">
+      <Filter>02.GameObject\Camera\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestSphere.cpp">
+      <Filter>02.GameObject\TestSphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestSphereScript.cpp">
+      <Filter>02.GameObject\TestSphere\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

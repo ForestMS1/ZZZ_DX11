@@ -397,6 +397,20 @@ void Shader::PushKeyframeData(const KeyframeDesc& desc)
 	_keyframeEffectBuffer->SetConstantBuffer(_keyframeBuffer->GetComPtr().Get());
 }
 
+void Shader::PushTweenTempData(const TweenDesc& desc)
+{
+	if (_tweenTempEffectBuffer == nullptr)
+	{
+		_tweenTempBuffer = make_shared<ConstantBuffer<TweenDesc>>();
+		_tweenTempBuffer->Create();
+		_tweenTempEffectBuffer = GetConstantBuffer("TweenBuffer");
+	}
+
+	_tweenTempDesc = desc;
+	_tweenTempBuffer->CopyData(_tweenTempDesc);
+	_tweenTempEffectBuffer->SetConstantBuffer(_tweenTempBuffer->GetComPtr().Get());
+}
+
 void Shader::PushTweenData(const InstancedTweenDesc& desc)
 {
 	if (_transformEffectBuffer == nullptr)

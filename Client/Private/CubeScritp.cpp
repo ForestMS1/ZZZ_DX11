@@ -13,4 +13,5 @@ CubeScritp::~CubeScritp()
 void CubeScritp::Update()
 {
 	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+	Matrix m = Matrix::Identity;
 }

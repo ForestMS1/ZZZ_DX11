@@ -1,6 +1,6 @@
 #pragma once
 
-NS_BEGIN(Client)
+NS_BEGIN(AssimpTool)
 
 class ImGui_Manager
 {

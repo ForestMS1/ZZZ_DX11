@@ -6,6 +6,12 @@ NS_BEGIN(Engine)
 class Transform;
 class MonoBehaviour;
 
+
+class Camera;
+class MeshRenderer;
+class ModelRenderer;
+class ModelAnimator;
+
 class ENGINE_DLL GameObject abstract : public Prototype
 {
 protected:
@@ -35,6 +41,11 @@ public:
 	// Component
 	shared_ptr<Component> GetFixedComponent(ComponentType eType);
 	shared_ptr<Transform> GetTransform();
+
+	shared_ptr<Camera> GetCamera();
+	shared_ptr<MeshRenderer> GetMeshRenderer();
+	shared_ptr<ModelRenderer> GetModelRenderer();
+	shared_ptr<ModelAnimator> GetModelAnimator();
 
 	shared_ptr<Transform> GetOrAddTransform();
 	void AddComponent(shared_ptr<Component> component);

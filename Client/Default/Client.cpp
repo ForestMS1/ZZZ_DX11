@@ -6,7 +6,6 @@
 
 #include "MainApp.h"
 #include "GameInstance.h"
-#include "imgui_impl_win32.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
