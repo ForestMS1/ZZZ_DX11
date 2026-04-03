@@ -10,9 +10,11 @@ struct ModelBone
 	wstring name;
 	int32 index;
 	int32 parentIndex;
-	shared_ptr<ModelBone> parent; // Cache
-
 	Matrix transform;
+
+	// 순환참조 문제로 메모리 누수 발생
+	// shared_ptr -> weak_ptr
+	weak_ptr<ModelBone> parent; // Cache
 	vector<shared_ptr<ModelBone>> children; // Cache
 };
 

@@ -8,18 +8,20 @@
 #include "GameObject.h"
 void TestCorinScript::Start()
 {
-	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
-
-	shared_ptr<Model> model = make_shared<Model>();
-	model->ReadModel(L"Corin/Corin");
-	model->ReadMaterial(L"Corin/Corin");
-	model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
-
-	GetGameObject()->AddComponent(make_shared<ModelAnimator>(shader));
-	GetGameObject()->GetModelAnimator()->SetModel(model);
-
-	GetTransform()->SetPosition(Vec3(0, 0, 0));
-	GetTransform()->SetScale(Vec3(1.f));
+	//shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
+	//
+	//shared_ptr<Model> model = make_shared<Model>();
+	//model->ReadModel(L"Corin/Corin");
+	//model->ReadMaterial(L"Corin/Corin");
+	//model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
+	//model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
+	//model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal");
+	//
+	//GetGameObject()->AddComponent(make_shared<ModelAnimator>(shader));
+	//GetGameObject()->GetModelAnimator()->SetModel(model);
+	//
+	//GetTransform()->SetPosition(Vec3(0, 0, 0));
+	//GetTransform()->SetScale(Vec3(1.f));
 }
 
 void TestCorinScript::Update()

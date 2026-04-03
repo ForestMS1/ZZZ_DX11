@@ -87,11 +87,11 @@ void Model::ReadMaterial(const wstring& filename)
 	wstring fullPath = _texturePath + filename + L".xml";
 	auto parentPath = filesystem::path(fullPath).parent_path();
 
-	tinyxml2::XMLDocument* document = new tinyxml2::XMLDocument();
-	tinyxml2::XMLError error = document->LoadFile(Utils::ToString(fullPath).c_str());
+	tinyxml2::XMLDocument document;
+	tinyxml2::XMLError error = document.LoadFile(Utils::ToString(fullPath).c_str());
 	assert(error == tinyxml2::XML_SUCCESS);
 
-	tinyxml2::XMLElement* root = document->FirstChildElement();
+	tinyxml2::XMLElement* root = document.FirstChildElement();
 	tinyxml2::XMLElement* materialNode = root->FirstChildElement();
 
 	while (materialNode)
@@ -323,11 +323,11 @@ void Model::BindCacheInfo()
 			if (bone->parentIndex >= 0)
 			{
 				bone->parent = _bones[bone->parentIndex];
-				bone->parent->children.push_back(bone);
+				bone->parent.lock()->children.push_back(bone);
 			}
 			else
 			{
-				bone->parent = nullptr;
+				bone->parent.reset();
 			}
 		}
 

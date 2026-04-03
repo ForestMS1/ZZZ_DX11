@@ -204,18 +204,18 @@ HRESULT ModelAnimator::Render()
 	ImGui::InputInt("AnimIndex", &desc.curr.animIndex);
 	_keyframeDesc.animIndex %= _model->GetAnimationCount();
 
-	//static int32 nextAnimIndex = 0;
-	//if (ImGui::InputInt("NextAnimIndex", &nextAnimIndex))
-	//{
-	//	nextAnimIndex %= _model->GetAnimationCount();
-	//	desc.ClearNextAnim(); // 기존꺼 밀어주기
-	//	desc.next.animIndex = nextAnimIndex;
-	//}
+	static int32 nextAnimIndex = 0;
+	if (ImGui::InputInt("NextAnimIndex", &nextAnimIndex))
+	{
+		nextAnimIndex %= _model->GetAnimationCount();
+		desc.ClearNextAnim(); // 기존꺼 밀어주기
+		desc.next.animIndex = nextAnimIndex;
+	}
 
 	if (_model->GetAnimationCount() > 0)
 		desc.curr.animIndex %= _model->GetAnimationCount();
 
-	//ImGui::InputFloat("Speed", &desc.curr.speed, 0.5f, 4.f);
+	ImGui::InputFloat("Speed", &desc.curr.speed, 0.5f, 4.f);
 
 	_shader->PushTweenTempData(desc);
 

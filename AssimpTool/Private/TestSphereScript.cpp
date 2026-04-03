@@ -11,14 +11,14 @@
 void TestSphereScript::Start()
 {
 	shared_ptr<Shader> shader = make_shared<Shader>(L"Test.fx");
-
+	
 	shared_ptr<Model> model = make_shared<Model>();
 	model->ReadModel(L"Corin/Corin");
 	model->ReadMaterial(L"Corin/Corin");
-
+	
 	GetGameObject()->AddComponent(make_shared<ModelRenderer>(shader));
 	GetGameObject()->GetModelRenderer()->SetModel(model);
-
+	
 	GetTransform()->SetPosition(Vec3(0, 0, 0));
 	GetTransform()->SetScale(Vec3(1.f));
 }

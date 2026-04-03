@@ -32,7 +32,7 @@ private:
 	Matrix _matView = Matrix::Identity;
 	Matrix _matProjection = Matrix::Identity;
 
-	float _near = 1.f;
+	float _near = 0.1f;
 	float _far = 1000.f;
 	float _fov = XM_PI / 4.f;
 	float _width = 0.f;
