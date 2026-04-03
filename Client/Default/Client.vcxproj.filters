@@ -94,30 +94,6 @@
     <ClInclude Include="..\Public\BackGround.h">
       <Filter>02.GameObject\00.BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="imstb_truetype.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_textedit.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_rectpack.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_win32.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_dx11.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui_Manager.h">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClInclude>
@@ -135,6 +111,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\CubeScritp.h">
       <Filter>02.GameObject\TestCube\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>99.Defines\ImGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,27 +160,6 @@
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.GameObject\00.BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_win32.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_dx11.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>99.Defines\ImGUI</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui_Manager.cpp">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClCompile>
@@ -198,6 +177,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\CubeScritp.cpp">
       <Filter>02.GameObject\TestCube\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>99.Defines\ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
 #pragma once
-
+#include "Geometry.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 NS_BEGIN(Engine)
 
 

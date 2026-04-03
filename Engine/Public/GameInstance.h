@@ -42,6 +42,7 @@ public:
 
 	ComPtr<ID3D11Device> GetDevice();
 	ComPtr<ID3D11DeviceContext> GetDeviceContext();
+	ComPtr<IDXGISwapChain> GetSwapChain();
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

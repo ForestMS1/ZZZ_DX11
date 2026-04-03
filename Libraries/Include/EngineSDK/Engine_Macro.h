@@ -67,3 +67,4 @@
 #define GAME			GET(GameInstance)
 #define DEVICE			GAME.GetDevice()
 #define DC				GAME.GetDeviceContext()
+#define SWAPCHAIN		GAME.GetSwapChain()

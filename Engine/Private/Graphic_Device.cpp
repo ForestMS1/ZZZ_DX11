@@ -61,6 +61,7 @@ HRESULT Graphic_Device::Clear_BackBuffer_View(const Vec4* pClearColor)
 	if (_deviceContext == nullptr)
 		return E_FAIL;
 
+	_deviceContext->OMSetRenderTargets(1, _backBufferRTV.GetAddressOf(), _depthStencilView.Get());
 	_deviceContext->ClearRenderTargetView(_backBufferRTV.Get(), reinterpret_cast<const float*>(pClearColor));
 
 	return S_OK;

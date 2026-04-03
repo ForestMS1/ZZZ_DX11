@@ -65,14 +65,13 @@ HRESULT Client::MainApp::Render()
 	if (FAILED(GameInstance::Get().Draw()))
 		return E_FAIL;
 
-
 #ifdef _DEBUG
 	ImGui_Manager::Get().Render();
 #endif
 
-
 	if (FAILED(GameInstance::Get().Present()))
 		return E_FAIL;
+
 
 
 	return S_OK;

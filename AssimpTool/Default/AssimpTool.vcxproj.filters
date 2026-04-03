@@ -31,6 +31,15 @@
       <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="..\Public\AssimpTool_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Converter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AsTypes.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="imconfig.h">
       <Filter>99.Defines\ImGUI</Filter>
     </ClInclude>
@@ -58,15 +67,6 @@
     <ClInclude Include="ImGui_Manager.h">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AssimpTool_Defines.h">
-      <Filter>99.Defines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Converter.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\AsTypes.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AssimpTool.ico">
@@ -86,6 +86,12 @@
       <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\Private\Converter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AsTypes.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>99.Defines\ImGUI</Filter>
     </ClCompile>
@@ -110,16 +116,5 @@
     <ClCompile Include="ImGui_Manager.cpp">
       <Filter>99.Defines\ImGUI\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Converter.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AsTypes.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="imgui.ini">
-      <Filter>99.Defines\ImGUI</Filter>
-    </None>
   </ItemGroup>
 </Project>

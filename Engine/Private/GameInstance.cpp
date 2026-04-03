@@ -151,6 +151,10 @@ ComPtr<ID3D11DeviceContext> GameInstance::GetDeviceContext()
 {
 	return _graphicDevice->GetDeviceContext();
 }
+ComPtr<IDXGISwapChain> GameInstance::GetSwapChain()
+{ 
+	return _graphicDevice->GetSwapChain();
+}
 
 #pragma endregion
 
