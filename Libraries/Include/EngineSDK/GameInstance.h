@@ -90,6 +90,8 @@ public:
 	bool Mouse_Down(MOUSEKEYSTATE eMouseState);
 #pragma endregion
 
+	void SetEngineContext(ImGuiContext* pContext);
+
 private:
 	unique_ptr<class Graphic_Device> _graphicDevice = { nullptr };
 	unique_ptr<class Timer_Manager> _timerManager = { nullptr };

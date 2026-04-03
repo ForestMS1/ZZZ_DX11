@@ -201,7 +201,7 @@ HRESULT ModelAnimator::Render()
 	}
 
 	// Anim Update
-	//ImGui::InputInt("AnimIndex", &desc.curr.animIndex);
+	ImGui::InputInt("AnimIndex", &desc.curr.animIndex);
 	_keyframeDesc.animIndex %= _model->GetAnimationCount();
 
 	//static int32 nextAnimIndex = 0;
@@ -246,11 +246,14 @@ HRESULT ModelAnimator::Render()
 		// BoneIndex
 		_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
 
-		uint32 stride = mesh->vertexBuffer->GetStride();
-		uint32 offset = mesh->vertexBuffer->GetOffset();
+		//uint32 stride = mesh->vertexBuffer->GetStride();
+		//uint32 offset = mesh->vertexBuffer->GetOffset();
 
-		DC->IASetVertexBuffers(0, 1, mesh->vertexBuffer->GetComPtr().GetAddressOf(), &stride, &offset);
-		DC->IASetIndexBuffer(mesh->indexBuffer->GetComPtr().Get(), DXGI_FORMAT_R32_UINT, 0);
+		//DC->IASetVertexBuffers(0, 1, mesh->vertexBuffer->GetComPtr().GetAddressOf(), &stride, &offset);
+		//DC->IASetIndexBuffer(mesh->indexBuffer->GetComPtr().Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		mesh->vertexBuffer->PushData();
+		mesh->indexBuffer->PushData();
 
 		_shader->DrawIndexed(0, _pass, mesh->indexBuffer->GetCount(), 0, 0);
 	}

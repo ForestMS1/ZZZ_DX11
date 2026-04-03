@@ -236,6 +236,11 @@ bool GameInstance::Mouse_Down(MOUSEKEYSTATE eMouseState)
 }
 #pragma endregion
 
+void GameInstance::SetEngineContext(ImGuiContext* pContext)
+{
+	// DLL 영역의 전역 변수 GImGui를 EXE에서 만든 컨텍스트로 셋팅
+	ImGui::SetCurrentContext(pContext);
+}
 
 void GameInstance::Release_Engine()
 {

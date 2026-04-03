@@ -14,7 +14,8 @@ HRESULT ImGui_Manager::Initialize(ComPtr<ID3D11Device>pDevice, ComPtr<ID3D11Devi
 {
 
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+	ImGuiContext* ctx = ImGui::CreateContext();
+	GAME.SetEngineContext(ctx);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
