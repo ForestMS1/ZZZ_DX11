@@ -54,6 +54,10 @@ public:
 #pragma region OBJECT_MANAGER
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
+
+	void ShowHiearchy();
+	void ShowInspector();
+	void RenderGizmo();
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER

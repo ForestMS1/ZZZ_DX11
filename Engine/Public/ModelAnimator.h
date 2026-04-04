@@ -11,22 +11,22 @@ struct AnimTransform
 	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
 };
 
-class Shader;
-class Model;
-
-
 class ENGINE_DLL ModelAnimator : public Component
 {
 public:
 	ModelAnimator(shared_ptr<Shader> shader);
 	~ModelAnimator();
 
+	virtual void Update() override;
 	virtual HRESULT Render() override;
 
 	void SetModel(shared_ptr<Model> model);
 	void SetPass(uint8 pass) { _pass = pass; }
 
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
+	//ImGui
+	void OnInspectorGUI();
+
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) { return nullptr; }
 
 private:
 	void CreateTexture();
@@ -43,8 +43,10 @@ private:
 
 private:
 	shared_ptr<Shader>	_shader;
+
+	uint8 _techniqueIndex = 0;
 	uint8				_pass = 0;
+
 	shared_ptr<Model>	_model;
 };
-
 NS_END

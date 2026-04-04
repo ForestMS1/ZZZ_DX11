@@ -21,12 +21,16 @@ HRESULT Level_StaticMeshTest::Initialize()
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 
 void Level_StaticMeshTest::Update()
 {
-
+	GAME.ShowHiearchy();
+	GAME.ShowInspector();
+	GAME.RenderGizmo();
 }
 
 HRESULT Level_StaticMeshTest::Render()

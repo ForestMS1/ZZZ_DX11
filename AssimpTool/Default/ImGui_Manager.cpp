@@ -40,11 +40,10 @@ void ImGui_Manager::Update()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGuiDockNodeFlags flags = ImGuiDockNodeFlags_PassthruCentralNode;
-
 	ImGui::DockSpaceOverViewport(0, viewport, flags);
-	//ImGui::ShowDemoWindow();
 }
 
 void ImGui_Manager::Render()

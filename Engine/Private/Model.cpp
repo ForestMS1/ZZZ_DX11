@@ -6,6 +6,7 @@
 #include <filesystem>
 #include "ModelAnimation.h"
 Model::Model()
+	: ResourceBase(ResourceType::MODEL)
 {
 }
 
@@ -269,17 +270,6 @@ shared_ptr<ModelBone> Model::GetBoneByName(const wstring& name)
 	return nullptr;
 }
 
-//shared_ptr<ModelAnimation> Model::GetAnimationByName(wstring name)
-//{
-//	for (auto& animation : _animations)
-//	{
-//		if (animation->name == name)
-//			return animation;
-//	}
-//
-//	return nullptr;
-//}
-
 shared_ptr<ModelAnimation> Model::GetAnimationByName(const wstring& name)
 {
 	for (auto& animation : _animations)
@@ -313,7 +303,7 @@ void Model::BindCacheInfo()
 		mesh->bone = GetBoneByIndex(mesh->boneIndex);
 	}
 
-	// bone 계층 정보 채우기
+	// Bone 계층 정보 채우기
 	if (_root == nullptr && _bones.size() > 0)
 	{
 		_root = _bones[0];
@@ -330,6 +320,5 @@ void Model::BindCacheInfo()
 				bone->parent.reset();
 			}
 		}
-
 	}
 }

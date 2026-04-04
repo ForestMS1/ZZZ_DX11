@@ -1,16 +1,21 @@
 #pragma once
-#include "Component.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "MonoBehaviour.h"
+#include "MeshRenderer.h"
+#include "ModelRenderer.h"
+#include "ModelAnimator.h"
 
 NS_BEGIN(Engine)
 
-class Transform;
-class MonoBehaviour;
-
-
-class Camera;
-class MeshRenderer;
-class ModelRenderer;
-class ModelAnimator;
+//class Transform;
+//class MonoBehaviour;
+//
+//
+//class Camera;
+//class MeshRenderer;
+//class ModelRenderer;
+//class ModelAnimator;
 
 class ENGINE_DLL GameObject abstract : public Prototype
 {
@@ -50,6 +55,10 @@ public:
 	shared_ptr<Transform> GetOrAddTransform();
 	void AddComponent(shared_ptr<Component> component);
 
+	//name
+	void SetName(const wstring& name) { _name = name; }
+	const wstring& GetName() const { return _name; }
+
 protected:
 	ComPtr<ID3D11Device> _device = { nullptr };
 	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
@@ -58,6 +67,8 @@ protected:
 protected:
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
 	vector<shared_ptr<MonoBehaviour>> _scripts;
+
+	wstring _name = L"None_Name";
 
 public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;

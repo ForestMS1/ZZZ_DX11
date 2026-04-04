@@ -21,4 +21,5 @@ float4 PS(MeshOutput input) : SV_TARGET
 technique11 T0
 {
 	PASS_VP(P0, VS, PS)
+    PASS_RS_VP(P1, FillModeWireFrame, VS, PS)
 };

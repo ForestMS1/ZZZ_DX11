@@ -5,12 +5,13 @@
 
 
 Shader::Shader(const wstring& file) : _file(L"..\\..\\Shaders\\" + file)
+	, _name(file)
 {
 	_initialStateBlock = make_shared<StateBlock>();
 	{
-		DC->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());
-		DC->OMGetBlendState(_initialStateBlock->OMBlendState.GetAddressOf(), _initialStateBlock->OMBlendFactor, &_initialStateBlock->OMSampleMask);
-		DC->OMGetDepthStencilState(_initialStateBlock->OMDepthStencilState.GetAddressOf(), &_initialStateBlock->OMStencilRef);
+		CONTEXT->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());
+		CONTEXT->OMGetBlendState(_initialStateBlock->OMBlendState.GetAddressOf(), _initialStateBlock->OMBlendFactor, &_initialStateBlock->OMSampleMask);
+		CONTEXT->OMGetDepthStencilState(_initialStateBlock->OMDepthStencilState.GetAddressOf(), &_initialStateBlock->OMStencilRef);
 	}
 
 	CreateEffect();

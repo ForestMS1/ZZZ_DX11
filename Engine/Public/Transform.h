@@ -42,6 +42,7 @@ public:
 	Vec3 GetLook() { return _matWorld.Backward(); }
 
 	Matrix GetWorldMatrix() { return _matWorld; }
+	void SetWorldMatrix(Matrix& worldMat);
 
 	// °èÃþ
 	bool HasParent() { return _parent != nullptr; }

@@ -27,6 +27,11 @@ public:
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 	void Clear(uint32 iClearLevelIndex);
 
+	//ImGui
+	void ShowHiearchy();
+	void ShowInspector();
+	void RenderGizmo();
+
 private:
 	uint32 _numLevels = { 0 };
 	unique_ptr<map<const wstring, unique_ptr<Layer>>[]> _layerMaps = { nullptr };
@@ -36,6 +41,11 @@ private:
 
 private:
 	Layer* Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+
+private:
+	// ImGui ¿ë º¯¼ö
+	shared_ptr<GameObject> _selectedObject;
+	ImGuizmo::OPERATION _currentOp = ImGuizmo::TRANSLATE;
 
 public:
 	static unique_ptr<Object_Manager> Create(uint32 iNumLevels);

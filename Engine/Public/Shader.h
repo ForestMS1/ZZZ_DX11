@@ -48,12 +48,20 @@ public:
 	ComPtr<ID3DX11EffectRasterizerVariable> GetRasterizer(const string& name);
 	ComPtr<ID3DX11EffectSamplerVariable> GetSampler(const string& name);
 
+	//imgui
+	void SetName(const wstring& name) { _name = name; }
+	const wstring& GetName() const { return _name; }
+	uint32 GetTechniqueCount() { return _techniques.size(); }
+	string GetTechniqueName(uint8 techIndex) { return Utils::ToString(_techniques[techIndex].name); }
+	uint32 GetPassCount(uint8 techIndex) { return _techniques[techIndex].passes.size(); }
+
 private:
 	void CreateEffect();
 	ComPtr<ID3D11InputLayout> CreateInputLayout(ComPtr<ID3DBlob> fxBlob, D3DX11_EFFECT_SHADER_DESC* effectVsDesc, vector<D3D11_SIGNATURE_PARAMETER_DESC>& params);
 
 private:
 	wstring _file;
+	wstring _name;
 	ShaderDesc _shaderDesc;
 	D3DX11_EFFECT_DESC _effectDesc;
 	shared_ptr<StateBlock> _initialStateBlock;

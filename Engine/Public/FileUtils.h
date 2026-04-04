@@ -18,8 +18,8 @@ public:
 	template<typename T>
 	void Write(const T& data)
 	{
-		DWORD numofBytes = 0;
-		assert(::WriteFile(_handle, &data, sizeof(T), (LPDWORD)&numofBytes, nullptr));
+		DWORD numOfBytes = 0;
+		assert(::WriteFile(_handle, &data, sizeof(T), (LPDWORD)&numOfBytes, nullptr));
 	}
 
 	template<>
@@ -35,8 +35,8 @@ public:
 	template<typename T>
 	void Read(OUT T& data)
 	{
-		DWORD numofBytes = 0;
-		assert(::ReadFile(_handle, &data, sizeof(T), (LPDWORD)&numofBytes, nullptr));
+		DWORD numOfBytes = 0;
+		assert(::ReadFile(_handle, &data, sizeof(T), (LPDWORD)&numOfBytes, nullptr));
 	}
 
 	template<typename T>

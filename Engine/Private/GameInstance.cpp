@@ -76,7 +76,7 @@ void GameInstance::Update_Engine()
 
 HRESULT GameInstance::Draw()
 {
-	DC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	if (FAILED(_renderer->Draw()))
 		return E_FAIL;
@@ -175,6 +175,21 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
 	uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg)
 {
  	return _objectManager->Add_GameObject_toLayer(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
+}
+
+void GameInstance::ShowHiearchy()
+{
+	_objectManager->ShowHiearchy();
+}
+
+void GameInstance::ShowInspector()
+{
+	_objectManager->ShowInspector();
+}
+
+void GameInstance::RenderGizmo()
+{
+	_objectManager->RenderGizmo();
 }
 #pragma endregion
 

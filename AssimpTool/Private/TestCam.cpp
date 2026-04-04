@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "TestCam.h"
-#include "Camera.h"
-
-#include "Transform.h"
 #include "TestCamScript.h"
 
 TestCam::TestCam(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
@@ -27,6 +24,7 @@ HRESULT TestCam::Initialize_Prototype()
 HRESULT TestCam::Initialize(void* pArg)
 {
 	GameObject::Initialize(pArg);
+	GameObject::SetName(L"TestCam");
 	AddComponent(make_shared<Camera>());
 	AddComponent(make_shared<TestCamScript>());
 

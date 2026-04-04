@@ -35,6 +35,11 @@
     <ClInclude Include="..\Public\Geometry.h" />
     <ClInclude Include="..\Public\GeometryHelper.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
+    <ClInclude Include="..\Public\ImCurveEdit.h" />
+    <ClInclude Include="..\Public\ImGradient.h" />
+    <ClInclude Include="..\Public\ImGuizmo.h" />
+    <ClInclude Include="..\Public\ImSequencer.h" />
+    <ClInclude Include="..\Public\ImZoomSlider.h" />
     <ClInclude Include="..\Public\IndexBuffer.h" />
     <ClInclude Include="..\Public\Input_Manager.h" />
     <ClInclude Include="..\Public\Layer.h" />
@@ -90,7 +95,27 @@
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Geometry.cpp" />
     <ClCompile Include="..\Private\GeometryHelper.cpp" />
+    <ClCompile Include="..\Private\GraphEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
+    <ClCompile Include="..\Private\ImCurveEdit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGradient.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuizmo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImSequencer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Private\IndexBuffer.cpp" />
     <ClCompile Include="..\Private\Input_Manager.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
@@ -247,7 +272,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ENGINE_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DEFINE_MATH_OPERATORS;ENGINE_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Engine\Default\;$(SolutionDir)Libraries\Include\;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -272,7 +297,7 @@ call $(SolutionDir)Copy.bat
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ENGINE_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DEFINE_MATH_OPERATORS;ENGINE_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Engine\Default\;$(SolutionDir)Libraries\Include\;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

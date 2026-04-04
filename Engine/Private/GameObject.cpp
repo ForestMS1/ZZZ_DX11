@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "GameObject.h"
-#include "MonoBehaviour.h"
-#include "Transform.h"
 #include "GameInstance.h"
-#include "Camera.h"
-#include "MeshRenderer.h"
-#include "ModelRenderer.h"
-#include "ModelAnimator.h"
+
 
 GameObject::GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)

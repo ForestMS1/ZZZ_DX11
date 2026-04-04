@@ -55,6 +55,9 @@
     <Filter Include="02.GameObject\TestSphere\Scripts">
       <UniqueIdentifier>{86bc7321-e802-4f5e-a5c3-39e4621d13a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\ImGuizmo">
+      <UniqueIdentifier>{84ecab7d-6c64-4274-b65d-ee077cd6147e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -226,6 +229,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\TestSphereScript.cpp">
       <Filter>02.GameObject\TestSphere\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphEditor.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImCurveEdit.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGradient.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImSequencer.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

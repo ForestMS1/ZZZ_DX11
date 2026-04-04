@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <memory>
 #include <process.h>
+#include "GameObject.h"
 
 namespace Client
 {

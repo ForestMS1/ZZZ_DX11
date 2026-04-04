@@ -141,6 +141,55 @@ void Transform::SetPosition(const Vec3& worldPosition)
 	}
 }
 
+void Transform::SetWorldMatrix(Matrix& worldMat)
+{
+	// 1. 전달받은 월드 행렬을 Decompose 하여 월드 기준 Pos, Rot, Scale 추출
+	Vec3 worldPos, worldScale;
+	Quaternion worldQuat;
+
+	worldMat.Decompose(worldScale, worldQuat, worldPos);
+
+
+	// 2. 부모가 있다면 월드 값을 로컬 값으로 변환
+	if (HasParent())
+	{
+		// 부모의 월드 행렬 역행렬 계산
+		Matrix invParentWorld = _parent->GetWorldMatrix().Invert();
+
+		// 위치 변환 (World -> Parent Local)
+		_localPosition = Vec3::Transform(worldPos, invParentWorld);
+
+		// 크기 변환 (부모의 스케일 영향을 제거)
+		Vec3 parentScale = _parent->GetScale();
+		_localScale = worldScale;
+		_localScale.x /= parentScale.x;
+		_localScale.y /= parentScale.y;
+		_localScale.z /= parentScale.z;
+
+		// 회전 변환 (부모의 회전 영향을 제거)
+		// 월드 쿼터니언 = 로컬 쿼터니언 * 부모 월드 쿼터니언
+		// 로컬 쿼터니언 = 월드 쿼터니언 * 부모 월드 쿼터니언의 역행렬
+		Vec3 dummyS, dummyP;
+		Quaternion parentQuat;
+		_parent->GetWorldMatrix().Decompose(dummyS, parentQuat, dummyP);
+
+		Quaternion invParentQuat;
+		parentQuat.Inverse(invParentQuat);
+		Quaternion localQuat = worldQuat * invParentQuat;
+		_localRotation = ToEulerAngles(localQuat);
+	}
+	else
+	{
+		// 부모가 없으면 월드 값이 곧 로컬 값
+		_localPosition = worldPos;
+		_localScale = worldScale;
+		_localRotation = ToEulerAngles(worldQuat);
+	}
+
+	// 3. 변경된 로컬 값들을 바탕으로 다시 행렬 전체 업데이트 (자식들까지)
+	UpdateTransform();
+}
+
 shared_ptr<Transform> Transform::Create()
 {
 	auto		pInstance = shared_ptr<Transform>(new Transform);

@@ -3,6 +3,8 @@
 #include <memory>
 #include <process.h>
 
+#include "GameObject.h"
+
 namespace AssimpTool
 {
 	static const unsigned int		g_iWinSizeX = { 1280 };

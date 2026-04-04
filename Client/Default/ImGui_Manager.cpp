@@ -39,6 +39,8 @@ void ImGui_Manager::Update()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	// --- ImGuizmo 프레임 시작 알림 ---
+	ImGuizmo::BeginFrame();
 
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGuiDockNodeFlags flags = ImGuiDockNodeFlags_PassthruCentralNode;

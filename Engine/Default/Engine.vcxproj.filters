@@ -106,6 +106,9 @@
     <Filter Include="98.Utils\ImGUI">
       <UniqueIdentifier>{d7464b8c-0579-4b83-b952-7f682e7a80b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Utils\ImGuizmo">
+      <UniqueIdentifier>{ce75d19e-fe77-4b6d-9e86-b9ce15c5cb17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -277,6 +280,21 @@
     <ClInclude Include="imgui.h">
       <Filter>98.Utils\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImCurveEdit.h">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGradient.h">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGuizmo.h">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImSequencer.h">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImZoomSlider.h">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -431,6 +449,21 @@
     </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>98.Utils\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GraphEditor.cpp">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImCurveEdit.cpp">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGradient.cpp">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuizmo.cpp">
+      <Filter>98.Utils\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImSequencer.cpp">
+      <Filter>98.Utils\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

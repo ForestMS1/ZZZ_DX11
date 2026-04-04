@@ -23,7 +23,7 @@ struct ModelAnimation
 	float duration = 0.f;
 	float frameRate = 0.f;
 	uint32 frameCount = 0;
-	unordered_map<wstring, shared_ptr< ModelKeyframe>> keyframes;
+	unordered_map<wstring, shared_ptr<ModelKeyframe>> keyframes;
 };
 
 NS_END

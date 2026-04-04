@@ -61,6 +61,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{e2144ea7-72c6-4ca0-8258-647d9415eeb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\ImGuizmo">
+      <UniqueIdentifier>{629820de-b131-45a0-af17-18b8806485e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\MainApp.h">
@@ -207,6 +210,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\tinyxml2.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ImCurveEdit.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphEditor.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImSequencer.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGradient.cpp">
+      <Filter>99.Defines\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

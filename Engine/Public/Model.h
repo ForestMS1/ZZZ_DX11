@@ -7,7 +7,7 @@ struct ModelBone;
 struct ModelMesh;
 struct ModelAnimation;
 
-class ENGINE_DLL Model : public enable_shared_from_this<Model>
+class ENGINE_DLL Model : public ResourceBase, public enable_shared_from_this<Model>
 {
 public:
 	Model();

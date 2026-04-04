@@ -36,12 +36,43 @@ void Converter::ExportModelData(const wstring& savePath)
 {
 	wstring finalPath = _modelPath + savePath + L".mesh";
 
-	ReadMeshData();
+	ReadAllMeshes();
 
 	ReadModelData(_scene->mRootNode, -1, -1);
 
 	ReadSkinData();
+	//Write CSV File
+	{
+		FILE* file;
+		::fopen_s(&file, "../Vertices.csv", "w");
 
+		for (shared_ptr<asBone>& bone : _bones)
+		{
+			string name = bone->name;
+			::fprintf(file, "%d,%s\n", bone->index, bone->name.c_str());
+		}
+
+		::fprintf(file, "\n");
+
+		for (shared_ptr<asMesh>& mesh : _meshes)
+		{
+			string name = mesh->name;
+			::printf("%s\n", name.c_str());
+
+			for (UINT i = 0; i < mesh->vertices.size(); i++)
+			{
+				Vec3 p = mesh->vertices[i].position;
+				Vec4 indices = mesh->vertices[i].blendIndices;
+				Vec4 weights = mesh->vertices[i].blendWeights;
+
+				::fprintf(file, "%f,%f,%f,", p.x, p.y, p.z);
+				::fprintf(file, "%f,%f,%f,%f,", indices.x, indices.y, indices.z, indices.w);
+				::fprintf(file, "%f,%f,%f,%f\n", weights.x, weights.y, weights.z, weights.w);
+			}
+		}
+
+		::fclose(file);
+	}
 	WriteModeFile(finalPath);
 }
 
@@ -91,7 +122,7 @@ void Converter::ReadModelData(aiNode* node, int32 index, int32 parent)
 	Matrix transform(node->mTransformation[0]);
 	bone->transform = transform.Transpose();
 
-	// Root (Local)
+	// 2) Root (Local)
 	Matrix matParent = Matrix::Identity;
 	if (parent >= 0)
 		matParent = _bones[parent]->transform;
@@ -101,72 +132,63 @@ void Converter::ReadModelData(aiNode* node, int32 index, int32 parent)
 
 	_bones.push_back(bone);
 
-	// 재귀
-	for (uint32 i = 0; i < node->mNumChildren; ++i)
+	// Mesh
+	//ReadMeshData(node, index);
+
+	// 재귀 함수
+	for (uint32 i = 0; i < node->mNumChildren; i++)
 		ReadModelData(node->mChildren[i], _bones.size(), index);
 
 }
 
-void Converter::ReadMeshData()
+void Converter::ReadMeshData(aiNode* node, int32 bone)
 {
-	// _meshes를 Assimp의 메쉬 개수와 동일하게 미리 할당
-	_meshes.resize(_scene->mNumMeshes);
+	if (node->mNumMeshes < 1)
+		return;
 
-	for (uint32 i = 0; i < _scene->mNumMeshes; ++i)
+	shared_ptr<asMesh> mesh = make_shared<asMesh>();
+	mesh->name = node->mName.C_Str();
+	mesh->boneIndex = bone;
+
+	for (uint32 i = 0; i < node->mNumMeshes; i++)
 	{
-		aiMesh* srcMesh = _scene->mMeshes[i];
-		shared_ptr<asMesh> mesh = make_shared<asMesh>();
-
-		mesh->name = srcMesh->mName.C_Str();
-
-		Matrix transform = GetMeshTransform(i);
+		uint32 index = node->mMeshes[i];
+		const aiMesh* srcMesh = _scene->mMeshes[index];
 
 		// Material Name
-		const aiMaterial* srcMaterial = _scene->mMaterials[srcMesh->mMaterialIndex];
-		mesh->materialName = srcMaterial->GetName().C_Str();
-		
+		const aiMaterial* material = _scene->mMaterials[srcMesh->mMaterialIndex];
+		mesh->materialName = material->GetName().C_Str();
+
 		const uint32 startVertex = mesh->vertices.size();
 
 		for (uint32 v = 0; v < srcMesh->mNumVertices; v++)
 		{
-			//Vertex
+			// Vertex
 			VertexType vertex;
-			Vec3 pos;
-			::memcpy(&pos, &srcMesh->mVertices[v], sizeof(Vec3));
+			::memcpy(&vertex.position, &srcMesh->mVertices[v], sizeof(Vec3));
 
-			pos = Vec3::Transform(pos, transform);
-			vertex.position = pos;
-
-			//UV
+			// UV
 			if (srcMesh->HasTextureCoords(0))
 				::memcpy(&vertex.uv, &srcMesh->mTextureCoords[0][v], sizeof(Vec2));
 
-			//Normal
+			// Normal
 			if (srcMesh->HasNormals())
-			{
-				Vec3 normal;
-				::memcpy(&normal, &srcMesh->mNormals[v], sizeof(Vec3));
-
-				normal = Vec3::TransformNormal(normal, transform);
-				vertex.normal = normal;
-			}
+				::memcpy(&vertex.normal, &srcMesh->mNormals[v], sizeof(Vec3));
 
 			mesh->vertices.push_back(vertex);
 		}
 
 		// Index
-		for (uint32 f = 0; f < srcMesh->mNumFaces; ++f)
+		for (uint32 f = 0; f < srcMesh->mNumFaces; f++)
 		{
 			aiFace& face = srcMesh->mFaces[f];
 
-			for (uint32 k = 0; k < face.mNumIndices; ++k)
-			{
+			for (uint32 k = 0; k < face.mNumIndices; k++)
 				mesh->indices.push_back(face.mIndices[k] + startVertex);
-			}
 		}
-
-		_meshes[i] = mesh; // i번째 인덱스에 정확히 삽입
 	}
+
+	_meshes.push_back(mesh);
 
 }
 
@@ -398,7 +420,7 @@ string Converter::WriteTexture(string saveFolder, string file)
 			CHECK(hr);
 
 			DirectX::ScratchImage img;
-			::CaptureTexture(DEVICE.Get(), DC.Get(), texture.Get(), img);
+			::CaptureTexture(DEVICE.Get(), CONTEXT.Get(), texture.Get(), img);
 
 			// Save To File
 			hr = DirectX::SaveToDDSFile(*img.GetImages(), DirectX::DDS_FLAGS_NONE, Utils::ToWString(fileName).c_str());
@@ -580,6 +602,63 @@ uint32 Converter::GetBoneIndex(const string& name)
 
 	assert(false);
 	return 0;
+}
+
+void Converter::ReadAllMeshes()
+{
+	// _meshes를 Assimp의 메쉬 개수와 동일하게 미리 할당
+	_meshes.resize(_scene->mNumMeshes);
+
+	for (uint32 i = 0; i < _scene->mNumMeshes; i++)
+	{
+		aiMesh* srcMesh = _scene->mMeshes[i];
+		shared_ptr<asMesh> mesh = make_shared<asMesh>();
+
+		Matrix transform = GetMeshTransform(i);
+
+		mesh->name = srcMesh->mName.C_Str();
+
+		// Material Name
+		const aiMaterial* material = _scene->mMaterials[srcMesh->mMaterialIndex];
+		mesh->materialName = material->GetName().C_Str();
+
+		// Vertex Data
+		for (uint32 v = 0; v < srcMesh->mNumVertices; v++)
+		{
+			VertexType vertex;
+			::memcpy(&vertex.position, &srcMesh->mVertices[v], sizeof(Vec3));
+
+			Vec3 pos;
+			::memcpy(&pos, &srcMesh->mVertices[v], sizeof(Vec3));
+
+			pos = Vec3::Transform(pos, transform); // 추가
+			vertex.position = pos;
+
+			if (srcMesh->HasTextureCoords(0))
+				::memcpy(&vertex.uv, &srcMesh->mTextureCoords[0][v], sizeof(Vec2));
+
+			if (srcMesh->HasNormals())
+			{
+				Vec3 normal;
+				::memcpy(&normal, &srcMesh->mNormals[v], sizeof(Vec3));
+
+				normal = Vec3::TransformNormal(normal, transform); // 추가
+				vertex.normal = normal;
+			}
+
+			mesh->vertices.push_back(vertex);
+		}
+
+		// Index Data
+		for (uint32 f = 0; f < srcMesh->mNumFaces; f++)
+		{
+			aiFace& face = srcMesh->mFaces[f];
+			for (uint32 k = 0; k < face.mNumIndices; k++)
+				mesh->indices.push_back(face.mIndices[k]);
+		}
+
+		_meshes[i] = mesh; // i번째 인덱스에 정확히 삽입
+	}
 }
 
 Matrix Converter::GetMeshTransform(uint32 meshIndex)

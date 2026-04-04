@@ -41,3 +41,37 @@ HRESULT MeshRenderer::Render()
 
 	return S_OK;
 }
+
+void MeshRenderer::OnInspectorGUI()
+{
+    // Mesh 정보
+    string meshName = _mesh ? Utils::ToString(_mesh->GetName()) : "None";
+    ImGui::Text("Mesh: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), meshName.c_str());
+
+    // 메쉬 변경 버튼 - 리소스 매니저와 연동 필요
+    if (ImGui::Button("Change Mesh##Mesh")) {
+        // 리소스 선택 팝업 등을 띄우는 로직
+    }
+
+    ImGui::Separator();
+
+    // Material 정보
+    string matName = _material ? Utils::ToString(_material->GetName()) : "None";
+    ImGui::Text("Material: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(0.8f, 0.4f, 0.1f, 1.0f), matName.c_str());
+
+    // Pass 설정 (uint8)
+    int currentPass = static_cast<int>(_pass);
+    if (ImGui::SliderInt("Render Pass", &currentPass, 0, 10)) // 최대 패스 범위는 엔진 설계에 맞게
+    {
+        _pass = static_cast<uint8>(currentPass);
+    }
+
+    // 추가 정보 (디버깅용)
+    if (_mesh) {
+        ImGui::Text("Vertex Count: %d", _mesh->GetVertexCount());
+    }
+}

@@ -1,11 +1,5 @@
 #include "pch.h"
 #include "TestCorinScript.h"
-#include "Shader.h"
-#include "Transform.h"
-#include "Model.h"
-#include "ModelRenderer.h"
-#include "ModelAnimator.h"
-#include "GameObject.h"
 void TestCorinScript::Start()
 {
 	//shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");

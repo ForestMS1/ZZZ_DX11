@@ -1,11 +1,8 @@
 #pragma once
 #include "Component.h"
 
-NS_BEGIN(Engine)
 
-class Mesh;
-class Shader;
-class Material;
+NS_BEGIN(Engine)
 
 #define MAX_MESH_INSTANCE 500
 
@@ -23,6 +20,9 @@ public:
 
 	//void RenderInstancing(shared_ptr<class InstancingBuffer>& buffer);
 	//InstanceID GetInstanceID();
+
+	//ImGui¿ë
+	void OnInspectorGUI();
 
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 private:

@@ -19,7 +19,7 @@ public:
 
 private:
 	void ReadModelData(aiNode* node, int32 index, int32 parent);
-	void ReadMeshData();
+	void ReadMeshData(aiNode* node, int32 bone);
 	void ReadSkinData();
 	void WriteModeFile(const wstring& finalPath);
 
@@ -36,6 +36,7 @@ private:
 
 private:
 	uint32 GetBoneIndex(const string& name);
+	void ReadAllMeshes();
 
 	Matrix GetMeshTransform(uint32 meshIndex);
 	Matrix FindMeshTransform(aiNode* node, uint32 meshIndex, Matrix parent);

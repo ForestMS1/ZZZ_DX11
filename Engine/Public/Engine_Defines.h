@@ -48,9 +48,18 @@ using namespace DirectX;
 #include <Assimp/scene.h>
 #include <Assimp/postprocess.h>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+#include "imgui_internal.h" // 연산자 오버로딩이 정의되어 있음
+
+#include "ImGuizmo.h"
+#include "ImSequencer.h"
+#include "ImZoomSlider.h"
+#include "ImGradient.h"
+#include "ImCurveEdit.h"
+#include "GraphEditor.h"
 
 // Libs
 #pragma comment(lib, "d3d11.lib")
@@ -82,6 +91,16 @@ using namespace DirectX;
 
 #include "Utils.h"
 #include "GameInstance.h"
+
+
+// ---------Resource-------------
+#include "Mesh.h"
+#include "Material.h"
+#include "Shader.h"
+#include "Model.h"
+#include "ModelAnimation.h"
+#include "ModelMesh.h"
+// ---------Resource-------------
 
 using namespace Engine;
 
