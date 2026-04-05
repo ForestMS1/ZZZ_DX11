@@ -1,7 +1,7 @@
 #pragma once
 NS_BEGIN(Engine)
 
-struct ModelKeyframeData
+struct ENGINE_DLL ModelKeyframeData
 {
 	float time;
 	Vec3 scale;
@@ -9,13 +9,13 @@ struct ModelKeyframeData
 	Vec3 translation;
 };
 
-struct ModelKeyframe
+struct ENGINE_DLL ModelKeyframe
 {
 	wstring boneName;
 	vector<ModelKeyframeData> transforms;
 };
 
-struct ModelAnimation
+struct ENGINE_DLL ModelAnimation
 {
 	shared_ptr<ModelKeyframe> GetKeyframe(const wstring& name);
 

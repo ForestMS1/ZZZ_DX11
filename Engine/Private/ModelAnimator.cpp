@@ -24,6 +24,7 @@ void ModelAnimator::Update()
 {
 	if (_model == nullptr)
 		return;
+
 	if (_texture == nullptr)
 		CreateTexture();
 
@@ -35,6 +36,7 @@ void ModelAnimator::Update()
 		shared_ptr<ModelAnimation> currentAnim = _model->GetAnimationByIndex(desc.curr.animIndex);
 		if (currentAnim)
 		{
+			// 시간이 흐름에 따라서 프레임을 바꿔준다.
 			float timePerFrame = 1 / (currentAnim->frameRate * desc.curr.speed);
 			if (desc.curr.sumTime >= timePerFrame)
 			{
@@ -47,7 +49,7 @@ void ModelAnimator::Update()
 		}
 	}
 
-	// 다음 애니메이션이 예약 되어 있다면
+	// 다음 애니메이션이 예약 되어 있다면 
 	if (desc.next.animIndex >= 0)
 	{
 		desc.tweenSumTime += DT;
@@ -61,7 +63,7 @@ void ModelAnimator::Update()
 		}
 		else
 		{
-			// 교체중
+			// 프레임 교체중
 			shared_ptr<ModelAnimation> nextAnim = _model->GetAnimationByIndex(desc.next.animIndex);
 			desc.next.sumTime += DT;
 
@@ -78,24 +80,6 @@ void ModelAnimator::Update()
 			desc.next.ratio = desc.next.sumTime / timePerFrame;
 		}
 	}
-	// Anim Update
-	//ImGui::InputInt("AnimIndex", &desc.curr.animIndex);
-	//_keyframeDesc.animIndex %= _model->GetAnimationCount();
-
-	//static int32 nextAnimIndex = 0;
-	//if (ImGui::InputInt("NextAnimIndex", &nextAnimIndex))
-	//{
-	//	nextAnimIndex %= _model->GetAnimationCount();
-	//	desc.ClearNextAnim(); // 기존꺼 밀어주기
-	//	desc.next.animIndex = nextAnimIndex;
-	//}
-
-	//if (_model->GetAnimationCount() > 0)
-	//	desc.curr.animIndex %= _model->GetAnimationCount();
-
-	//ImGui::InputFloat("Speed", &desc.curr.speed, 0.5f, 4.f);
-
-
 }
 
 HRESULT ModelAnimator::Render()
@@ -105,9 +89,13 @@ HRESULT ModelAnimator::Render()
 	if (_texture == nullptr)
 		CreateTexture();
 
-	TweenDesc& desc = _tweenDesc;
+	_shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
+	// Transform
+	auto world = GetTransform()->GetWorldMatrix();
+	_shader->PushTransformData(TransformDesc{ world });
 
-	_shader->PushTweenTempData(desc);
+	_shader->PushTweenTempData(_tweenDesc);
+	//_shader->PushKeyframeData(_keyframeDesc);
 
 	// SRV를 통해 정보 전달
 	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
@@ -122,10 +110,6 @@ HRESULT ModelAnimator::Render()
 		boneDesc.transforms[i] = bone->transform;
 	}
 	_shader->PushBoneData(boneDesc);
-
-	// Transform
-	auto world = GetTransform()->GetWorldMatrix();
-	_shader->PushTransformData(TransformDesc{ world });
 	
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
@@ -293,18 +277,19 @@ void ModelAnimator::OnInspectorGUI()
 		if (ImGui::TreeNodeEx("Animation State", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			// 현재 애니메이션 인덱스 제어
-			int animIdx = _keyframeDesc.animIndex;
+			int animIdx = _tweenDesc.curr.animIndex;
 			int maxAnimCount = _model ? (int)_model->GetAnimationCount() : 0;
 
 			if (ImGui::SliderInt("Anim Index", &animIdx, 0, maxAnimCount - 1))
 			{
-				_keyframeDesc.animIndex = animIdx;
+				_tweenDesc.curr.animIndex = animIdx;
 				// 필요 시 애니메이션 변경에 따른 초기화 로직 호출
+				_tweenDesc.ClearNextAnim();
 			}
 
 			// 프레임 정보 및 진행률 (보통 0.0 ~ 1.0)
-			ImGui::SliderInt("Current Frame", (int*)&_keyframeDesc.currFrame, 0, 500); // MAX_MODEL_KEYFRAMES 참고
-			ImGui::SliderFloat("Progress", &_keyframeDesc.ratio, 0.0f, 1.0f);
+			ImGui::SliderInt("Current Frame", (int*)&_tweenDesc.curr.currFrame, 0, 500); // MAX_MODEL_KEYFRAMES 참고
+			ImGui::SliderFloat("Progress", &_tweenDesc.curr.ratio, 0.0f, 1.0f);
 
 			if (ImGui::TreeNode("Tweening (Blending)"))
 			{

@@ -16,16 +16,18 @@ Model::~Model()
 
 void Model::ReadModel(const wstring& filename)
 {
+	ResourceBase::SetName(filename);
+
 	wstring fullPath = _modelPath + filename + L".mesh";
 
 	shared_ptr<FileUtils> file = make_shared<FileUtils>();
 	file->Open(fullPath, FileMode::Read);
 
-	//Bones
+	// Bones
 	{
 		const uint32 count = file->Read<uint32>();
 
-		for (uint32 i = 0; i < count; ++i)
+		for (uint32 i = 0; i < count; i++)
 		{
 			shared_ptr<ModelBone> bone = make_shared<ModelBone>();
 			bone->index = file->Read<int32>();
@@ -41,16 +43,16 @@ void Model::ReadModel(const wstring& filename)
 	{
 		const uint32 count = file->Read<uint32>();
 
-		for (uint32 i = 0; i < count; ++i)
+		for (uint32 i = 0; i < count; i++)
 		{
 			shared_ptr<ModelMesh> mesh = make_shared<ModelMesh>();
 
 			mesh->name = Utils::ToWString(file->Read<string>());
 			mesh->boneIndex = file->Read<int32>();
 
-			//Material
+			// Material
 			mesh->materialName = Utils::ToWString(file->Read<string>());
-			
+
 			//VertexData
 			{
 				const uint32 count = file->Read<uint32>();

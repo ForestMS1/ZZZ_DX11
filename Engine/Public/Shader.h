@@ -7,7 +7,7 @@
 
 NS_BEGIN(Engine)
 
-struct ShaderDesc
+struct ENGINE_DLL ShaderDesc
 {
 	ComPtr<ID3DBlob> blob;
 	ComPtr<ID3DX11Effect> effect;

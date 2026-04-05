@@ -19,10 +19,10 @@ HRESULT Level_Converter::Initialize()
 		return E_FAIL;
 
 	shared_ptr<Converter> converter = make_shared<Converter>();
-	converter->ReadAssetFile(L"Corin/Avatar_Female_Size01_Corin_Model.fbx");
-	converter->ExportMaterialData(L"Corin/Corin");
-	converter->ExportModelData(L"Corin/Corin");
-	converter->ExportAnimationDataAll(L"Corin");
+	converter->ReadAssetFile(L"Alice/Avatar_Female_Size02_Alice_Model_LOD3.fbx");
+	converter->ExportMaterialData(L"Alice/Alice");
+	converter->ExportModelData(L"Alice/Alice");
+	converter->ExportAnimationDataAll(L"Alice");
 
 	return S_OK;
 }

@@ -17,7 +17,7 @@ void Converter::ReadAssetFile(const wstring& file)
 {
 	wstring fileStr = _assetPath + file;
 
-	auto p = filesystem::path(fileStr);
+	auto p = std::filesystem::path(fileStr);
 	assert(std::filesystem::exists(p));
 
 	_scene = _importer->ReadFile(
@@ -36,11 +36,15 @@ void Converter::ExportModelData(const wstring& savePath)
 {
 	wstring finalPath = _modelPath + savePath + L".mesh";
 
+	// 1. 메쉬 데이터 먼저 1:1로 읽기
 	ReadAllMeshes();
 
+	// 2. 계층 구조 읽기 (기존의 ReadMeshData 호출 부분은 제거하거나 수정)
 	ReadModelData(_scene->mRootNode, -1, -1);
 
+	// 3. 스킨 데이터 읽기 (이제 인덱스가 1:1이라 안전함)
 	ReadSkinData();
+
 	//Write CSV File
 	{
 		FILE* file;
@@ -73,7 +77,9 @@ void Converter::ExportModelData(const wstring& savePath)
 
 		::fclose(file);
 	}
-	WriteModeFile(finalPath);
+
+
+	WriteModelFile(finalPath);
 }
 
 void Converter::ExportMaterialData(const wstring& savePath)
@@ -194,7 +200,7 @@ void Converter::ReadMeshData(aiNode* node, int32 bone)
 
 void Converter::ReadSkinData()
 {
-	for (uint32 i = 0; i < _scene->mNumMeshes; ++i)
+	for (uint32 i = 0; i < _scene->mNumMeshes; i++)
 	{
 		aiMesh* srcMesh = _scene->mMeshes[i];
 		if (srcMesh->HasBones() == false) continue;
@@ -202,12 +208,12 @@ void Converter::ReadSkinData()
 		shared_ptr<asMesh> mesh = _meshes[i];
 		vector<asBoneWeights> tempVertexBoneWeights(mesh->vertices.size());
 
-		for (uint32 b = 0; b < srcMesh->mNumBones; ++b)
+		for (uint32 b = 0; b < srcMesh->mNumBones; b++)
 		{
 			aiBone* srcMeshBone = srcMesh->mBones[b];
-			uint32 boneIndex = GetBoneIndex(srcMesh->mName.C_Str());
+			uint32 boneIndex = GetBoneIndex(srcMeshBone->mName.C_Str());
 
-			for (uint32 w = 0; w < srcMeshBone->mNumWeights; ++w)
+			for (uint32 w = 0; w < srcMeshBone->mNumWeights; w++)
 			{
 				uint32 vertexId = srcMeshBone->mWeights[w].mVertexId;
 				float weight = srcMeshBone->mWeights[w].mWeight;
@@ -215,8 +221,8 @@ void Converter::ReadSkinData()
 			}
 		}
 
-		// 가중치 정규화 및 최종적용
-		for (uint32 v = 0; v < tempVertexBoneWeights.size(); ++v)
+		// 가중치 정규화 및 최종 적용
+		for (uint32 v = 0; v < tempVertexBoneWeights.size(); v++)
 		{
 			tempVertexBoneWeights[v].Normalize();
 			asBlendWeight blendWeight = tempVertexBoneWeights[v].GetBlendWeights();
@@ -226,18 +232,19 @@ void Converter::ReadSkinData()
 	}
 }
 
-void Converter::WriteModeFile(const wstring& finalPath)
+void Converter::WriteModelFile(const wstring& finalPath)
 {
 	auto path = filesystem::path(finalPath);
 
+	// 폴더가 없으면 만든다.
 	filesystem::create_directory(path.parent_path());
 
 	shared_ptr<FileUtils> file = make_shared<FileUtils>();
 	file->Open(finalPath, FileMode::Write);
 
-	//Bone Data
+	// Bone Data
 	file->Write<uint32>(_bones.size());
-	for (shared_ptr<asBone> bone : _bones)
+	for (shared_ptr<asBone>& bone : _bones)
 	{
 		file->Write<int32>(bone->index);
 		file->Write<string>(bone->name);
@@ -245,9 +252,9 @@ void Converter::WriteModeFile(const wstring& finalPath)
 		file->Write<Matrix>(bone->transform);
 	}
 
-	//Mesh Data
+	// Mesh Data
 	file->Write<uint32>(_meshes.size());
-	for (shared_ptr<asMesh> meshData : _meshes)
+	for (shared_ptr<asMesh>& meshData : _meshes)
 	{
 		file->Write<string>(meshData->name);
 		file->Write<int32>(meshData->boneIndex);
@@ -261,13 +268,11 @@ void Converter::WriteModeFile(const wstring& finalPath)
 		file->Write<uint32>(meshData->indices.size());
 		file->Write(&meshData->indices[0], sizeof(uint32) * meshData->indices.size());
 	}
-
-
 }
 
 void Converter::ReadMaterialData()
 {
-	for (uint32 i = 0; i < _scene->mNumMaterials; ++i)
+	for (uint32 i = 0; i < _scene->mNumMaterials; i++)
 	{
 		aiMaterial* srcMaterial = _scene->mMaterials[i];
 
@@ -275,8 +280,7 @@ void Converter::ReadMaterialData()
 		material->name = srcMaterial->GetName().C_Str();
 
 		aiColor3D color;
-
-		//Ambient
+		// Ambient
 		srcMaterial->Get(AI_MATKEY_COLOR_AMBIENT, color);
 		material->ambient = Color(color.r, color.g, color.b, 1.f);
 
@@ -291,11 +295,11 @@ void Converter::ReadMaterialData()
 
 		// Emissive
 		srcMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, color);
-		material->emissive = Color(color.r, color.g, color.b, 1.f);
+		material->emissive = Color(color.r, color.g, color.b, 1.0f);
 
 		aiString file;
 
-		//Diffuse Texture
+		// Diffuse Texture
 		srcMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
 		material->diffuseFile = file.C_Str();
 
@@ -450,7 +454,7 @@ shared_ptr<asAnimation> Converter::ReadAnimationData(aiAnimation* srcAnimation)
 
 	map<string, shared_ptr<asAnimationNode>> cacheAnimNodes;
 
-	for (uint32 i = 0; i < srcAnimation->mNumChannels; ++i)
+	for (uint32 i = 0; i < srcAnimation->mNumChannels; i++)
 	{
 		aiNodeAnim* srcNode = srcAnimation->mChannels[i];
 
@@ -673,13 +677,13 @@ Matrix Converter::FindMeshTransform(aiNode* node, uint32 meshIndex, Matrix paren
 
 	Matrix global = nodeTransform * parent;
 
-	for (uint32 i = 0; i < node->mNumMeshes; ++i)
+	for (uint32 i = 0; i < node->mNumMeshes; i++)
 	{
 		if (node->mMeshes[i] == meshIndex)
 			return global;
 	}
 
-	for (uint32 i = 0; i < node->mNumChildren; ++i)
+	for (uint32 i = 0; i < node->mNumChildren; i++)
 	{
 		Matrix result = FindMeshTransform(node->mChildren[i], meshIndex, global);
 		if (result != Matrix::Identity)

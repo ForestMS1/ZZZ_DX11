@@ -5,20 +5,20 @@
 NS_BEGIN(Engine)
 
 
-struct ModelBone
+struct ENGINE_DLL ModelBone
 {
 	wstring name;
 	int32 index;
 	int32 parentIndex;
-	Matrix transform;
-
 	// 순환참조 문제로 메모리 누수 발생
 	// shared_ptr -> weak_ptr
 	weak_ptr<ModelBone> parent; // Cache
+	
+	Matrix transform;
 	vector<shared_ptr<ModelBone>> children; // Cache
 };
 
-struct ModelMesh
+struct ENGINE_DLL ModelMesh
 {
 
 	void CreateBuffers();

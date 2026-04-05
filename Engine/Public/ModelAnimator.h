@@ -3,7 +3,7 @@
 
 NS_BEGIN(Engine)
 
-struct AnimTransform
+struct ENGINE_DLL AnimTransform
 {
 	// [ ][ ][ ][ ][ ][ ][ ] ... 350°³
 	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
