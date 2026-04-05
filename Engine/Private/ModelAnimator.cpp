@@ -265,43 +265,12 @@ void ModelAnimator::OnInspectorGUI()
 	{
 		ImGui::Indent();
 
-		// --- Shader & Model 정보 (Renderer와 유사) ---
+		// --- Shader 정보 ---
 		string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
-		string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
-		ImGui::Text("Shader: %s", shaderName.c_str());
-		ImGui::Text("Model:  %s", modelName.c_str());
+		ImGui::Text("Shader: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), shaderName.c_str());
 
-		ImGui::Separator();
-
-		// --- Animation 제어 (KeyframeDesc / TweenDesc) ---
-		if (ImGui::TreeNodeEx("Animation State", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			// 현재 애니메이션 인덱스 제어
-			int animIdx = _tweenDesc.curr.animIndex;
-			int maxAnimCount = _model ? (int)_model->GetAnimationCount() : 0;
-
-			if (ImGui::SliderInt("Anim Index", &animIdx, 0, maxAnimCount - 1))
-			{
-				_tweenDesc.curr.animIndex = animIdx;
-				// 필요 시 애니메이션 변경에 따른 초기화 로직 호출
-				_tweenDesc.ClearNextAnim();
-			}
-
-			// 프레임 정보 및 진행률 (보통 0.0 ~ 1.0)
-			ImGui::SliderInt("Current Frame", (int*)&_tweenDesc.curr.currFrame, 0, 500); // MAX_MODEL_KEYFRAMES 참고
-			ImGui::SliderFloat("Progress", &_tweenDesc.curr.ratio, 0.0f, 1.0f);
-
-			if (ImGui::TreeNode("Tweening (Blending)"))
-			{
-				ImGui::SliderInt("Next Anim", (int*)&_tweenDesc.next.animIndex, 0, maxAnimCount - 1);
-				ImGui::SliderFloat("Tween Ratio", &_tweenDesc.tweenRatio, 0.0f, 1.0f);
-				ImGui::TreePop();
-			}
-
-			ImGui::TreePop();
-		}
-
-		ImGui::Separator();
 		// Shader가 가진 Technique 개수만큼 순회하며 이름을 가져옴
 		uint32 techCount = _shader->GetTechniqueCount();
 		string currentTechName = _shader->GetTechniqueName(_techniqueIndex);
@@ -335,13 +304,56 @@ void ModelAnimator::OnInspectorGUI()
 		ImGui::SameLine();
 		if (ImGui::Button("R##Pass")) _pass = 0;
 
-		// --- [4] Debug: Texture/SRV 정보 ---
-		if (ImGui::TreeNode("Internal Resources (Debug)"))
+		// --- Model 정보 ---
+		string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
+		ImGui::Text("Model: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), modelName.c_str());
+
+		// 모델 상세 정보
+		if (_model && ImGui::TreeNodeEx("Model Details", ImGuiTreeNodeFlags_FramePadding))
 		{
-			ImGui::Text("Anim Transforms: %d", (int)_animTransforms.size());
-			if (_srv) ImGui::BulletText("Animation Texture (SRV) Created");
+			ImGui::BulletText("Mesh Count: %d", _model->GetMeshCount());
+			ImGui::BulletText("Animation Count: %d", _model->GetAnimationCount());
+
+
+			ImGui::BulletText("Bone Count: %d", _model->GetBoneCount());
+
 			ImGui::TreePop();
 		}
+
+		ImGui::Separator();
+
+		// --- Animation 제어 (KeyframeDesc / TweenDesc) ---
+		if (ImGui::TreeNodeEx("Animation State", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			// 현재 애니메이션 인덱스 제어
+			int animIdx = _tweenDesc.curr.animIndex;
+			int maxAnimCount = _model ? (int)_model->GetAnimationCount() : 0;
+
+			if (ImGui::SliderInt("Anim Index", &animIdx, 0, maxAnimCount - 1))
+			{
+				_tweenDesc.curr.animIndex = animIdx;
+				// 필요 시 애니메이션 변경에 따른 초기화 로직 호출
+				_tweenDesc.ClearNextAnim();
+			}
+
+			// 프레임 정보 및 진행률 (보통 0.0 ~ 1.0)
+			ImGui::SliderInt("Current Frame", (int*)&_tweenDesc.curr.currFrame, 0, 500); // MAX_MODEL_KEYFRAMES 참고
+			ImGui::SliderFloat("Progress", &_tweenDesc.curr.ratio, 0.0f, 1.0f);
+
+			if (ImGui::TreeNode("Tweening (Blending)"))
+			{
+				ImGui::SliderInt("Next Anim", (int*)&_tweenDesc.next.animIndex, 0, maxAnimCount - 1);
+				ImGui::SliderFloat("Tween Ratio", &_tweenDesc.tweenRatio, 0.0f, 1.0f);
+				ImGui::TreePop();
+			}
+
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+		
 
 		ImGui::Unindent();
 	}

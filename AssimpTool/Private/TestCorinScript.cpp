@@ -5,11 +5,12 @@ void TestCorinScript::Start()
 	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
 
 	shared_ptr<Model> model = make_shared<Model>();
-	model->ReadModel(L"Corin/Corin");
+	model->ReadModelRotatedY180(L"Corin/Corin");
 	model->ReadMaterial(L"Corin/Corin");
-	model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
-	model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
-	model->ReadAnimation(L"Corin/Avatar_Female_Size01_Corin_Ani_Idle");
+
+	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
+	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
+	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run");
 
 	GetGameObject()->AddComponent(make_shared<ModelAnimator>(shader));
 	GetGameObject()->GetModelAnimator()->SetModel(model);

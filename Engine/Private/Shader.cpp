@@ -5,8 +5,10 @@
 
 
 Shader::Shader(const wstring& file) : _file(L"..\\..\\Shaders\\" + file)
-	, _name(file)
+	, ResourceBase(ResourceType::SHADER)
 {
+	ResourceBase::SetName(file);
+
 	_initialStateBlock = make_shared<StateBlock>();
 	{
 		CONTEXT->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());

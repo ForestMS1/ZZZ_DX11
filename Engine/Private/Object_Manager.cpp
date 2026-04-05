@@ -229,7 +229,7 @@ void Object_Manager::ShowInspector()
 		Vec3 pos = pTransform->GetPosition();
 		// DragFloat3의 너비를 조절하여 버튼 공간 확보
 		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
-		if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f))
+		if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f, 0 , 0))
 		{
 			pTransform->SetPosition(pos);
 		}
@@ -261,7 +261,7 @@ void Object_Manager::ShowInspector()
 		// --- Scale ---
 		Vec3 scale = pTransform->GetScale();
 		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
-		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f))
+		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, -1000, 1000))
 		{
 			pTransform->SetScale(scale);
 		}

@@ -14,9 +14,16 @@ public:
 	~Model();
 
 public:
-	void ReadModel(const wstring& filename);
+	void ReadModel(const wstring& filename); 
+	void ReadModelRotatedY180(const wstring& filename); // -z를 바라보는 모델이면 호출
+
 	void ReadMaterial(const wstring& filename);
+
 	void ReadAnimation(const wstring& filename);
+	void ReadAnimationNoMove(const wstring& filename); // 제자리 걸음 (루트모션 적용x) 버전으로 애니메이션을 불러온다
+
+	void ReadAnimationRotatedY180(const wstring& filename);
+	void ReadAnimationRotatedY180NoMove(const wstring& filename); // 제자리 걸음 (루트모션 적용x) 버전으로 애니메이션을 불러온다 + -z를 바라보는 모델
 
 public:
 	uint32 GetMaterialCount() { return static_cast<uint32>(_materials.size()); }
@@ -38,6 +45,7 @@ public:
 	vector<shared_ptr<ModelAnimation>>& GetAnimations() { return _animations; }
 	shared_ptr<ModelAnimation> GetAnimationByIndex(UINT index) { return (index < 0 || index >= _animations.size()) ? nullptr : _animations[index]; }
 	shared_ptr<ModelAnimation> GetAnimationByName(const wstring& name);
+
 
 private:
 	void BindCacheInfo();

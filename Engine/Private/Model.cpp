@@ -85,6 +85,83 @@ void Model::ReadModel(const wstring& filename)
 	BindCacheInfo();
 }
 
+void Model::ReadModelRotatedY180(const wstring& filename)
+{
+	ResourceBase::SetName(filename);
+
+	wstring fullPath = _modelPath + filename + L".mesh";
+
+	shared_ptr<FileUtils> file = make_shared<FileUtils>();
+	file->Open(fullPath, FileMode::Read);
+
+	// Bones
+	{
+		const uint32 count = file->Read<uint32>();
+
+		for (uint32 i = 0; i < count; i++)
+		{
+			shared_ptr<ModelBone> bone = make_shared<ModelBone>();
+			bone->index = file->Read<int32>();
+			bone->name = Utils::ToWString(file->Read<string>());
+			bone->parentIndex = file->Read<int32>();
+			bone->transform = file->Read<Matrix>();
+
+			// 추가: 최상위 부모 본의 기본 포즈를 180도 회전
+			if (bone->parentIndex == -1)
+			{
+				bone->transform = bone->transform * Matrix::CreateRotationY(XM_PI);
+			}
+
+			_bones.push_back(bone);
+		}
+	}
+
+	// Mesh
+	{
+		const uint32 count = file->Read<uint32>();
+
+		for (uint32 i = 0; i < count; i++)
+		{
+			shared_ptr<ModelMesh> mesh = make_shared<ModelMesh>();
+
+			mesh->name = Utils::ToWString(file->Read<string>());
+			mesh->boneIndex = file->Read<int32>();
+
+			// Material
+			mesh->materialName = Utils::ToWString(file->Read<string>());
+
+			//VertexData
+			{
+				const uint32 count = file->Read<uint32>();
+				vector<ModelVertexType> vertices;
+				vertices.resize(count);
+
+				void* data = vertices.data();
+				file->Read(&data, sizeof(ModelVertexType) * count);
+				mesh->geometry->AddVertices(vertices);
+			}
+
+			//IndexData
+			{
+				const uint32 count = file->Read<uint32>();
+
+				vector<uint32> indices;
+				indices.resize(count);
+
+				void* data = indices.data();
+				file->Read(&data, sizeof(uint32) * count);
+				mesh->geometry->AddIndices(indices);
+			}
+
+			mesh->CreateBuffers();
+
+			_meshes.push_back(mesh);
+		}
+	}
+
+	BindCacheInfo();
+}
+
 void Model::ReadMaterial(const wstring& filename)
 {
 	wstring fullPath = _texturePath + filename + L".xml";
@@ -231,6 +308,173 @@ void Model::ReadAnimation(const wstring& filename)
 			keyframe->transforms.resize(size);
 			void* ptr = &keyframe->transforms[0];
 			file->Read(&ptr, sizeof(ModelKeyframeData) * size);
+		}
+
+		animation->keyframes[keyframe->boneName] = keyframe;
+	}
+
+	_animations.push_back(animation);
+}
+
+void Model::ReadAnimationNoMove(const wstring& filename)
+{
+	wstring fullPath = _modelPath + filename + L".clip";
+
+	shared_ptr<FileUtils> file = make_shared<FileUtils>();
+	file->Open(fullPath, FileMode::Read);
+
+	shared_ptr<ModelAnimation> animation = make_shared<ModelAnimation>();
+
+	animation->name = Utils::ToWString(file->Read<string>());
+	animation->duration = file->Read<float>();
+	animation->frameRate = file->Read<float>();
+	animation->frameCount = file->Read<uint32>();
+
+	uint32 keyframesCount = file->Read<uint32>();
+
+	for (uint32 i = 0; i < keyframesCount; i++)
+	{
+		shared_ptr<ModelKeyframe> keyframe = make_shared<ModelKeyframe>();
+		keyframe->boneName = Utils::ToWString(file->Read<string>());
+
+		uint32 size = file->Read<uint32>();
+
+		if (size > 0)
+		{
+			keyframe->transforms.resize(size);
+			void* ptr = &keyframe->transforms[0];
+			file->Read(&ptr, sizeof(ModelKeyframeData) * size);
+			if (keyframe->boneName == GetBoneByIndex(2)->name)
+			{
+				for (auto& data : keyframe->transforms)
+				{
+					// 이동하는 bone이 2번 인덱스였음
+					// 제자리걸음시킨다.
+					data.translation.x = 0.f;
+					//data.translation.y = 0.f;
+					data.translation.z = 0.f;
+				}
+			}
+		}
+
+		animation->keyframes[keyframe->boneName] = keyframe;
+	}
+
+	_animations.push_back(animation);
+}
+
+void Model::ReadAnimationRotatedY180(const wstring& filename)
+{
+	wstring fullPath = _modelPath + filename + L".clip";
+
+	shared_ptr<FileUtils> file = make_shared<FileUtils>();
+	file->Open(fullPath, FileMode::Read);
+
+	shared_ptr<ModelAnimation> animation = make_shared<ModelAnimation>();
+
+	animation->name = Utils::ToWString(file->Read<string>());
+	animation->duration = file->Read<float>();
+	animation->frameRate = file->Read<float>();
+	animation->frameCount = file->Read<uint32>();
+
+	uint32 keyframesCount = file->Read<uint32>();
+
+	for (uint32 i = 0; i < keyframesCount; i++)
+	{
+		shared_ptr<ModelKeyframe> keyframe = make_shared<ModelKeyframe>();
+		keyframe->boneName = Utils::ToWString(file->Read<string>());
+
+		uint32 size = file->Read<uint32>();
+
+		if (size > 0)
+		{
+			keyframe->transforms.resize(size);
+			void* ptr = &keyframe->transforms[0];
+			file->Read(&ptr, sizeof(ModelKeyframeData) * size);
+
+			// 루트노드가 캐릭터들은 인덱스가 1이더라.. 다른것들도 잘 될지 모르겠음
+			if (keyframe->boneName == GetBoneByIndex(1)->name)
+			{
+				// Y축 180도 회전 쿼터니언 생성
+				// XMQuaternionRotationRollPitchYaw(Pitch, Yaw, Roll) 순서임에 주의 (Yaw가 Y축)
+				Quaternion rot180Q = Quaternion::CreateFromYawPitchRoll(XM_PI, 0.f, 0.f);
+
+				for (auto& data : keyframe->transforms)
+				{
+					// 기존 회전값에 180도 회전 쿼터니언을 곱함
+					// 순서: 기존 회전(data.rotation)에 180도 회전(rot180Q)을 적용
+					// 로컬 축 기준 회전이라면 뒤에 곱함
+					data.rotation = data.rotation * rot180Q;
+
+					// 루트 본이 이동(Translation)도 한다
+					// 캐릭터가 제자리에서 도는 것뿐만 아니라 이동 방향도 뒤집는다
+					data.translation.x *= -1.0f;
+					data.translation.z *= -1.0f;
+				}
+			}
+		}
+
+		animation->keyframes[keyframe->boneName] = keyframe;
+	}
+
+	_animations.push_back(animation);
+}
+
+void Model::ReadAnimationRotatedY180NoMove(const wstring& filename)
+{
+	wstring fullPath = _modelPath + filename + L".clip";
+
+	shared_ptr<FileUtils> file = make_shared<FileUtils>();
+	file->Open(fullPath, FileMode::Read);
+
+	shared_ptr<ModelAnimation> animation = make_shared<ModelAnimation>();
+
+	animation->name = Utils::ToWString(file->Read<string>());
+	animation->duration = file->Read<float>();
+	animation->frameRate = file->Read<float>();
+	animation->frameCount = file->Read<uint32>();
+
+	uint32 keyframesCount = file->Read<uint32>();
+
+	for (uint32 i = 0; i < keyframesCount; i++)
+	{
+		shared_ptr<ModelKeyframe> keyframe = make_shared<ModelKeyframe>();
+		keyframe->boneName = Utils::ToWString(file->Read<string>());
+
+		uint32 size = file->Read<uint32>();
+
+		if (size > 0)
+		{
+			keyframe->transforms.resize(size);
+			void* ptr = &keyframe->transforms[0];
+			file->Read(&ptr, sizeof(ModelKeyframeData) * size);
+
+			// 루트노드가 캐릭터들은 인덱스가 1이더라.. 다른것들도 잘 될지 모르겠음
+			if (keyframe->boneName == GetBoneByIndex(1)->name)
+			{
+				// Y축 180도 회전 쿼터니언 생성
+				// XMQuaternionRotationRollPitchYaw(Pitch, Yaw, Roll) 순서임에 주의 (Yaw가 Y축)
+				Quaternion rot180Q = Quaternion::CreateFromYawPitchRoll(XM_PI, 0.f, 0.f);
+
+				for (auto& data : keyframe->transforms)
+				{
+					// 기존 회전값에 180도 회전 쿼터니언을 곱함
+					// 순서: 기존 회전(data.rotation)에 180도 회전(rot180Q)을 적용
+					// 로컬 축 기준 회전이라면 뒤에 곱함
+					data.rotation = data.rotation * rot180Q;
+				}
+			}
+			if (keyframe->boneName == L"Bip001")
+			{
+				for (auto& data : keyframe->transforms)
+				{
+					// 캐릭터들 이동을 담당하는 bone이 Bip001이었음
+					// 제자리걸음시킨다.
+					data.translation.x = 0.f;
+					//data.translation.y = 0.f;
+					data.translation.z = 0.f;
+				}
+			}
 		}
 
 		animation->keyframes[keyframe->boneName] = keyframe;
