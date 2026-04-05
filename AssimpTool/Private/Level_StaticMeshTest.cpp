@@ -52,9 +52,9 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 		ETOUI(LEVEL::TESTMESH), strLayerTag)))
 		return E_FAIL;
 
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+		ETOUI(LEVEL::TESTMESH), strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

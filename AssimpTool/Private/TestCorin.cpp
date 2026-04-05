@@ -28,21 +28,6 @@ HRESULT TestCorin::Initialize(void* pArg)
 	GameObject::SetName(L"TestCorin");
 	AddComponent(make_shared<TestCorinScript>());
 
-	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
-
-	shared_ptr<Model> model = make_shared<Model>();
-	model->ReadModel(L"Alice/Alice");
-	model->ReadMaterial(L"Alice/Alice");
-	model->ReadAnimation(L"Alice/Avatar_Female_Size02_Alice_Ani_Idle_Loop");
-	model->ReadAnimation(L"Alice/Avatar_Female_Size02_Alice_Ani_Idle_AFK");
-	model->ReadAnimation(L"Alice/Avatar_Female_Size02_Alice_Ani_Walk_Loop");
-
-	AddComponent(make_shared<ModelAnimator>(shader));
-	GetModelAnimator()->SetModel(model);
-
-	GetTransform()->SetPosition(Vec3(0, 0, 0));
-	GetTransform()->SetScale(Vec3(1.f));
-
 	return S_OK;
 }
 
