@@ -58,6 +58,12 @@
     <Filter Include="99.Defines\ImGuizmo">
       <UniqueIdentifier>{84ecab7d-6c64-4274-b65d-ee077cd6147e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\SkyBox">
+      <UniqueIdentifier>{76242c09-1342-444a-9338-ae54e4ef6a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\SkyBox\Scripts">
+      <UniqueIdentifier>{7b48be44-2c72-4175-a0d0-915a8cd573e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -141,6 +147,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\TestSphereScript.h">
       <Filter>02.GameObject\TestSphere\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkyBox.h">
+      <Filter>02.GameObject\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkyBoxScript.h">
+      <Filter>02.GameObject\SkyBox\Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="ImSequencer.cpp">
       <Filter>99.Defines\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkyBox.cpp">
+      <Filter>02.GameObject\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkyBoxScript.cpp">
+      <Filter>02.GameObject\SkyBox\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

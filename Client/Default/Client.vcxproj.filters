@@ -256,5 +256,8 @@
     <FxCompile Include="..\..\Shaders\TweenTest.fx">
       <Filter>97.Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Shaders\SkyBox.fx">
+      <Filter>97.Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

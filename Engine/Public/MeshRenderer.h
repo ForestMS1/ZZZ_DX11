@@ -28,6 +28,8 @@ public:
 private:
 	shared_ptr<Mesh> _mesh;
 	shared_ptr<Material> _material;
+
+	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;
 
 

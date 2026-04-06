@@ -6,6 +6,7 @@
 #include "TestCam.h"
 #include "TestSphere.h"
 #include "Transform.h"
+#include "SkyBox.h"
 
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -185,6 +186,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	/* Prototype_GameObject_TestSphere */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
 		TestSphere::Create(_device, _deviceContext))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_SkyBox */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
+		SkyBox::Create(_device, _deviceContext))))
 		return E_FAIL;
 
 	_loadingText = L"로딩이 완료되었습니다.";

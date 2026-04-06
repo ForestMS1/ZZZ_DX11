@@ -148,6 +148,8 @@
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_StaticMeshTest.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\SkyBox.h" />
+    <ClInclude Include="..\Public\SkyBoxScript.h" />
     <ClInclude Include="..\Public\TestCam.h" />
     <ClInclude Include="..\Public\TestCamScript.h" />
     <ClInclude Include="..\Public\TestCorin.h" />
@@ -178,6 +180,8 @@
     <ClCompile Include="..\Private\Level_StaticMeshTest.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
+    <ClCompile Include="..\Private\SkyBox.cpp" />
+    <ClCompile Include="..\Private\SkyBoxScript.cpp" />
     <ClCompile Include="..\Private\TestCam.cpp" />
     <ClCompile Include="..\Private\TestCamScript.cpp" />
     <ClCompile Include="..\Private\TestCorin.cpp" />
