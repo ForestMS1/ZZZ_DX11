@@ -32,12 +32,18 @@ void Camera::UpdateMatrix()
 	//Vec3 upDirection = GetTransform()->GetUp();
 	//S_MatView = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
 
-	S_MatView = GetTransform()->GetWorldMatrix().Invert();
+	_matView = GetTransform()->GetWorldMatrix().Invert();
 
 	if(_projectionType == ProjectionType::Perspective)
-		S_MatProjection = ::XMMatrixPerspectiveFovLH(_fov, _width / _height, _near, _far);
+		_matProjection = ::XMMatrixPerspectiveFovLH(_fov, _width / _height, _near, _far);
 	else
-		S_MatProjection = ::XMMatrixOrthographicLH(_fov, _width / _height, _near, _far);
+		_matProjection = ::XMMatrixOrthographicLH(_fov, _width / _height, _near, _far);
+
+	if (_isActive)
+	{
+		S_MatView = _matView;
+		S_MatProjection = _matProjection;
+	}
 }
 
 //ImGui
@@ -46,6 +52,10 @@ void Camera::OnInspectorGUI()
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Indent();
+
+		if (ImGui::Button(_isActive ? "OFF" : "ON")) {
+			_isActive ? CameraOff() : CameraOn();
+		}
 
 		// --- Perspective Or Orthographic ---
 		string projectionTypeName = (_projectionType == ProjectionType::Perspective) ? "Perspective" : "Orthographic";

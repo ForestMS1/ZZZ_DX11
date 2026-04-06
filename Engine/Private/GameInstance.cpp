@@ -183,6 +183,16 @@ shared_ptr<GameObject> GameInstance::Find_GameObject_fromLayer(const wstring& st
 	return _objectManager->Find_GameObject_fromLayer(strLayerTag, objName);
 }
 
+void GameInstance::DisableCameras()
+{
+	_objectManager->DisableCameras();
+}
+
+void GameInstance::firstFindCamOn()
+{
+	_objectManager->firstFindCamOn();
+}
+
 void GameInstance::ShowHiearchy()
 {
 	_objectManager->ShowHiearchy();

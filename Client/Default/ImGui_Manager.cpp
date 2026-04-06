@@ -26,7 +26,7 @@ HRESULT ImGui_Manager::Initialize(ComPtr<ID3D11Device>pDevice, ComPtr<ID3D11Devi
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsLight();
 
-	
+
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(pDevice.Get(), pDeviceContext.Get());
@@ -39,14 +39,11 @@ void ImGui_Manager::Update()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	// --- ImGuizmo 프레임 시작 알림 ---
-	ImGuizmo::BeginFrame();
+
 
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGuiDockNodeFlags flags = ImGuiDockNodeFlags_PassthruCentralNode;
-
 	ImGui::DockSpaceOverViewport(0, viewport, flags);
-	//ImGui::ShowDemoWindow();
 }
 
 void ImGui_Manager::Render()
@@ -59,8 +56,8 @@ void ImGui_Manager::Render()
 	//ImGuiIO& io = ImGui::GetIO(); (void)io;
 	//if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	//{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
+	ImGui::UpdatePlatformWindows();
+	ImGui::RenderPlatformWindowsDefault();
 	//}
 }
 

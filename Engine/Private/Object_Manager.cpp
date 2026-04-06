@@ -124,50 +124,36 @@ shared_ptr<GameObject> Object_Manager::Find_GameObject_fromLayer(const wstring& 
 	return nullptr;
 }
 
-//void Object_Manager::ShowHiearchy()
-//{
-//	ImGui::Begin("Scene Hierarchy");
-//
-//	ImGui::Text("Current Level: %d", _currentLevelIndex);
-//	ImGui::Separator();
-//
-//	auto& currentLayerMap = _layerMaps[_currentLevelIndex];
-//
-//	for (auto& pair : currentLayerMap) // unique_ptr 내부 맵 접근
-//	{
-//		const wstring& layerTag = pair.first;
-//		Layer* pLayer = pair.second.get();
-//
-//		string tagStr = Utils::ToString(layerTag);
-//		ImGuiTreeNodeFlags layerFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
-//
-//		if (ImGui::TreeNodeEx(tagStr.c_str(), layerFlags))
-//		{
-//			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
-//
-//			for (auto& pGameObject : objects)
-//			{
-//				string objName = Utils::ToString(pGameObject->GetName());
-//
-//				// 선택된 상태라면 하이라이트 효과 적용
-//				ImGuiTreeNodeFlags objFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
-//				if (_selectedObject == pGameObject)
-//					objFlags |= ImGuiTreeNodeFlags_Selected;
-//
-//				// 고유 ID로 포인터 주소 사용
-//				ImGui::TreeNodeEx((void*)pGameObject.get(), objFlags, objName.c_str());
-//
-//				// 좌클릭 시 선택
-//				if (ImGui::IsItemClicked())
-//				{
-//					_selectedObject = pGameObject;
-//				}
-//			}
-//			ImGui::TreePop();
-//		}
-//	}
-//	ImGui::End();
-//}
+void Object_Manager::DisableCameras()
+{
+	for (auto& pair : _layerMaps[_currentLevelIndex])
+	{
+		for (auto& gameObject : pair.second->Get_GameObjects())
+		{
+			shared_ptr<Camera> pCam = gameObject->GetCamera();
+			if (pCam)
+			{
+				pCam->_isActive = false;
+			}
+		}
+	}
+}
+
+void Object_Manager::firstFindCamOn()
+{
+	for (auto& pair : _layerMaps[_currentLevelIndex])
+	{
+		for (auto& gameObject : pair.second->Get_GameObjects())
+		{
+			shared_ptr<Camera> pCam = gameObject->GetCamera();
+			if (pCam)
+			{
+				pCam->_isActive = true;
+				return;
+			}
+		}
+	}
+}
 
 void Object_Manager::ShowHiearchy()
 {

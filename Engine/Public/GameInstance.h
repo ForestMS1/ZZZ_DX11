@@ -56,6 +56,8 @@ public:
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 
 	shared_ptr<class GameObject> Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
+	void DisableCameras();
+	void firstFindCamOn();
 
 	void ShowHiearchy();
 	void ShowInspector();

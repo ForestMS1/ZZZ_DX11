@@ -3,6 +3,10 @@
 
 void TestCamScript::LateUpdate()
 {
+	if (!GetGameObject()->GetCamera()->IsActive())
+		return;
+
+
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
 	Vec3 right = GetTransform()->GetRight();

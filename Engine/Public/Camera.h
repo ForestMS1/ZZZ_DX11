@@ -14,6 +14,7 @@ class ENGINE_DLL Camera : public Component
 {
 public:
 	Camera();
+	Camera(const Camera& rhs);
 	virtual ~Camera();
 
 	virtual void Update() override;
@@ -32,6 +33,12 @@ public:
 	void SetProjectionType(ProjectionType eType) { _projectionType = eType; }
 	ProjectionType GetProjectionType() const { return _projectionType; }
 
+
+	friend class Object_Manager;
+	void CameraOn() { GAME.DisableCameras(); _isActive = true; }
+	void CameraOff() { _isActive = false;  GAME.firstFindCamOn(); }
+	bool IsActive() const { return _isActive; }
+	
 	//ImGui
 	void OnInspectorGUI();
 
@@ -47,10 +54,10 @@ private:
 
 	ProjectionType _projectionType = ProjectionType::Perspective;
 
+	bool _isActive = false;
 public:
 	static Matrix S_MatView;
 	static Matrix S_MatProjection;
-
 
 public:
 	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; }
