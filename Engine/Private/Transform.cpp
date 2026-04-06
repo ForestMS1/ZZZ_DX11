@@ -209,6 +209,27 @@ void Transform::SetWorldMatrix(Matrix& worldMat)
 	UpdateTransform();
 }
 
+void Transform::SetParent(shared_ptr<Transform> pParentTransform)
+{
+	if (_parent.lock() == pParentTransform)
+		return;
+
+	if (HasParent())
+	{
+		vector<shared_ptr<Transform>>& childVec = _parent.lock()->GetChildrenTransform();
+		for (size_t i = 0; i < childVec.size(); )
+		{
+			if (childVec[i] == SHARED_THIS(Transform))
+			{
+				childVec.erase(childVec.begin() + i);
+			}
+			else
+				++i;
+		}
+	}
+	_parent = pParentTransform;
+}
+
 shared_ptr<Transform> Transform::Create()
 {
 	auto		pInstance = shared_ptr<Transform>(new Transform);

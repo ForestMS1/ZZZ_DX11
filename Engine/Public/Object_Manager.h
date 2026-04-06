@@ -47,6 +47,9 @@ private:
 	// ImGui 용 변수
 	shared_ptr<GameObject> _selectedObject;
 	ImGuizmo::OPERATION _currentOp = ImGuizmo::TRANSLATE;
+private:
+	// ImGui 용 함수
+	void RenderTransformTree(shared_ptr<GameObject> pGameObject);
 
 public:
 	static unique_ptr<Object_Manager> Create(uint32 iNumLevels);

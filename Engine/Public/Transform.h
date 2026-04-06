@@ -54,9 +54,9 @@ public:
 	shared_ptr<Transform> GetParentTransform() { return _parent.lock(); }
 
 	//SetParent는 AddChild가 호출하기 위한 용도. 외부에서 사용하지마셈.
-	void SetParent(shared_ptr<Transform> pParentTransform) { _parent = pParentTransform; }
+	void SetParent(shared_ptr<Transform> pParentTransform);
 
-	const vector<shared_ptr<Transform>>& GetChildrenTransform() { return _children; }
+	vector<shared_ptr<Transform>>& GetChildrenTransform() { return _children; }
 	void AddChild(shared_ptr<Transform> pChildTransform) { pChildTransform->SetParent(SHARED_THIS(Transform)); _children.push_back(pChildTransform); }
 
 

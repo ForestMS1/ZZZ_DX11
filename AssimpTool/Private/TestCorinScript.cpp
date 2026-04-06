@@ -6,6 +6,8 @@ void TestCorinScript::Start()
 	if (pChild)
 	{
 		GetTransform()->AddChild(pChild->GetTransform());
+
+		pChild->GetTransform()->SetLocalPosition(Vec3(-2.f, 0, 0));
 	}
 
 	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");

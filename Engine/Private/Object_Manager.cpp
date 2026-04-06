@@ -124,6 +124,51 @@ shared_ptr<GameObject> Object_Manager::Find_GameObject_fromLayer(const wstring& 
 	return nullptr;
 }
 
+//void Object_Manager::ShowHiearchy()
+//{
+//	ImGui::Begin("Scene Hierarchy");
+//
+//	ImGui::Text("Current Level: %d", _currentLevelIndex);
+//	ImGui::Separator();
+//
+//	auto& currentLayerMap = _layerMaps[_currentLevelIndex];
+//
+//	for (auto& pair : currentLayerMap) // unique_ptr 내부 맵 접근
+//	{
+//		const wstring& layerTag = pair.first;
+//		Layer* pLayer = pair.second.get();
+//
+//		string tagStr = Utils::ToString(layerTag);
+//		ImGuiTreeNodeFlags layerFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
+//
+//		if (ImGui::TreeNodeEx(tagStr.c_str(), layerFlags))
+//		{
+//			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
+//
+//			for (auto& pGameObject : objects)
+//			{
+//				string objName = Utils::ToString(pGameObject->GetName());
+//
+//				// 선택된 상태라면 하이라이트 효과 적용
+//				ImGuiTreeNodeFlags objFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
+//				if (_selectedObject == pGameObject)
+//					objFlags |= ImGuiTreeNodeFlags_Selected;
+//
+//				// 고유 ID로 포인터 주소 사용
+//				ImGui::TreeNodeEx((void*)pGameObject.get(), objFlags, objName.c_str());
+//
+//				// 좌클릭 시 선택
+//				if (ImGui::IsItemClicked())
+//				{
+//					_selectedObject = pGameObject;
+//				}
+//			}
+//			ImGui::TreePop();
+//		}
+//	}
+//	ImGui::End();
+//}
+
 void Object_Manager::ShowHiearchy()
 {
 	ImGui::Begin("Scene Hierarchy");
@@ -133,40 +178,96 @@ void Object_Manager::ShowHiearchy()
 
 	auto& currentLayerMap = _layerMaps[_currentLevelIndex];
 
-	for (auto& pair : currentLayerMap) // unique_ptr 내부 맵 접근
+	for (auto& pair : currentLayerMap)
 	{
 		const wstring& layerTag = pair.first;
 		Layer* pLayer = pair.second.get();
 
 		string tagStr = Utils::ToString(layerTag);
-		ImGuiTreeNodeFlags layerFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
-
-		if (ImGui::TreeNodeEx(tagStr.c_str(), layerFlags))
+		if (ImGui::TreeNodeEx(tagStr.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			// 레이어 노드 자체를 드롭 타겟으로 설정 (부모 해제 영역)
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TRANSFORM_NODE"))
+				{
+					GameObject* draggedObj = *(GameObject**)payload->Data;
+					// 부모를 nullptr로 설정하여 최상위로 올림
+					draggedObj->GetTransform()->SetParent(nullptr);
+				}
+				ImGui::EndDragDropTarget();
+			}
+
 			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
 
 			for (auto& pGameObject : objects)
 			{
-				string objName = Utils::ToString(pGameObject->GetName());
-
-				// 선택된 상태라면 하이라이트 효과 적용
-				ImGuiTreeNodeFlags objFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_SpanAvailWidth;
-				if (_selectedObject == pGameObject)
-					objFlags |= ImGuiTreeNodeFlags_Selected;
-
-				// 고유 ID로 포인터 주소 사용
-				ImGui::TreeNodeEx((void*)pGameObject.get(), objFlags, objName.c_str());
-
-				// 좌클릭 시 선택
-				if (ImGui::IsItemClicked())
+				// 최상위 부모(부모가 없는 오브젝트)만 먼저 호출합니다.
+				// 자식들은 RenderTransformTree 내에서 재귀적으로 그려집니다.
+				auto pTransform = pGameObject->GetTransform();
+				if (pTransform && pTransform->HasParent() == false)
 				{
-					_selectedObject = pGameObject;
+					RenderTransformTree(pGameObject);
 				}
 			}
 			ImGui::TreePop();
 		}
 	}
 	ImGui::End();
+}
+
+void Object_Manager::RenderTransformTree(shared_ptr<GameObject> pGameObject)
+{
+	if (!pGameObject) return;
+
+	auto pTransform = pGameObject->GetTransform();
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	if (pTransform->GetChildrenTransform().empty()) flags |= ImGuiTreeNodeFlags_Leaf;
+	if (_selectedObject == pGameObject) flags |= ImGuiTreeNodeFlags_Selected;
+
+	bool isOpen = ImGui::TreeNodeEx((void*)pGameObject.get(), flags, Utils::ToString(pGameObject->GetName()).c_str());
+
+	// --- 드래그 소스 (내보내기) ---
+	if (ImGui::BeginDragDropSource())
+	{
+		// 이동시킬 오브젝트의 주소를 보냅니다.
+		GameObject* pRawPtr = pGameObject.get();
+		ImGui::SetDragDropPayload("TRANSFORM_NODE", &pRawPtr, sizeof(GameObject*));
+
+		ImGui::Text("Move %s", Utils::ToString(pGameObject->GetName()).c_str());
+		ImGui::EndDragDropSource();
+	}
+
+	// --- 드롭 타겟 (자식으로 받기) ---
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TRANSFORM_NODE"))
+		{
+			GameObject* draggedObj = *(GameObject**)payload->Data;
+
+			// 자기 자신에게 드롭하거나, 이미 부모인 경우 제외 (순환 참조 방지 로직 필요)
+			if (draggedObj != pGameObject.get())
+			{
+				// 기존 부모에서 제거하고 새로운 부모 설정
+				// 실제 구현 시 pTransform->SetParent() 내부에서 
+				// 기존 부모의 _children 리스트에서도 제거하는 처리가 되어있어야 합니다.
+				pTransform->AddChild(draggedObj->GetTransform());
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	if (ImGui::IsItemClicked()) _selectedObject = pGameObject;
+
+	if (isOpen)
+	{
+		for (auto& pChildTransform : pTransform->GetChildrenTransform())
+		{
+			auto pChildObject = pChildTransform->GetGameObject();
+			if (pChildObject) RenderTransformTree(pChildObject);
+		}
+		ImGui::TreePop();
+	}
 }
 
 void Object_Manager::ShowInspector()

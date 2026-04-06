@@ -18,8 +18,7 @@ void TestSphereScript::Start()
 	
 	GetGameObject()->AddComponent(make_shared<ModelRenderer>(shader));
 	GetGameObject()->GetModelRenderer()->SetModel(model);
-	
-	GetTransform()->SetPosition(Vec3(-2.f, 0, 0));
+
 	GetTransform()->SetScale(Vec3(1.f));
 }
 
