@@ -74,7 +74,7 @@ void Transform::UpdateTransform()
 
 	if (HasParent())
 	{
-		_matWorld = _matLocal * _parent->GetWorldMatrix();
+		_matWorld = _matLocal * _parent.lock()->GetWorldMatrix();
 	}
 	else
 	{
@@ -90,11 +90,30 @@ void Transform::UpdateTransform()
 
 }
 
+void Transform::SetLocalMatrix(Matrix& localMat)
+{
+	// 1. 내부 로컬 행렬 변수를 전달받은 행렬로 설정
+	_matLocal = localMat;
+
+	// 2. 행렬로부터 Scale, Rotation(Quaternion), Translation 성분을 분리(Decompose)
+	// DirectXMath 등을 사용한다고 가정할 때, Decompose 기능을 활용합니다.
+	Quaternion qRotation;
+	if (_matLocal.Decompose(_localScale, qRotation, _localPosition))
+	{
+		// 3. 쿼터니언 형태의 회전값을 오일러 각(Euler Angles)으로 변환하여 저장
+		// (클래스 멤버 변수가 Vec3 _localRotation이므로 변환이 필요합니다)
+		_localRotation = ToEulerAngles(qRotation);
+	}
+
+	// 4. 로컬 정보가 바뀌었으므로 월드 행렬을 다시 계산
+	UpdateTransform();
+}
+
 void Transform::SetScale(const Vec3& worldScale)
 {
 	if (HasParent())
 	{
-		Vec3 parentScale = _parent->GetScale();
+		Vec3 parentScale = _parent.lock()->GetScale();
 		Vec3 scale = worldScale;
 		scale.x /= parentScale.x;
 		scale.y /= parentScale.y;
@@ -111,7 +130,7 @@ void Transform::SetRotation(const Vec3& worldRotation)
 {
 	if (HasParent())
 	{
-		Matrix InverseMatrix = _parent->GetWorldMatrix().Invert();
+		Matrix InverseMatrix = _parent.lock()->GetWorldMatrix().Invert();
 
 		Vec3 rotation;
 		rotation.TransformNormal(worldRotation, InverseMatrix);
@@ -128,7 +147,7 @@ void Transform::SetPosition(const Vec3& worldPosition)
 {
 	if (HasParent())
 	{
-		Matrix worldToParentLocalMatrix = _parent->GetWorldMatrix().Invert();
+		Matrix worldToParentLocalMatrix = _parent.lock()->GetWorldMatrix().Invert();
 
 		Vec3 position;
 		position.Transform(worldPosition, worldToParentLocalMatrix);
@@ -154,13 +173,13 @@ void Transform::SetWorldMatrix(Matrix& worldMat)
 	if (HasParent())
 	{
 		// 부모의 월드 행렬 역행렬 계산
-		Matrix invParentWorld = _parent->GetWorldMatrix().Invert();
+		Matrix invParentWorld = _parent.lock()->GetWorldMatrix().Invert();
 
 		// 위치 변환 (World -> Parent Local)
 		_localPosition = Vec3::Transform(worldPos, invParentWorld);
 
 		// 크기 변환 (부모의 스케일 영향을 제거)
-		Vec3 parentScale = _parent->GetScale();
+		Vec3 parentScale = _parent.lock()->GetScale();
 		_localScale = worldScale;
 		_localScale.x /= parentScale.x;
 		_localScale.y /= parentScale.y;
@@ -171,7 +190,7 @@ void Transform::SetWorldMatrix(Matrix& worldMat)
 		// 로컬 쿼터니언 = 월드 쿼터니언 * 부모 월드 쿼터니언의 역행렬
 		Vec3 dummyS, dummyP;
 		Quaternion parentQuat;
-		_parent->GetWorldMatrix().Decompose(dummyS, parentQuat, dummyP);
+		_parent.lock()->GetWorldMatrix().Decompose(dummyS, parentQuat, dummyP);
 
 		Quaternion invParentQuat;
 		parentQuat.Inverse(invParentQuat);

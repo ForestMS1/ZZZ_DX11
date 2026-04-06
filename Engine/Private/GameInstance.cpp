@@ -76,6 +76,7 @@ void GameInstance::Update_Engine()
 
 HRESULT GameInstance::Draw()
 {
+	// TODO : 나중에 적절한 곳으로 옮겨주자
 	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	if (FAILED(_renderer->Draw()))
@@ -175,6 +176,11 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
 	uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg)
 {
  	return _objectManager->Add_GameObject_toLayer(iPrototypeLevelIndex, strPrototypeTag, iLayerLevelIndex, strLayerTag, pArg);
+}
+
+shared_ptr<GameObject> GameInstance::Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName)
+{
+	return _objectManager->Find_GameObject_fromLayer(strLayerTag, objName);
 }
 
 void GameInstance::ShowHiearchy()

@@ -2,15 +2,25 @@
 #include "TestCorinScript.h"
 void TestCorinScript::Start()
 {
+	shared_ptr<GameObject> pChild = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestSphere");
+	if (pChild)
+	{
+		GetTransform()->AddChild(pChild->GetTransform());
+	}
+
 	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
 
 	shared_ptr<Model> model = make_shared<Model>();
-	model->ReadModelRotatedY180(L"Corin/Corin");
-	model->ReadMaterial(L"Corin/Corin");
+	model->ReadModelRotatedY180(L"Ellen/Ellen");
+	model->ReadMaterial(L"Ellen/Ellen");
 
-	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
-	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
-	model->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run");
+	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
+	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
+	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
+	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
+	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
+	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
+	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
 
 	GetGameObject()->AddComponent(make_shared<ModelAnimator>(shader));
 	GetGameObject()->GetModelAnimator()->SetModel(model);
@@ -38,11 +48,15 @@ void TestCorinScript::Update()
 	}
 	if (GAME.Key_Pressing(DIK_LEFT))
 	{
-		pos -= right * DT * 5.f;
+		Vec3 rotation = GetTransform()->GetLocalRotation();
+		rotation.y -= DT * 5.f;
+		GetTransform()->SetLocalRotation(rotation);
 	}
 	if (GAME.Key_Pressing(DIK_RIGHT))
 	{
-		pos += right * DT * 5.f;
+		Vec3 rotation = GetTransform()->GetLocalRotation();
+		rotation.y += DT * 5.f;
+		GetTransform()->SetLocalRotation(rotation);
 	}
 
 	GetTransform()->SetPosition(pos);

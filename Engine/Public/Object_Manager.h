@@ -26,6 +26,7 @@ public:
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 	void Clear(uint32 iClearLevelIndex);
+	shared_ptr<GameObject> Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
 
 	//ImGui
 	void ShowHiearchy();

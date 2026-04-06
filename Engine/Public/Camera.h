@@ -5,8 +5,9 @@ NS_BEGIN(Engine)
 
 enum class ProjectionType
 {
-	Perspective, // 원근 투영
+	Perspective = 0, // 원근 투영
 	Orthographic, // 직교 투영
+	END
 };
 
 class ENGINE_DLL Camera : public Component
@@ -28,6 +29,12 @@ public:
 	Matrix& GetViewMatrix() { return _matView; }
 	Matrix& GetProjectionMatrix() { return _matProjection; }
 
+	void SetProjectionType(ProjectionType eType) { _projectionType = eType; }
+	ProjectionType GetProjectionType() const { return _projectionType; }
+
+	//ImGui
+	void OnInspectorGUI();
+
 private:
 	Matrix _matView = Matrix::Identity;
 	Matrix _matProjection = Matrix::Identity;
@@ -37,6 +44,8 @@ private:
 	float _fov = XM_PI / 4.f;
 	float _width = 0.f;
 	float _height = 0.f;
+
+	ProjectionType _projectionType = ProjectionType::Perspective;
 
 public:
 	static Matrix S_MatView;

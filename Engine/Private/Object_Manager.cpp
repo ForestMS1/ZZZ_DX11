@@ -113,6 +113,17 @@ void Object_Manager::Clear(uint32 iClearLevelIndex)
 	_selectedObject = nullptr;
 }
 
+shared_ptr<GameObject> Object_Manager::Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName)
+{
+	Layer* pLayer = Find_Layer(_currentLevelIndex, strLayerTag);
+	for (const auto& gameObject : pLayer->Get_GameObjects())
+	{
+		if (gameObject->GetName() == objName)
+			return gameObject;
+	}
+	return nullptr;
+}
+
 void Object_Manager::ShowHiearchy()
 {
 	ImGui::Begin("Scene Hierarchy");
@@ -226,46 +237,93 @@ void Object_Manager::ShowInspector()
 		ImGui::Separator();
 
 		// --- Position ---
-		Vec3 pos = pTransform->GetPosition();
-		// DragFloat3의 너비를 조절하여 버튼 공간 확보
-		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
-		if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f, 0 , 0))
+		if (!pTransform->HasParent())
 		{
-			pTransform->SetPosition(pos);
-		}
-		ImGui::PopItemWidth();
+			Vec3 pos = pTransform->GetPosition();
+			// DragFloat3의 너비를 조절하여 버튼 공간 확보
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f, 0, 0))
+			{
+				pTransform->SetPosition(pos);
+			}
+			ImGui::PopItemWidth();
 
-		ImGui::SameLine(); // 같은 줄에 배치
-		if (ImGui::Button("R##ResetPos")) // ## 뒤의 이름은 ID로 작동하여 중복 방지
-		{
-			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
-		}
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Position");
+			ImGui::SameLine(); // 같은 줄에 배치
+			if (ImGui::Button("R##ResetPos")) // ## 뒤의 이름은 ID로 작동하여 중복 방지
+			{
+				pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
+			}
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Position");
 
-		// --- Rotation ---
-		Vec3 rot = pTransform->GetRotation();
-		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
-		if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.5f))
-		{
-			pTransform->SetRotation(rot);
-		}
-		ImGui::PopItemWidth();
+			// --- Rotation ---
+			Vec3 rot = pTransform->GetRotation();
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.5f))
+			{
+				pTransform->SetRotation(rot);
+			}
+			ImGui::PopItemWidth();
 
-		ImGui::SameLine();
-		if (ImGui::Button("R##ResetRot"))
-		{
-			pTransform->SetRotation(Vec3(0.f, 0.f, 0.f));
-		}
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Rotation");
+			ImGui::SameLine();
+			if (ImGui::Button("R##ResetRot"))
+			{
+				pTransform->SetRotation(Vec3(0.f, 0.f, 0.f));
+			}
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Rotation");
 
-		// --- Scale ---
-		Vec3 scale = pTransform->GetScale();
-		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
-		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, -1000, 1000))
-		{
-			pTransform->SetScale(scale);
+			// --- Scale ---
+			Vec3 scale = pTransform->GetScale();
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, -1000, 1000))
+			{
+				pTransform->SetScale(scale);
+			}
+			ImGui::PopItemWidth();
 		}
-		ImGui::PopItemWidth();
+		else
+		{
+			Vec3 pos = pTransform->GetLocalPosition();
+			// DragFloat3의 너비를 조절하여 버튼 공간 확보
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f, 0, 0))
+			{
+				pTransform->SetLocalPosition(pos);
+			}
+			ImGui::PopItemWidth();
+
+			ImGui::SameLine(); // 같은 줄에 배치
+			if (ImGui::Button("R##ResetPos")) // ## 뒤의 이름은 ID로 작동하여 중복 방지
+			{
+				pTransform->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+			}
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Position");
+	
+			// --- Rotation ---
+			Vec3 rot = pTransform->GetLocalRotation();
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.5f))
+			{
+				pTransform->SetLocalRotation(rot);
+			}
+			ImGui::PopItemWidth();
+
+			ImGui::SameLine();
+			if (ImGui::Button("R##ResetRot"))
+			{
+				pTransform->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+			}
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Rotation");
+
+			// --- Scale ---
+			Vec3 scale = pTransform->GetLocalScale();
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
+			if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, -1000, 1000))
+			{
+				pTransform->SetLocalScale(scale);
+			}
+			ImGui::PopItemWidth();
+		}
+		
 
 		ImGui::SameLine();
 		if (ImGui::Button("R##ResetScale"))
@@ -275,6 +333,10 @@ void Object_Manager::ShowInspector()
 	}
 
 	ImGui::Separator();
+
+	auto pCamera = _selectedObject->GetCamera();
+	if (pCamera)
+		pCamera->OnInspectorGUI();
 
 	auto pMeshRenderer = _selectedObject->GetMeshRenderer();
 	if(pMeshRenderer)
@@ -314,21 +376,34 @@ void Object_Manager::RenderGizmo()
 	ImGuizmo::SetDrawlist(drawList);
 	//----------------------------------------------------------------------------------------------------------------
 
+	//ImVec2 viewPortPanelPos = ImGui::GetCursorScreenPos();
+	//ImVec2 viewPortPanelSize = ImGui::GetContentRegionAvail();
 	ImGuizmo::SetRect(viewport->Pos.x, viewport->Pos.y, viewport->Size.x, viewport->Size.y);
+	//ImGuizmo::SetRect(viewPortPanelPos.x, viewPortPanelPos.y, viewPortPanelSize.x, viewPortPanelSize.y);
 
 	// 오브젝트의 World 행렬 가져오기
 	auto pTransform = _selectedObject->GetTransform();
 	Matrix worldMatrix = pTransform->GetWorldMatrix();
 
-	// 6. 조작 결과 계산
-	if (ImGuizmo::Manipulate(
-		(float*)&Camera::S_MatView,
-		(float*)&Camera::S_MatProjection,
-		_currentOp,
-		ImGuizmo::WORLD,
-		(float*)&worldMatrix))
+	if (!pTransform->HasParent())
 	{
-		pTransform->SetWorldMatrix(worldMatrix);
+		if (ImGuizmo::Manipulate(
+			(float*)&Camera::S_MatView,
+			(float*)&Camera::S_MatProjection,
+			_currentOp,
+			ImGuizmo::WORLD,
+			(float*)&worldMatrix))
+		{
+			pTransform->SetWorldMatrix(worldMatrix);
+		}
+	}
+	else
+	{
+		if (ImGuizmo::Manipulate((float*)&Camera::S_MatView,
+			(float*)&Camera::S_MatProjection, _currentOp, ImGuizmo::LOCAL, (float*)&worldMatrix))
+		{
+			pTransform->SetWorldMatrix(worldMatrix);
+		}
 	}
 }
 

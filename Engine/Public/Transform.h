@@ -29,6 +29,10 @@ public:
 	Vec3 GetLocalPosition() { return _localPosition; }
 	void SetLocalPosition(const Vec3& localPosition) { _localPosition = localPosition; UpdateTransform(); }
 
+	Matrix GetLocalMatrix() { return _matLocal; }
+	void SetLocalMatrix(Matrix& localMat);
+
+
 	// World
 	Vec3 GetScale() { return _scale; }
 	void SetScale(const Vec3& scale);
@@ -45,13 +49,15 @@ public:
 	void SetWorldMatrix(Matrix& worldMat);
 
 	// 계층
-	bool HasParent() { return _parent != nullptr; }
+	bool HasParent() { return _parent.lock() != nullptr; }
 
-	shared_ptr<Transform> GetParentTransform() { return _parent; }
+	shared_ptr<Transform> GetParentTransform() { return _parent.lock(); }
+
+	//SetParent는 AddChild가 호출하기 위한 용도. 외부에서 사용하지마셈.
 	void SetParent(shared_ptr<Transform> pParentTransform) { _parent = pParentTransform; }
 
 	const vector<shared_ptr<Transform>>& GetChildrenTransform() { return _children; }
-	void AddChild(shared_ptr<Transform> pChildTransform) { _children.push_back(pChildTransform); }
+	void AddChild(shared_ptr<Transform> pChildTransform) { pChildTransform->SetParent(SHARED_THIS(Transform)); _children.push_back(pChildTransform); }
 
 
 private:
@@ -67,7 +73,8 @@ private:
 	Vec3 _position;
 
 private:
-	shared_ptr<Transform> _parent;
+	// 순환 참조 메모리 누수 때문에 weak_ptr로 변경
+	weak_ptr<Transform> _parent;
 	vector<shared_ptr<Transform>> _children;
 
 public:
