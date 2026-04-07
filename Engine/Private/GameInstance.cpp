@@ -220,6 +220,11 @@ void GameInstance::ClearResourceManager()
 {
 	_resourceManager->ClearResource();
 }
+
+void GameInstance::ShowResourceList()
+{
+	_resourceManager->ShowResourceList();
+}
 #pragma endregion
 #pragma region RENDERER
 

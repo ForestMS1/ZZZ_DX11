@@ -140,5 +140,6 @@ float4 PS_RED(MeshOutput input) : SV_TARGET
 technique11 T0
 {
 	PASS_VP(P0, VS, PS)
-	PASS_RS_VP(P1, FillModeWireFrame, VS, PS_RED)
+    PASS_RS_VP(P1, FillModeWireFrame, VS, PS)
+	PASS_RS_VP(P2, FillModeWireFrame, VS, PS_RED)
 };

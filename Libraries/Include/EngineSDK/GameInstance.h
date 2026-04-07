@@ -78,6 +78,8 @@ public:
 
 	// 얘는 씬 전환할때마다 자동호출 X, 내가원할 때 따로 호출해주자
 	void ClearResourceManager();
+
+	void ShowResourceList();
 #pragma endregion
 
 #pragma region RENDERER

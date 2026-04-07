@@ -3,7 +3,7 @@
 
 #include "GameInstance.h"
 #include "Converter.h"
-
+#include "Level_Loading.h"
 Level_Converter::Level_Converter(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
 {
@@ -18,18 +18,24 @@ HRESULT Level_Converter::Initialize()
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
-	shared_ptr<Converter> converter = make_shared<Converter>();
-	converter->ReadAssetFile(L"Ellen/Avatar_Female_Size02_Ellen_Model.fbx");
-	converter->ExportMaterialData(L"Ellen/Ellen");
-	converter->ExportModelData(L"Ellen/Ellen");
-	converter->ExportAnimationDataAll(L"Ellen");
+	//shared_ptr<Converter> converter = make_shared<Converter>();
+	//converter->ReadAssetFile(L"Ellen/Avatar_Female_Size02_Ellen_Model.fbx");
+	//converter->ExportMaterialData(L"Ellen/Ellen");
+	//converter->ExportModelData(L"Ellen/Ellen");
+	//converter->ExportAnimationDataAll(L"Ellen");
 
 	return S_OK;
 }
 
 void Level_Converter::Update()
 {
+	GAME.ShowResourceList();
+	GAME.ShowHiearchy();
+	GAME.ShowInspector();
+	GAME.RenderGizmo();
 
+	if (GAME.Key_Down(DIK_RETURN))
+		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::TESTMESH),true);
 }
 
 HRESULT Level_Converter::Render()

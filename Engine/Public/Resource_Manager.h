@@ -32,6 +32,9 @@ public:
 	// 메모리에 있는 리소스들 싹 다 날려주는 함수
 	void ClearResource();
 
+	//ImGui
+	void ShowResourceList();
+
 private:
 	void CreateDefaultMesh();
 
@@ -40,6 +43,11 @@ private:
 
 private:
 	wstring _resourcePath;
+
+//ImGui
+private:
+	shared_ptr<Texture> _defaultMeshIcon;
+
 private:
 	using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
 	array<KeyObjMap, RESOURCE_TYPE_COUNT> _resources;
