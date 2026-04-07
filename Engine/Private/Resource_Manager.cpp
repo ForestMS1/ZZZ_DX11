@@ -151,8 +151,62 @@ void Resource_Manager::ShowResourceList()
 			}
 			ImGui::EndTabItem();
 		}
-		ImGui::EndTabBar();
+
+		if (ImGui::BeginTabItem("Models")) {
+			auto& modelMap = _resources[static_cast<uint8>(ResourceType::MODEL)];
+
+			// 모델용 아이콘이 따로 있다면 그것을 사용하고, 없다면 Mesh 아이콘을 공유합니다.
+			ImTextureID modelIconID = (ImTextureID)_defaultMeshIcon->GetComPtr().Get();
+
+			float button_size = 64.0f;
+			float window_visible_x2 = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+			ImGuiStyle& style = ImGui::GetStyle();
+
+			int i = 0;
+			for (auto& pair : modelMap) {
+				ImGui::PushID(i);
+				ImGui::BeginGroup();
+
+				// 1. 버튼을 먼저 그립니다.
+				ImGui::ImageButton("##modelIcon", modelIconID, ImVec2(button_size, button_size));
+
+				// 2. 버튼 바로 다음에 드래그 소스 로직을 배치합니다. (클릭 체크문 밖)
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+					// 전달할 데이터: wstring 키값
+					const wstring& modelKey = pair.first;
+
+					// 주의: wstring 객체 자체의 주소를 보낼 때는 드래그가 끝날 때까지 데이터가 유지되어야 합니다.
+					// 매니저의 맵에 들어있는 pair.first는 안전합니다.
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_MODEL", &modelKey, sizeof(wstring));
+
+					// 드래그 중 마우스 커서 옆에 보일 미리보기
+					string name(modelKey.begin(), modelKey.end());
+					ImGui::Text("Adding Model: %s", name.c_str());
+
+					ImGui::EndDragDropSource();
+				}
+
+				// 모델 이름 출력
+				string name(pair.first.begin(), pair.first.end());
+				ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + button_size); // 텍스트 줄바꿈 제한
+				ImGui::TextUnformatted(name.c_str());
+				ImGui::PopTextWrapPos();
+
+				ImGui::EndGroup();
+
+				// 그리드 배치 계산
+				float last_button_x2 = ImGui::GetItemRectMax().x;
+				float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_size;
+
+				if (++i < modelMap.size() && next_button_x2 < window_visible_x2)
+					ImGui::SameLine();
+
+				ImGui::PopID();
+			}
+			ImGui::EndTabItem();
+		}
 	}
+	ImGui::EndTabBar();
 	ImGui::End();
 }
 

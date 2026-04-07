@@ -12,6 +12,7 @@ public:
 	ModelRenderer(shared_ptr<Shader> shader);
 	virtual ~ModelRenderer();
 
+	virtual void Update() override;
 	virtual HRESULT Render() override;
 
 	void SetModel(shared_ptr<Model> model);

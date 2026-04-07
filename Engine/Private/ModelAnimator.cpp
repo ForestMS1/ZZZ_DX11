@@ -28,6 +28,9 @@ void ModelAnimator::Update()
 	if (_texture == nullptr)
 		CreateTexture();
 
+	//TODO 임시, 렌더그룹변경하자
+	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+
 	TweenDesc& desc = _tweenDesc;
 
 	desc.curr.sumTime += DT;

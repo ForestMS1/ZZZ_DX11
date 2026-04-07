@@ -16,6 +16,7 @@ public:
 	void SetMaterial(shared_ptr<Material> material) { _material = material; }
 	void SetPass(uint8 pass) { _pass = pass; }
 
+	virtual void Update() override;
 	virtual HRESULT Render() override;
 
 	//void RenderInstancing(shared_ptr<class InstancingBuffer>& buffer);

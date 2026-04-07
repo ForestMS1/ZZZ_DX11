@@ -17,9 +17,9 @@ NS_BEGIN(Engine)
 //class ModelRenderer;
 //class ModelAnimator;
 
-class ENGINE_DLL GameObject abstract : public Prototype
+class ENGINE_DLL GameObject : public Prototype
 {
-protected:
+public:
 	// 모든 게임 오브젝트는 Create 함수를 통해 생성한다. (자동 Init -> 트랜스폼 추가)
 	GameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
 	GameObject(const GameObject& Prototype);
@@ -74,7 +74,7 @@ protected:
 	wstring _name = L"None_Name";
 
 public:
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) = 0;
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 };
 
 NS_END

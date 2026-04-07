@@ -25,6 +25,8 @@ public:
 
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
+	// 프로토타입->클론 없이 바로 레벨에 오브젝트 추가하는 함수
+	HRESULT Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring & strLayerTag, shared_ptr<GameObject> pGameObject);
 	void Clear(uint32 iClearLevelIndex);
 	shared_ptr<GameObject> Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
 	void DisableCameras();

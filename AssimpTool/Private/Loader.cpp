@@ -158,6 +158,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 	_loadingText = L"모델을 로딩 중 입니다.";
 
+	shared_ptr<Model> CorinModel = make_shared<Model>();
+	CorinModel->ReadModel(L"Corin/Corin");
+	CorinModel->ReadMaterial(L"Corin/Corin");
+	GAME.AddResource<Model>(L"CorinModel", CorinModel);
+
 	shared_ptr<Model> EllenModel = make_shared<Model>();
 	EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
 	EllenModel->ReadMaterial(L"Ellen/Ellen");
@@ -169,7 +174,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
 	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
 	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
-	GAME.AddResource(L"EllenAnimModel", EllenModel);
+	GAME.AddResource<Model>(L"EllenAnimModel", EllenModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 
@@ -182,6 +187,9 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	shared_ptr<Shader> TweenTestShader = make_shared<Shader>(L"TweenTest.fx");
 	GAME.AddResource<Shader>(L"TweenTest.fx", TweenTestShader);
+
+	shared_ptr<Shader> TestShader = make_shared<Shader>(L"Test.fx");
+	GAME.AddResource<Shader>(L"Test.fx", TestShader);
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 

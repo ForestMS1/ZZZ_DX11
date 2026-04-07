@@ -16,6 +16,12 @@ ModelRenderer::~ModelRenderer()
 
 
 
+void ModelRenderer::Update()
+{
+	//TODO 임시, 렌더그룹변경하자
+	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+}
+
 HRESULT ModelRenderer::Render()
 {
 	if (_model == nullptr)

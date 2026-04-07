@@ -31,5 +31,5 @@ void SkyBoxScript::Start()
 
 void SkyBoxScript::Update()
 {
-	GAME.Add_RenderObject(RENDERGROUP::PRIORITY, GetGameObject());
+	//GAME.Add_RenderObject(RENDERGROUP::PRIORITY, GetGameObject());
 }

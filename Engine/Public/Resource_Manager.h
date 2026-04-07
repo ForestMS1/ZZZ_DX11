@@ -8,6 +8,7 @@ class Texture;
 class Mesh;
 class Material;
 class Shader;
+class Model;
 struct ModelAnimation;
 class ENGINE_DLL Resource_Manager
 {
@@ -109,6 +110,8 @@ ResourceType Resource_Manager::GetResourceType()
 		return ResourceType::TEXTURE;
 	if (std::is_same_v<T, Mesh>)
 		return ResourceType::MESH;
+	if (std::is_same_v<T, Model>)
+		return ResourceType::MODEL;
 	if (std::is_same_v <T, Material>)
 		return ResourceType::MATERIAL;
 	if (std::is_same_v <T, Shader>)

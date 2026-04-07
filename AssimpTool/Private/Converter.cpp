@@ -46,7 +46,7 @@ void Converter::ExportModelData(const wstring& savePath)
 	ReadSkinData();
 
 	//Write CSV File
-	{
+	/*{
 		FILE* file;
 		::fopen_s(&file, "../Vertices.csv", "w");
 
@@ -76,7 +76,7 @@ void Converter::ExportModelData(const wstring& savePath)
 		}
 
 		::fclose(file);
-	}
+	}*/
 
 
 	WriteModelFile(finalPath);

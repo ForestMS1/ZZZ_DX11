@@ -35,6 +35,18 @@ HRESULT TestSphere::Initialize(void* pArg)
 	GameObject::SetName(L"TestSphere");
 	AddComponent(make_shared<TestSphereScript>());
 
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");//make_shared<Shader>(L"Test.fx");
+
+	//shared_ptr<Model> model = make_shared<Model>();
+	//model->ReadModel(L"Corin/Corin");
+	//model->ReadMaterial(L"Corin/Corin");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"CorinModel");
+
+	AddComponent(make_shared<ModelRenderer>(shader));
+	GetModelRenderer()->SetModel(model);
+
+	GetTransform()->SetScale(Vec3(1.f));
+
 	return S_OK;
 }
 

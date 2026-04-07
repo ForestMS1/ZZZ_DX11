@@ -28,7 +28,7 @@ void TestCorinScript::Start()
 
 void TestCorinScript::Update()
 {
-	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+	//GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
 
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();

@@ -16,6 +16,12 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
+void MeshRenderer::Update()
+{
+	//TODO 임시, 렌더그룹변경하자
+	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+}
+
 HRESULT MeshRenderer::Render()
 {
 	if (_mesh == nullptr || _material == nullptr)

@@ -93,6 +93,34 @@ HRESULT Object_Manager::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, cons
 	return S_OK;
 }
 
+HRESULT Object_Manager::Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring& strLayerTag, shared_ptr<GameObject> pGameObject)
+{
+	if (nullptr == _layerMaps || iLayerLevelIndex >= _numLevels)
+		return E_FAIL;
+
+	// 현재 객체를 추가하려고 하는 레이어가 없다면
+	// 새로 레이어를 만들어 추가해준다.
+	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	if (nullptr == pLayer)
+	{
+		unique_ptr<Layer> pNewLayer = Layer::Create();
+		if (nullptr == pNewLayer)
+			return E_FAIL;
+
+		if (FAILED(pNewLayer->Add_GameObject(pGameObject)))
+			return E_FAIL;
+
+		_layerMaps[iLayerLevelIndex].emplace(strLayerTag, std::move(pNewLayer));
+	}
+	else
+	{
+		if (FAILED(pLayer->Add_GameObject(pGameObject)))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
 void Object_Manager::Clear(uint32 iClearLevelIndex)
 {
 	if (iClearLevelIndex >= _numLevels ||
@@ -170,34 +198,79 @@ void Object_Manager::ShowHiearchy()
 		Layer* pLayer = pair.second.get();
 
 		string tagStr = Utils::ToString(layerTag);
-		if (ImGui::TreeNodeEx(tagStr.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen))
+
+		bool isNodeOpen = ImGui::TreeNodeEx(tagStr.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen);
+
+		if (ImGui::BeginDragDropTarget())
 		{
+			// 모델 리소스 매니저로부터 드래그 온 경우
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_MODEL"))
+			{
+				const wstring& modelKey = *(const wstring*)payload->Data;
+
+				// 1. 새로운 게임오브젝트 생성
+				auto pNewObj = make_shared<GameObject>(DEVICE, CONTEXT);
+				pNewObj->SetName(modelKey);
+
+				// 2. ModelAnimator 컴포넌트 추가 및 모델 설정
+				auto pModel = GAME.GetResource<Model>(modelKey);
+				if (pModel->GetAnimationCount() > 0)
+				{
+					auto shader = pModel->GetMaterials().front()->GetShader();
+					auto pAnimator = make_shared<ModelAnimator>(shader);
+					if (pModel)
+					{
+						pAnimator->SetModel(pModel);
+						pNewObj->AddComponent(pAnimator);
+						pNewObj->Initialize();
+
+						// 3. 현재 레이어(pLayer)에 직접 추가
+						pLayer->Add_GameObject(pNewObj);
+					}
+				}
+				else
+				{
+					auto shader = pModel->GetMaterials().front()->GetShader();
+					auto pMeshRenderer = make_shared<ModelRenderer>(shader);
+					if (pModel)
+					{
+						pMeshRenderer->SetModel(pModel);
+						pNewObj->AddComponent(pMeshRenderer);
+						pNewObj->Initialize();
+
+						// 3. 현재 레이어(pLayer)에 직접 추가
+						pLayer->Add_GameObject(pNewObj);
+					}
+				}
+			}
+
 			// 레이어 노드 자체를 드롭 타겟으로 설정 (부모 해제 영역)
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TRANSFORM_NODE"))
-				{
-					GameObject* draggedObj = *(GameObject**)payload->Data;
-					// 부모를 nullptr로 설정하여 최상위로 올림
-					draggedObj->GetTransform()->SetParent(nullptr);
-				}
-				ImGui::EndDragDropTarget();
-			}
 
-			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
-
-			for (auto& pGameObject : objects)
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TRANSFORM_NODE"))
 			{
-				// 최상위 부모(부모가 없는 오브젝트)만 먼저 호출합니다.
-				// 자식들은 RenderTransformTree 내에서 재귀적으로 그려집니다.
-				auto pTransform = pGameObject->GetTransform();
-				if (pTransform && pTransform->HasParent() == false)
-				{
-					RenderTransformTree(pGameObject);
-				}
+				GameObject* draggedObj = *(GameObject**)payload->Data;
+				// 부모를 nullptr로 설정하여 최상위로 올림
+				draggedObj->GetTransform()->SetParent(nullptr);
 			}
-			ImGui::TreePop();
+			ImGui::EndDragDropTarget();
 		}
+		
+			if (isNodeOpen)
+			{
+				const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
+
+				for (auto& pGameObject : objects)
+				{
+					// 최상위 부모(부모가 없는 오브젝트)만 먼저 호출합니다.
+					// 자식들은 RenderTransformTree 내에서 재귀적으로 그려집니다.
+					auto pTransform = pGameObject->GetTransform();
+					if (pTransform && pTransform->HasParent() == false)
+					{
+						RenderTransformTree(pGameObject);
+					}
+				}
+				ImGui::TreePop();
+			}
 	}
 	ImGui::End();
 }
