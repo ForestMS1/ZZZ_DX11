@@ -6,14 +6,15 @@ Level_Manager::Level_Manager()
 {
 }
 
-HRESULT Level_Manager::Change_Level(uint32_t iNewLevelIndex, unique_ptr<Level> pNewLevel)
+HRESULT Level_Manager::Change_Level(uint32_t iNewLevelIndex, unique_ptr<Level> pNewLevel, bool clearResource)
 {
 	if (nullptr == pNewLevel)
 		return E_FAIL;
 
 	if (nullptr != _currentLevel)
 	{
-		GameInstance::Get().Clear_Resource(_currentLevelIndex);
+		GAME.Clear_Resource(_currentLevelIndex);
+		if (clearResource) GAME.ClearResourceManager();
 		_currentLevel.reset();
 	}
 

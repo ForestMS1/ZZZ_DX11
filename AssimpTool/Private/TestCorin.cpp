@@ -28,6 +28,14 @@ HRESULT TestCorin::Initialize(void* pArg)
 	GameObject::SetName(L"TestCorin");
 	AddComponent(make_shared<TestCorinScript>());
 
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"TweenTest.fx");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"EllenAnimModel");
+	AddComponent(make_shared<ModelAnimator>(shader));
+	GetModelAnimator()->SetModel(model);
+
+	GetTransform()->SetPosition(Vec3(0, 0, 0));
+	GetTransform()->SetScale(Vec3(1.f));
+
 	return S_OK;
 }
 

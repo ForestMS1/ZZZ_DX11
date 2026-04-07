@@ -29,6 +29,19 @@ HRESULT SkyBox::Initialize(void* pArg)
 	GameObject::SetName(L"SkyBox");
 	AddComponent(make_shared<SkyBoxScript>());
 
+	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+	shared_ptr<Material> material = GAME.GetResource<Material>(L"Sky");
+	shared_ptr<Mesh> mesh = make_shared<Mesh>();
+
+	//mesh->CreateQuad();
+	mesh = GAME.GetResource<Mesh>(L"Sphere");
+
+	meshRenderer->SetMaterial(material);
+	meshRenderer->SetMesh(mesh);
+	meshRenderer->SetPass(0);
+	AddComponent(meshRenderer);
+
+
 	return S_OK;
 }
 

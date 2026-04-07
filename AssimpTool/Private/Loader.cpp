@@ -149,29 +149,65 @@ HRESULT Loader::Loading_For_Convert()
 
 HRESULT Loader::Loading_FOR_TestMesh()
 {
-
+	// ----------------------------------------------------Texture Load--------------------------------------------------------
 	_loadingText = L"텍스쳐를 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
 
+
+	// ----------------------------------------------------Texture Load--------------------------------------------------------
+
+	// ----------------------------------------------------Model Load--------------------------------------------------------
 	_loadingText = L"모델을 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
-	_loadingText = L"셰이더를 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
 
+	shared_ptr<Model> EllenModel = make_shared<Model>();
+	EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
+	EllenModel->ReadMaterial(L"Ellen/Ellen");
+
+	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
+	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
+	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
+	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
+	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
+	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
+	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
+	GAME.AddResource(L"EllenAnimModel", EllenModel);
+
+	// ----------------------------------------------------Model Load--------------------------------------------------------
+
+
+
+	// ----------------------------------------------------Shader Load--------------------------------------------------------
+	_loadingText = L"셰이더를 로딩 중 입니다.";
+	shared_ptr<Shader> SkyBoxShader = make_shared<Shader>(L"SkyBox.fx");
+	GAME.AddResource<Shader>(L"SkyBox.fx", SkyBoxShader);
+
+	shared_ptr<Shader> TweenTestShader = make_shared<Shader>(L"TweenTest.fx");
+	GAME.AddResource<Shader>(L"TweenTest.fx", TweenTestShader);
+
+	// ----------------------------------------------------Shader Load--------------------------------------------------------
+
+
+
+	// ----------------------------------------------------Material Load--------------------------------------------------------
+	_loadingText = L"머테리얼 로딩 중 입니다.";
+	shared_ptr<Material> material = make_shared<Material>();
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"SkyBox.fx");
+
+	material->SetShader(shader);
+	auto texture = GAME.GetOrAddTexture(L"Sky", L"..\\..\\Resources\\Textures\\Sky.jpg");
+	material->SetDiffuseMap(texture);
+	MaterialDesc& desc = material->GetMaterialDesc();
+	desc.ambient = Vec4(1.f);
+	desc.diffuse = Vec4(1.f);
+	desc.specular = Vec4(1.f);
+
+	GAME.AddResource(L"Sky", material);
+
+	// ----------------------------------------------------Material Load--------------------------------------------------------
+
+
+
+	// ----------------------------------------------------GameObject Load--------------------------------------------------------
 	_loadingText = L"객체원형 생성 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
 
 	/* Prototype_GameObject_TestCam */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
@@ -193,6 +229,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		SkyBox::Create(_device, _deviceContext))))
 		return E_FAIL;
 
+	// ----------------------------------------------------GameObject Load--------------------------------------------------------
 	_loadingText = L"로딩이 완료되었습니다.";
 
 	_isFinished = true;

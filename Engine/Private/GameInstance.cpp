@@ -116,8 +116,9 @@ HRESULT GameInstance::Add_Timer(const wstring& strTimerTag)
 
 #pragma region LEVEL_MANAGER
 
-HRESULT GameInstance::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel)
+HRESULT GameInstance::Change_Level(uint32 iNewLevelIndex, unique_ptr<Level> pNewLevel, bool clearResourceManager)
 {
+	if (clearResourceManager) ClearResourceManager();
 	return _levelManager->Change_Level(iNewLevelIndex, std::move(pNewLevel));
 }
 
@@ -213,6 +214,11 @@ void GameInstance::RenderGizmo()
 shared_ptr<Texture> GameInstance::GetOrAddTexture(const wstring& key, const wstring& path)
 {
 	return _resourceManager->GetOrAddTexture(key, path);
+}
+
+void GameInstance::ClearResourceManager()
+{
+	_resourceManager->ClearResource();
 }
 #pragma endregion
 #pragma region RENDERER

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TestCorinScript.h"
-void TestCorinScript::Start()
+void TestCorinScript::Awake()
 {
 	shared_ptr<GameObject> pChild = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestSphere");
 	if (pChild)
@@ -9,26 +9,21 @@ void TestCorinScript::Start()
 
 		pChild->GetTransform()->SetLocalPosition(Vec3(-2.f, 0, 0));
 	}
-
-	shared_ptr<Shader> shader = make_shared<Shader>(L"TweenTest.fx");
-
-	shared_ptr<Model> model = make_shared<Model>();
-	model->ReadModelRotatedY180(L"Ellen/Ellen");
-	model->ReadMaterial(L"Ellen/Ellen");
-
-	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
-	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
-	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
-	model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
-	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
-	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
-	model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
-
-	GetGameObject()->AddComponent(make_shared<ModelAnimator>(shader));
-	GetGameObject()->GetModelAnimator()->SetModel(model);
-
-	GetTransform()->SetPosition(Vec3(0, 0, 0));
-	GetTransform()->SetScale(Vec3(1.f));
+}
+void TestCorinScript::Start()
+{
+	// Loader∑Œ ø≈∞Â¿Ω
+	//shared_ptr<Model> model = make_shared<Model>();
+	//model->ReadModelRotatedY180(L"Ellen/Ellen");
+	//model->ReadMaterial(L"Ellen/Ellen");
+	
+	//model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
+	//model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
+	//model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
+	//model->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
+	//model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
+	//model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
+	//model->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
 }
 
 void TestCorinScript::Update()

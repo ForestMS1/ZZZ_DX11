@@ -7,7 +7,8 @@ NS_BEGIN(Engine)
 class Texture;
 class Mesh;
 class Material;
-
+class Shader;
+struct ModelAnimation;
 class ENGINE_DLL Resource_Manager
 {
 private:
@@ -27,6 +28,9 @@ public:
 	shared_ptr<T> GetResource(const wstring& key);
 
 	shared_ptr<Texture> GetOrAddTexture(const wstring& key, const wstring& path);
+
+	// 메모리에 있는 리소스들 싹 다 날려주는 함수
+	void ClearResource();
 
 private:
 	void CreateDefaultMesh();
@@ -99,8 +103,11 @@ ResourceType Resource_Manager::GetResourceType()
 		return ResourceType::MESH;
 	if (std::is_same_v <T, Material>)
 		return ResourceType::MATERIAL;
+	if (std::is_same_v <T, Shader>)
+		return ResourceType::SHADER;
+	if (std::is_same_v <T, ModelAnimation>)
+		return ResourceType::ANIMATION;
 
-	assert(false);
 	return ResourceType::NONE;
 }
 

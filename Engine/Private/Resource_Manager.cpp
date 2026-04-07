@@ -47,6 +47,18 @@ shared_ptr<Texture> Resource_Manager::GetOrAddTexture(const wstring& key, const 
 	return texture;
 }
 
+void Resource_Manager::ClearResource()
+{
+	for (auto& map : _resources)
+	{
+		for (auto& pair : map)
+		{
+			pair.second.reset();
+		}
+		map.clear();
+	}
+}
+
 void Resource_Manager::CreateDefaultMesh()
 {
 	{

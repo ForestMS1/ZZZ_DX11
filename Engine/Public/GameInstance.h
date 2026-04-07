@@ -31,7 +31,7 @@ public:
 
 
 #pragma region LEVEL_MANAGER
-	HRESULT Change_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel);
+	HRESULT Change_Level(uint32 iNewLevelIndex, unique_ptr<class Level> pNewLevel, bool clearResourceManager = false);
 	uint32 GetCurrentLevelIndex();
 #pragma endregion
 
@@ -75,6 +75,9 @@ public:
 	shared_ptr<T> GetResource(const wstring& key);
 
 	shared_ptr<Texture> GetOrAddTexture(const wstring& key, const wstring& path);
+
+	// 얘는 씬 전환할때마다 자동호출 X, 내가원할 때 따로 호출해주자
+	void ClearResourceManager();
 #pragma endregion
 
 #pragma region RENDERER

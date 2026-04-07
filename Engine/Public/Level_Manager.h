@@ -10,7 +10,7 @@ public:
 	~Level_Manager() = default;
 
 public:
-	HRESULT Change_Level(uint32_t iNewLevelIndex, unique_ptr<class Level> pNewLevel);
+	HRESULT Change_Level(uint32_t iNewLevelIndex, unique_ptr<class Level> pNewLevel, bool clearResource = false);
 	void Awake();
 	void Start();
 	void Update();
