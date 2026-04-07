@@ -22,7 +22,7 @@ public:
 	//InstanceID GetInstanceID();
 
 	//ImGui¿ë
-	void OnInspectorGUI();
+	virtual void OnInspectorGUI() override;
 
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 private:

@@ -16,6 +16,8 @@ public:
 	virtual void LateUpdate() override {}
 	virtual void FixedUpdate() override {}
 
+	virtual void OnInspectorGUI() override {}
+
 public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
 };

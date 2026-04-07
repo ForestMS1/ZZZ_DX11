@@ -40,7 +40,7 @@ public:
 	bool IsActive() const { return _isActive; }
 	
 	//ImGui
-	void OnInspectorGUI();
+	virtual void OnInspectorGUI() override;
 
 private:
 	Matrix _matView = Matrix::Identity;

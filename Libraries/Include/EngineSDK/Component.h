@@ -41,6 +41,8 @@ public:
 	virtual void FixedUpdate() {}
 	virtual HRESULT Render() { return S_OK; }
 
+	virtual void OnInspectorGUI() {}
+
 public:
 	ComponentType GetType() { return _type; }
 

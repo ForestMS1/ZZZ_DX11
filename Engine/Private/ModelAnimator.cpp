@@ -357,4 +357,5 @@ void ModelAnimator::OnInspectorGUI()
 
 		ImGui::Unindent();
 	}
+	ImGui::Separator();
 }

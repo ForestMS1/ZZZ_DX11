@@ -97,4 +97,5 @@ void Camera::OnInspectorGUI()
 
 		ImGui::Unindent();
 	}
+	ImGui::Separator();
 }

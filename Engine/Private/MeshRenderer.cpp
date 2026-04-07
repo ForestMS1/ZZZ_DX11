@@ -105,4 +105,5 @@ void MeshRenderer::OnInspectorGUI()
             ImGui::Text("Vertex Count: %d", _mesh->GetVertexCount());
         }
     }
+	ImGui::Separator();
 }

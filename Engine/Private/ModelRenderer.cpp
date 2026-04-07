@@ -139,4 +139,5 @@ void ModelRenderer::OnInspectorGUI()
 
 		ImGui::Separator();
 	}
+	ImGui::Separator();
 }

@@ -59,6 +59,9 @@ public:
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() const { return _name; }
 
+	const array<shared_ptr<Component>, FIXED_COMPONENT_COUNT>& GetComponents() { return _components; }
+	const vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
+
 protected:
 	ComPtr<ID3D11Device> _device = { nullptr };
 	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };

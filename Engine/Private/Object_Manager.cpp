@@ -419,25 +419,42 @@ void Object_Manager::ShowInspector()
 		}
 	}
 
-	ImGui::Separator();
+	for (const auto& fixedComponent : _selectedObject->GetComponents())
+	{
+		if (fixedComponent)
+		{
+			fixedComponent->OnInspectorGUI();
+			//ImGui::Separator();
+		}
+	}
+	for (const auto& script : _selectedObject->GetScripts())
+	{
+		if (script)
+		{
+			script->OnInspectorGUI();
+			//ImGui::Separator();
+		}
+	}
 
-	auto pCamera = _selectedObject->GetCamera();
-	if (pCamera)
-		pCamera->OnInspectorGUI();
-
-	auto pMeshRenderer = _selectedObject->GetMeshRenderer();
-	if(pMeshRenderer)
-		pMeshRenderer->OnInspectorGUI();
-
-	ImGui::Separator();
-
-	auto pModelRenderer = _selectedObject->GetModelRenderer();
-	if (pModelRenderer)
-		pModelRenderer->OnInspectorGUI();
-
-	auto pModelAnimator = _selectedObject->GetModelAnimator();
-	if (pModelAnimator)
-		pModelAnimator->OnInspectorGUI();
+	//ImGui::Separator();
+	//
+	//auto pCamera = _selectedObject->GetCamera();
+	//if (pCamera)
+	//	pCamera->OnInspectorGUI();
+	//
+	//auto pMeshRenderer = _selectedObject->GetMeshRenderer();
+	//if(pMeshRenderer)
+	//	pMeshRenderer->OnInspectorGUI();
+	//
+	//ImGui::Separator();
+	//
+	//auto pModelRenderer = _selectedObject->GetModelRenderer();
+	//if (pModelRenderer)
+	//	pModelRenderer->OnInspectorGUI();
+	//
+	//auto pModelAnimator = _selectedObject->GetModelAnimator();
+	//if (pModelAnimator)
+	//	pModelAnimator->OnInspectorGUI();
 
 	// 기타 다른 컴포넌트들도 유사한 방식으로 추가...
 	// for (auto& component : _selectedObject->GetComponents()) { ... }

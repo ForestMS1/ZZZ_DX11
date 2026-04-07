@@ -24,7 +24,7 @@ public:
 	void SetPass(uint8 pass) { _pass = pass; }
 
 	//ImGui
-	void OnInspectorGUI();
+	virtual void OnInspectorGUI() override;
 
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) { return nullptr; }
 
