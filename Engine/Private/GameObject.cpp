@@ -116,6 +116,17 @@ HRESULT	GameObject::Render()
 	return S_OK;
 }
 
+void GameObject::SetLifeState(LIFESTATE eLifeState)
+{ 
+	_lifeState = eLifeState;
+	if (_lifeState == LIFESTATE::REMOVE)
+	{
+		for (auto& childTransform : GetTransform()->GetChildrenTransform())
+		{
+			childTransform->GetGameObject()->SetLifeState(_lifeState);
+		}
+	}
+}
 
 shared_ptr<Component> GameObject::GetFixedComponent(ComponentType eType)
 {

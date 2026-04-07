@@ -7,7 +7,7 @@ void TestCamScript::LateUpdate()
 		return;
 
 
-	Vec3 pos = GetTransform()->GetPosition();
+	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 look = GetTransform()->GetLook();
 	Vec3 right = GetTransform()->GetRight();
 	Vec3 up = GetTransform()->GetUp();
@@ -74,5 +74,5 @@ void TestCamScript::LateUpdate()
 
 
 
-	GetTransform()->SetPosition(pos);
+	GetTransform()->SetLocalPosition(pos);
 }

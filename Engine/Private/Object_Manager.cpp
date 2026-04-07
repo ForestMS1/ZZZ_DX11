@@ -60,6 +60,14 @@ void Object_Manager::FixedUpdate()
 	}
 }
 
+void Object_Manager::EndOfFrame()
+{
+	for (auto& pair : _layerMaps[_currentLevelIndex])
+	{
+		pair.second->EndOfFrame();
+	}
+}
+
 HRESULT Object_Manager::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag, uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg)
 {
  	if (nullptr == _layerMaps || iLayerLevelIndex >= _numLevels)
@@ -208,11 +216,11 @@ void Object_Manager::ShowHiearchy()
 			{
 				const wstring& modelKey = *(const wstring*)payload->Data;
 
-				// 1. 새로운 게임오브젝트 생성
+				// 새로운 게임오브젝트 생성
 				auto pNewObj = make_shared<GameObject>(DEVICE, CONTEXT);
 				pNewObj->SetName(modelKey);
 
-				// 2. ModelAnimator 컴포넌트 추가 및 모델 설정
+				// ModelAnimator 컴포넌트 추가 및 모델 설정
 				auto pModel = GAME.GetResource<Model>(modelKey);
 				if (pModel->GetAnimationCount() > 0)
 				{
@@ -224,11 +232,11 @@ void Object_Manager::ShowHiearchy()
 						pNewObj->AddComponent(pAnimator);
 						pNewObj->Initialize();
 
-						// 3. 현재 레이어(pLayer)에 직접 추가
+						// 현재 레이어에 직접 추가
 						pLayer->Add_GameObject(pNewObj);
 					}
 				}
-				else
+				else // 애니메이션이 없는 모델이면 ModelRenderer붙여줌
 				{
 					auto shader = pModel->GetMaterials().front()->GetShader();
 					auto pMeshRenderer = make_shared<ModelRenderer>(shader);
@@ -238,14 +246,13 @@ void Object_Manager::ShowHiearchy()
 						pNewObj->AddComponent(pMeshRenderer);
 						pNewObj->Initialize();
 
-						// 3. 현재 레이어(pLayer)에 직접 추가
+						//현재 레이어에 직접 추가
 						pLayer->Add_GameObject(pNewObj);
 					}
 				}
 			}
 
 			// 레이어 노드 자체를 드롭 타겟으로 설정 (부모 해제 영역)
-
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TRANSFORM_NODE"))
 			{
 				GameObject* draggedObj = *(GameObject**)payload->Data;
@@ -254,23 +261,22 @@ void Object_Manager::ShowHiearchy()
 			}
 			ImGui::EndDragDropTarget();
 		}
-		
-			if (isNodeOpen)
-			{
-				const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
+		if (isNodeOpen)
+		{
+			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
 
-				for (auto& pGameObject : objects)
+			for (auto& pGameObject : objects)
+			{
+				// 최상위 부모(부모가 없는 오브젝트)만 먼저 호출
+				// 자식들은 RenderTransformTree 내에서 재귀적으로 그려짐
+				auto pTransform = pGameObject->GetTransform();
+				if (pTransform && pTransform->HasParent() == false)
 				{
-					// 최상위 부모(부모가 없는 오브젝트)만 먼저 호출합니다.
-					// 자식들은 RenderTransformTree 내에서 재귀적으로 그려집니다.
-					auto pTransform = pGameObject->GetTransform();
-					if (pTransform && pTransform->HasParent() == false)
-					{
-						RenderTransformTree(pGameObject);
-					}
+					RenderTransformTree(pGameObject);
 				}
-				ImGui::TreePop();
 			}
+			ImGui::TreePop();
+		}
 	}
 	ImGui::End();
 }
@@ -286,10 +292,21 @@ void Object_Manager::RenderTransformTree(shared_ptr<GameObject> pGameObject)
 
 	bool isOpen = ImGui::TreeNodeEx((void*)pGameObject.get(), flags, Utils::ToString(pGameObject->GetName()).c_str());
 
+	// --- 우클릭 삭제 로직 추가 ---
+	// BeginPopupContextItem은 바로 직전에 호출된 위젯(TreeNode)을 대상으로 우클릭을 감지
+	if (ImGui::BeginPopupContextItem())
+	{
+		if (ImGui::MenuItem("Delete Object"))
+		{
+			pGameObject->SetLifeState(LIFESTATE::REMOVE);
+		}
+		ImGui::EndPopup();
+	}
+
 	// --- 드래그 소스 (내보내기) ---
 	if (ImGui::BeginDragDropSource())
 	{
-		// 이동시킬 오브젝트의 주소를 보냅니다.
+		// 이동시킬 오브젝트의 주소를 보냄
 		GameObject* pRawPtr = pGameObject.get();
 		ImGui::SetDragDropPayload("TRANSFORM_NODE", &pRawPtr, sizeof(GameObject*));
 
@@ -309,7 +326,7 @@ void Object_Manager::RenderTransformTree(shared_ptr<GameObject> pGameObject)
 			{
 				// 기존 부모에서 제거하고 새로운 부모 설정
 				// 실제 구현 시 pTransform->SetParent() 내부에서 
-				// 기존 부모의 _children 리스트에서도 제거하는 처리가 되어있어야 합니다.
+				// 기존 부모의 _children 리스트에서도 제거하는 처리가 되어있어야 함
 				pTransform->AddChild(draggedObj->GetTransform());
 			}
 		}
@@ -537,7 +554,7 @@ void Object_Manager::ShowInspector()
 
 void Object_Manager::RenderGizmo()
 {
-	// 1. 선택된 오브젝트가 없으면 그릴 필요 없음
+	// 선택된 오브젝트가 없으면 그릴 필요 없음
 	if (_selectedObject == nullptr)
 		return;
 
@@ -584,8 +601,6 @@ void Object_Manager::RenderGizmo()
 	}
 }
 
-
-
 Layer* Object_Manager::Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	if (iLayerLevelIndex >= _numLevels)
@@ -597,7 +612,6 @@ Layer* Object_Manager::Find_Layer(uint32 iLayerLevelIndex, const wstring& strLay
 
 	return iter->second.get();
 }
-
 
 unique_ptr<Object_Manager> Object_Manager::Create(uint32 iNumLevels)
 {

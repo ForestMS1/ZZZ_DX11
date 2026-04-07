@@ -22,6 +22,7 @@ public:
 	void Update();
 	void LateUpdate();
 	void FixedUpdate();
+	void EndOfFrame(); // 오브젝트 삭제, Layer이동, 씬 전환 등 미뤄놨다가 여기서 처리
 
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);

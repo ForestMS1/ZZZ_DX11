@@ -83,9 +83,9 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 
 HRESULT Level_StaticMeshTest::Ready_Layer_Test(const wstring& strLayerTag)
 {
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 	return S_OK;
 }
 

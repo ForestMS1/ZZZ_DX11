@@ -155,7 +155,7 @@ void Resource_Manager::ShowResourceList()
 		if (ImGui::BeginTabItem("Models")) {
 			auto& modelMap = _resources[static_cast<uint8>(ResourceType::MODEL)];
 
-			// 모델용 아이콘이 따로 있다면 그것을 사용하고, 없다면 Mesh 아이콘을 공유합니다.
+			// 모델용 아이콘이 따로 있다면 그것을 사용하고, 없다면 Mesh 아이콘을 공유
 			ImTextureID modelIconID = (ImTextureID)_defaultMeshIcon->GetComPtr().Get();
 
 			float button_size = 64.0f;
@@ -167,16 +167,16 @@ void Resource_Manager::ShowResourceList()
 				ImGui::PushID(i);
 				ImGui::BeginGroup();
 
-				// 1. 버튼을 먼저 그립니다.
+				// 1. 버튼
 				ImGui::ImageButton("##modelIcon", modelIconID, ImVec2(button_size, button_size));
 
-				// 2. 버튼 바로 다음에 드래그 소스 로직을 배치합니다. (클릭 체크문 밖)
+				// 2. 버튼 바로 다음에 드래그 소스 로직을 배치 (클릭 체크문 밖)
 				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
-					// 전달할 데이터: wstring 키값
+					// wstring 키값 전달
 					const wstring& modelKey = pair.first;
 
-					// 주의: wstring 객체 자체의 주소를 보낼 때는 드래그가 끝날 때까지 데이터가 유지되어야 합니다.
-					// 매니저의 맵에 들어있는 pair.first는 안전합니다.
+					// 주의: wstring 객체 자체의 주소를 보낼 때는 드래그가 끝날 때까지 데이터가 유지되어야 함
+					// 매니저의 맵에 들어있는 pair.first는 안전
 					ImGui::SetDragDropPayload("CONTENT_BROWSER_MODEL", &modelKey, sizeof(wstring));
 
 					// 드래그 중 마우스 커서 옆에 보일 미리보기

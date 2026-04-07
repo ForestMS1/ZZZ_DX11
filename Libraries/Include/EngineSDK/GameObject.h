@@ -8,6 +8,7 @@
 
 NS_BEGIN(Engine)
 
+class Layer;
 //class Transform;
 //class MonoBehaviour;
 //
@@ -41,7 +42,7 @@ public:
 
 	// LIFESTATE
 	LIFESTATE GetLifeState() const { return _lifeState; }
-	void	  SetLifeState(LIFESTATE eLifeState) { _lifeState = eLifeState; }
+	void	  SetLifeState(LIFESTATE eLifeState);
 
 	// Component
 	shared_ptr<Component> GetFixedComponent(ComponentType eType);
@@ -59,6 +60,10 @@ public:
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() const { return _name; }
 
+	// ¼Ò¼Ó Layer
+	Layer* GetMyLayer() { return _layer; }
+	void SetMyLayer(Layer* layer) { _layer = layer; }
+
 	const array<shared_ptr<Component>, FIXED_COMPONENT_COUNT>& GetComponents() { return _components; }
 	const vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
 
@@ -72,6 +77,8 @@ protected:
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 
 	wstring _name = L"None_Name";
+
+	Layer* _layer;
 
 public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }

@@ -70,6 +70,8 @@ void GameInstance::Update_Engine()
 	_objectManager->LateUpdate();
 
 	_objectManager->FixedUpdate();
+	
+	_objectManager->EndOfFrame();
 
 	_levelManager->Update();
 }
