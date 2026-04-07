@@ -39,15 +39,21 @@ public:
 private:
 	void CreateDefaultMesh();
 
+	//ImGui
+	void ShowMaterialToInspector(shared_ptr<Material> material);
+	void DrawTextureSlot(const char* label, shared_ptr<Texture> currentTex, std::function<void(shared_ptr<Texture>)> onSetTexture);
+
+
 	template<typename T>
 	ResourceType GetResourceType();
 
 private:
 	wstring _resourcePath;
 
-//ImGui
+// ImGui ¿ë º¯¼ö
 private:
 	shared_ptr<Texture> _defaultMeshIcon;
+	shared_ptr<Material> _selectedMaterial;
 
 private:
 	using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;

@@ -198,7 +198,7 @@ void GameInstance::firstFindCamOn()
 
 void GameInstance::ShowHiearchy()
 {
-	_objectManager->ShowHiearchy();
+	_objectManager->ShowHiearchy(_desc.ppLevelNames);
 }
 
 void GameInstance::ShowInspector()

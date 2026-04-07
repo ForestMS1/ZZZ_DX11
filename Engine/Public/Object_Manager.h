@@ -36,7 +36,7 @@ public:
 
 
 	//ImGui
-	void ShowHiearchy();
+	void ShowHiearchy(const char** levelNames = nullptr);
 	void ShowInspector();
 	void RenderGizmo();
 

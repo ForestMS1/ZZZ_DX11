@@ -211,11 +211,14 @@ bool Object_Manager::isEveryCameraOff()
 	return true;
 }
 
-void Object_Manager::ShowHiearchy()
+void Object_Manager::ShowHiearchy(const char** levelNames)
 {
 	ImGui::Begin("Scene Hierarchy");
 
-	ImGui::Text("Current Level: %d", _currentLevelIndex);
+	if(levelNames == nullptr)
+		ImGui::Text("Current Level: %d", _currentLevelIndex);
+	else
+		ImGui::Text("Current Level: %s", levelNames[_currentLevelIndex]);
 	ImGui::Separator();
 
 	auto& currentLayerMap = _layerMaps[_currentLevelIndex];
@@ -545,29 +548,6 @@ void Object_Manager::ShowInspector()
 			//ImGui::Separator();
 		}
 	}
-
-	//ImGui::Separator();
-	//
-	//auto pCamera = _selectedObject->GetCamera();
-	//if (pCamera)
-	//	pCamera->OnInspectorGUI();
-	//
-	//auto pMeshRenderer = _selectedObject->GetMeshRenderer();
-	//if(pMeshRenderer)
-	//	pMeshRenderer->OnInspectorGUI();
-	//
-	//ImGui::Separator();
-	//
-	//auto pModelRenderer = _selectedObject->GetModelRenderer();
-	//if (pModelRenderer)
-	//	pModelRenderer->OnInspectorGUI();
-	//
-	//auto pModelAnimator = _selectedObject->GetModelAnimator();
-	//if (pModelAnimator)
-	//	pModelAnimator->OnInspectorGUI();
-
-	// 기타 다른 컴포넌트들도 유사한 방식으로 추가...
-	// for (auto& component : _selectedObject->GetComponents()) { ... }
 
 	ImGui::End();
 }

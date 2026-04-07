@@ -6,10 +6,11 @@
 
 namespace Client
 {
-	static const unsigned int		g_iWinSizeX = { 1280 };
-	static const unsigned int		g_iWinSizeY = { 720 };
+	static const unsigned int		g_iWinSizeX = { 1280 }; //1280 //1920
+	static const unsigned int		g_iWinSizeY = { 720 }; //720  //1080
 
 	enum class LEVEL { STATIC, LOADING, LOGO, GAMEPLAY, END };
+	inline const char* LEVEL_NAMES[] = { "STATIC", "LOADING", "LOGO", "GAMEPLAY", "END" };
 }
 
 extern HWND			g_hWnd;

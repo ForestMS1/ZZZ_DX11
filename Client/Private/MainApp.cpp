@@ -28,6 +28,7 @@ HRESULT Client::MainApp::Initialize()
 	EngineDesc.iWinSizeX = g_iWinSizeX;
 	EngineDesc.iWinSizeY = g_iWinSizeY;
 	EngineDesc.iNumLevels = ETOUI(LEVEL::END);
+	EngineDesc.ppLevelNames = LEVEL_NAMES;
 
 	if (FAILED(GameInstance::Get().Initialize_Engine(EngineDesc, _device, _deviceContext)))
 		return E_FAIL;

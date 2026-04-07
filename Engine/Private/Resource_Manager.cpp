@@ -96,6 +96,7 @@ void Resource_Manager::ShowResourceList()
 					if (ImGui::ImageButton("##icon", texID, ImVec2(button_size, button_size)))
 					{
 						// 클릭 시 로직
+						//_selectedMaterial = static_pointer_cast<Material>(pair.second);
 					}
 
 					// 리소스 키(이름) 출력
@@ -227,6 +228,93 @@ void Resource_Manager::CreateDefaultMesh()
 		mesh->CreateSphere();
 		AddResource(L"Sphere", mesh);
 	}
+}
+
+void Resource_Manager::ShowMaterialToInspector(shared_ptr<Material> material)
+{
+	if (material == nullptr) return;
+
+	ImGui::Text("Material Editor");
+	ImGui::Separator();
+
+	// 1. Material Name (Read Only or Rename)
+	char name[256];
+	string rawName = Utils::ToString(material->GetName());
+	strcpy_s(name, rawName.c_str());
+	if (ImGui::InputText("Name", name, 256)) {
+		material->SetName(Utils::ToWString(name));
+	}
+
+	ImGui::Spacing();
+
+	// 2. Shader 설정 (Drag & Drop Target)
+	auto pShader = material->GetShader();
+	string shaderName = pShader ? Utils::ToString(pShader->GetName()) : "None (Drag Shader Here)";
+
+	ImGui::Text("Shader");
+	ImGui::Button(shaderName.c_str(), ImVec2(-1, 0)); // 가로로 꽉 찬 버튼
+
+	// 셰이더 드랍 타겟
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_SHADER")) {
+			const wstring& shaderKey = *(const wstring*)payload->Data;
+			material->SetShader(GetResource<Shader>(shaderKey));
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::Separator();
+
+	// 3. Texture Maps (Diffuse, Normal, Specular)
+	DrawTextureSlot("Diffuse Map", material->GetDiffuseMap(), [&](shared_ptr<Texture> tex) {
+		material->SetDiffuseMap(tex);
+		});
+
+	DrawTextureSlot("Normal Map", material->GetNormalMap(), [&](shared_ptr<Texture> tex) {
+		material->SetNormalMap(tex);
+		});
+
+	DrawTextureSlot("Specular Map", material->GetSpecularMap(), [&](shared_ptr<Texture> tex) {
+		material->SetSpecularMap(tex);
+		});
+
+	// 4. Material Description (색상, 광택 등 수치 조절)
+	ImGui::Spacing();
+	if (ImGui::CollapsingHeader("Material Properties", ImGuiTreeNodeFlags_DefaultOpen)) {
+		auto& desc = material->GetMaterialDesc();
+		ImGui::ColorEdit4("Diffuse Color", (float*)&desc.diffuse);
+		ImGui::ColorEdit4("Ambient Color", (float*)&desc.ambient);
+		ImGui::ColorEdit4("Specular Color", (float*)&desc.specular);
+		ImGui::ColorEdit4("Emissive Color", (float*)&desc.emissive);
+	}
+}
+
+void Resource_Manager::DrawTextureSlot(const char* label, shared_ptr<Texture> currentTex, std::function<void(shared_ptr<Texture>)> onSetTexture)
+{
+	ImGui::Text("%s", label);
+
+	ImTextureID iconID = 0;
+	if (currentTex && currentTex->GetComPtr())
+		iconID = (ImTextureID)currentTex->GetComPtr().Get();
+	else
+		iconID = (ImTextureID)_defaultMeshIcon->GetComPtr().Get(); // 기본 아이콘
+
+	// 텍스처 이미지 버튼 (슬롯 역할)
+	if (ImGui::ImageButton(label, iconID, ImVec2(40, 40))) {
+		// 클릭 시 텍스처 제거 로직 등 추가 가능
+	}
+
+	// 드래그 앤 드랍 받기
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_TEXTURE")) {
+			const wstring& texKey = *(const wstring*)payload->Data;
+			onSetTexture(GetResource<Texture>(texKey));
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+	ImGui::TextUnformatted(currentTex ? Utils::ToString(currentTex->GetName()).c_str() : "None");
 }
 
 
