@@ -7,6 +7,7 @@ namespace Engine
 	enum class LIFESTATE { NONE, AWAKED, STARTED, REMOVE, END };
 
 	enum class RENDERGROUP : uint8 { PRIORITY, NONBLEND, BLEND, UI, END };
+	const std::wstring RENDERGROUP_NAMES[] = { L"PRIORITY", L"NONBLEND", L"BLEND", L"UI", L"END" };
 
 	//// Dynamic 컴포넌트 경우 매 프레임마다 갱신해야하는 컴포넌트 집단
 	//enum COMPONENTID { ID_DYNAMIC, ID_STATIC, ID_END };

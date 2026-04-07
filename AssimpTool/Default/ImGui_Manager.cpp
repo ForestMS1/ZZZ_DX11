@@ -25,6 +25,10 @@ HRESULT ImGui_Manager::Initialize(ComPtr<ID3D11Device>pDevice, ComPtr<ID3D11Devi
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsLight();
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	// 모든 창의 배경 투명도만 조절 (RGBA의 A값 수정)
+	style.Colors[ImGuiCol_WindowBg].w = 0.4f;
 
 	
 	// Setup Platform/Renderer backends

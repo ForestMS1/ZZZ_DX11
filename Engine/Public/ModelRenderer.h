@@ -18,6 +18,9 @@ public:
 	void SetModel(shared_ptr<Model> model);
 	void SetPass(uint8 pass) { _pass = pass; }
 
+	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
+	void SetCurRenderGroup(RENDERGROUP eRenderGroup) { _renderGroup = eRenderGroup; }
+
 	//ImGui
 	virtual void OnInspectorGUI() override;
 
@@ -29,6 +32,8 @@ private:
 
 	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;
+
+	RENDERGROUP _renderGroup = RENDERGROUP::PRIORITY; // 따로 설정 안했으면 PRIORITY
 };
 
 NS_END

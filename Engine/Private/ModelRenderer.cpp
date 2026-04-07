@@ -84,6 +84,22 @@ void ModelRenderer::OnInspectorGUI()
 	{
 		if (_shader)
 		{
+			// RENDERGROUP 순회하면서 이름 가져옴
+			uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
+			if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+			{
+				for (uint8 i = 0; i < renderGroupCount; ++i)
+				{
+					bool isSelected = (static_cast<uint8>(_renderGroup) == i);
+					if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
+					{
+						_renderGroup = static_cast<RENDERGROUP>(i);
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::Separator();
+
 			string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
 			ImGui::Text("Shader:");
 			ImGui::SameLine();

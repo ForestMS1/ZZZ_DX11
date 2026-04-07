@@ -18,8 +18,8 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::Update()
 {
-	//TODO 임시, 렌더그룹변경하자
-	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+	//TODO 임시
+	GAME.Add_RenderObject(_renderGroup, GetGameObject());
 }
 
 HRESULT MeshRenderer::Render()
@@ -66,6 +66,23 @@ void MeshRenderer::OnInspectorGUI()
         }
 
         ImGui::Separator();
+
+		// RENDERGROUP 순회하면서 이름 가져옴
+		uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
+		if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+		{
+			for (uint8 i = 0; i < renderGroupCount; ++i)
+			{
+				bool isSelected = (static_cast<uint8>(_renderGroup) == i);
+				if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
+				{
+					_renderGroup = static_cast<RENDERGROUP>(i);
+				}
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::Separator();
+
 
         // Material 정보
         string matName = _material ? Utils::ToString(_material->GetName()) : "None";

@@ -19,6 +19,9 @@ public:
 	virtual void Update() override;
 	virtual HRESULT Render() override;
 
+	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
+	void SetCurRenderGroup(RENDERGROUP eRenderGroup) { _renderGroup = eRenderGroup; }
+
 	//void RenderInstancing(shared_ptr<class InstancingBuffer>& buffer);
 	//InstanceID GetInstanceID();
 
@@ -33,7 +36,7 @@ private:
 	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;
 
-
+	RENDERGROUP _renderGroup = RENDERGROUP::PRIORITY; // 따로 설정 안했으면 PRIORITY
 };
 
 NS_END

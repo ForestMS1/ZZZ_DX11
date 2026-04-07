@@ -29,7 +29,7 @@ void ModelAnimator::Update()
 		CreateTexture();
 
 	//TODO 임시, 렌더그룹변경하자
-	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+	GAME.Add_RenderObject(_renderGroup, GetGameObject());
 
 	TweenDesc& desc = _tweenDesc;
 
@@ -267,6 +267,22 @@ void ModelAnimator::OnInspectorGUI()
 	if (ImGui::CollapsingHeader("ModelAnimator", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Indent();
+
+		// RENDERGROUP 순회하면서 이름 가져옴
+		uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
+		if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+		{
+			for (uint8 i = 0; i < renderGroupCount; ++i)
+			{
+				bool isSelected = (static_cast<uint8>(_renderGroup) == i);
+				if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
+				{
+					_renderGroup = static_cast<RENDERGROUP>(i);
+				}
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::Separator();
 
 		// --- Shader 정보 ---
 		string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
