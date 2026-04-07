@@ -23,7 +23,11 @@ void CamController::Update()
 
 void CamController::LateUpdate()
 {
-	Vec3 pos = GetTransform()->GetPosition();
+	if (!GetGameObject()->GetCamera()->IsActive())
+		return;
+
+
+	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 look = GetTransform()->GetLook();
 	Vec3 right = GetTransform()->GetRight();
 	Vec3 up = GetTransform()->GetUp();
@@ -90,5 +94,5 @@ void CamController::LateUpdate()
 
 
 
-	GetTransform()->SetPosition(pos);
+	GetTransform()->SetLocalPosition(pos);
 }

@@ -29,6 +29,9 @@ void Object_Manager::BeginFrame()
 {
 	_currentLevelIndex = GameInstance::Get().GetCurrentLevelIndex();
 
+	if (isEveryCameraOff())
+		firstFindCamOn();
+
 	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
 		pair.second->BeginFrame();
@@ -189,6 +192,23 @@ void Object_Manager::firstFindCamOn()
 			}
 		}
 	}
+}
+
+bool Object_Manager::isEveryCameraOff()
+{
+	for (auto& pair : _layerMaps[_currentLevelIndex])
+	{
+		for (auto& gameObject : pair.second->Get_GameObjects())
+		{
+			shared_ptr<Camera> pCam = gameObject->GetCamera();
+			if (pCam)
+			{
+				if(pCam->_isActive == true)
+					return false;
+			}
+		}
+	}
+	return true;
 }
 
 void Object_Manager::ShowHiearchy()

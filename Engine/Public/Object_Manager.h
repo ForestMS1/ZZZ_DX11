@@ -32,6 +32,7 @@ public:
 	shared_ptr<GameObject> Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
 	void DisableCameras();
 	void firstFindCamOn();
+	bool isEveryCameraOff();
 
 
 	//ImGui

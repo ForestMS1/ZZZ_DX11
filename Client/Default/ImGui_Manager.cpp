@@ -44,6 +44,9 @@ void ImGui_Manager::Update()
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGuiDockNodeFlags flags = ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGui::DockSpaceOverViewport(0, viewport, flags);
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 }
 
 void ImGui_Manager::Render()
