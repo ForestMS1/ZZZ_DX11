@@ -2,7 +2,7 @@
 #include "TestSphere.h"
 #include "Transform.h"
 #include "Model.h"
-#include "ModelRenderer.h"
+#include "MeshRenderer.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Shader.h"
@@ -35,12 +35,8 @@ HRESULT TestSphere::Initialize(void* pArg)
 	GameObject::SetName(L"TestSphere");
 	AddComponent(make_shared<TestSphereScript>());
 
-	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");//make_shared<Shader>(L"Test.fx");
-
-	//shared_ptr<Model> model = make_shared<Model>();
-	//model->ReadModel(L"Corin/Corin");
-	//model->ReadMaterial(L"Corin/Corin");
-	shared_ptr<Model> model = GAME.GetResource<Model>(L"CorinModel");
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"EllenModel");
 
 	AddComponent(make_shared<ModelRenderer>(shader));
 	GetModelRenderer()->SetModel(model);

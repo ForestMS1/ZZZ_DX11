@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "ModelRenderer.h"
 #include "TestCam.h"
+#include "TestPlayCam.h"
 #include "Camera.h"
 #include "Level_Loading.h"
 Level_StaticMeshTest::Level_StaticMeshTest(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
@@ -36,7 +37,6 @@ void Level_StaticMeshTest::Update()
 	GAME.ShowInspector();
 	GAME.RenderGizmo();
 
-
 	// 리소스 전부 해제하면서 씬 전환
 	if (GAME.Key_Down(DIK_RETURN))
 		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
@@ -56,11 +56,8 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
 		ETOUI(LEVEL::TESTMESH), strLayerTag)))
 		return E_FAIL;
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
 
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
+	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
 		ETOUI(LEVEL::TESTMESH), strLayerTag)))
 		return E_FAIL;
 

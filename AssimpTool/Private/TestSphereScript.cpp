@@ -19,10 +19,12 @@ void TestSphereScript::Start()
 	//GetGameObject()->AddComponent(make_shared<ModelRenderer>(shader));
 	//GetGameObject()->GetModelRenderer()->SetModel(model);
 
-	//GetTransform()->SetScale(Vec3(1.f));
+	GetTransform()->SetScale(Vec3(1.f));
 }
 
 void TestSphereScript::Update()
 {
 	//GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
+	shared_ptr<GameObject> target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestCorin");
+	GetTransform()->LookAt(target->GetTransform()->GetPosition());
 }

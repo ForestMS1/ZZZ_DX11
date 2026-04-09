@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TestCam.h"
 #include "TestCamScript.h"
+#include "TestPlayCamScript.h"
 
 TestCam::TestCam(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)

@@ -29,7 +29,7 @@ HRESULT TestCorin::Initialize(void* pArg)
 	AddComponent(make_shared<TestCorinScript>());
 
 	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"TweenTest.fx");
-	shared_ptr<Model> model = GAME.GetResource<Model>(L"EllenAnimModel");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"CorinAnimModel");
 	AddComponent(make_shared<ModelAnimator>(shader));
 	GetModelAnimator()->SetModel(model);
 
