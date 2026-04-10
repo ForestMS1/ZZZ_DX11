@@ -246,6 +246,18 @@ const list<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLaye
 	return pLayer->Get_GameObjects();
 }
 
+void Object_Manager::SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	if (_levelSaveLoader)
+		_levelSaveLoader->Save(iLayerLevelIndex, strLayerTag);
+}
+
+void Object_Manager::LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	if (_levelSaveLoader)
+		_levelSaveLoader->Load(iLayerLevelIndex, strLayerTag);
+}
+
 void Object_Manager::ShowHiearchy(const char** levelNames)
 {
 	ImGui::Begin("Scene Hierarchy");

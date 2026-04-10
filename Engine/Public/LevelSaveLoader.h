@@ -21,7 +21,7 @@ struct GameObjectData
 };
 
 
-class LevelSaveLoader
+class ENGINE_DLL LevelSaveLoader
 {
 public:
 	LevelSaveLoader();

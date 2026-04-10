@@ -69,6 +69,10 @@ public:
 
 	// 빈 레이어 만들어서 등록시켜주는 함수
 	HRESULT Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+
+	// Gui 말고 코드레벨에서 Save-Load 가능하도록 인터페이스 열어줌
+	void SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	void LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER

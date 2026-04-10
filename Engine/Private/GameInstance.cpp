@@ -230,6 +230,15 @@ HRESULT GameInstance::Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayer
 {
 	return _objectManager->Add_Layer(iLayerLevelIndex, strLayerTag);
 }
+// Gui 말고 코드레벨에서 Save-Load 가능하도록 인터페이스 열어줌
+void GameInstance::SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	_objectManager->SaveLevel(iLayerLevelIndex, strLayerTag);
+}
+void GameInstance::LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	_objectManager->LoadLevel(iLayerLevelIndex, strLayerTag);
+}
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER

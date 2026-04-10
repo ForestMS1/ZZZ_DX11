@@ -83,18 +83,18 @@ struct UUIDComparer {
 
 void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
 {
-    // 1. 경로 설정 (Save와 동일하게)
+    // 경로 설정 (Save와 동일하게)
     filesystem::path loadPath = filesystem::current_path().parent_path().parent_path() / L"Saved" / L"Levels";
     wstring fileName = L"Level_" + Utils::ToWString(GAME.GetEngineDesc().ppLevelNames[iLevelIndex]).append(L"_").append(strLayerTag).append(L".bin");
     filesystem::path filePath = loadPath / fileName;
 
     if (!filesystem::exists(filePath)) return;
 
-    // 2. 바이너리 읽기 스트림
+    // 바이너리 읽기 스트림
     std::ifstream inFile(filePath, std::ios::binary);
     if (!inFile.is_open()) return;
 
-    // 3. 오브젝트 개수 읽기
+    // 오브젝트 개수 읽기
     uint32_t objCount = 0;
     inFile.read(reinterpret_cast<char*>(&objCount), sizeof(objCount));
 
@@ -152,11 +152,11 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         loadedList.push_back({ newObj, parentId });
     }
 
-    // Pass 2: 부모-자식 관계 연결 (AddChild 방식)
+    // Pass 2: 부모-자식 관계 연결 AddChild 
     for (auto& item : loadedList)
     {
         RPC_STATUS status;
-        // 부모 ID가 Nil이 아니라면 (누군가의 자식이라면)
+        // 부모 ID가 Nil이 아니라면
         if (UuidIsNil(&item.parentId, &status) == FALSE)
         {
             // 내 부모를 맵에서 찾는다

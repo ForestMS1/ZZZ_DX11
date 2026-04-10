@@ -63,7 +63,8 @@ HRESULT Level_StaticMeshTest::Render()
 HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 {
 	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
-
+	//GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
+	
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;

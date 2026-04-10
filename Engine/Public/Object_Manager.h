@@ -41,6 +41,10 @@ public:
 	// 레벨 저장/불러오기를 위해 특정 레벨의 특정Layer의 gameObjectlist 넘겨주는 함수 만듦
 	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
+	// Gui 말고 코드레벨에서 Save-Load 가능하도록 인터페이스 열어줌
+	void SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	void LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+
 
 	//ImGui
 	void ShowHiearchy(const char** levelNames = nullptr);
