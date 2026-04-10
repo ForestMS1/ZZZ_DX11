@@ -2,14 +2,15 @@
 #include "GameObject.h"
 class TestPlayCam : public GameObject
 {
-private:
+public:
 	TestPlayCam(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
+private:
 	TestPlayCam(const TestPlayCam& Prototype);
 public:
 	virtual ~TestPlayCam();
 
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Initialize(void* pArg = nullptr) override;
 
 	virtual HRESULT Render() override;
 

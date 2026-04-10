@@ -12,6 +12,7 @@
 #include "Resource_Manager.h"
 #include "Input_Manager.h"
 #include "Shader.h"
+#include "GameObjectFactory.h"
 
 GameInstance::GameInstance()
 {
@@ -54,6 +55,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 
 	_inputManager = Input_Manager::Create(EngineDesc.hInst, EngineDesc.hWnd);
 	if (nullptr == _inputManager)
+		return E_FAIL;
+
+	_gameObjectFactory = GameObjectFactory::Create();
+	if (nullptr == _gameObjectFactory)
 		return E_FAIL;
 
 	return S_OK;
@@ -210,6 +215,21 @@ void GameInstance::RenderGizmo()
 {
 	_objectManager->RenderGizmo();
 }
+
+const list<shared_ptr<GameObject>>& GameInstance::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	return _objectManager->Get_GameObjects(iLayerLevelIndex, strLayerTag);
+}
+// 프로토타입->클론 없이 바로 레벨에 오브젝트 추가하는 함수
+HRESULT GameInstance::Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring& strLayerTag, shared_ptr<GameObject> pGameObject)
+{
+	return _objectManager->Add_GameObject_toLayerNoClone(iLayerLevelIndex, strLayerTag, pGameObject);
+}
+
+HRESULT GameInstance::Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	return _objectManager->Add_Layer(iLayerLevelIndex, strLayerTag);
+}
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER
@@ -280,6 +300,18 @@ bool GameInstance::Mouse_Down(MOUSEKEYSTATE eMouseState)
 }
 #pragma endregion
 
+#pragma region GAMEOBJECTFACTORY
+void GameInstance::Register(const wstring& className, CreatorFunc func)
+{
+	_gameObjectFactory->Register(className, func);
+}
+
+shared_ptr<GameObject> GameInstance::CreateFromFactory(const wstring& className)
+{
+	return _gameObjectFactory->CreateFromFactory(className);
+}
+#pragma endregion
+
 void GameInstance::SetEngineContext(ImGuiContext* pContext)
 {
 	// DLL 영역의 전역 변수 GImGui를 EXE에서 만든 컨텍스트로 셋팅
@@ -296,6 +328,7 @@ void GameInstance::Release_Engine()
 	_objectManager.reset();
 	_prototypeManager.reset();
 	_resourceManager.reset();
+	_gameObjectFactory.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();
 }

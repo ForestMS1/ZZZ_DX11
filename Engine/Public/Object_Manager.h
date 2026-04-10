@@ -7,6 +7,7 @@
 NS_BEGIN(Engine)
 
 class Layer;
+class LevelSaveLoader;
 
 class ENGINE_DLL Object_Manager final
 {
@@ -24,6 +25,9 @@ public:
 	void FixedUpdate();
 	void EndOfFrame(); // 오브젝트 삭제, Layer이동, 씬 전환 등 미뤄놨다가 여기서 처리
 
+	//일단 레이어만 만들어서 등록할 수 있도록 함수 추가
+	HRESULT Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+
 	HRESULT Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag,
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 	// 프로토타입->클론 없이 바로 레벨에 오브젝트 추가하는 함수
@@ -33,6 +37,9 @@ public:
 	void DisableCameras();
 	void firstFindCamOn();
 	bool isEveryCameraOff();
+
+	// 레벨 저장/불러오기를 위해 특정 레벨의 특정Layer의 gameObjectlist 넘겨주는 함수 만듦
+	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
 
 	//ImGui
@@ -53,6 +60,8 @@ private:
 	// ImGui 용 변수
 	shared_ptr<GameObject> _selectedObject;
 	ImGuizmo::OPERATION _currentOp = ImGuizmo::TRANSLATE;
+	// 저장
+	shared_ptr<LevelSaveLoader> _levelSaveLoader;
 private:
 	// ImGui 용 함수
 	void RenderTransformTree(shared_ptr<GameObject> pGameObject);

@@ -8,6 +8,9 @@
 #include "TestPlayCam.h"
 #include "Camera.h"
 #include "Level_Loading.h"
+
+#include "TestSphere.h"
+#include "SkyBox.h"
 Level_StaticMeshTest::Level_StaticMeshTest(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
 {
@@ -20,12 +23,18 @@ Level_StaticMeshTest::~Level_StaticMeshTest()
 
 HRESULT Level_StaticMeshTest::Initialize()
 {
+	GAME.Register(L"TestCam", [=]()  { auto obj = make_shared<TestCam>(DEVICE, CONTEXT); obj->Initialize(); return obj; } );
+	GAME.Register(L"TestPlayCam", []() {  auto obj = make_shared<TestPlayCam>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+	GAME.Register(L"SkyBox", []() {  auto obj = make_shared<SkyBox>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+	GAME.Register(L"TestCorin", []() { auto obj = make_shared<TestCorin>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+	GAME.Register(L"TestSphere", []() {  auto obj = make_shared<TestSphere>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Test(L"Layer_Test")))
 		return E_FAIL;
-	
+
 
 	return S_OK;
 }
@@ -53,27 +62,32 @@ HRESULT Level_StaticMeshTest::Render()
 
 HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 {
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
+	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
 
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
+	
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
-	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
-		ETOUI(LEVEL::TESTMESH), strLayerTag)))
-		return E_FAIL;
 
 	return S_OK;
 }

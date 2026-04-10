@@ -109,6 +109,12 @@
     <Filter Include="98.Utils\ImGuizmo">
       <UniqueIdentifier>{ce75d19e-fe77-4b6d-9e86-b9ce15c5cb17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.GameObject\Factory">
+      <UniqueIdentifier>{bb5dd68b-e9c1-4e28-bea9-c78ac797f13a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Utils\SaveLoad">
+      <UniqueIdentifier>{dabef8a0-c4be-4ac0-a2a6-44823c4c0203}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -295,6 +301,12 @@
     <ClInclude Include="..\Public\ImZoomSlider.h">
       <Filter>98.Utils\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameObjectFactory.h">
+      <Filter>05.GameObject\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LevelSaveLoader.h">
+      <Filter>98.Utils\SaveLoad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -464,6 +476,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImSequencer.cpp">
       <Filter>98.Utils\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameObjectFactory.cpp">
+      <Filter>05.GameObject\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LevelSaveLoader.cpp">
+      <Filter>98.Utils\SaveLoad</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

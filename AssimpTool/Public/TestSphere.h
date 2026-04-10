@@ -5,8 +5,9 @@ NS_BEGIN(AssimpTool)
 
 class TestSphere : public GameObject
 {
-private:
+public:
 	TestSphere(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
+private:
 	TestSphere(const TestSphere& Prototype);
 
 public:
@@ -14,7 +15,7 @@ public:
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Initialize(void* pArg = nullptr) override;
 
 	//virtual HRESULT Render() override;
 

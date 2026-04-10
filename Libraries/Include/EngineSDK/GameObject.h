@@ -59,6 +59,13 @@ public:
 	//name
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() const { return _name; }
+	void Set_ClassName(const wstring& className) { _className = className; }
+	const wstring& Get_ClassName() const { return _className; } //GetClassName은 define 겹치는게있네
+	//Id
+	UUID GetId() { return _objectId; }
+	void SetId(UUID id) { _objectId = id; }
+	// 클래스
+
 
 	// 소속 Layer
 	Layer* GetMyLayer() { return _layer; }
@@ -77,8 +84,11 @@ protected:
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 
 	wstring _name = L"None_Name";
-
+	// 클래스 이름 (ex : Corin.h/Corin.cpp 면 Corin으로 저장)
+	wstring _className = L"None_ClassName";
 	Layer* _layer;
+
+	UUID _objectId = {};
 
 public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }

@@ -62,6 +62,13 @@ public:
 	void ShowHiearchy();
 	void ShowInspector();
 	void RenderGizmo();
+
+	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	// 프로토타입->클론 없이 바로 레벨에 오브젝트 추가하는 함수
+	HRESULT Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring& strLayerTag, shared_ptr<GameObject> pGameObject);
+
+	// 빈 레이어 만들어서 등록시켜주는 함수
+	HRESULT Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER
@@ -103,6 +110,13 @@ public:
 	bool Mouse_Down(MOUSEKEYSTATE eMouseState);
 #pragma endregion
 
+#pragma region GAMEOBJECTFACTORY
+	using CreatorFunc = std::function<shared_ptr<GameObject>()>;
+	void Register(const wstring& className, CreatorFunc func);
+
+	shared_ptr<GameObject> CreateFromFactory(const wstring& className);
+#pragma endregion
+
 	void SetEngineContext(ImGuiContext* pContext);
 
 private:
@@ -114,6 +128,7 @@ private:
 	unique_ptr<class Renderer> _renderer = { nullptr };
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
+	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
 
 private:
 	ENGINE_DESC _desc;

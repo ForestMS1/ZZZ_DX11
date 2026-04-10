@@ -26,6 +26,7 @@ HRESULT TestCam::Initialize(void* pArg)
 {
 	GameObject::Initialize(pArg);
 	GameObject::SetName(L"TestCam");
+	GameObject::Set_ClassName(L"TestCam");
 	AddComponent(make_shared<Camera>());
 	AddComponent(make_shared<TestCamScript>());
 

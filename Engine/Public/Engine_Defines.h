@@ -61,6 +61,10 @@ using namespace DirectX;
 #include "ImCurveEdit.h"
 #include "GraphEditor.h"
 
+//uuid
+#include <rpc.h>
+#pragma comment(lib, "rpcrt4.lib")
+
 // Libs
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")

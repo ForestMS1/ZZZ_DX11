@@ -3,14 +3,15 @@
 
 class TestCam : public GameObject
 {
-private:
+public:
 	TestCam(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);
+private:
 	TestCam(const TestCam& Prototype);
 public:
 	virtual ~TestCam();
 
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Initialize(void* pArg = nullptr) override;
 
 	virtual HRESULT Render() override;
 

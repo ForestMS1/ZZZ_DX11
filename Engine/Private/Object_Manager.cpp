@@ -4,7 +4,7 @@
 
 #include "GameInstance.h"
 #include "GameObject.h"
-
+#include "LevelSaveLoader.h"
 Object_Manager::Object_Manager()
 {
 
@@ -20,6 +20,8 @@ HRESULT Object_Manager::Initialize(uint32 iNumLevels)
 
 
 	_numLevels = iNumLevels;
+
+	_levelSaveLoader = make_shared<LevelSaveLoader>();
 
 	return S_OK;
 }
@@ -69,6 +71,24 @@ void Object_Manager::EndOfFrame()
 	{
 		pair.second->EndOfFrame();
 	}
+}
+
+HRESULT Object_Manager::Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == _layerMaps || iLayerLevelIndex >= _numLevels)
+		return E_FAIL;
+
+	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	if (pLayer != nullptr)
+		return E_FAIL;
+
+	unique_ptr<Layer> pNewLayer = Layer::Create();
+	if (nullptr == pNewLayer)
+		return E_FAIL;
+
+	_layerMaps[iLayerLevelIndex].emplace(strLayerTag, std::move(pNewLayer));
+
+	return S_OK;
 }
 
 HRESULT Object_Manager::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const wstring& strPrototypeTag, uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg)
@@ -209,6 +229,21 @@ bool Object_Manager::isEveryCameraOff()
 		}
 	}
 	return true;
+}
+
+const list<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+{
+	// 레이어를 찾지 못했을 때 안전하게 반환할 빈 리스트
+	static const list<shared_ptr<GameObject>> emptyList;
+
+	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+	{
+		return emptyList;
+	}
+
+	return pLayer->Get_GameObjects();
 }
 
 void Object_Manager::ShowHiearchy(const char** levelNames)
@@ -373,6 +408,23 @@ void Object_Manager::ShowInspector()
 {
 	ImGui::Begin("Inspector");
 
+	if (ImGui::Button("Level Save"))
+	{
+		for (auto& pair : _layerMaps[_currentLevelIndex])
+		{
+			_levelSaveLoader->Save(_currentLevelIndex, pair.first);
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Level Load"))
+	{
+		for (auto& pair : _layerMaps[_currentLevelIndex])
+		{
+			_levelSaveLoader->Load(_currentLevelIndex, pair.first);
+		}
+	}
+	ImGui::Separator();
+
 	if (_selectedObject == nullptr)
 	{
 		ImGui::TextColored(ImVec4(1, 1, 1, 0.5f), "Select an object to view details.");
@@ -388,6 +440,7 @@ void Object_Manager::ShowInspector()
 	if (ImGui::InputText("Name", buf, 256))
 	{
 		_selectedObject->SetName(Utils::ToWString(buf)); // 수정 시 즉시 반영
+		_selectedObject->Set_ClassName(Utils::ToWString(buf));
 	}
 
 	ImGui::Separator();
