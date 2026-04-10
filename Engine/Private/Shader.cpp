@@ -7,6 +7,16 @@
 Shader::Shader(const wstring& file) : _file(L"..\\..\\Shaders\\" + file)
 	, ResourceBase(ResourceType::SHADER)
 {
+
+}
+
+Shader::~Shader()
+{
+
+}
+
+HRESULT Shader::Initialize(const wstring& file)
+{
 	ResourceBase::SetName(file);
 
 	_initialStateBlock = make_shared<StateBlock>();
@@ -17,11 +27,19 @@ Shader::Shader(const wstring& file) : _file(L"..\\..\\Shaders\\" + file)
 	}
 
 	CreateEffect();
+
+	return S_OK;
 }
 
-Shader::~Shader()
+shared_ptr<Shader> Shader::Create(const wstring& file)
 {
-
+	shared_ptr<Shader> pInstance = shared_ptr<Shader>(new Shader(file));
+	if (FAILED(pInstance->Initialize(file)))
+	{
+		MSG_BOX("Shader Create Failed");
+		return nullptr;
+	}
+	return pInstance;
 }
 
 void Shader::CreateEffect()

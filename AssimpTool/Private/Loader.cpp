@@ -159,13 +159,13 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 	_loadingText = L"셰이더를 로딩 중 입니다.";
-	shared_ptr<Shader> SkyBoxShader = make_shared<Shader>(L"SkyBox.fx");
+	shared_ptr<Shader> SkyBoxShader = Shader::Create(L"SkyBox.fx");
 	GAME.AddResource<Shader>(L"SkyBox.fx", SkyBoxShader);
 
-	shared_ptr<Shader> TweenTestShader = make_shared<Shader>(L"TweenTest.fx");
+	shared_ptr<Shader> TweenTestShader = Shader::Create(L"TweenTest.fx");
 	GAME.AddResource<Shader>(L"TweenTest.fx", TweenTestShader);
 
-	shared_ptr<Shader> TestShader = make_shared<Shader>(L"Test.fx");
+	shared_ptr<Shader> TestShader = Shader::Create(L"Test.fx");
 	GAME.AddResource<Shader>(L"Test.fx", TestShader);
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------

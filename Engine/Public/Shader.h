@@ -19,9 +19,14 @@ class ENGINE_DLL Shader : public ResourceBase
 public:
 	friend struct Pass;
 
-public:
+private:
 	Shader(const wstring& file);
+public:
 	~Shader();
+
+	HRESULT Initialize(const wstring& file);
+public:
+	static shared_ptr<Shader> Create(const wstring& file);
 
 	wstring GetFile() { return _file; }
 	ComPtr<ID3DX11Effect> Effect() { return _shaderDesc.effect; }
