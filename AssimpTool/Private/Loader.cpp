@@ -4,6 +4,7 @@
 #include "Converter.h"
 #include "TestCorin.h"
 #include "TestCam.h"
+#include "TestPlayCam.h"
 #include "TestSphere.h"
 #include "Transform.h"
 #include "SkyBox.h"
@@ -155,30 +156,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
-	// ----------------------------------------------------Model Load--------------------------------------------------------
-	_loadingText = L"모델을 로딩 중 입니다.";
-
-	shared_ptr<Model> CorinModel = make_shared<Model>();
-	CorinModel->ReadModel(L"Corin/Corin");
-	CorinModel->ReadMaterial(L"Corin/Corin");
-	GAME.AddResource<Model>(L"CorinModel", CorinModel);
-
-	shared_ptr<Model> EllenModel = make_shared<Model>();
-	EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
-	EllenModel->ReadMaterial(L"Ellen/Ellen");
-
-	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
-	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
-	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
-	EllenModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
-	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
-	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
-	EllenModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
-	GAME.AddResource<Model>(L"EllenAnimModel", EllenModel);
-
-	// ----------------------------------------------------Model Load--------------------------------------------------------
-
-
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 	_loadingText = L"셰이더를 로딩 중 입니다.";
@@ -214,12 +191,68 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 
 
+	// ----------------------------------------------------Model Load--------------------------------------------------------
+	_loadingText = L"모델을 로딩 중 입니다.";
+
+	// Corin 기본 T자 모델
+	shared_ptr<Model> CorinModel = make_shared<Model>();
+	CorinModel->ReadModelRotatedY180(L"Corin/Corin");
+	CorinModel->ReadMaterial(L"Corin/Corin");
+	CorinModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	GAME.AddResource<Model>(L"CorinModel", CorinModel);
+
+	// Corin 애니메이션 담은 모델
+	shared_ptr<Model> CorinAnimModel = make_shared<Model>();
+	CorinAnimModel->ReadModelRotatedY180(L"Corin/Corin");
+	CorinAnimModel->ReadMaterial(L"Corin/Corin");
+	CorinAnimModel->GetMaterialByIndex(0)->SetShader(TweenTestShader);
+
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run_Start");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_TurnBack");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Idle");
+	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
+
+	// Ellen 기본 T자 모델
+	shared_ptr<Model> EllenModel = make_shared<Model>();
+	EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
+	EllenModel->ReadMaterial(L"Ellen/Ellen");
+	EllenModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	GAME.AddResource<Model>(L"EllenModel", EllenModel);
+
+	// Ellen 애니메이션 담은 모델
+	shared_ptr<Model> EllenAnimModel = make_shared<Model>();
+	EllenAnimModel->ReadModelRotatedY180(L"Ellen/Ellen");
+	EllenAnimModel->ReadMaterial(L"Ellen/Ellen");
+	EllenAnimModel->GetMaterialByIndex(0)->SetShader(TweenTestShader);
+
+	EllenAnimModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start");
+	EllenAnimModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_Start_End");
+	EllenAnimModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk");
+	EllenAnimModel->ReadAnimationRotatedY180NoMove(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Walk_End");
+	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
+	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
+	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
+	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
+
+	// ----------------------------------------------------Model Load--------------------------------------------------------
+
+
+
 	// ----------------------------------------------------GameObject Load--------------------------------------------------------
 	_loadingText = L"객체원형 생성 중 입니다.";
 
 	/* Prototype_GameObject_TestCam */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
 		TestCam::Create(_device, _deviceContext))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_TestPlayCam */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
+		TestPlayCam::Create(_device, _deviceContext))))
 		return E_FAIL;
 
 	/* Prototype_GameObject_TestCorin */

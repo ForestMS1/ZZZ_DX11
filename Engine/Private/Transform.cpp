@@ -40,7 +40,7 @@ void Transform::FixedUpdate()
 {
 }
 
-Vec3 ToEulerAngles(Quaternion q)
+Vec3 Transform::ToEulerAngles(Quaternion q)
 {
 	Vec3 angles;
 
@@ -92,21 +92,54 @@ void Transform::UpdateTransform()
 
 void Transform::SetLocalMatrix(Matrix& localMat)
 {
-	// 1. 내부 로컬 행렬 변수를 전달받은 행렬로 설정
+	// 내부 로컬 행렬 변수를 전달받은 행렬로 설정
 	_matLocal = localMat;
 
-	// 2. 행렬로부터 Scale, Rotation(Quaternion), Translation 성분을 분리(Decompose)
-	// DirectXMath 등을 사용한다고 가정할 때, Decompose 기능을 활용합니다.
+	// 행렬로부터 Scale, Rotation(Quaternion), Translation 성분을 분리(Decompose)
 	Quaternion qRotation;
 	if (_matLocal.Decompose(_localScale, qRotation, _localPosition))
 	{
-		// 3. 쿼터니언 형태의 회전값을 오일러 각(Euler Angles)으로 변환하여 저장
-		// (클래스 멤버 변수가 Vec3 _localRotation이므로 변환이 필요합니다)
+		// 쿼터니언 형태의 회전값을 오일러 각(Euler Angles)으로 변환하여 저장
 		_localRotation = ToEulerAngles(qRotation);
 	}
 
-	// 4. 로컬 정보가 바뀌었으므로 월드 행렬을 다시 계산
+	// 로컬 정보가 바뀌었으므로 월드 행렬을 다시 계산
 	UpdateTransform();
+}
+
+void Transform::Chase(Vec3 targetWorldPos, float offsetLength, float speed)
+{
+	Vec3 worldPos = GetPosition();
+
+	Vec3 forward = targetWorldPos - worldPos;
+	if (forward.LengthSquared() < offsetLength) return;
+	forward.Normalize();
+
+	LookAt(targetWorldPos);
+
+	worldPos += forward * speed * DT;
+
+	SetLocalPosition(worldPos);
+}
+
+void Transform::LookAt(Vec3 targetWorldPos)
+{
+	Vec3 worldPos = GetPosition();
+
+	//  방향 벡터 계산 (타겟 - 현재위치)
+	Vec3 newLook = targetWorldPos - worldPos;
+	if (newLook.LengthSquared() < 0.001f) return;
+	newLook.Normalize();
+
+	Vec3 newRight = ::XMVector3Cross(Vec3(0.f, 1.f, 0.f), newLook);
+	Vec3 newUp = ::XMVector3Cross(newLook, newRight);
+	newRight.Normalize();
+	newUp.Normalize();
+
+
+	SetRight(newRight * GetLocalScale().x);
+	SetUp(newUp * GetLocalScale().y);
+	SetLook(newLook * GetLocalScale().z);
 }
 
 void Transform::SetScale(const Vec3& worldScale)

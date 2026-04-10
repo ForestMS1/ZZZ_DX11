@@ -33,6 +33,10 @@ public:
 	void SetLocalMatrix(Matrix& localMat);
 
 
+	void Chase(Vec3 target, float offsetLength = 0.f, float speed = 1.f);
+	// LookAt
+	void LookAt(Vec3 lookAt);
+
 	// World
 	Vec3 GetScale() { return _scale; }
 	void SetScale(const Vec3& scale);
@@ -59,7 +63,12 @@ public:
 	vector<shared_ptr<Transform>>& GetChildrenTransform() { return _children; }
 	void AddChild(shared_ptr<Transform> pChildTransform) { pChildTransform->SetParent(SHARED_THIS(Transform)); _children.push_back(pChildTransform); }
 
+	static Vec3 ToEulerAngles(Quaternion q);
 
+private:
+	void SetRight(const Vec3& v) { _matWorld.Right(v); }
+	void SetUp(const Vec3& v) { _matWorld.Up(v); }
+	void SetLook(const Vec3& v) { _matWorld.Backward(v); }
 private:
 	Vec3 _localScale = { 1.f, 1.f, 1.f };
 	Vec3 _localRotation = { 0.f, 0.f, 0.f };

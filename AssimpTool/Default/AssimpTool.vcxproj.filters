@@ -154,6 +154,12 @@
     <ClInclude Include="..\Public\SkyBoxScript.h">
       <Filter>02.GameObject\SkyBox\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TestPlayCam.h">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestPlayCamScript.h">
+      <Filter>02.GameObject\Camera\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AssimpTool.ico">
@@ -262,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SkyBoxScript.cpp">
       <Filter>02.GameObject\SkyBox\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestPlayCam.cpp">
+      <Filter>02.GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestPlayCamScript.cpp">
+      <Filter>02.GameObject\Camera\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

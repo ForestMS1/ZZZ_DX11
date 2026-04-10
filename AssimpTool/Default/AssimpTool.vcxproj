@@ -154,6 +154,8 @@
     <ClInclude Include="..\Public\TestCamScript.h" />
     <ClInclude Include="..\Public\TestCorin.h" />
     <ClInclude Include="..\Public\TestCorinScript.h" />
+    <ClInclude Include="..\Public\TestPlayCam.h" />
+    <ClInclude Include="..\Public\TestPlayCamScript.h" />
     <ClInclude Include="..\Public\TestSphere.h" />
     <ClInclude Include="..\Public\TestSphereScript.h" />
     <ClInclude Include="..\Public\ToolApp.h" />
@@ -186,6 +188,8 @@
     <ClCompile Include="..\Private\TestCamScript.cpp" />
     <ClCompile Include="..\Private\TestCorin.cpp" />
     <ClCompile Include="..\Private\TestCorinScript.cpp" />
+    <ClCompile Include="..\Private\TestPlayCam.cpp" />
+    <ClCompile Include="..\Private\TestPlayCamScript.cpp" />
     <ClCompile Include="..\Private\TestSphere.cpp" />
     <ClCompile Include="..\Private\TestSphereScript.cpp" />
     <ClCompile Include="..\Private\tinyxml2.cpp">

@@ -18,11 +18,16 @@ HRESULT Level_Converter::Initialize()
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
-	//shared_ptr<Converter> converter = make_shared<Converter>();
+	shared_ptr<Converter> converter = make_shared<Converter>();
 	//converter->ReadAssetFile(L"Ellen/Avatar_Female_Size02_Ellen_Model.fbx");
 	//converter->ExportMaterialData(L"Ellen/Ellen");
 	//converter->ExportModelData(L"Ellen/Ellen");
 	//converter->ExportAnimationDataAll(L"Ellen");
+
+	//converter->ReadAssetFile(L"VR_1.fbx");
+	//converter->ExportMaterialData(L"VR_1/VR_1");
+	//converter->ExportModelData(L"VR_1/VR_1");
+
 
 	return S_OK;
 }

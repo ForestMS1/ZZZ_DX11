@@ -38,6 +38,7 @@ public:
 	void CameraOn() { GAME.DisableCameras(); _isActive = true; }
 	void CameraOff() { _isActive = false;  GAME.firstFindCamOn(); }
 	bool IsActive() const { return _isActive; }
+
 	
 	//ImGui
 	virtual void OnInspectorGUI() override;
@@ -54,6 +55,7 @@ private:
 
 	ProjectionType _projectionType = ProjectionType::Perspective;
 
+	// Ä«¸Þ¶ó On/Off
 	bool _isActive = false;
 public:
 	static Matrix S_MatView;

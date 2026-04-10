@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "GameInstance.h"
+#include "GameObject.h"
 
 Matrix Camera::S_MatView = Matrix::Identity;
 Matrix Camera::S_MatProjection = Matrix::Identity;
@@ -30,9 +31,12 @@ void Camera::UpdateMatrix()
 	//Vec3 eyePosition = GetTransform()->GetPosition();
 	//Vec3 focusPosition = eyePosition + GetTransform()->GetLook();
 	//Vec3 upDirection = GetTransform()->GetUp();
-	//S_MatView = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+	//
+	//_matView = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+
 
 	_matView = GetTransform()->GetWorldMatrix().Invert();
+
 
 	if(_projectionType == ProjectionType::Perspective)
 		_matProjection = ::XMMatrixPerspectiveFovLH(_fov, _width / _height, _near, _far);
