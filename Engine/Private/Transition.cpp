@@ -22,19 +22,19 @@ bool Transition::CanTransition()
     if (_hasExitTime)
     {
         float curRatio = animator->GetTweenDesc().curr.ratio;
-        if (curRatio < _exitTimeValue) return true;
+        if (curRatio < _exitTimeValue) return false;
     }
 
     //  모든 조건(Condition) 만족 여부 체크
     for (auto& condition : _conditions)
     {
-        if (condition->IsSatisfied(fsm)) return true;
+        if (!condition->IsSatisfied(fsm)) return false;
     }
 
-    return false;
+    return true;
 }
 
-void Transition::Update()
-{
-
-}
+//void Transition::Update()
+//{
+//
+//}
