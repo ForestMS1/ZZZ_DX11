@@ -110,7 +110,7 @@ void AnimFSM::OnInspectorGUI()
     {
         Save("CorinFSM");
     }
-    // 파라미터 확인용 (노드 옆에 띄워두면 편함)
+    // 파라미터 확인용
     if (ImGui::CollapsingHeader("Blackboard", ImGuiTreeNodeFlags_DefaultOpen)) {
         RenderParameters(); 
     }
@@ -242,7 +242,7 @@ void AnimFSM::OnInspectorGUI()
         ImGui::OpenPopup("CreateStateNamePopup");
     }
 
-    // 2. 이름을 입력받는 중간 팝업
+    // 이름을 입력받는 중간 팝업
     if (ImGui::BeginPopup("CreateStateNamePopup"))
     {
         static char newNameBuffer[128] = ""; // 상태 이름 입력 버퍼
@@ -363,7 +363,7 @@ void AnimFSM::Save(const string& fileName)
         stateNode->SetAttribute("Name", Utils::ToString(state->GetName()).c_str());
         stateNode->SetAttribute("ClipName", Utils::ToString(state->GetAnimationClip()->name).c_str());
 
-        // ImNodes 위치 저장 (추가하셨다면)
+        // ImNodes 위치 저장 (추가한다면)
         // stateNode->SetAttribute("PosX", state->GetEditorPos().x);
         // stateNode->SetAttribute("PosY", state->GetEditorPos().y);
 
@@ -387,7 +387,7 @@ void AnimFSM::Save(const string& fileName)
                 condNode->SetAttribute("ParamName", Utils::ToString(condition->_paramName).c_str());
                 condNode->SetAttribute("Mode", static_cast<int>(condition->_mode));
 
-                // RTTI 또는 dynamic_pointer_cast를 이용한 타입별 데이터 저장
+                // 타입별 데이터 저장
                 if (auto floatCond = dynamic_pointer_cast<FloatCondition>(condition))
                 {
                     condNode->SetAttribute("Type", "Float");
@@ -422,7 +422,7 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
     _boolParams.clear();
     _floatParams.clear();
 
-    // 1. Parameters 로드
+    // Parameters 로드
     tinyxml2::XMLElement* paramNode = root->FirstChildElement("Parameters");
     if (paramNode)
     {
@@ -433,7 +433,7 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
             AddFloat(Utils::ToWString(e->Attribute("Name")), e->FloatAttribute("Value"));
     }
 
-    // 2. [Pass 1] 모든 AnimState 생성 (Transition 제외)
+    // [Pass 1] 모든 AnimState 생성 (Transition 제외)
     for (auto* stateNode = root->FirstChildElement("AnimState"); stateNode; stateNode = stateNode->NextSiblingElement("AnimState"))
     {
         wstring stateName = Utils::ToWString(stateNode->Attribute("Name"));
@@ -452,7 +452,7 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
         Add_AnimState(stateName, newState);
     }
 
-    // 3. [Pass 2] Transition 및 Condition 연결
+    // [Pass 2] Transition 및 Condition 연결
     for (auto* stateNode = root->FirstChildElement("AnimState"); stateNode; stateNode = stateNode->NextSiblingElement("AnimState"))
     {
         wstring fromName = Utils::ToWString(stateNode->Attribute("Name"));
@@ -624,7 +624,7 @@ void AnimFSM::DrawStateDetailEditor(shared_ptr<AnimState> state)
 
     ImGui::Separator();
 
-    // 2. Transition 추가 버튼
+    // Transition 추가 버튼
     if (ImGui::Button("Add Transition to..."))
     {
         ImGui::OpenPopup("AddTransitionPopup");
@@ -656,7 +656,7 @@ void AnimFSM::DrawStateDetailEditor(shared_ptr<AnimState> state)
         ImGui::EndPopup();
     }
 
-    // 3. 현재 상태가 가진 Transition 리스트 출력 (삭제/수정용)
+    // 현재 상태가 가진 Transition 리스트 출력 (삭제/수정용)
     ImGui::Spacing();
     ImGui::Text("[ Transitions ]");
 
@@ -702,7 +702,7 @@ void AnimFSM::DrawTransitionDetailEditor(shared_ptr<Transition> trans)
         Utils::ToString(trans->GetToState()->GetName()).c_str());
     ImGui::Separator();
 
-    // 1. 기본 설정
+    // 기본 설정
     float duration = trans->GetTransitionDuration();
     if (ImGui::DragFloat("Transition Duration", &duration, 0.01f, 0.0f, 1.0f))
         trans->SetTransitionDuration(duration);
@@ -713,7 +713,7 @@ void AnimFSM::DrawTransitionDetailEditor(shared_ptr<Transition> trans)
 
     ImGui::Separator();
 
-    // 2. 조건부(Conditions) 편집
+    // 조건부(Conditions) 편집
     ImGui::Text("Conditions");
     if (ImGui::Button("+ Add Condition"))
     {
@@ -787,7 +787,7 @@ void AnimFSM::DrawTransitionDetailEditor(shared_ptr<Transition> trans)
 
 void AnimFSM::RemoveState(int nodeID)
 {
-    // 1. ID(포인터)를 통해 대상 상태 찾기
+    // ID(포인터)를 통해 대상 상태 찾기
     shared_ptr<AnimState> targetState = nullptr;
     wstring targetName = L"";
 
@@ -803,7 +803,7 @@ void AnimFSM::RemoveState(int nodeID)
 
     if (!targetState) return;
 
-    // 2. 다른 모든 상태를 순회하며, 삭제될 상태를 가리키는 트랜지션 제거
+    // 다른 모든 상태를 순회하며, 삭제될 상태를 가리키는 트랜지션 제거
     for (auto& [name, state] : _animStates)
     {
         auto& transitions = state->GetTransitions();
@@ -816,21 +816,21 @@ void AnimFSM::RemoveState(int nodeID)
         );
     }
 
-    // 3. 메인 맵에서 삭제
+    // 메인 맵에서 삭제
     _animStates.erase(targetName);
 
-    // 4. 현재 실행 중인 상태였다면 초기화 (안전을 위해)
+    // 현재 실행 중인 상태였다면 초기화 (안전을 위해)
     if (_curAnimState == targetState)
         _curAnimState = nullptr;
 }
 
 void AnimFSM::RemoveParameter(const wstring& paramName, bool isFloat)
 {
-    // 1. 파라미터 맵에서 제거
+    // 파라미터 맵에서 제거
     if (isFloat) _floatParams.erase(paramName);
     else _boolParams.erase(paramName);
 
-    // 2. 모든 트랜지션을 순회하며 해당 파라미터를 참조하는 조건 삭제
+    // 모든 트랜지션을 순회하며 해당 파라미터를 참조하는 조건 삭제
     for (auto& [name, state] : _animStates)
     {
         for (auto& trans : state->GetTransitions())
