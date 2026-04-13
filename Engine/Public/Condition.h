@@ -4,11 +4,13 @@ NS_BEGIN(Engine)
 
 class AnimFSM;
 
+// 파라미터 비교 종류
 enum class ConditionMode { Equal, Greater, Less, NotEqual };
 
 class ENGINE_DLL Condition 
 {
 public:
+    // FSM에서 불러올 파라미터 이름
     wstring _paramName;
     ConditionMode _mode;
 public:
@@ -30,5 +32,7 @@ public:
 
     virtual bool IsSatisfied(shared_ptr<AnimFSM> fsm) override;
 };
+
+// TODO : Trigger 추가
 
 NS_END

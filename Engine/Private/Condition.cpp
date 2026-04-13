@@ -33,5 +33,6 @@ bool BoolCondition::IsSatisfied(shared_ptr<AnimFSM> fsm)
 {
     bool curBool = fsm->GetBool(_paramName);
 
+    // bool은 ConditionMode에 상관없이 일치하면 true 리턴
     return curBool == _value;
 }
