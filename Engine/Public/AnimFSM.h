@@ -47,7 +47,6 @@ private:
 	void RenderParameters();
 	void DrawStateDetailEditor(shared_ptr<AnimState> state);
 	void HandleLinkCreation();
-	void RenameState(const wstring& oldName, const wstring& newName);
 	void DrawTransitionDetailEditor(shared_ptr<Transition> trans);
 	void RemoveState(int nodeID);
 	void RemoveParameter(const wstring& paramName, bool isFloat);

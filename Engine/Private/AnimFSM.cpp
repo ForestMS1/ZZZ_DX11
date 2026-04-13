@@ -602,14 +602,6 @@ void AnimFSM::DrawStateDetailEditor(shared_ptr<AnimState> state)
     string currentName = Utils::ToString(state->GetName());
     //strcpy_s(nameBuffer, currentName.c_str());
 
-    ImGui::Text("State Name:");
-    ImGui::InputText("##RenameField", currentName.data(), IM_ARRAYSIZE(nameBuffer), ImGuiInputTextFlags_EnterReturnsTrue);
-    ImGui::SameLine();
-    if (ImGui::Button("Apply"))
-    {
-        RenameState(state->GetName(), Utils::ToWString(nameBuffer));
-    }
-
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Edit State: %s", Utils::ToString(state->GetName()).c_str());
@@ -852,19 +844,5 @@ void AnimFSM::RemoveParameter(const wstring& paramName, bool isFloat)
                 conditions.end()
             );
         }
-    }
-}
-void AnimFSM::RenameState(const wstring& oldName, const wstring& newName)
-{
-    if (oldName == newName || newName.empty()) return;
-    if (_animStates.find(newName) != _animStates.end()) return; // 중복 이름 방지
-
-    auto it = _animStates.find(oldName);
-    if (it != _animStates.end())
-    {
-        shared_ptr<AnimState> state = it->second;
-        _animStates.erase(it);           // 기존 키 삭제
-        state->SetName(newName);         // 상태 내부 이름 변경
-        _animStates[newName] = state;    // 새 키로 삽입
     }
 }
