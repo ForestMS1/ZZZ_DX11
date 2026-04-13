@@ -36,7 +36,7 @@ HRESULT TestCube::Initialize(void* pArg)
 	shared_ptr<Material> material = make_shared<Material>();
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 
-	shared_ptr<Shader> shader = make_shared<Shader>(L"Test.fx");
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");//make_shared<Shader>(L"Test.fx");
 
 	material->SetShader(shader);
 	auto texture = GAME.Load<Texture>(L"zzz", L"..\\..\\Resources\\Textures\\zzz.png");

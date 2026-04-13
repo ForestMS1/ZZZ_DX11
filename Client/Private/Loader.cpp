@@ -132,10 +132,15 @@ HRESULT Loader::Loading_For_Logo()
 		int a = 10;
 	}
 	_loadingText = L"셰이더를 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
+
+	shared_ptr<Shader> SkyBoxShader = Shader::Create(L"SkyBox.fx");
+	GAME.AddResource<Shader>(L"SkyBox.fx", SkyBoxShader);
+
+	shared_ptr<Shader> TweenTestShader = Shader::Create(L"TweenTest.fx");
+	GAME.AddResource<Shader>(L"TweenTest.fx", TweenTestShader);
+
+	shared_ptr<Shader> TestShader = Shader::Create(L"Test.fx");
+	GAME.AddResource<Shader>(L"Test.fx", TestShader);
 
 	_loadingText = L"객체원형 생성 중 입니다.";
 	/* Prototype_GameObject_MainCam */
