@@ -39,6 +39,7 @@ HRESULT MeshRenderer::Render()
 	shader->PushTransformData(TransformDesc{ world });
 	
 	// IA
+	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	_mesh->GetVertexBuffer()->PushData();
 	_mesh->GetIndexBuffer()->PushData();
 

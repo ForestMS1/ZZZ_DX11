@@ -83,9 +83,6 @@ void GameInstance::Update_Engine()
 
 HRESULT GameInstance::Draw()
 {
-	// TODO : 나중에 적절한 곳으로 옮겨주자
-	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	if (FAILED(_renderer->Draw()))
 		return E_FAIL;
 

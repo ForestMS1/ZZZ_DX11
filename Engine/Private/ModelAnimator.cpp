@@ -123,6 +123,7 @@ HRESULT ModelAnimator::Render()
 		// BoneIndex
 		_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
 
+		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		mesh->vertexBuffer->PushData();
 		mesh->indexBuffer->PushData();
 
