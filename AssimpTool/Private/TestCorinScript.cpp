@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "TestCorinScript.h"
+#include "AnimFSM.h"
+#include "Transition.h"
 void TestCorinScript::Awake()
 {
 
@@ -11,6 +13,9 @@ void TestCorinScript::Start()
 
 void TestCorinScript::Update()
 {
+	shared_ptr<AnimFSM> fsm = GetGameObject()->GetModelAnimator()->GetFSM();
+	fsm->SetBool(L"isMove", true);
+
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
 	Vec3 right = GetTransform()->GetRight();
@@ -67,6 +72,10 @@ void TestCorinScript::Update()
 		Vec3 rotation = GetTransform()->GetLocalRotation();
 		rotation.y += XM_PI * 0.25f;
 		GetTransform()->SetLocalRotation(rotation);
+	}
+	else
+	{
+		fsm->SetBool(L"isMove", false);
 	}
 
 	GetTransform()->SetPosition(pos);

@@ -60,6 +60,7 @@ using namespace DirectX;
 #include "ImGradient.h"
 #include "ImCurveEdit.h"
 #include "GraphEditor.h"
+#include "imnodes.h"
 
 //uuid
 #include <rpc.h>

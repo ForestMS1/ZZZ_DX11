@@ -45,7 +45,7 @@ public:
 	vector<shared_ptr<ModelAnimation>>& GetAnimations() { return _animations; }
 	shared_ptr<ModelAnimation> GetAnimationByIndex(UINT index) { return (index < 0 || index >= _animations.size()) ? nullptr : _animations[index]; }
 	shared_ptr<ModelAnimation> GetAnimationByName(const wstring& name);
-
+	UINT GetAnimationIndexByName(const wstring& name);
 
 private:
 	void BindCacheInfo();

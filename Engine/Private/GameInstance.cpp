@@ -13,6 +13,7 @@
 #include "Input_Manager.h"
 #include "Shader.h"
 #include "GameObjectFactory.h"
+#include "imnodes.h"
 
 GameInstance::GameInstance()
 {
@@ -318,10 +319,11 @@ shared_ptr<GameObject> GameInstance::CreateFromFactory(const wstring& className)
 }
 #pragma endregion
 
-void GameInstance::SetEngineContext(ImGuiContext* pContext)
+void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext)
 {
 	// DLL 영역의 전역 변수 GImGui를 EXE에서 만든 컨텍스트로 셋팅
 	ImGui::SetCurrentContext(pContext);
+	ImNodes::SetCurrentContext(pNodesContext);
 }
 
 void GameInstance::Release_Engine()

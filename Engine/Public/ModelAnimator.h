@@ -1,7 +1,9 @@
 #pragma once
 #include "Component.h"
-
+#include "AnimFSM.h"
 NS_BEGIN(Engine)
+
+//class AnimFSM;
 
 struct ENGINE_DLL AnimTransform
 {
@@ -21,10 +23,18 @@ public:
 	virtual HRESULT Render() override;
 
 	void SetModel(shared_ptr<Model> model);
+	shared_ptr<Model> GetModel() { return _model; }
 	void SetPass(uint8 pass) { _pass = pass; }
 
 	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
 	void SetCurRenderGroup(RENDERGROUP eRenderGroup) { _renderGroup = eRenderGroup; }
+
+	//AnimFSM Property
+	shared_ptr<AnimFSM> GetFSM() { return _animFSM; }
+	void SetFSM(shared_ptr<AnimFSM> fsm) { _animFSM = fsm; fsm->SetAnimator(SHARED_THIS(ModelAnimator)); }
+	// TweenDesc Property
+	TweenDesc& GetTweenDesc() { return _tweenDesc; }
+	void SetTweenDesc(const TweenDesc& desc) { _tweenDesc = desc; }
 
 	//ImGui
 	virtual void OnInspectorGUI() override;
@@ -43,15 +53,13 @@ private:
 private:
 	KeyframeDesc _keyframeDesc;
 	TweenDesc _tweenDesc;
+	shared_ptr<AnimFSM> _animFSM;
 
 private:
 	shared_ptr<Shader>	_shader;
-
 	uint8 _techniqueIndex = 0;
 	uint8				_pass = 0;
-
 	shared_ptr<Model>	_model;
-
 	RENDERGROUP _renderGroup = RENDERGROUP::PRIORITY; // 따로 설정 안했으면 PRIORITY
 };
 NS_END

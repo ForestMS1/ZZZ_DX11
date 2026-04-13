@@ -527,6 +527,19 @@ shared_ptr<ModelAnimation> Model::GetAnimationByName(const wstring& name)
 	return nullptr;
 }
 
+UINT Model::GetAnimationIndexByName(const wstring& name)
+{
+	for (uint32 i = 0; i < _animations.size(); ++i)
+	{
+		if (_animations[i]->name == name)
+		{
+			return i;
+		}
+	}
+
+	return 0;
+}
+
 void Model::BindCacheInfo()
 {
 	// Mesh¿¡ Material Ä³½Ì

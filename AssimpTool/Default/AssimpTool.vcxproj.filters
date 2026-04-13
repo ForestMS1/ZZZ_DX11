@@ -64,6 +64,9 @@
     <Filter Include="02.GameObject\SkyBox\Scripts">
       <UniqueIdentifier>{7b48be44-2c72-4175-a0d0-915a8cd573e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\ImNodes">
+      <UniqueIdentifier>{4a28afc6-6f80-46fd-9f41-8b52b9c9fe37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -159,6 +162,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\TestPlayCamScript.h">
       <Filter>02.GameObject\Camera\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imnodes.h">
+      <Filter>99.Defines\ImNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imnodes_internal.h">
+      <Filter>99.Defines\ImNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\TestPlayCamScript.cpp">
       <Filter>02.GameObject\Camera\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imnodes.cpp">
+      <Filter>99.Defines\ImNodes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

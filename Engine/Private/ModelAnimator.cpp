@@ -8,7 +8,9 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Transform.h"
-
+#include "AnimFSM.h"
+#include "AnimState.h"
+#include "Transition.h"
 ModelAnimator::ModelAnimator(shared_ptr<Shader> shader)
 	: Component(ComponentType::Animator), _shader(shader)
 {
@@ -33,6 +35,9 @@ void ModelAnimator::Update()
 
 	TweenDesc& desc = _tweenDesc;
 
+	if(_animFSM)
+		_animFSM->Update();
+
 	desc.curr.sumTime += DT;
 	// 현재 애니메이션
 	{
@@ -55,6 +60,9 @@ void ModelAnimator::Update()
 	// 다음 애니메이션이 예약 되어 있다면 
 	if (desc.next.animIndex >= 0)
 	{
+		if (_animFSM)
+			desc.tweenDuration = _animFSM->GetCurTransition()->GetTransitionDuration();
+
 		desc.tweenSumTime += DT;
 		desc.tweenRatio = desc.tweenSumTime / desc.tweenDuration;
 
@@ -63,6 +71,8 @@ void ModelAnimator::Update()
 			// 애니메이션 교체 성공
 			desc.curr = desc.next;
 			desc.ClearNextAnim();
+			if (_animFSM)
+				_animFSM->ChangeState(_animFSM->GetCurTransition()->GetToState()->GetName());
 		}
 		else
 		{
@@ -378,4 +388,6 @@ void ModelAnimator::OnInspectorGUI()
 		ImGui::Unindent();
 	}
 	ImGui::Separator();
+	if (_animFSM)
+		_animFSM->OnInspectorGUI();
 }

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ImGui_Manager.h"
-
+#include "imnodes.h"
 
 ImGui_Manager::ImGui_Manager()
 {
@@ -15,7 +15,8 @@ HRESULT ImGui_Manager::Initialize(ComPtr<ID3D11Device>pDevice, ComPtr<ID3D11Devi
 
 	IMGUI_CHECKVERSION();
 	ImGuiContext* ctx = ImGui::CreateContext();
-	GAME.SetEngineContext(ctx);
+	ImNodesContext* nCtx = ImNodes::CreateContext();
+	GAME.SetEngineContext(ctx, nCtx);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -76,5 +77,6 @@ void ImGui_Manager::Release()
 	ImGui_ImplWin32_Shutdown(); // Win32 플랫폼 사용 시
 
 	// 2. ImGui 컨텍스트 파괴 (메모리 해제)
+	ImNodes::DestroyContext();
 	ImGui::DestroyContext();
 }

@@ -115,6 +115,21 @@
     <Filter Include="98.Utils\SaveLoad">
       <UniqueIdentifier>{dabef8a0-c4be-4ac0-a2a6-44823c4c0203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\ModelAnimator\AnimFSM">
+      <UniqueIdentifier>{50b92b89-2549-45cf-ab8f-170713741722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\ModelAnimator\AnimState">
+      <UniqueIdentifier>{3ff4fa8f-c41a-4bb0-bf81-a678dad13c39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\ModelAnimator\Transition">
+      <UniqueIdentifier>{9796faaf-43a8-4959-a589-7f0e4bbade70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\ModelAnimator\Condition">
+      <UniqueIdentifier>{c2686419-6603-4b89-a9d0-e55542b13c69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Utils\ImNodes">
+      <UniqueIdentifier>{80f8eb96-a274-4dc4-a326-688487e2514a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -307,6 +322,24 @@
     <ClInclude Include="..\Public\LevelSaveLoader.h">
       <Filter>98.Utils\SaveLoad</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AnimFSM.h">
+      <Filter>06.Component\ModelAnimator\AnimFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimState.h">
+      <Filter>06.Component\ModelAnimator\AnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Transition.h">
+      <Filter>06.Component\ModelAnimator\Transition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Condition.h">
+      <Filter>06.Component\ModelAnimator\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imnodes.h">
+      <Filter>98.Utils\ImNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imnodes_internal.h">
+      <Filter>98.Utils\ImNodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -482,6 +515,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\LevelSaveLoader.cpp">
       <Filter>98.Utils\SaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimFSM.cpp">
+      <Filter>06.Component\ModelAnimator\AnimFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimState.cpp">
+      <Filter>06.Component\ModelAnimator\AnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transition.cpp">
+      <Filter>06.Component\ModelAnimator\Transition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Condition.cpp">
+      <Filter>06.Component\ModelAnimator\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imnodes.cpp">
+      <Filter>98.Utils\ImNodes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
