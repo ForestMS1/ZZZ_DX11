@@ -2,6 +2,7 @@
 #include "TestCorinScript.h"
 #include "AnimFSM.h"
 #include "Transition.h"
+#include "AnimState.h"
 void TestCorinScript::Awake()
 {
 
@@ -78,5 +79,6 @@ void TestCorinScript::Update()
 		fsm->SetBool(L"isMove", false);
 	}
 
-	GetTransform()->SetPosition(pos);
+	if (fsm->GetCurAnimState()->GetName().compare(L"Idle"))
+		GetTransform()->SetPosition(pos);
 }
