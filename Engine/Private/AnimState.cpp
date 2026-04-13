@@ -12,10 +12,10 @@ AnimState::~AnimState()
 {
 }
 
-void AnimState::Update()
-{
-
-}
+//void AnimState::Update()
+//{
+//
+//}
 
 void AnimState::SetAnimationClip(shared_ptr<ModelAnimation> animation)
 {
