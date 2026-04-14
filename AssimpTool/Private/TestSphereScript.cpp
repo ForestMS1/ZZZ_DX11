@@ -25,6 +25,6 @@ void TestSphereScript::Start()
 void TestSphereScript::Update()
 {
 	//GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
-	shared_ptr<GameObject> target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestCorin");
-	GetTransform()->LookAt(target->GetTransform()->GetPosition());
+	//shared_ptr<GameObject> target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestCorin");
+	//GetTransform()->LookAt(target->GetTransform()->GetPosition());
 }

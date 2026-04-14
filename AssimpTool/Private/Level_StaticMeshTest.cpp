@@ -47,8 +47,8 @@ void Level_StaticMeshTest::Update()
 	GAME.RenderGizmo();
 
 	// 리소스 전부 해제하면서 씬 전환
-	//if (GAME.Key_Down(DIK_RETURN))
-	//	GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
+	if (GAME.Key_Down(DIK_BACKSPACE))
+		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
 }
 
 HRESULT Level_StaticMeshTest::Render()
@@ -77,9 +77,9 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
 
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+		ETOUI(LEVEL::TESTMESH), strLayerTag)))
+		return E_FAIL;
 
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))

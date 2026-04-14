@@ -37,7 +37,7 @@ HRESULT TestSphere::Initialize(void* pArg)
 	AddComponent(make_shared<TestSphereScript>());
 
 	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
-	shared_ptr<Model> model = GAME.GetResource<Model>(L"EllenModel");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"Stage");
 
 	AddComponent(make_shared<ModelRenderer>(shader));
 	GetModelRenderer()->SetModel(model);
