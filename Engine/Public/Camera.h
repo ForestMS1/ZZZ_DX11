@@ -17,23 +17,30 @@ public:
 	Camera(const Camera& rhs);
 	virtual ~Camera();
 
+public:
+	// 생명주기 함수
 	virtual void Update() override;
 
+	// V, P 갱신
 	void UpdateMatrix();
 
+	// 카메라 세팅값 Set
 	void SetNear(float value) { _near = value; }
 	void SetFar(float value) { _far = value; }
 	void SetFOV(float value) { _fov = value; }
 	void SetWidth(float value) { _width = value; }
 	void SetHeight(float value) { _height = value; }
 
+	// V, P Getter
 	Matrix& GetViewMatrix() { return _matView; }
 	Matrix& GetProjectionMatrix() { return _matProjection; }
 
+	// 투영 방식 Property
 	void SetProjectionType(ProjectionType eType) { _projectionType = eType; }
 	ProjectionType GetProjectionType() const { return _projectionType; }
 
 
+	// 카메라 On/Off
 	friend class Object_Manager;
 	void CameraOn() { GAME.DisableCameras(); _isActive = true; }
 	void CameraOff() { _isActive = false;  GAME.firstFindCamOn(); }

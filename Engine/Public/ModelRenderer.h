@@ -12,12 +12,15 @@ public:
 	ModelRenderer(shared_ptr<Shader> shader);
 	virtual ~ModelRenderer();
 
+	// 생명주기 함수
 	virtual void Update() override;
 	virtual HRESULT Render() override;
 
+	// 그릴 Model Resource를 Set
 	void SetModel(shared_ptr<Model> model);
 	void SetPass(uint8 pass) { _pass = pass; }
 
+	// RenderGroup Property
 	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
 	void SetCurRenderGroup(RENDERGROUP eRenderGroup) { _renderGroup = eRenderGroup; }
 

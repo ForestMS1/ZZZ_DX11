@@ -164,6 +164,13 @@ void ModelAnimator::CreateTexture()
 
 	// Creature Texture
 	{
+		//		     Bone1  Bone2  Bone3 ...  Bone350
+		//	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
+		//  Frame2   [SRT]
+		//  Frame3   [SRT]
+		//	...		 ...
+		//	Frame500 [SRT]
+		//
 		D3D11_TEXTURE2D_DESC desc;
 		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
 		desc.Width = MAX_MODEL_TRANSFORMS * 4;

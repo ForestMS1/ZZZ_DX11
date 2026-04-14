@@ -13,6 +13,13 @@ struct ENGINE_DLL AnimTransform
 	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
 };
 
+//		     Bone1  Bone2  Bone3 ...  Bone350
+//	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
+//  Frame2   [SRT]
+//  Frame3   [SRT]
+//	...		 ...
+//	Frame500 [SRT]
+//
 class ENGINE_DLL ModelAnimator : public Component
 {
 public:

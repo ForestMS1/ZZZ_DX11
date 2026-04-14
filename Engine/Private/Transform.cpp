@@ -195,14 +195,14 @@ void Transform::SetPosition(const Vec3& worldPosition)
 
 void Transform::SetWorldMatrix(Matrix& worldMat)
 {
-	// 1. 전달받은 월드 행렬을 Decompose 하여 월드 기준 Pos, Rot, Scale 추출
+	// 전달받은 월드 행렬을 Decompose 하여 월드 기준 Pos, Rot, Scale 추출
 	Vec3 worldPos, worldScale;
 	Quaternion worldQuat;
 
 	worldMat.Decompose(worldScale, worldQuat, worldPos);
 
 
-	// 2. 부모가 있다면 월드 값을 로컬 값으로 변환
+	// 부모가 있다면 월드 값을 로컬 값으로 변환
 	if (HasParent())
 	{
 		// 부모의 월드 행렬 역행렬 계산
@@ -238,7 +238,7 @@ void Transform::SetWorldMatrix(Matrix& worldMat)
 		_localRotation = ToEulerAngles(worldQuat);
 	}
 
-	// 3. 변경된 로컬 값들을 바탕으로 다시 행렬 전체 업데이트 (자식들까지)
+	// 변경된 로컬 값들을 바탕으로 다시 행렬 전체 업데이트 (자식들까지)
 	UpdateTransform();
 }
 

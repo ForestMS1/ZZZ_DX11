@@ -13,15 +13,17 @@ public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg = nullptr) override;
 
+	// 생명주기 함수
 	virtual void Awake() override;
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void FixedUpdate() override;
 
+	// 월드 행렬을 새로 갱신 (자식들 까지)
 	void UpdateTransform();
 
-	//Local
+	// Local S R T Property (여기서 Local은 부모오브젝트 기준 자신의 좌표를 의미함)
 	Vec3 GetLocalScale() { return _localScale; }
 	void SetLocalScale(const Vec3& localScale) { _localScale = localScale; UpdateTransform(); }
 	Vec3 GetLocalRotation() { return _localRotation; }
@@ -29,6 +31,7 @@ public:
 	Vec3 GetLocalPosition() { return _localPosition; }
 	void SetLocalPosition(const Vec3& localPosition) { _localPosition = localPosition; UpdateTransform(); }
 
+	// Local Matrix Property
 	Matrix GetLocalMatrix() { return _matLocal; }
 	void SetLocalMatrix(Matrix& localMat);
 
@@ -37,7 +40,7 @@ public:
 	// LookAt
 	void LookAt(Vec3 lookAt);
 
-	// World
+	// World S R T(인게임 월드 좌표 기준 의미 (부모오브젝트 상관x))
 	Vec3 GetScale() { return _scale; }
 	void SetScale(const Vec3& scale);
 	Vec3 GetRotation() { return _rotation; }
@@ -45,19 +48,20 @@ public:
 	Vec3 GetPosition() { return _position; }
 	void SetPosition(const Vec3& position);
 
+	// 월드 행렬의 Right, Up, Look
 	Vec3 GetRight() { return _matWorld.Right(); }
 	Vec3 GetUp() { return _matWorld.Up(); }
-	Vec3 GetLook() { return _matWorld.Backward(); }
+	Vec3 GetLook() { return _matWorld.Backward(); } // SimpleMath 좌표계 기준이 오른손 좌표계라서 BackWard
 
+	// 월드 행렬 Property
 	Matrix GetWorldMatrix() { return _matWorld; }
 	void SetWorldMatrix(Matrix& worldMat);
 
 	// 계층
 	bool HasParent() { return _parent.lock() != nullptr; }
-
 	shared_ptr<Transform> GetParentTransform() { return _parent.lock(); }
 
-	//SetParent는 AddChild가 호출하기 위한 용도. 외부에서 사용하지마셈.
+	//SetParent는 AddChild 함수가 호출하기 위한 용도 + nullptr로 부모 해제 용도 (해제 시 _children 벡터에서도 원소 없애는 로직 필요)
 	void SetParent(shared_ptr<Transform> pParentTransform);
 
 	vector<shared_ptr<Transform>>& GetChildrenTransform() { return _children; }

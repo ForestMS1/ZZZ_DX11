@@ -32,6 +32,7 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg = nullptr);
 
+	// 생명주기 함수
 	void	Awake();
 	void	Start();
 	void	Update();
@@ -40,28 +41,29 @@ public:
 
 	virtual HRESULT	Render();
 
-	// LIFESTATE
+	// LIFESTATE Property
 	LIFESTATE GetLifeState() const { return _lifeState; }
 	void	  SetLifeState(LIFESTATE eLifeState);
 
-	// Component
-	shared_ptr<Component> GetFixedComponent(ComponentType eType);
-	shared_ptr<Transform> GetTransform();
+	// Fixed Component Getter
+	shared_ptr<Component>		GetFixedComponent(ComponentType eType);
+	shared_ptr<Transform>		GetTransform();
+	shared_ptr<Camera>			GetCamera();
+	shared_ptr<MeshRenderer>	GetMeshRenderer();
+	shared_ptr<ModelRenderer>	GetModelRenderer();
+	shared_ptr<ModelAnimator>	GetModelAnimator();
 
-	shared_ptr<Camera> GetCamera();
-	shared_ptr<MeshRenderer> GetMeshRenderer();
-	shared_ptr<ModelRenderer> GetModelRenderer();
-	shared_ptr<ModelAnimator> GetModelAnimator();
-
+	// Add Component
 	shared_ptr<Transform> GetOrAddTransform();
 	void AddComponent(shared_ptr<Component> component);
 
-	//name
+	// name
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() const { return _name; }
 	void Set_ClassName(const wstring& className) { _className = className; }
 	const wstring& Get_ClassName() const { return _className; } //GetClassName은 define 겹치는게있네
-	//Id
+
+	// Id
 	UUID GetId() { return _objectId; }
 	void SetId(UUID id) { _objectId = id; }
 	// 클래스
@@ -71,6 +73,7 @@ public:
 	Layer* GetMyLayer() { return _layer; }
 	void SetMyLayer(Layer* layer) { _layer = layer; }
 
+	// ImGui Inspector 정보를 위해 열어둠
 	const array<shared_ptr<Component>, FIXED_COMPONENT_COUNT>& GetComponents() { return _components; }
 	const vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
 
