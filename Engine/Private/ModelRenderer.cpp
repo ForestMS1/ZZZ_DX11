@@ -38,19 +38,30 @@ HRESULT ModelRenderer::Render()
 	//	_shader->PushLightData(lightObj->GetLight()->GetLightDesc());
 
 	//Bones
-	BoneDesc boneDesc;
+	//BoneDesc boneDesc;
+	//
+	//const uint32 boneCount = _model->GetBoneCount();
+	//for (uint32 i = 0; i < boneCount; ++i)
+	//{
+	//	shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
+	//	boneDesc.transforms[i] = bone->transform;
+	//}
+	//_shader->PushBoneData(boneDesc);
 
-	const uint32 boneCount = _model->GetBoneCount();
-	for (uint32 i = 0; i < boneCount; ++i)
-	{
-		shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
-		boneDesc.transforms[i] = bone->transform;
-	}
-	_shader->PushBoneData(boneDesc);
+	// 모델의 월드 행렬의 역행렬 계산
+	Matrix invWorldMat = world.Invert();
+
+	// 2. 카메라 Frustum을 모델의 로컬 공간으로 변환
+	BoundingFrustum localFrustum;
+	Camera::S_Frustum.Transform(localFrustum, invWorldMat);
 
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
 	{
+		// 충돌 검사 (시야 밖에 있다면 통과)
+		if (localFrustum.Contains(mesh->boundingBox) == DirectX::DISJOINT)
+			continue;
+
 		if (mesh->material)
 			mesh->material->Update();
 

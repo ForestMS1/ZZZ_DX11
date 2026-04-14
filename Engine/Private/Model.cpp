@@ -560,6 +560,17 @@ void Model::BindCacheInfo()
 			continue;
 
 		mesh->bone = GetBoneByIndex(mesh->boneIndex);
+
+		if (mesh->geometry != nullptr)
+		{
+			const vector<ModelVertexType>& vertices = mesh->geometry->GetVertices();
+			BoundingBox::CreateFromPoints(
+				mesh->boundingBox,
+				vertices.size(),
+				&vertices[0].position,
+				sizeof(ModelVertexType)
+			);
+		}
 	}
 
 	// Bone 계층 정보 채우기
