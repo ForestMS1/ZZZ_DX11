@@ -20,6 +20,7 @@ public:
 public:
 	// 생명주기 함수
 	virtual void Update() override;
+	virtual void LateUpdate() override;
 
 	// V, P 갱신
 	void UpdateMatrix();
@@ -53,6 +54,7 @@ public:
 private:
 	Matrix _matView = Matrix::Identity;
 	Matrix _matProjection = Matrix::Identity;
+	BoundingFrustum _frustum;
 
 	float _near = 0.1f;
 	float _far = 1000.f;
@@ -67,6 +69,7 @@ private:
 public:
 	static Matrix S_MatView;
 	static Matrix S_MatProjection;
+	static BoundingFrustum S_Frustum;
 
 public:
 	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; }
