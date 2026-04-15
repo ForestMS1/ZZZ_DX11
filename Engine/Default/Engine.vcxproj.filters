@@ -130,6 +130,9 @@
     <Filter Include="98.Utils\ImNodes">
       <UniqueIdentifier>{80f8eb96-a274-4dc4-a326-688487e2514a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\SpriteRenderer">
+      <UniqueIdentifier>{42998e4b-7dda-44ea-b3c9-9e0936dabd31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -340,6 +343,9 @@
     <ClInclude Include="..\Public\imnodes_internal.h">
       <Filter>98.Utils\ImNodes</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SpriteRenderer.h">
+      <Filter>06.Component\SpriteRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -530,6 +536,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\imnodes.cpp">
       <Filter>98.Utils\ImNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SpriteRenderer.cpp">
+      <Filter>06.Component\SpriteRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
