@@ -23,7 +23,7 @@ public:
 
 	// Shader Property
 	shared_ptr<Shader> GetShader() { return _shader; }
-	void SetShader(shared_ptr<Shader> shader) { _shader = shader; _textureEffectBuffer = _shader->GetSRV("sprite"); }
+	void SetShader(shared_ptr<Shader> shader) { _shader = shader; _textureEffectBuffer = _shader->GetSRV("DiffuseMap"); }
 
 	// Speed Property
 	void SetSpeed(float speed) { _speed = speed; }

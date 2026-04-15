@@ -43,7 +43,7 @@ HRESULT TestSphere::Initialize(void* pArg)
 	AddComponent(make_shared<ModelRenderer>(shader));
 	GetModelRenderer()->SetModel(model);*/
 
-	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Sprite.fx");
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
 
 	shared_ptr<SpriteRenderer> spriteRenderer = make_shared<SpriteRenderer>(shader);
 	spriteRenderer->SetSpeed(100.f);

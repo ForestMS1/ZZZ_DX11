@@ -7,7 +7,7 @@ SpriteRenderer::SpriteRenderer(shared_ptr<Shader> shader)
 	: Component(ComponentType::SpriteRenderer)
 	, _shader(shader)
 {
-	_textureEffectBuffer = _shader->GetSRV("sprite");
+	_textureEffectBuffer = _shader->GetSRV("DiffuseMap");
 }
 
 SpriteRenderer::~SpriteRenderer()
@@ -58,6 +58,14 @@ void SpriteRenderer::OnInspectorGUI()
 {
     if (ImGui::CollapsingHeader("SpriteRenderer", ImGuiTreeNodeFlags_DefaultOpen))
     {
+		// Shader
+		string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
+		ImGui::Text("Shader: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), shaderName.c_str());
+
+		ImGui::Separator();
+
         // Mesh
         string meshName = (_mesh != nullptr) ? Utils::ToString(_mesh->GetName()) : "None";
         ImGui::Text("Mesh: %s", meshName.c_str());

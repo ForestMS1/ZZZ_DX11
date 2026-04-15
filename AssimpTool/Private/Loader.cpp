@@ -175,9 +175,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	shared_ptr<Shader> TestShader = Shader::Create(L"Test.fx");
 	GAME.AddResource<Shader>(L"Test.fx", TestShader);
 
-	shared_ptr<Shader> SpriteShader = Shader::Create(L"Sprite.fx");
-	GAME.AddResource<Shader>(L"Sprite.fx", SpriteShader);
-
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 
 
