@@ -114,6 +114,9 @@ HRESULT	GameObject::Render()
 	if (_components[static_cast<uint8>(ComponentType::Animator)])
 		return _components[static_cast<uint8>(ComponentType::Animator)]->Render();
 
+	if (_components[static_cast<uint8>(ComponentType::SpriteRenderer)])
+		return _components[static_cast<uint8>(ComponentType::SpriteRenderer)]->Render();
+
 	return S_OK;
 }
 
@@ -166,6 +169,12 @@ shared_ptr<ModelAnimator> GameObject::GetModelAnimator()
 {
 	shared_ptr<Component> component = GetFixedComponent(ComponentType::Animator);
 	return static_pointer_cast<ModelAnimator>(component);
+}
+
+shared_ptr<SpriteRenderer> GameObject::GetSpriteRenderer()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::SpriteRenderer);
+	return static_pointer_cast<SpriteRenderer>(component);
 }
 
 shared_ptr<Transform> GameObject::GetOrAddTransform()

@@ -2,7 +2,7 @@
 
 Texture2D sprite;
 
-MeshOutput VS(VertexTextureNormalTangent input)
+MeshOutput VS(VertexTextureNormalTangentBlend input)
 {
     MeshOutput output;
     output.position = mul(input.position, W);
@@ -14,7 +14,12 @@ MeshOutput VS(VertexTextureNormalTangent input)
     return output;
 }
 
-float4 PS(MeshOutput input)
+float4 PS(MeshOutput input) : SV_TARGET
 {
     return sprite.Sample(LinearSampler, input.uv);
 }
+
+technique11 T0
+{
+	PASS_VP(P0, VS, PS)
+};

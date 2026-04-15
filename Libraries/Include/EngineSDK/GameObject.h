@@ -5,6 +5,7 @@
 #include "MeshRenderer.h"
 #include "ModelRenderer.h"
 #include "ModelAnimator.h"
+#include "SpriteRenderer.h"
 
 NS_BEGIN(Engine)
 
@@ -52,6 +53,7 @@ public:
 	shared_ptr<MeshRenderer>	GetMeshRenderer();
 	shared_ptr<ModelRenderer>	GetModelRenderer();
 	shared_ptr<ModelAnimator>	GetModelAnimator();
+	shared_ptr<SpriteRenderer>	GetSpriteRenderer();
 
 	// Add Component
 	shared_ptr<Transform> GetOrAddTransform();

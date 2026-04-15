@@ -17,9 +17,19 @@ SpriteRenderer::~SpriteRenderer()
 void SpriteRenderer::Update()
 {
 	GAME.Add_RenderObject(_renderGroup, GetGameObject());
+	if (_mesh == nullptr)
+		_mesh = GAME.GetResource<Mesh>(L"Quad"); // 기본 DefaultMesh
 
-	if (_textures[_curTextureIndex])
-		_textureEffectBuffer->SetResource(_textures[_curTextureIndex]->GetComPtr().Get());
+	if(_play)
+		_curTextureIndex += DT * _speed;
+
+	if (_textures.size() <= (uint32)_curTextureIndex)
+	{
+		if (_loop)
+			_curTextureIndex = 0.f;
+		else
+			_curTextureIndex = _textures.size() - 1;
+	}
 }
 
 HRESULT SpriteRenderer::Render()
@@ -32,6 +42,8 @@ HRESULT SpriteRenderer::Render()
 	auto world = GetTransform()->GetWorldMatrix();
 	_shader->PushTransformData(TransformDesc{ world });
 
+	if (_textures[(uint32)_curTextureIndex])
+		_textureEffectBuffer->SetResource(_textures[(uint32)_curTextureIndex]->GetComPtr().Get());
 
 	//IA
 	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -44,4 +56,54 @@ HRESULT SpriteRenderer::Render()
 
 void SpriteRenderer::OnInspectorGUI()
 {
+    if (ImGui::CollapsingHeader("SpriteRenderer", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        // Mesh
+        string meshName = (_mesh != nullptr) ? Utils::ToString(_mesh->GetName()) : "None";
+        ImGui::Text("Mesh: %s", meshName.c_str());
+
+        ImGui::Separator();
+
+        // Play / Loop
+        ImGui::Checkbox("Play Animation", &_play);
+        ImGui::Checkbox("Looping", &_loop);
+
+        // Speed
+        ImGui::DragFloat("Animation Speed", &_speed, 0.1f, 0.0f, 100.0f);
+
+        // 현재 텍스처 인덱스 및 정보
+        int maxIndex = max(0, (int)_textures.size() - 1);
+        int curIdx = (int)_curTextureIndex;
+
+        if (ImGui::SliderInt("Current Index", &curIdx, 0, maxIndex))
+        {
+            _curTextureIndex = (float)curIdx;
+        }
+
+        // 등록된 텍스처 리스트 보기
+        if (ImGui::TreeNode("Texture List"))
+        {
+            ImGui::Text("Total Count: %d", (int)_textures.size());
+            for (size_t i = 0; i < _textures.size(); ++i)
+            {
+                string label = Utils::ToString(_textures[i]->GetName());
+                ImGui::BulletText("%s", label.c_str());
+            }
+            ImGui::TreePop();
+        }
+
+		uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
+		if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+		{
+			for (uint8 i = 0; i < renderGroupCount; ++i)
+			{
+				bool isSelected = (static_cast<uint8>(_renderGroup) == i);
+				if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
+				{
+					_renderGroup = static_cast<RENDERGROUP>(i);
+				}
+			}
+			ImGui::EndCombo();
+		}
+    }
 }
