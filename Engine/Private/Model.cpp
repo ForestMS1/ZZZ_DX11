@@ -527,6 +527,19 @@ shared_ptr<ModelAnimation> Model::GetAnimationByName(const wstring& name)
 	return nullptr;
 }
 
+UINT Model::GetAnimationIndexByName(const wstring& name)
+{
+	for (uint32 i = 0; i < _animations.size(); ++i)
+	{
+		if (_animations[i]->name == name)
+		{
+			return i;
+		}
+	}
+
+	return 0;
+}
+
 void Model::BindCacheInfo()
 {
 	// Mesh¿¡ Material Ä³½Ì
@@ -547,6 +560,17 @@ void Model::BindCacheInfo()
 			continue;
 
 		mesh->bone = GetBoneByIndex(mesh->boneIndex);
+
+		if (mesh->geometry != nullptr)
+		{
+			const vector<ModelVertexType>& vertices = mesh->geometry->GetVertices();
+			BoundingBox::CreateFromPoints(
+				mesh->boundingBox,
+				vertices.size(),
+				&vertices[0].position,
+				sizeof(ModelVertexType)
+			);
+		}
 	}
 
 	// Bone °èÃþ Á¤º¸ Ã¤¿ì±â

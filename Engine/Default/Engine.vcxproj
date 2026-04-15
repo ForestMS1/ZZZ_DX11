@@ -19,9 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\AnimFSM.h" />
+    <ClInclude Include="..\Public\AnimState.h" />
     <ClInclude Include="..\Public\BindShaderDesc.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Component.h" />
+    <ClInclude Include="..\Public\Condition.h" />
     <ClInclude Include="..\Public\ConstantBuffer.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
@@ -39,6 +42,8 @@
     <ClInclude Include="..\Public\ImCurveEdit.h" />
     <ClInclude Include="..\Public\ImGradient.h" />
     <ClInclude Include="..\Public\ImGuizmo.h" />
+    <ClInclude Include="..\Public\imnodes.h" />
+    <ClInclude Include="..\Public\imnodes_internal.h" />
     <ClInclude Include="..\Public\ImSequencer.h" />
     <ClInclude Include="..\Public\ImZoomSlider.h" />
     <ClInclude Include="..\Public\IndexBuffer.h" />
@@ -65,12 +70,14 @@
     <ClInclude Include="..\Public\Resource_Manager.h" />
     <ClInclude Include="..\Public\Shader.h" />
     <ClInclude Include="..\Public\SimpleMath.h" />
+    <ClInclude Include="..\Public\SpriteRenderer.h" />
     <ClInclude Include="..\Public\Technique.h" />
     <ClInclude Include="..\Public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\tinyxml2.h" />
     <ClInclude Include="..\Public\Transform.h" />
+    <ClInclude Include="..\Public\Transition.h" />
     <ClInclude Include="..\Public\Utils.h" />
     <ClInclude Include="..\Public\VertexBuffer.h" />
     <ClInclude Include="..\Public\VertexData.h" />
@@ -88,9 +95,12 @@
     <None Include="..\Public\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\AnimFSM.cpp" />
+    <ClCompile Include="..\Private\AnimState.cpp" />
     <ClCompile Include="..\Private\BindShaderDesc.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
+    <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\Private\ConstantBuffer.cpp" />
     <ClCompile Include="..\Private\FileUtils.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
@@ -112,6 +122,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Private\ImGuizmo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Private\imnodes.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -143,6 +157,7 @@
     <ClCompile Include="..\Private\Resource_Manager.cpp" />
     <ClCompile Include="..\Private\Shader.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
+    <ClCompile Include="..\Private\SpriteRenderer.cpp" />
     <ClCompile Include="..\Private\Technique.cpp" />
     <ClCompile Include="..\Private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
@@ -152,6 +167,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Private\Transform.cpp" />
+    <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\Utils.cpp" />
     <ClCompile Include="..\Private\VertexBuffer.cpp" />
     <ClCompile Include="..\Private\VertexData.cpp" />

@@ -6,6 +6,7 @@
 
 Matrix Camera::S_MatView = Matrix::Identity;
 Matrix Camera::S_MatProjection = Matrix::Identity;
+BoundingFrustum Camera::S_Frustum;
 
 Camera::Camera()
 	: Component(ComponentType::Camera)
@@ -24,6 +25,15 @@ void Camera::Update()
 	UpdateMatrix();
 
 	//PushGlobalData;
+}
+
+void Camera::LateUpdate()
+{
+	BoundingFrustum::CreateFromMatrix(_frustum, _matProjection);
+	_frustum.Transform(_frustum, _matView.Invert());
+
+	if (_isActive)
+		S_Frustum = _frustum;
 }
 
 void Camera::UpdateMatrix()

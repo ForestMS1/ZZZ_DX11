@@ -39,6 +39,8 @@ using namespace std;
 #include <wrl.h>
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DirectXTex.inl>
+#include "DirectXTK/DDSTextureLoader.h"
+#include "DirectXTK/WICTextureLoader.h"
 using namespace DirectX;
 
 #include <FX11/d3dx11effect.h>
@@ -60,6 +62,7 @@ using namespace DirectX;
 #include "ImGradient.h"
 #include "ImCurveEdit.h"
 #include "GraphEditor.h"
+#include "imnodes.h"
 
 //uuid
 #include <rpc.h>
@@ -71,10 +74,12 @@ using namespace DirectX;
 
 #ifdef _DEBUG
 #pragma comment(lib, "DirectXTex/DirectXTex_debug.lib")
+#pragma comment(lib, "DirectXTK/DirectXTKd.lib")
 #pragma comment(lib, "FX11/Effects11d.lib")
 #pragma comment(lib, "Assimp/assimp-vc143-mtd.lib")
 #else
 #pragma comment(lib, "DirectXTex/DirectXTex.lib")
+#pragma comment(lib, "DirectXTK/DirectXTK.lib")
 #pragma comment(lib, "FX11/Effects11.lib")
 #pragma comment(lib, "Assimp/assimp-vc143-mt.lib")
 #endif

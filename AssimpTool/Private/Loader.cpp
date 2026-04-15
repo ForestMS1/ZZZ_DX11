@@ -8,7 +8,8 @@
 #include "TestSphere.h"
 #include "Transform.h"
 #include "SkyBox.h"
-
+#include "Texture.h"
+#include "SpriteRenderer.h"
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
 	, _deviceContext(pDeviceContext)
@@ -153,6 +154,12 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 	_loadingText = L"텍스쳐를 로딩 중 입니다.";
 
+	for (size_t i = 0; i < 38; ++i)
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/SpriteTest/LogoBack_" + to_wstring(i) + L".png");
+		GAME.AddResource(L"LogoBack_" + to_wstring(i), texture);
+	}
 
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
@@ -237,6 +244,13 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
 	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
+
+	// Stage
+	//shared_ptr<Model> StageModel = make_shared<Model>();
+	//StageModel->ReadModel(L"StageRoot/StageRoot");
+	//StageModel->ReadMaterial(L"StageRoot/StageRoot");
+	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"Stage", StageModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 

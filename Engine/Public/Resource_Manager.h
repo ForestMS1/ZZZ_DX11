@@ -91,6 +91,8 @@ bool Resource_Manager::AddResource(const wstring& key, shared_ptr<T> object)
 	if (findIt != keyObjMap.end())
 		return false;
 
+	// 리소스 키와 이름 동일 화
+	object->SetName(key);
 	keyObjMap[key] = object;
 	return true;
 }

@@ -11,11 +11,14 @@ private:
 public:
     ~GameObjectFactory();
 private:
+    // [클래스 이름], [생성방식]
     map<wstring, CreatorFunc> _creators;
 
 public:
+    // GameObject 생성방식 등록
     void Register(const wstring& className, CreatorFunc func) { _creators[className] = func; }
 
+    // GameObject 찍어낸다.
     shared_ptr<GameObject> CreateFromFactory(const wstring& className);
 
 public:

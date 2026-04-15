@@ -11,14 +11,17 @@ class ENGINE_DLL MeshRenderer : public Component
 public:
 	MeshRenderer();
 	virtual ~MeshRenderer();
-
+public:
+	// Mesh, Material Set
 	void SetMesh(shared_ptr<Mesh> mesh) { _mesh = mesh; }
 	void SetMaterial(shared_ptr<Material> material) { _material = material; }
 	void SetPass(uint8 pass) { _pass = pass; }
 
+	// 생명주기 함수
 	virtual void Update() override;
 	virtual HRESULT Render() override;
 
+	// RenderGroup Property
 	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
 	void SetCurRenderGroup(RENDERGROUP eRenderGroup) { _renderGroup = eRenderGroup; }
 

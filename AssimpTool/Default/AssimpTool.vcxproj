@@ -144,6 +144,8 @@
     <ClInclude Include="..\Public\AssimpTool_Defines.h" />
     <ClInclude Include="..\Public\AsTypes.h" />
     <ClInclude Include="..\Public\Converter.h" />
+    <ClInclude Include="..\Public\imnodes.h" />
+    <ClInclude Include="..\Public\imnodes_internal.h" />
     <ClInclude Include="..\Public\Level_Converter.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_StaticMeshTest.h" />
@@ -177,6 +179,10 @@
   <ItemGroup>
     <ClCompile Include="..\Private\AsTypes.cpp" />
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\imnodes.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Private\Level_Converter.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_StaticMeshTest.cpp" />

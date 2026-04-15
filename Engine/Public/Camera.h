@@ -17,23 +17,31 @@ public:
 	Camera(const Camera& rhs);
 	virtual ~Camera();
 
+public:
+	// 생명주기 함수
 	virtual void Update() override;
+	virtual void LateUpdate() override;
 
+	// V, P 갱신
 	void UpdateMatrix();
 
+	// 카메라 세팅값 Set
 	void SetNear(float value) { _near = value; }
 	void SetFar(float value) { _far = value; }
 	void SetFOV(float value) { _fov = value; }
 	void SetWidth(float value) { _width = value; }
 	void SetHeight(float value) { _height = value; }
 
+	// V, P Getter
 	Matrix& GetViewMatrix() { return _matView; }
 	Matrix& GetProjectionMatrix() { return _matProjection; }
 
+	// 투영 방식 Property
 	void SetProjectionType(ProjectionType eType) { _projectionType = eType; }
 	ProjectionType GetProjectionType() const { return _projectionType; }
 
 
+	// 카메라 On/Off
 	friend class Object_Manager;
 	void CameraOn() { GAME.DisableCameras(); _isActive = true; }
 	void CameraOff() { _isActive = false;  GAME.firstFindCamOn(); }
@@ -46,6 +54,7 @@ public:
 private:
 	Matrix _matView = Matrix::Identity;
 	Matrix _matProjection = Matrix::Identity;
+	BoundingFrustum _frustum;
 
 	float _near = 0.1f;
 	float _far = 1000.f;
@@ -60,6 +69,7 @@ private:
 public:
 	static Matrix S_MatView;
 	static Matrix S_MatProjection;
+	static BoundingFrustum S_Frustum;
 
 public:
 	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; }

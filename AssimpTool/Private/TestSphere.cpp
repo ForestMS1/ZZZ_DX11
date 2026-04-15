@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "TestSphereScript.h"
+#include "SpriteRenderer.h"
 TestSphere::TestSphere(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -36,11 +37,24 @@ HRESULT TestSphere::Initialize(void* pArg)
 	GameObject::Set_ClassName(L"TestSphere");
 	AddComponent(make_shared<TestSphereScript>());
 
-	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
-	shared_ptr<Model> model = GAME.GetResource<Model>(L"EllenModel");
+	/*shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
+	shared_ptr<Model> model = GAME.GetResource<Model>(L"Stage");
 
 	AddComponent(make_shared<ModelRenderer>(shader));
-	GetModelRenderer()->SetModel(model);
+	GetModelRenderer()->SetModel(model);*/
+
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
+
+	shared_ptr<SpriteRenderer> spriteRenderer = make_shared<SpriteRenderer>(shader);
+	spriteRenderer->SetSpeed(100.f);
+	spriteRenderer->SetLoop(true);
+	for (size_t i = 0; i < 38; ++i)
+	{
+		shared_ptr<Texture> texture = GAME.GetResource<Texture>(L"LogoBack_" + to_wstring(i));
+		spriteRenderer->Add_Texture(texture);
+	}
+	AddComponent(spriteRenderer);
+
 
 	GetTransform()->SetScale(Vec3(1.f));
 

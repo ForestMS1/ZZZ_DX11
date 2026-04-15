@@ -121,7 +121,7 @@ public:
 	shared_ptr<GameObject> CreateFromFactory(const wstring& className);
 #pragma endregion
 
-	void SetEngineContext(ImGuiContext* pContext);
+	void SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext = nullptr);
 
 private:
 	unique_ptr<class Graphic_Device> _graphicDevice = { nullptr };

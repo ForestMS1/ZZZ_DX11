@@ -10,12 +10,14 @@ protected:
 public:
 	virtual ~MonoBehaviour();
 
+	// 생명주기 함수
 	virtual void Awake() override {}
 	virtual void Start() override {}
 	virtual void Update() override {}
 	virtual void LateUpdate() override {}
 	virtual void FixedUpdate() override {}
 
+	// ImGui Insperctor 창 정보 
 	virtual void OnInspectorGUI() override {}
 
 public:

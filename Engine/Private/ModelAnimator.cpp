@@ -8,7 +8,9 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Transform.h"
-
+#include "AnimFSM.h"
+#include "AnimState.h"
+#include "Transition.h"
 ModelAnimator::ModelAnimator(shared_ptr<Shader> shader)
 	: Component(ComponentType::Animator), _shader(shader)
 {
@@ -33,6 +35,9 @@ void ModelAnimator::Update()
 
 	TweenDesc& desc = _tweenDesc;
 
+	if(_animFSM)
+		_animFSM->Update();
+
 	desc.curr.sumTime += DT;
 	// 현재 애니메이션
 	{
@@ -55,6 +60,9 @@ void ModelAnimator::Update()
 	// 다음 애니메이션이 예약 되어 있다면 
 	if (desc.next.animIndex >= 0)
 	{
+		if (_animFSM)
+			desc.tweenDuration = _animFSM->GetCurTransition()->GetTransitionDuration();
+
 		desc.tweenSumTime += DT;
 		desc.tweenRatio = desc.tweenSumTime / desc.tweenDuration;
 
@@ -63,6 +71,8 @@ void ModelAnimator::Update()
 			// 애니메이션 교체 성공
 			desc.curr = desc.next;
 			desc.ClearNextAnim();
+			if (_animFSM)
+				_animFSM->ChangeState(_animFSM->GetCurTransition()->GetToState()->GetName());
 		}
 		else
 		{
@@ -113,10 +123,21 @@ HRESULT ModelAnimator::Render()
 		boneDesc.transforms[i] = bone->transform;
 	}
 	_shader->PushBoneData(boneDesc);
+
+	// 모델의 월드 행렬의 역행렬 계산
+	Matrix invWorldMat = world.Invert();
+
+	// 카메라 Frustum을 모델의 로컬 공간으로 변환
+	BoundingFrustum localFrustum;
+	Camera::S_Frustum.Transform(localFrustum, invWorldMat);
 	
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
 	{
+		// 충돌 검사 (시야 밖에 있다면 통과)
+		if (localFrustum.Contains(mesh->boundingBox) == DirectX::DISJOINT)
+			continue;
+
 		if (mesh->material)
 			mesh->material->Update();
 
@@ -154,6 +175,13 @@ void ModelAnimator::CreateTexture()
 
 	// Creature Texture
 	{
+		//		     Bone1  Bone2  Bone3 ...  Bone350
+		//	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
+		//  Frame2   [SRT]
+		//  Frame3   [SRT]
+		//	...		 ...
+		//	Frame500 [SRT]
+		//
 		D3D11_TEXTURE2D_DESC desc;
 		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
 		desc.Width = MAX_MODEL_TRANSFORMS * 4;
@@ -378,4 +406,6 @@ void ModelAnimator::OnInspectorGUI()
 		ImGui::Unindent();
 	}
 	ImGui::Separator();
+	if (_animFSM)
+		_animFSM->OnInspectorGUI();
 }

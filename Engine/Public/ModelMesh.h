@@ -37,6 +37,8 @@ struct ENGINE_DLL ModelMesh
 	//Bones
 	int32 boneIndex;
 	shared_ptr<ModelBone> bone; // Cache
+
+	BoundingBox boundingBox;
 };
 
 
