@@ -53,12 +53,12 @@ public:
 
 private:
 	uint32 _numLevels = { 0 };
-	unique_ptr<map<const wstring, unique_ptr<Layer>>[]> _layerMaps = { nullptr };
-	typedef map<const wstring, unique_ptr<Layer>> LAYERS;
+	unique_ptr<map<const wstring, shared_ptr<Layer>>[]> _layerMaps = { nullptr };
+	typedef map<const wstring, shared_ptr<Layer>> LAYERS;
 	uint32 _currentLevelIndex = { 0 };
 
 private:
-	Layer* Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	shared_ptr<Layer> Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
 private:
 	// ImGui ¿ë º¯¼ö

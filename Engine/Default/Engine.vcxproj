@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\AABBCollider.h" />
     <ClInclude Include="..\Public\AnimFSM.h" />
     <ClInclude Include="..\Public\AnimState.h" />
     <ClInclude Include="..\Public\BindShaderDesc.h" />
     <ClInclude Include="..\Public\Camera.h" />
+    <ClInclude Include="..\Public\Collider.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Condition.h" />
     <ClInclude Include="..\Public\ConstantBuffer.h" />
@@ -95,10 +97,12 @@
     <None Include="..\Public\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\AABBCollider.cpp" />
     <ClCompile Include="..\Private\AnimFSM.cpp" />
     <ClCompile Include="..\Private\AnimState.cpp" />
     <ClCompile Include="..\Private\BindShaderDesc.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
+    <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\Private\ConstantBuffer.cpp" />

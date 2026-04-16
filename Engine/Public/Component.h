@@ -12,6 +12,7 @@ enum class ComponentType : uint8
 	SpriteRenderer,
 	Camera,
 	Animator,
+	Collider,
 	//...
 	Script,
 

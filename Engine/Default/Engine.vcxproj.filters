@@ -133,6 +133,12 @@
     <Filter Include="06.Component\SpriteRenderer">
       <UniqueIdentifier>{42998e4b-7dda-44ea-b3c9-9e0936dabd31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Collider">
+      <UniqueIdentifier>{ae48d101-2119-42a1-8397-acbc994d5ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\Collider\AABB">
+      <UniqueIdentifier>{b1541d2c-be7c-4dbf-9585-0c4b01a93579}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -346,6 +352,12 @@
     <ClInclude Include="..\Public\SpriteRenderer.h">
       <Filter>06.Component\SpriteRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>06.Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AABBCollider.h">
+      <Filter>06.Component\Collider\AABB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -539,6 +551,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SpriteRenderer.cpp">
       <Filter>06.Component\SpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>06.Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AABBCollider.cpp">
+      <Filter>06.Component\Collider\AABB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

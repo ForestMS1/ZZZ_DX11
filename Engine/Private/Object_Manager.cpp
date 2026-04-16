@@ -78,7 +78,7 @@ HRESULT Object_Manager::Add_Layer(uint32 iLayerLevelIndex, const wstring& strLay
 	if (nullptr == _layerMaps || iLayerLevelIndex >= _numLevels)
 		return E_FAIL;
 
-	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	shared_ptr<Layer> pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 	if (pLayer != nullptr)
 		return E_FAIL;
 
@@ -102,7 +102,7 @@ HRESULT Object_Manager::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, cons
 
 	// 현재 객체를 추가하려고 하는 레이어가 없다면
 	// 새로 레이어를 만들어 추가해준다.
-	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	shared_ptr<Layer> pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 	if (nullptr == pLayer)
 	{
 		unique_ptr<Layer> pNewLayer = Layer::Create();
@@ -131,7 +131,7 @@ HRESULT Object_Manager::Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, c
 
 	// 현재 객체를 추가하려고 하는 레이어가 없다면
 	// 새로 레이어를 만들어 추가해준다.
-	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	shared_ptr<Layer> pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 	if (nullptr == pLayer)
 	{
 		unique_ptr<Layer> pNewLayer = Layer::Create();
@@ -174,7 +174,7 @@ void Object_Manager::Clear(uint32 iClearLevelIndex)
 
 shared_ptr<GameObject> Object_Manager::Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName)
 {
-	Layer* pLayer = Find_Layer(_currentLevelIndex, strLayerTag);
+	shared_ptr<Layer> pLayer = Find_Layer(_currentLevelIndex, strLayerTag);
 	for (const auto& gameObject : pLayer->Get_GameObjects())
 	{
 		if (gameObject->GetName() == objName)
@@ -236,7 +236,7 @@ const list<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLaye
 	// 레이어를 찾지 못했을 때 안전하게 반환할 빈 리스트
 	static const list<shared_ptr<GameObject>> emptyList;
 
-	Layer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	shared_ptr<Layer> pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 
 	if (nullptr == pLayer)
 	{
@@ -666,7 +666,7 @@ void Object_Manager::RenderGizmo()
 	}
 }
 
-Layer* Object_Manager::Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+shared_ptr<Layer> Object_Manager::Find_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	if (iLayerLevelIndex >= _numLevels)
 		return nullptr;
@@ -675,7 +675,7 @@ Layer* Object_Manager::Find_Layer(uint32 iLayerLevelIndex, const wstring& strLay
 	if (iter == _layerMaps[iLayerLevelIndex].end())
 		return nullptr;
 
-	return iter->second.get();
+	return iter->second;
 }
 
 unique_ptr<Object_Manager> Object_Manager::Create(uint32 iNumLevels)

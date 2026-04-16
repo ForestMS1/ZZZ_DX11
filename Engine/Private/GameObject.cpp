@@ -177,6 +177,12 @@ shared_ptr<SpriteRenderer> GameObject::GetSpriteRenderer()
 	return static_pointer_cast<SpriteRenderer>(component);
 }
 
+shared_ptr<Collider> GameObject::GetCollider()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::Collider);
+	return static_pointer_cast<Collider>(component);
+}
+
 shared_ptr<Transform> GameObject::GetOrAddTransform()
 {
 	if (nullptr == GetTransform())

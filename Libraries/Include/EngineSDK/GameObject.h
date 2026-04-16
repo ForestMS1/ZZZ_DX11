@@ -6,6 +6,7 @@
 #include "ModelRenderer.h"
 #include "ModelAnimator.h"
 #include "SpriteRenderer.h"
+#include "Collider.h"
 
 NS_BEGIN(Engine)
 
@@ -54,6 +55,7 @@ public:
 	shared_ptr<ModelRenderer>	GetModelRenderer();
 	shared_ptr<ModelAnimator>	GetModelAnimator();
 	shared_ptr<SpriteRenderer>	GetSpriteRenderer();
+	shared_ptr<Collider>		GetCollider();
 
 	// Add Component
 	shared_ptr<Transform> GetOrAddTransform();
