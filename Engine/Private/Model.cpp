@@ -564,6 +564,7 @@ void Model::BindCacheInfo()
 		if (mesh->geometry != nullptr)
 		{
 			const vector<ModelVertexType>& vertices = mesh->geometry->GetVertices();
+			// mesh의 정점들 중 최소,최대값 으로만 단순 상자를 만든다. 메쉬 모양그대로 만드는 거 아님!
 			BoundingBox::CreateFromPoints(
 				mesh->boundingBox,
 				vertices.size(),
