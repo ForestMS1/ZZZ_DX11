@@ -1,64 +1,64 @@
 #include "pch.h"
-#include "AABBCollider.h"
-#include "GameObject.h"
 #include "OBBCollider.h"
+#include "GameObject.h"
+#include "AABBCollider.h"
 #include "SphereCollider.h"
-AABBCollider::AABBCollider()
-	: Collider(ColliderType::AABB)
+OBBCollider::OBBCollider()
+	: Collider(ColliderType::OBB)
 {
 }
 
-AABBCollider::~AABBCollider()
+OBBCollider::~OBBCollider()
 {
 }
 
-void AABBCollider::LateUpdate()
+void OBBCollider::LateUpdate()
 {
-	Vec3 gameObjectPosition = GetGameObject()->GetTransform()->GetLocalPosition();
+	Matrix world = GetGameObject()->GetTransform()->GetWorldMatrix();
 
-	_colliderBox.Center = gameObjectPosition + _offset;
+	Vec3 scale, position;
+	Quaternion quat;
+	world.Decompose(scale, quat, position);
+
+	_colliderBox.Center = position + _offset;
+	_colliderBox.Orientation = quat;
 }
 
-void AABBCollider::FixedUpdate()
+void OBBCollider::FixedUpdate()
 {
+
 }
 
-HRESULT AABBCollider::Render()
+HRESULT OBBCollider::Render()
 {
-	GAME.DrawBox(_colliderBox, _debugColor, Camera::S_MatView, Camera::S_MatProjection);
+	GAME.DrawOrientedBox(_colliderBox, _debugColor, Camera::S_MatView, Camera::S_MatProjection);
 
 	return S_OK;
 }
 
-
-bool AABBCollider::Intersects(Ray& ray, OUT float& distance)
+bool OBBCollider::Intersects(Ray& ray, OUT float& distance)
 {
 	return _colliderBox.Intersects(ray.position, ray.direction, OUT distance);
 }
 
-bool AABBCollider::Intersects(const shared_ptr<Collider> other)
+bool OBBCollider::Intersects(const shared_ptr<Collider> other)
 {
-	ColliderType otherType = other->GetColliderType();
+	ColliderType type = other->GetColliderType();
 
-	switch (otherType)
+	switch (type)
 	{
-	case ColliderType::AABB:
-		return _colliderBox.Intersects(dynamic_pointer_cast<AABBCollider>(other)->GetBoundingBox());
-		break;
-	case ColliderType::OBB:
-		return _colliderBox.Intersects(dynamic_pointer_cast<OBBCollider>(other)->GetBoundingOrientedBox());
-		break;
 	case ColliderType::Sphere:
 		return _colliderBox.Intersects(dynamic_pointer_cast<SphereCollider>(other)->GetBoundingSphere());
-		break;
-	default:
-		break;
+	case ColliderType::AABB:
+		return _colliderBox.Intersects(dynamic_pointer_cast<AABBCollider>(other)->GetBoundingBox());
+	case ColliderType::OBB:
+		return _colliderBox.Intersects(dynamic_pointer_cast<OBBCollider>(other)->GetBoundingOrientedBox());
 	}
 
 	return false;
 }
 
-void AABBCollider::OnInspectorGUI()
+void OBBCollider::OnInspectorGUI()
 {
 	Collider::OnInspectorGUI();
 

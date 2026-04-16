@@ -27,11 +27,17 @@ public:
 	virtual bool Intersects(Ray& ray, OUT float& distance) = 0;
 	virtual bool Intersects(const shared_ptr<Collider> other) = 0;
 
+	// 플레이어 Transform 중심점으로부터 얼마나 떨어진 위치에 _colliderBox의 중심점을 둘 것인가.
+	void SetOffset(Vec3 offset) { _offset = offset; };
+
 	ColliderType GetColliderType() const { return _colliderType; }
 
-private:
-	ColliderType _colliderType = ColliderType::END;
+	virtual void OnInspectorGUI() override;
 
+protected:
+	ColliderType _colliderType = ColliderType::END;
+	Vec3 _offset;
+	XMVECTORF32 _debugColor = Colors::Lime;
 };
 
 NS_END

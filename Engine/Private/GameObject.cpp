@@ -105,18 +105,26 @@ void	GameObject::FixedUpdate()
 
 HRESULT	GameObject::Render()
 {
-	if (_components[static_cast<uint8>(ComponentType::MeshRenderer)])
-		return _components[static_cast<uint8>(ComponentType::MeshRenderer)]->Render();
-
-	if (_components[static_cast<uint8>(ComponentType::ModelRenderer)])
-		return _components[static_cast<uint8>(ComponentType::ModelRenderer)]->Render();
-
-	if (_components[static_cast<uint8>(ComponentType::Animator)])
-		return _components[static_cast<uint8>(ComponentType::Animator)]->Render();
-
-	if (_components[static_cast<uint8>(ComponentType::SpriteRenderer)])
-		return _components[static_cast<uint8>(ComponentType::SpriteRenderer)]->Render();
-
+	for (shared_ptr<Component> component : _components)
+	{
+		if (component)
+		{
+			if(FAILED(component->Render()))
+				return E_FAIL;
+		}
+	}
+	//if (_components[static_cast<uint8>(ComponentType::MeshRenderer)])
+	//	return _components[static_cast<uint8>(ComponentType::MeshRenderer)]->Render();
+	//
+	//if (_components[static_cast<uint8>(ComponentType::ModelRenderer)])
+	//	return _components[static_cast<uint8>(ComponentType::ModelRenderer)]->Render();
+	//
+	//if (_components[static_cast<uint8>(ComponentType::Animator)])
+	//	return _components[static_cast<uint8>(ComponentType::Animator)]->Render();
+	//
+	//if (_components[static_cast<uint8>(ComponentType::SpriteRenderer)])
+	//	return _components[static_cast<uint8>(ComponentType::SpriteRenderer)]->Render();
+	//
 	return S_OK;
 }
 

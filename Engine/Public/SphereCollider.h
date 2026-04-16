@@ -3,14 +3,13 @@
 
 NS_BEGIN(Engine)
 
-class ENGINE_DLL AABBCollider :  public Collider
+class ENGINE_DLL SphereCollider : public Collider
 {
 public:
-	AABBCollider();
-	~AABBCollider();
+	SphereCollider();
+	~SphereCollider();
 
 public:
-
 	virtual void LateUpdate() override;
 	virtual void FixedUpdate() override;
 
@@ -21,16 +20,16 @@ public:
 
 
 	// _colliderBox의 스케일.
-	void SetScale(Vec3 scale) { _colliderBox.Extents = scale; };
+	void SetRadius(float radius) { _colliderSphere.Radius = radius; };
 
-	BoundingBox& GetBoundingBox() { return _colliderBox; }
+	BoundingSphere& GetBoundingSphere() { return _colliderSphere; }
 
 	virtual void OnInspectorGUI() override;
 
 	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; };
 
 private:
-	BoundingBox _colliderBox;
+	BoundingSphere _colliderSphere;
 };
 
 NS_END

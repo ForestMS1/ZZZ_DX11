@@ -15,6 +15,11 @@
 #include "GameObjectFactory.h"
 #include "imnodes.h"
 
+std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> GameInstance::_batch = nullptr;
+std::unique_ptr<DirectX::BasicEffect> GameInstance::_effect = nullptr;
+ComPtr<ID3D11InputLayout> GameInstance::_inputLayout = nullptr;
+
+
 GameInstance::GameInstance()
 {
 }
@@ -61,6 +66,35 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	_gameObjectFactory = GameObjectFactory::Create();
 	if (nullptr == _gameObjectFactory)
 		return E_FAIL;
+
+
+
+	// DebugDraw
+	// static 객체들이 아직 생성되지 않았다면 최초 1회 생성
+	if (_batch == nullptr)
+	{
+		// Batch 생성
+		_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(pOutDeviceContext.Get());
+
+		// Effect 생성 및 설정
+		_effect = std::make_unique<DirectX::BasicEffect>(pOutDevice.Get());
+		_effect->SetVertexColorEnabled(true); // 정점 색상 사용 활성화
+
+		// InputLayout 생성 (BasicEffect의 셰이더 정보와 VertexPositionColor 구조를 연결)
+		void const* shaderByteCode;
+		size_t byteCodeLength;
+		_effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+
+		HRESULT hr = DEVICE->CreateInputLayout(
+			DirectX::VertexPositionColor::InputElements,
+			DirectX::VertexPositionColor::InputElementCount,
+			shaderByteCode,
+			byteCodeLength,
+			_inputLayout.GetAddressOf()
+		);
+
+		assert(SUCCEEDED(hr));
+	}
 
 	return S_OK;
 }
@@ -317,6 +351,93 @@ shared_ptr<GameObject> GameInstance::CreateFromFactory(const wstring& className)
 {
 	return _gameObjectFactory->CreateFromFactory(className);
 }
+
+void GameInstance::DrawBox(const DirectX::BoundingBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
+{
+	_effect->SetView(view);
+	_effect->SetProjection(projection);
+	_effect->SetWorld(world);
+	_graphicDevice->GetDeviceContext()->IASetInputLayout(_inputLayout.Get());
+
+	// 그리기
+	_effect->Apply(_graphicDevice->GetDeviceContext().Get());
+	_batch->Begin();
+
+	// DirectXTK의 내장 Draw 함수 호출
+	DX::Draw(_batch.get(), box, color);
+
+	_batch->End();
+}
+void GameInstance::DrawOrientedBox(const DirectX::BoundingOrientedBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
+{
+	_effect->SetView(view);
+	_effect->SetProjection(projection);
+	_effect->SetWorld(world);
+	_graphicDevice->GetDeviceContext()->IASetInputLayout(_inputLayout.Get());
+
+	// 그리기
+	_effect->Apply(_graphicDevice->GetDeviceContext().Get());
+	_batch->Begin();
+
+	// DirectXTK의 내장 Draw 함수 호출
+	DX::Draw(_batch.get(), box, color);
+
+	_batch->End();
+}
+void GameInstance::DrawSphereBox(const DirectX::BoundingSphere& sphere, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
+{
+	_effect->SetView(view);
+	_effect->SetProjection(projection);
+	_effect->SetWorld(world);
+	_graphicDevice->GetDeviceContext()->IASetInputLayout(_inputLayout.Get());
+
+	// 그리기
+	_effect->Apply(_graphicDevice->GetDeviceContext().Get());
+	_batch->Begin();
+
+	// DirectXTK의 내장 Draw 함수 호출
+	DX::Draw(_batch.get(), sphere, color);
+
+	_batch->End();
+}
+void GameInstance::DrawFrustum(const DirectX::BoundingFrustum& frustum, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
+{
+	_effect->SetView(view);
+	_effect->SetProjection(projection);
+	_effect->SetWorld(world);
+	_graphicDevice->GetDeviceContext()->IASetInputLayout(_inputLayout.Get());
+
+	// 그리기
+	_effect->Apply(_graphicDevice->GetDeviceContext().Get());
+	_batch->Begin();
+
+	// DirectXTK의 내장 Draw 함수 호출
+	DX::Draw(_batch.get(), frustum, color);
+
+	_batch->End();
+}
+
+void GameInstance::DrawRay(const Ray& ray, bool normalize, FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
+{
+	_effect->SetView(view);
+	_effect->SetProjection(projection);
+	_effect->SetWorld(world);
+	_graphicDevice->GetDeviceContext()->IASetInputLayout(_inputLayout.Get());
+
+	// 그리기
+	_effect->Apply(_graphicDevice->GetDeviceContext().Get());
+	_batch->Begin();
+
+	// DirectXTK의 내장 Draw 함수 호출
+	DX::DrawRay(_batch.get(),
+		ray.position,
+		ray.direction,
+		normalize,
+		color);
+
+	_batch->End();
+}
+
 #pragma endregion
 
 void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext)
@@ -328,6 +449,11 @@ void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNod
 
 void GameInstance::Release_Engine()
 {
+	//-------DebugDraw-------
+	_batch.reset();
+	_effect.reset();
+	_inputLayout.Reset();
+	//-----------------------
 	ShaderManager::Clear();
 	_inputManager.reset();
 	_renderer.reset();

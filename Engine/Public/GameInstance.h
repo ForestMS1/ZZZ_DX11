@@ -121,6 +121,14 @@ public:
 	shared_ptr<GameObject> CreateFromFactory(const wstring& className);
 #pragma endregion
 
+#pragma region DEBUGDRAW
+	void DrawBox(const DirectX::BoundingBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
+	void DrawOrientedBox(const DirectX::BoundingOrientedBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
+	void DrawSphereBox(const DirectX::BoundingSphere& sphere, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
+	void DrawFrustum(const DirectX::BoundingFrustum& frustum, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
+	void DrawRay(const Ray& ray, bool normalize, FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
+#pragma endregion
+
 	void SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext = nullptr);
 
 private:
@@ -133,6 +141,13 @@ private:
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
+
+	// Debug Draw
+	// Debug Draw를 위한 도구들
+	// static으로 관리
+	static std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> _batch;
+	static std::unique_ptr<BasicEffect> _effect;
+	static ComPtr<ID3D11InputLayout> _inputLayout;
 
 private:
 	ENGINE_DESC _desc;
