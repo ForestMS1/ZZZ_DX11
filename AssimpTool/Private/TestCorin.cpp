@@ -5,6 +5,7 @@
 #include "AnimState.h"
 #include "Transition.h"
 #include "Condition.h"
+#include "AABBCollider.h"
 TestCorin::TestCorin(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -73,7 +74,8 @@ HRESULT TestCorin::Initialize(void* pArg)
 	animator->SetFSM(fsm);
 	AddComponent(animator);
 
-
+	//shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
+	//AddComponent(collider);
 
 	GetTransform()->SetPosition(Vec3(0, 0, 0));
 	GetTransform()->SetScale(Vec3(1.f));

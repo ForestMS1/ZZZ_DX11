@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "TestSphereScript.h"
 #include "SpriteRenderer.h"
+#include "OBBCollider.h"
 TestSphere::TestSphere(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -54,6 +55,9 @@ HRESULT TestSphere::Initialize(void* pArg)
 		spriteRenderer->Add_Texture(texture);
 	}
 	AddComponent(spriteRenderer);
+
+	shared_ptr<OBBCollider> collider = make_shared<OBBCollider>();
+	AddComponent(collider);
 
 
 	GetTransform()->SetScale(Vec3(1.f));

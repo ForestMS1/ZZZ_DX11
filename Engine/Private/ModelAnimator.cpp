@@ -149,6 +149,7 @@ HRESULT ModelAnimator::Render()
 		mesh->indexBuffer->PushData();
 
 		_shader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
+		//GAME.DrawBox(mesh->boundingBox, Colors::Lime, Camera::S_MatView, Camera::S_MatProjection, world);
 	}
 	return S_OK;
 }

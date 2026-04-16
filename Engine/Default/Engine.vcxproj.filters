@@ -139,6 +139,12 @@
     <Filter Include="06.Component\Collider\AABB">
       <UniqueIdentifier>{b1541d2c-be7c-4dbf-9585-0c4b01a93579}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Collider\OBB">
+      <UniqueIdentifier>{595c2594-1b5c-4430-9d95-2789290b51ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Component\Collider\Sphere">
+      <UniqueIdentifier>{e3231a34-0418-494e-9bed-42dd1a5534de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -358,6 +364,12 @@
     <ClInclude Include="..\Public\AABBCollider.h">
       <Filter>06.Component\Collider\AABB</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\OBBCollider.h">
+      <Filter>06.Component\Collider\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SphereCollider.h">
+      <Filter>06.Component\Collider\Sphere</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -557,6 +569,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\AABBCollider.cpp">
       <Filter>06.Component\Collider\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>98.Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OBBCollider.cpp">
+      <Filter>06.Component\Collider\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SphereCollider.cpp">
+      <Filter>06.Component\Collider\Sphere</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
