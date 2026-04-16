@@ -366,3 +366,5 @@ FodyWeavers.xsd
 Resources/
 Libraries/Lib/EngineSDK/
 Libraries/Include/EngineSDK/
+/Libraries/Lib/EngineSDK/Engine.dll
+/Libraries/Lib/EngineSDK/Engine.lib
