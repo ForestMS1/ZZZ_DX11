@@ -2,6 +2,8 @@
 //
 
 #include "pch.h"
+#include <ShellScalingApi.h>
+#pragma comment(lib, "Shcore.lib")
 #define IDC_CLIENT 109
 #include "framework.h"
 #include "AssimpTool.h"
@@ -38,7 +40,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
+    SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);

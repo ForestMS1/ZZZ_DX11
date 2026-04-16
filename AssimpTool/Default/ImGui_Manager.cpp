@@ -23,10 +23,32 @@ HRESULT ImGui_Manager::Initialize(ComPtr<ID3D11Device>pDevice, ComPtr<ID3D11Devi
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	// 멀티 뷰포트 활성화 (창 밖으로 드래그 가능)
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+	// --- DPI 스케일링 핵심 부분 ---
+
+	// 1. 현재 모니터의 DPI 계산 (기본값 96)
+	float dpi = GetDpiForWindow(hwnd);
+	float scale = dpi / 96.0f;
+
+	// 2. 폰트 스케일링 (폰트 크기에 스케일 곱하기)
+	// 기본 폰트는 스케일링이 안 되므로 외부 폰트(.ttf)를 로드해야 합니다.
+	ImFontConfig fontConfig;
+	fontConfig.SizePixels = 18.0f * scale; // 원하는 기본 크기 * 스케일
+	io.Fonts->AddFontDefault(&fontConfig);
+
+	// 한글을 사용한다면 아래와 같이 로드
+	// io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\malgun.ttf", 18.0f * scale, NULL, io.Fonts->GetGlyphRangesKorean());
+
+	// 3. UI 스타일 스케일링 (버튼, 간격 등)
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.ScaleAllSizes(scale);
+
+	// ----------------------------
+
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsLight();
-	ImGuiStyle& style = ImGui::GetStyle();
+	//ImGuiStyle& style = ImGui::GetStyle();
 
 	// 모든 창의 배경 투명도만 조절 (RGBA의 A값 수정)
 	style.Colors[ImGuiCol_WindowBg].w = 0.4f;
