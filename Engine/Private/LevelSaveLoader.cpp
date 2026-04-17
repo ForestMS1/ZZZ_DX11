@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include <filesystem>
 #include <fstream>
-
 LevelSaveLoader::LevelSaveLoader()
 {
 }
@@ -48,11 +47,22 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         else
             UuidCreateNil(&data.parentId);
 
+        // Transform 데이터 구조체 채우기
         data.transformData.localScale = gameObject->GetTransform()->GetLocalScale();
         data.transformData.localRotation = gameObject->GetTransform()->GetLocalRotation();
         data.transformData.localPosition = gameObject->GetTransform()->GetLocalPosition();
         data.transformData.matLocal = gameObject->GetTransform()->GetLocalMatrix();
         data.transformData.matWorld = gameObject->GetTransform()->GetWorldMatrix();
+
+        // UI 오브젝트라면 UI 위치 저장
+        auto spriteRenderer = gameObject->GetSpriteRenderer();
+        if (spriteRenderer != nullptr && spriteRenderer->IsUI())
+        {
+            data.uiData.x = spriteRenderer->GetUIPosX();
+            data.uiData.y = spriteRenderer->GetUIPosY();
+            data.uiData.width = spriteRenderer->GetUIWidth();
+            data.uiData.height = spriteRenderer->GetUIHeight();
+        }
 
 
         // className 저장 (길이 -> 데이터)
@@ -69,6 +79,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<char*>(&data.objectId), sizeof(UUID));
         outFile.write(reinterpret_cast<char*>(&data.parentId), sizeof(UUID));
         outFile.write(reinterpret_cast<char*>(&data.transformData), sizeof(TransformData));
+        outFile.write(reinterpret_cast<char*>(&data.uiData), sizeof(UIData));
     }
 
     outFile.close();
@@ -125,9 +136,11 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         // 고정 데이터(ID, Transform) 읽기
         UUID objId, parentId;
         TransformData tData;
+        UIData uData;
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&tData), sizeof(TransformData));
+        inFile.read(reinterpret_cast<char*>(&uData), sizeof(UIData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -143,6 +156,16 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         transform->SetLocalScale(tData.localScale);
         transform->SetLocalRotation(tData.localRotation);
         transform->SetLocalPosition(tData.localPosition);
+
+        auto spriteRenderer = newObj->GetSpriteRenderer();
+        if (spriteRenderer != nullptr)
+        {
+            spriteRenderer->SetUI(true);
+            spriteRenderer->SetUIPosX(uData.x);
+            spriteRenderer->SetUIPosY(uData.y);
+            spriteRenderer->SetUIWidth(uData.width);
+            spriteRenderer->SetUIHeight(uData.height);
+        }
 
         // 리스트에 추가 (레이어 등록)
         GAME.Add_GameObject_toLayerNoClone(iLevelIndex, strLayerTag, newObj);

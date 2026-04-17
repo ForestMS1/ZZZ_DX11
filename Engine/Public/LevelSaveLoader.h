@@ -11,6 +11,14 @@ struct TransformData
 	Matrix matWorld;
 };
 
+struct UIData
+{
+	float x = 0.f;
+	float y = 0.f;
+	float width = 0.f;
+	float height = 0.f;
+};
+
 struct GameObjectData
 {
 	char className[64];
@@ -18,6 +26,7 @@ struct GameObjectData
 	UUID objectId; // 본인의 id
 	UUID parentId; // 부모가 없으면 -1
 	TransformData transformData;
+	UIData uiData;
 };
 
 
