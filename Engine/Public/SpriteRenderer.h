@@ -13,6 +13,7 @@ public:
 public:
 
 	// 생명주기 함수
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual HRESULT Render() override;
 
@@ -37,6 +38,22 @@ public:
 	bool IsLoop() { return _loop; }
 	void SetLoop(bool loop) { _loop = loop; }
 
+	// UI ProPerty
+	bool IsUI() { return _ui; }
+	void SetUI(bool ui) { _ui = ui; }
+
+	// UI Pos Property
+	void SetUIPosX(float x) { _x = x; }
+	void SetUIPosY(float y) { _y = y; }
+	float GetUIPosX() const { return _x; }
+	float GetUIPosY() const { return _y; }
+
+	// UI Scale Property
+	void SetUIWidth(float width) { _width = width; }
+	void SetUIHeight(float height) { _height = height; }
+	float GetUIWidth() const { return _width; }
+	float GetUIHeight() const { return _height; }
+
 	// ImGUI
 	virtual void OnInspectorGUI() override;
 
@@ -60,6 +77,18 @@ private:
 	bool _loop = false;
 	// 재생 여부
 	bool _play = true;
+	// UI 오브젝트라면 CHECK
+	bool _ui = true;
+
+	// UI용 멤버변수
+private:
+	float _x = 0.f;
+	float _y = 0.f;
+	float _width = 0.f;
+	float _height = 0.f;
+	float _viewX = 0.f;
+	float _viewY = 0.f;
+	Matrix _uiProj;
 };
 
 NS_END

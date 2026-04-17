@@ -3,20 +3,33 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "Texture.h"
+#include "GameObject.h"
 SpriteRenderer::SpriteRenderer(shared_ptr<Shader> shader)
 	: Component(ComponentType::SpriteRenderer)
 	, _shader(shader)
 {
 	_textureEffectBuffer = _shader->GetSRV("DiffuseMap");
+
+	_viewX = GAME.GetEngineDesc().iWinSizeX;
+	_viewY = GAME.GetEngineDesc().iWinSizeY;
+	_x = _viewX * 0.5f;
+	_y = _viewY * 0.5f;
+	_width = _viewX * 0.5f;
+	_height = _viewY * 0.5f;
+	_uiProj = Matrix::CreateOrthographic(_viewX, _viewY, 0.f, 1.f);
 }
 
 SpriteRenderer::~SpriteRenderer()
 {
 }
 
+void SpriteRenderer::Awake()
+{
+
+}
+
 void SpriteRenderer::Update()
 {
-	GAME.Add_RenderObject(_renderGroup, GetGameObject());
 	if (_mesh == nullptr)
 		_mesh = GAME.GetResource<Mesh>(L"Quad"); // 기본 DefaultMesh
 
@@ -30,6 +43,18 @@ void SpriteRenderer::Update()
 		else
 			_curTextureIndex = _textures.size() - 1;
 	}
+
+	if (_ui)
+	{
+		auto transform = GetGameObject()->GetTransform();
+
+		transform->SetLocalScale(Vec3(_width, _height, 1.f));
+		transform->SetLocalPosition(Vec3(_x - _viewX * 0.5f, -_y + _viewY * 0.5f, 0.f));
+
+		GAME.Add_RenderObject(RENDERGROUP::UI, GetGameObject());
+	}
+	else
+		GAME.Add_RenderObject(_renderGroup, GetGameObject());
 }
 
 HRESULT SpriteRenderer::Render()
@@ -38,7 +63,11 @@ HRESULT SpriteRenderer::Render()
 		return E_FAIL;
 
 	//GlobalData
-	_shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
+	if (_ui)
+		_shader->PushGlobalData(Matrix::Identity, _uiProj);
+	else
+		_shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
+
 	auto world = GetTransform()->GetWorldMatrix();
 	_shader->PushTransformData(TransformDesc{ world });
 
@@ -75,6 +104,7 @@ void SpriteRenderer::OnInspectorGUI()
         // Play / Loop
         ImGui::Checkbox("Play Animation", &_play);
         ImGui::Checkbox("Looping", &_loop);
+		ImGui::Checkbox("UIObject", &_ui);
 
         // Speed
         ImGui::DragFloat("Animation Speed", &_speed, 0.1f, 0.0f, 100.0f);
@@ -100,18 +130,40 @@ void SpriteRenderer::OnInspectorGUI()
             ImGui::TreePop();
         }
 
-		uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
-		if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+
+		// 렌더그룹 설정
+		if (_ui)
 		{
-			for (uint8 i = 0; i < renderGroupCount; ++i)
+			// UI POS
+			Vec2 uiPos(_x, _y);
+			Vec2 uiScale(_width, _height);
+			ImGui::DragFloat2("UI Pos X Y :", (float*)&uiPos, 5.f, 0.0f, max(_viewX, _viewY));
+			_x = uiPos.x;
+			_y = uiPos.y;
+			ImGui::DragFloat2("UI Size :", (float*)&uiScale, 5.f, 0.0f, max(_viewX, _viewY));
+			_width = uiScale.x;
+			_height = uiScale.y;
+
+			if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(RENDERGROUP::UI)]).c_str()))
 			{
-				bool isSelected = (static_cast<uint8>(_renderGroup) == i);
-				if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
-				{
-					_renderGroup = static_cast<RENDERGROUP>(i);
-				}
+				ImGui::EndCombo();
 			}
-			ImGui::EndCombo();
+		}
+		else
+		{
+			uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
+			if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
+			{
+				for (uint8 i = 0; i < renderGroupCount; ++i)
+				{
+					bool isSelected = (static_cast<uint8>(_renderGroup) == i);
+					if (ImGui::Selectable(Utils::ToString(RENDERGROUP_NAMES[i]).c_str(), isSelected))
+					{
+						_renderGroup = static_cast<RENDERGROUP>(i);
+					}
+				}
+				ImGui::EndCombo();
+			}
 		}
     }
 }
