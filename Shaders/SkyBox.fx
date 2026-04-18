@@ -12,7 +12,7 @@ VS_OUT VS(VertexTextureNormalTangent input)
     VS_OUT output;
     
     // local -> World -> View -> Proj    
-    float4 viewPos = mul(float4(input.position.xyz, 0), V); //xyzw중 w를 0으로 한뒤 V를 곱하는 거
+    float4 viewPos = mul(float4(input.position.xyz, 0), V); //xyzw중 w를 0으로 한뒤 V를 곱하는 거, // 이동은x 회전은 먹이는
     float4 clipSpacePos = mul(viewPos, P);
     output.position = clipSpacePos.xyzw;
     output.position.z = output.position.w * 0.999999f;

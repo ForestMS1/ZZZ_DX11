@@ -228,6 +228,11 @@ void Resource_Manager::CreateDefaultMesh()
 		mesh->CreateSphere();
 		AddResource(L"Sphere", mesh);
 	}
+	{
+		shared_ptr<Mesh> mesh = make_shared<Mesh>();
+		mesh->CreateGrid(128, 128);
+		AddResource(L"Terrain", mesh);
+	}
 }
 
 void Resource_Manager::ShowMaterialToInspector(shared_ptr<Material> material)
