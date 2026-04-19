@@ -56,52 +56,32 @@ float4 ComputeLight(float3 normal, float2 uv, float3 worldPosition)
     float4 ambientColor = 0;
     float4 diffuseColor = 0;
     float4 specularColor = 0;
-    float4 emissiveColor = 0;
 
-	// Ambient
-	{
-        float4 color = GlobalLight.ambient * Material.ambient;
-        ambientColor = DiffuseMap.Sample(LinearSampler, uv) * color;
-    }
+    // 준비: 모든 벡터는 다시 한 번 정규화 (보간 과정에서 길이가 변함)
+    float3 N = normalize(normal);
+    float3 L = normalize(-GlobalLight.direction); // 광원을 향하는 벡터
+    float4 texColor = DiffuseMap.Sample(LinearSampler, uv);
 
-	// Diffuse
-	{
-        float4 color = DiffuseMap.Sample(LinearSampler, uv);
-        float value = dot(-GlobalLight.direction, normalize(normal));
-        diffuseColor = color * value * GlobalLight.diffuse * Material.diffuse;
-    }
+    // Ambient
+    // Material.ambient가 (1,1,1,1)인지 꼭 확인
+    ambientColor = texColor * GlobalLight.ambient * Material.ambient;
 
-	// Specular
-	{
-		//float3 R = reflect(GlobalLight.direction, normal);
-        float3 R = GlobalLight.direction - (2 * normal * dot(GlobalLight.direction, normal));
-        R = normalize(R);
+    // Diffuse
+    float dotNL = dot(N, L);
+    float diffuseFactor = saturate(dotNL); // 음수 방지 (0~1)
+    
 
-        float3 cameraPosition = CameraPosition();
-        float3 E = normalize(cameraPosition - worldPosition);
+    diffuseColor = texColor * diffuseFactor * GlobalLight.diffuse * Material.diffuse;
 
-        float value = saturate(dot(R, E)); // clamp(0~1)
-        float specular = pow(value, 10);
+    // Specular 정반사
+    float3 viewDir = normalize(CameraPosition() - worldPosition);
+    float3 halfWay = normalize(L + viewDir); // 하프 벡터
+    float specFactor = pow(saturate(dot(N, halfWay)), 32); // 32는 빛나는 정도
+    specularColor = GlobalLight.specular * Material.specular * specFactor;
+   
 
-        specularColor = GlobalLight.specular * Material.specular * specular;
-    }
-
-	// Emissive
-	{
-        float3 cameraPosition = CameraPosition();
-        float3 E = normalize(cameraPosition - worldPosition);
-
-        float value = saturate(dot(E, normal));
-        float emissive = 1.0f - value;
-
-		// min, max, x
-        emissive = smoothstep(0.0f, 1.0f, emissive);
-        emissive = pow(emissive, 2);
-
-        emissiveColor = GlobalLight.emissive * Material.emissive * emissive;
-    }
-
-    return ambientColor + diffuseColor + specularColor + emissiveColor;
+    // 결과 합산
+    return ambientColor + diffuseColor + specularColor;
 }
 
 void ComputeNormalMapping(inout float3 normal, float3 tangent, float2 uv)
@@ -113,14 +93,16 @@ void ComputeNormalMapping(inout float3 normal, float3 tangent, float2 uv)
 
     float3 N = normalize(normal); // z
     float3 T = normalize(tangent); // x
-    float3 B = normalize(cross(N, T)); // y
+    float3 B = normalize(cross(T, N)); // y
     float3x3 TBN = float3x3(T, B, N); // TS -> WS
 
 	// [0,1] 범위에서 [-1,1] 범위로 변환
     float3 tangentSpaceNormal = (map.rgb * 2.0f - 1.0f);
-    float3 worldNormal = mul(tangentSpaceNormal, TBN);
-
-    normal = worldNormal;
+    float3 worldNormal = tangentSpaceNormal.x * T;
+    worldNormal += tangentSpaceNormal.y * B;
+    worldNormal += tangentSpaceNormal.z * N;
+    
+    normal = normalize(worldNormal);
 }
 
 #endif

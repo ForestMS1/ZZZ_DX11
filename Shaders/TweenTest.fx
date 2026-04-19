@@ -117,8 +117,13 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
     output.worldPosition = output.position.xyz;
     output.position = mul(output.position, VP);
     output.uv = input.uv;
-    output.normal = mul(input.normal, (float3x3) W);
-    output.tangent = mul(input.tangent, (float3x3) W);
+    
+    // 애니메이션 행렬 m을 먼저 곱한 뒤 월드 행렬을 곱해야 함.
+    output.normal = mul(input.normal, (float3x3) m);
+    output.normal = mul(output.normal, (float3x3) W);
+    
+    output.tangent = mul(input.tangent, (float3x3) m);
+    output.tangent = mul(output.tangent, (float3x3) W);
 
     return output;
 }
@@ -128,8 +133,13 @@ float4 PS(MeshOutput input) : SV_TARGET
 	//ComputeNormalMapping(input.normal, input.tangent, input.uv);
 	//float4 color = ComputeLight(input.normal, input.uv, input.worldPosition);
     float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
+    
 
     return color;
+    
+    // 노멀 확인 디버그
+    //float3 debugNormal = normalize(input.normal);
+    //return float4(debugNormal * 0.5f + 0.5f, 1.0f);
 }
 
 float4 PS_RED(MeshOutput input) : SV_TARGET

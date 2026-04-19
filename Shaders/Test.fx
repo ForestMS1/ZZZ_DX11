@@ -15,6 +15,7 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
 
 float4 PS(MeshOutput input) : SV_TARGET
 {
+    //return ComputeLight(input.normal, input.uv, input.worldPosition);
     return DiffuseMap.Sample(LinearSampler, input.uv);
 }
 

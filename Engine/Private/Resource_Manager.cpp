@@ -23,7 +23,7 @@ Resource_Manager::~Resource_Manager()
 
 HRESULT Resource_Manager::Initialize()
 {
-	_defaultMeshIcon = Resource_Manager::Load<Texture>(L"DefaultMeshIcon", L"..\\..\\Resources\\Textures\\zzz.png");
+	_defaultMeshIcon = GetOrAddTexture(L"DefaultMeshIcon", L"..\\..\\Resources\\Textures\\zzz.png");
 	CreateDefaultMesh();
 
 	return S_OK;
@@ -37,7 +37,7 @@ shared_ptr<Texture> Resource_Manager::GetOrAddTexture(const wstring& key, const 
 		return nullptr;
 
 	texture = Resource_Manager::Load<Texture>(key, path);
-
+	texture->SetName(key);
 	if (nullptr == texture)
 	{
 		texture = make_shared<Texture>();
