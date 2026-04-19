@@ -34,9 +34,11 @@ HRESULT Level_StaticMeshTest::Initialize()
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Test(L"Layer_Test")))
+	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -65,15 +67,7 @@ HRESULT Level_StaticMeshTest::Render()
 HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 {
 	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
-	//GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
-	
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
-	
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
+	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
 
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
@@ -95,11 +89,19 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_StaticMeshTest::Ready_Layer_Test(const wstring& strLayerTag)
+HRESULT Level_StaticMeshTest::Ready_Layer_Camera(const wstring& strLayerTag)
 {
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
+	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
+	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
+
+	return S_OK;
+}
+
+HRESULT Level_StaticMeshTest::Ready_Layer_UI(const wstring& strLayerTag)
+{
+	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
+	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
+
 	return S_OK;
 }
 

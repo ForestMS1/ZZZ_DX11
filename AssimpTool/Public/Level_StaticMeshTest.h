@@ -18,7 +18,8 @@ public:
 
 private:
 	HRESULT Ready_Layer_Basic(const wstring& strLayerTag);
-	HRESULT Ready_Layer_Test(const wstring& strLayerTag);
+	HRESULT Ready_Layer_Camera(const wstring& strLayerTag);
+	HRESULT Ready_Layer_UI(const wstring& strLayerTag);
 
 public:
 	static unique_ptr<Level_StaticMeshTest> Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext);

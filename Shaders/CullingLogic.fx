@@ -96,7 +96,7 @@ void CS_Main(uint3 id : SV_DispatchThreadID)
         {
             InstanceData outData;
             outData.world = mesh.world;
-            ResultBuffer.Add(outData);
+            //ResultBuffer.Add(outData);
         }
     }
 }
