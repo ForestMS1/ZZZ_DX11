@@ -25,11 +25,20 @@ public:
 	ComPtr<ID3D11DeviceContext> GetDeviceContext() { return _deviceContext; }
 	ComPtr<IDXGISwapChain> GetSwapChain() { return _swapChain; }
 
+	ComPtr<ID3D11RenderTargetView> GetBackRTV() { return _backBufferRTV; }
+	// SRV
+	ComPtr<ID3D11ShaderResourceView> GetNormalSRV() { return _normalSRV; }
+	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV() { return _specularSRV; }
+
 
 private:
 	HRESULT Ready_SwapChain(HWND hWnd, WINMODE isWindowed, int32_t iWinCX, int32_t iWinCY);
 	HRESULT Ready_BackBufferRenderTargetView();
 	HRESULT Ready_DepthStencilView(int32 iWinCX, int32 iWinCY);
+
+	// MRT
+	HRESULT Ready_NormalRenderTargetView(int32 iWinCX, int32 iWinCY);
+	HRESULT Ready_SpecularRenderTargetView(int32 iWinCX, int32 iWinCY);
 
 
 private:
@@ -40,6 +49,14 @@ private:
 
 	ComPtr<ID3D11RenderTargetView> _backBufferRTV = { nullptr };
 	ComPtr<ID3D11DepthStencilView> _depthStencilView = { nullptr };
+
+	ComPtr<ID3D11Texture2D> _normalTexture = { nullptr };
+	ComPtr<ID3D11RenderTargetView> _normalRTV = { nullptr };
+	ComPtr<ID3D11ShaderResourceView> _normalSRV = { nullptr };
+
+	ComPtr<ID3D11Texture2D> _specularTexture = { nullptr };
+	ComPtr<ID3D11RenderTargetView> _specularRTV = { nullptr };
+	ComPtr<ID3D11ShaderResourceView> _specularSRV = { nullptr };
 
 
 public:

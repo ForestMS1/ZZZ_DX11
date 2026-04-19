@@ -197,6 +197,21 @@ ComPtr<IDXGISwapChain> GameInstance::GetSwapChain()
 	return _graphicDevice->GetSwapChain();
 }
 
+ComPtr<ID3D11RenderTargetView> GameInstance::GetBackRTV()
+{
+	return _graphicDevice->GetBackRTV();
+}
+
+ComPtr<ID3D11ShaderResourceView> GameInstance::GetNormalSRV()
+{
+	return _graphicDevice->GetNormalSRV();
+}
+
+ComPtr<ID3D11ShaderResourceView> GameInstance::GetSpecularSRV()
+{
+	return _graphicDevice->GetSpecularSRV();
+}
+
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

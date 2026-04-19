@@ -43,6 +43,10 @@ public:
 	ComPtr<ID3D11Device> GetDevice();
 	ComPtr<ID3D11DeviceContext> GetDeviceContext();
 	ComPtr<IDXGISwapChain> GetSwapChain();
+
+	ComPtr<ID3D11RenderTargetView> GetBackRTV();
+	ComPtr<ID3D11ShaderResourceView> GetNormalSRV();
+	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV();
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

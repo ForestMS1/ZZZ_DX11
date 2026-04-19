@@ -54,6 +54,9 @@ public:
 	float GetUIWidth() const { return _width; }
 	float GetUIHeight() const { return _height; }
 
+	// MRT 사용하기위해 Set
+	void SetSRV(ComPtr<ID3D11ShaderResourceView> srv) { _externalSRV = srv; }
+
 	// ImGUI
 	virtual void OnInspectorGUI() override;
 
@@ -66,6 +69,8 @@ private:
 	uint8 _pass = 0;
 	RENDERGROUP _renderGroup = RENDERGROUP::PRIORITY; // 따로 설정 안했으면 PRIORITY
 	ComPtr<ID3DX11EffectShaderResourceVariable> _textureEffectBuffer;
+
+	ComPtr<ID3D11ShaderResourceView> _externalSRV = nullptr; // 추가
 
 	// 애니메이션으로 보여줄 Texture들
 	vector<shared_ptr<Texture>> _textures;

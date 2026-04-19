@@ -166,6 +166,8 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 	_loadingText = L"셰이더를 로딩 중 입니다.";
+
+	// TODO : CONTEXT가 스레드Safe하지 않기 때문에 Initialize 위치를 메인스레드로 옮겨줘야 함
 	shared_ptr<Shader> SkyBoxShader = Shader::Create(L"SkyBox.fx");
 	GAME.AddResource<Shader>(L"SkyBox.fx", SkyBoxShader);
 
@@ -174,6 +176,9 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	shared_ptr<Shader> TestShader = Shader::Create(L"Test.fx");
 	GAME.AddResource<Shader>(L"Test.fx", TestShader);
+
+	shared_ptr<Shader> UIShader = Shader::Create(L"UI.fx");
+	GAME.AddResource<Shader>(L"UI.fx", UIShader);
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 
@@ -246,11 +251,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
 
 	// Stage
-	shared_ptr<Model> StageModel = make_shared<Model>();
-	StageModel->ReadModelCombined(L"StageRoot/StageRoot");
-	StageModel->ReadMaterial(L"StageRoot/StageRoot");
-	StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	GAME.AddResource<Model>(L"Stage", StageModel);
+	//shared_ptr<Model> StageModel = make_shared<Model>();
+	//StageModel->ReadModelCombined(L"StageRoot/StageRoot");
+	//StageModel->ReadMaterial(L"StageRoot/StageRoot");
+	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"Stage", StageModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 

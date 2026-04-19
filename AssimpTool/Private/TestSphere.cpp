@@ -38,14 +38,14 @@ HRESULT TestSphere::Initialize(void* pArg)
 	GameObject::Set_ClassName(L"TestSphere");
 	AddComponent(make_shared<TestSphereScript>());
 
-	/*shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
-	shared_ptr<Model> model = GAME.GetResource<Model>(L"Stage");
+	//shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
+	//shared_ptr<Model> model = GAME.GetResource<Model>(L"Stage");
+	//
+	//AddComponent(make_shared<ModelRenderer>(shader));
+	//GetModelRenderer()->SetModel(model);
 
-	AddComponent(make_shared<ModelRenderer>(shader));
-	GetModelRenderer()->SetModel(model);*/
-
-	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
-
+	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"UI.fx");
+	
 	shared_ptr<SpriteRenderer> spriteRenderer = make_shared<SpriteRenderer>(shader);
 	spriteRenderer->SetSpeed(100.f);
 	spriteRenderer->SetLoop(true);
@@ -55,9 +55,10 @@ HRESULT TestSphere::Initialize(void* pArg)
 		spriteRenderer->Add_Texture(texture);
 	}
 	AddComponent(spriteRenderer);
+	spriteRenderer->SetSRV(GAME.GetNormalSRV());
 
-	shared_ptr<OBBCollider> collider = make_shared<OBBCollider>();
-	AddComponent(collider);
+	//shared_ptr<OBBCollider> collider = make_shared<OBBCollider>();
+	//AddComponent(collider);
 
 
 	GetTransform()->SetScale(Vec3(1.f));

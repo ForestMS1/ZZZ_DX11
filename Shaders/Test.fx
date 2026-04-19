@@ -13,10 +13,23 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
     return output;
 }
 
-float4 PS(MeshOutput input) : SV_TARGET
+PixelOutput PS(MeshOutput input) : SV_TARGET
 {
     //return ComputeLight(input.normal, input.uv, input.worldPosition);
-    return DiffuseMap.Sample(LinearSampler, input.uv);
+    //return DiffuseMap.Sample(LinearSampler, input.uv);
+    
+    PixelOutput output;
+
+    // 타겟 0: 디퓨즈 색상
+    output.color = DiffuseMap.Sample(LinearSampler, input.uv);
+
+    // 타겟 1: 노말 (시각화를 위해 0.5 곱하고 0.5 더함)
+    output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
+
+    // 타겟 2: 스페큘러 (예시로 빨간색)
+    output.specular = float4(1.0f, 0.0f, 0.0f, 1.0f);
+
+    return output;
 }
 
 technique11 T0

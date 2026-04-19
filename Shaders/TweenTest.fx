@@ -128,18 +128,31 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
     return output;
 }
 
-float4 PS(MeshOutput input) : SV_TARGET
+PixelOutput PS(MeshOutput input) : SV_TARGET
 {
 	//ComputeNormalMapping(input.normal, input.tangent, input.uv);
 	//float4 color = ComputeLight(input.normal, input.uv, input.worldPosition);
-    float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
-    
-
-    return color;
+   // float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
+   // 
+   //
+   // return color;
     
     // 노멀 확인 디버그
     //float3 debugNormal = normalize(input.normal);
     //return float4(debugNormal * 0.5f + 0.5f, 1.0f);
+    
+    PixelOutput output;
+
+    // 타겟 0: 디퓨즈 색상
+    output.color = DiffuseMap.Sample(LinearSampler, input.uv);
+
+    // 타겟 1: 노말 (시각화를 위해 0.5 곱하고 0.5 더함)
+    output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
+
+    // 타겟 2: 스페큘러 (예시로 빨간색)
+    output.specular = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    
+    return output;
 }
 
 float4 PS_RED(MeshOutput input) : SV_TARGET
