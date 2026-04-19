@@ -145,6 +145,12 @@
     <Filter Include="06.Component\Collider\Sphere">
       <UniqueIdentifier>{e3231a34-0418-494e-9bed-42dd1a5534de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ComputeShader">
+      <UniqueIdentifier>{b1bce3d1-0e5f-4bf1-900d-347af00c1385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComputeShader\Buffer">
+      <UniqueIdentifier>{1f61a34c-89b8-42d4-ae01-d3d2fdf605f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -370,6 +376,15 @@
     <ClInclude Include="..\Public\SphereCollider.h">
       <Filter>06.Component\Collider\Sphere</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RawBuffer.h">
+      <Filter>ComputeShader\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TextureBuffer.h">
+      <Filter>ComputeShader\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StructuredBuffer.h">
+      <Filter>ComputeShader\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -578,6 +593,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\SphereCollider.cpp">
       <Filter>06.Component\Collider\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RawBuffer.cpp">
+      <Filter>ComputeShader\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TextureBuffer.cpp">
+      <Filter>ComputeShader\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StructuredBuffer.cpp">
+      <Filter>ComputeShader\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
