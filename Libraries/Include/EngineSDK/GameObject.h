@@ -90,9 +90,9 @@ protected:
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 
-	wstring _name = L"None_Name";
+	wstring _name = L"Empty";
 	// 클래스 이름 (ex : Corin.h/Corin.cpp 면 Corin으로 저장)
-	wstring _className = L"None_ClassName";
+	wstring _className = L"GameObject";
 	Layer* _layer;
 
 	UUID _objectId = {};

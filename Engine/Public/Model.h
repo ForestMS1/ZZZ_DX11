@@ -16,6 +16,8 @@ public:
 public:
 	void ReadModel(const wstring& filename); 
 	void ReadModelRotatedY180(const wstring& filename); // -z를 바라보는 모델이면 호출
+	// Model의 Mesh를 하나로 합쳐서 읽는 함수
+	void ReadModelCombined(const wstring& filename);
 
 	void ReadMaterial(const wstring& filename);
 

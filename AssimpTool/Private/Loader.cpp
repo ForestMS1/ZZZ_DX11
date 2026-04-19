@@ -246,11 +246,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
 
 	// Stage
-	//shared_ptr<Model> StageModel = make_shared<Model>();
-	//StageModel->ReadModel(L"StageRoot/StageRoot");
-	//StageModel->ReadMaterial(L"StageRoot/StageRoot");
-	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"Stage", StageModel);
+	shared_ptr<Model> StageModel = make_shared<Model>();
+	StageModel->ReadModelCombined(L"StageRoot/StageRoot");
+	StageModel->ReadMaterial(L"StageRoot/StageRoot");
+	StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	GAME.AddResource<Model>(L"Stage", StageModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 

@@ -162,6 +162,97 @@ void Model::ReadModelRotatedY180(const wstring& filename)
 	BindCacheInfo();
 }
 
+void Model::ReadModelCombined(const wstring& filename)
+{
+	ResourceBase::SetName(filename);
+
+	wstring fullPath = _modelPath + filename + L".mesh";
+
+	shared_ptr<FileUtils> file = make_shared<FileUtils>();
+	file->Open(fullPath, FileMode::Read);
+
+	// Bones
+	{
+		const uint32 count = file->Read<uint32>();
+
+		for (uint32 i = 0; i < count; i++)
+		{
+			shared_ptr<ModelBone> bone = make_shared<ModelBone>();
+			bone->index = file->Read<int32>();
+			bone->name = Utils::ToWString(file->Read<string>());
+			bone->parentIndex = file->Read<int32>();
+			bone->transform = file->Read<Matrix>();
+
+			// 추가: 최상위 부모 본의 기본 포즈를 180도 회전
+			if (bone->parentIndex == -1)
+			{
+				bone->transform = bone->transform * Matrix::CreateRotationY(XM_PI);
+			}
+
+			_bones.push_back(bone);
+		}
+	}
+
+	// Mesh 통합 로직
+	{
+		const uint32 meshCount = file->Read<uint32>();
+
+		// 하나로 합칠 메쉬 객체 생성
+		shared_ptr<ModelMesh> combinedMesh = make_shared<ModelMesh>();
+		combinedMesh->name = L"CombinedMesh_" + filename;
+		combinedMesh->boneIndex = 0; // 통합 시 기준이 될 본 인덱스
+
+		uint32 vertexOffset = 0; // 인덱스 재계산을 위한 오프셋
+
+		for (uint32 i = 0; i < meshCount; i++)
+		{
+			// 파일 구조상 있는 메타데이터들 읽기 (개별 mesh 객체는 안 만듦)
+			wstring name = Utils::ToWString(file->Read<string>());
+			int32 boneIndex = file->Read<int32>();
+			wstring materialName = Utils::ToWString(file->Read<string>());
+
+			// 첫 번째 메쉬의 머티리얼을 대표로 쓰거나, 
+			// 통합 시 머티리얼이 다르면 처리가 복잡해짐 (아래 주의사항 참고)
+			if (i == 0) combinedMesh->materialName = materialName;
+
+			// VertexData 읽기 및 추가
+			{
+				const uint32 vCount = file->Read<uint32>();
+				vector<ModelVertexType> vertices(vCount);
+				void* data = vertices.data();
+				file->Read(&data, sizeof(ModelVertexType) * vCount);
+
+				combinedMesh->geometry->AddVertices(vertices);
+			}
+
+			// IndexData 읽기 및 추가 (오프셋 수정 필수)
+			{
+				const uint32 iCount = file->Read<uint32>();
+				vector<uint32> indices(iCount);
+				void* data = indices.data();
+				file->Read(&data, sizeof(uint32) * iCount);
+
+				// 현재까지 쌓인 정점 개수만큼 인덱스 번호를 밀어줘야 함
+				for (uint32& index : indices)
+				{
+					index += vertexOffset;
+				}
+
+				combinedMesh->geometry->AddIndices(indices);
+
+				// 다음 메쉬를 위해 오프셋 갱신
+				vertexOffset += (uint32)combinedMesh->geometry->GetVertices().size() - vertexOffset;
+				// 위 식은 사실 방금 추가한 vCount와 같다
+			}
+		}
+
+		combinedMesh->CreateBuffers();
+		_meshes.push_back(combinedMesh); // 결과적으로 _meshes에는 1개만 들어감
+	}
+
+	BindCacheInfo();
+}
+
 void Model::ReadMaterial(const wstring& filename)
 {
 	wstring fullPath = _texturePath + filename + L".xml";
