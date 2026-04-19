@@ -43,17 +43,8 @@
     <Filter Include="01.Levels\Loading\Loader">
       <UniqueIdentifier>{cf6cd715-1b99-427c-8b52-22a64b3410b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\TestCorin\Scripts">
-      <UniqueIdentifier>{1f8daec9-e4f1-48bf-a3ac-f14fa1ec3b6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\Camera\Scripts">
-      <UniqueIdentifier>{598f3b97-ff47-49c8-a61f-13286ab22826}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\TestSphere">
       <UniqueIdentifier>{84a7866b-1dd9-4496-84cb-c57d9f3a3c50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\TestSphere\Scripts">
-      <UniqueIdentifier>{86bc7321-e802-4f5e-a5c3-39e4621d13a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="99.Defines\ImGuizmo">
       <UniqueIdentifier>{84ecab7d-6c64-4274-b65d-ee077cd6147e}</UniqueIdentifier>
@@ -61,11 +52,11 @@
     <Filter Include="02.GameObject\SkyBox">
       <UniqueIdentifier>{76242c09-1342-444a-9338-ae54e4ef6a03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\SkyBox\Scripts">
-      <UniqueIdentifier>{7b48be44-2c72-4175-a0d0-915a8cd573e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99.Defines\ImNodes">
       <UniqueIdentifier>{4a28afc6-6f80-46fd-9f41-8b52b9c9fe37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts">
+      <UniqueIdentifier>{2b1e3958-390f-4e21-9565-c512f76d348f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,35 +130,35 @@
     <ClInclude Include="..\Public\Loader.h">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TestCorinScript.h">
-      <Filter>02.GameObject\TestCorin\Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TestCamScript.h">
-      <Filter>02.GameObject\Camera\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\TestSphere.h">
       <Filter>02.GameObject\TestSphere</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TestSphereScript.h">
-      <Filter>02.GameObject\TestSphere\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObject\SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SkyBoxScript.h">
-      <Filter>02.GameObject\SkyBox\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\TestPlayCam.h">
       <Filter>02.GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TestPlayCamScript.h">
-      <Filter>02.GameObject\Camera\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imnodes.h">
       <Filter>99.Defines\ImNodes</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imnodes_internal.h">
       <Filter>99.Defines\ImNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCamScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestPlayCamScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkyBoxScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestCorinScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestSphereScript.h">
+      <Filter>03.Scirpts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,17 +236,8 @@
     <ClCompile Include="..\Private\Loader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TestCorinScript.cpp">
-      <Filter>02.GameObject\TestCorin\Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TestCamScript.cpp">
-      <Filter>02.GameObject\Camera\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\TestSphere.cpp">
       <Filter>02.GameObject\TestSphere</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TestSphereScript.cpp">
-      <Filter>02.GameObject\TestSphere\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="GraphEditor.cpp">
       <Filter>99.Defines\ImGuizmo</Filter>
@@ -275,17 +257,26 @@
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObject\SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SkyBoxScript.cpp">
-      <Filter>02.GameObject\SkyBox\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\TestPlayCam.cpp">
       <Filter>02.GameObject\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TestPlayCamScript.cpp">
-      <Filter>02.GameObject\Camera\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\imnodes.cpp">
       <Filter>99.Defines\ImNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCamScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestPlayCamScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkyBoxScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestCorinScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestSphereScript.cpp">
+      <Filter>03.Scirpts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
