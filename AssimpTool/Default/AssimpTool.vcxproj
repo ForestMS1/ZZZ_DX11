@@ -160,6 +160,7 @@
     <ClInclude Include="..\Public\TestPlayCamScript.h" />
     <ClInclude Include="..\Public\TestSphere.h" />
     <ClInclude Include="..\Public\TestSphereScript.h" />
+    <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\ToolApp.h" />
     <ClInclude Include="AssimpTool.h" />
     <ClInclude Include="framework.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="..\Private\TestPlayCamScript.cpp" />
     <ClCompile Include="..\Private\TestSphere.cpp" />
     <ClCompile Include="..\Private\TestSphereScript.cpp" />
+    <ClCompile Include="..\Private\TestUI.cpp" />
     <ClCompile Include="..\Private\tinyxml2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

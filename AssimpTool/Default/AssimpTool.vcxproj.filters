@@ -58,6 +58,9 @@
     <Filter Include="03.Scirpts">
       <UniqueIdentifier>{2b1e3958-390f-4e21-9565-c512f76d348f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\TestUI">
+      <UniqueIdentifier>{bab82520-cb48-495a-bf35-77d927bad2b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -159,6 +162,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\TestSphereScript.h">
       <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestUI.h">
+      <Filter>02.GameObject\TestUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\TestSphereScript.cpp">
       <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestUI.cpp">
+      <Filter>02.GameObject\TestUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

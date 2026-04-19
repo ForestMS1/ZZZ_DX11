@@ -113,13 +113,13 @@ HRESULT ModelAnimator::Render()
 	// SRV를 통해 정보 전달
 	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
 
-	//LightDesc lightDesc;
-	//lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
-	//lightDesc.diffuse = Vec4(1.f);
-	//lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
-	//lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
-	//lightDesc.direction.Normalize();
-	//_shader->PushLightData(lightDesc);
+	LightDesc lightDesc;
+	lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
+	lightDesc.diffuse = Vec4(1.f);
+	lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
+	lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
+	lightDesc.direction.Normalize();
+	_shader->PushLightData(lightDesc);
 
 	// Bones
 	BoneDesc boneDesc;

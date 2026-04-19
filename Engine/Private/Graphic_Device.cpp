@@ -94,8 +94,6 @@ HRESULT Graphic_Device::Clear_BackBuffer_View(const Vec4* pClearColor)
 	_deviceContext->ClearRenderTargetView(_specularRTV.Get(), ClearColor);
 
 	return S_OK;
-
-	return S_OK;
 }
 
 HRESULT Graphic_Device::Clear_DepthStencil_View()
@@ -213,31 +211,44 @@ HRESULT Graphic_Device::Ready_DepthStencilView(int32 iWinCX, int32 iWinCY)
 	if (_device == nullptr)
 		return E_FAIL;
 
-	ComPtr<ID3D11Texture2D> pDepthStencilTexture = { nullptr };
-
 	D3D11_TEXTURE2D_DESC	TextureDesc{};
-
+	ZeroMemory(&TextureDesc, sizeof(TextureDesc));
 	TextureDesc.Width = iWinCX;
 	TextureDesc.Height = iWinCY;
 	TextureDesc.MipLevels = 1;
 	TextureDesc.ArraySize = 1;
-	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	TextureDesc.Format = DXGI_FORMAT_R32_TYPELESS; // R32_TYPLESS는 나중에 DSV로도, SRV로도 쓸 수 있는 유연한 포맷입니다.
 
 	TextureDesc.SampleDesc.Quality = 0;
 	TextureDesc.SampleDesc.Count = 1;
 
 	TextureDesc.Usage = D3D11_USAGE_DEFAULT /* 정적 */;
 
-	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 		/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
 	TextureDesc.CPUAccessFlags = 0;
 	TextureDesc.MiscFlags = 0;
 
-	if (FAILED(_device->CreateTexture2D(&TextureDesc, nullptr, pDepthStencilTexture.GetAddressOf())))
+	if (FAILED(_device->CreateTexture2D(&TextureDesc, nullptr, _depthTexture.GetAddressOf())))
 		return E_FAIL;
 
+	// 깊이 테스트용 뷰 (DSV)
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+	ZeroMemory(&dsvDesc, sizeof(dsvDesc));
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT; // 실제 깊이 값은 float으로 처리
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
-	if (FAILED(_device->CreateDepthStencilView(pDepthStencilTexture.Get(), nullptr, _depthStencilView.GetAddressOf())))
+	if (FAILED(_device->CreateDepthStencilView(_depthTexture.Get(), &dsvDesc, _depthStencilView.GetAddressOf())))
+		return E_FAIL;
+
+	// 셰이더에서 읽기용 뷰 (SRV)
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(srvDesc));
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = -1; // 모든 밉 레벨 접근
+
+	if(FAILED(_device->CreateShaderResourceView(_depthTexture.Get(), &srvDesc, _depthSRV.GetAddressOf())))
 		return E_FAIL;
 
 	return S_OK;

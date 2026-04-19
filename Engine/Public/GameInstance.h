@@ -47,6 +47,7 @@ public:
 	ComPtr<ID3D11RenderTargetView> GetBackRTV();
 	ComPtr<ID3D11ShaderResourceView> GetNormalSRV();
 	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV();
+	ComPtr<ID3D11ShaderResourceView> GetDepthSRV();
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

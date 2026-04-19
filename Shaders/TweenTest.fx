@@ -144,7 +144,8 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
     PixelOutput output;
 
     // 타겟 0: 디퓨즈 색상
-    output.color = DiffuseMap.Sample(LinearSampler, input.uv);
+    //output.color = DiffuseMap.Sample(LinearSampler, input.uv);
+    output.color = ComputeLight(input.normal, input.uv, input.worldPosition);
 
     // 타겟 1: 노말 (시각화를 위해 0.5 곱하고 0.5 더함)
     output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);

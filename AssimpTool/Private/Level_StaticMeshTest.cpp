@@ -10,6 +10,7 @@
 #include "Level_Loading.h"
 
 #include "TestSphere.h"
+#include "TestUI.h"
 #include "SkyBox.h"
 Level_StaticMeshTest::Level_StaticMeshTest(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
@@ -28,6 +29,7 @@ HRESULT Level_StaticMeshTest::Initialize()
 	GAME.Register(L"SkyBox", []() {  auto obj = make_shared<SkyBox>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 	GAME.Register(L"TestCorin", []() { auto obj = make_shared<TestCorin>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 	GAME.Register(L"TestSphere", []() {  auto obj = make_shared<TestSphere>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+	GAME.Register(L"TestUI", []() {  auto obj = make_shared<TestUI>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;

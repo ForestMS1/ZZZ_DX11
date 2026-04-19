@@ -211,6 +211,10 @@ ComPtr<ID3D11ShaderResourceView> GameInstance::GetSpecularSRV()
 {
 	return _graphicDevice->GetSpecularSRV();
 }
+ComPtr<ID3D11ShaderResourceView> GameInstance::GetDepthSRV()
+{
+	return _graphicDevice->GetDepthSRV();
+}
 
 #pragma endregion
 

@@ -29,6 +29,7 @@ public:
 	// SRV
 	ComPtr<ID3D11ShaderResourceView> GetNormalSRV() { return _normalSRV; }
 	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV() { return _specularSRV; }
+	ComPtr<ID3D11ShaderResourceView> GetDepthSRV() { return _depthSRV; }
 
 
 private:
@@ -48,7 +49,11 @@ private:
 	ComPtr<IDXGISwapChain>	_swapChain = { nullptr };
 
 	ComPtr<ID3D11RenderTargetView> _backBufferRTV = { nullptr };
+
+	ComPtr<ID3D11Texture2D> _depthTexture = { nullptr };
 	ComPtr<ID3D11DepthStencilView> _depthStencilView = { nullptr };
+	// 깊이 정보 쉐이더에서 쓸 수 있게 SRV 추가
+	ComPtr<ID3D11ShaderResourceView> _depthSRV = { nullptr };
 
 	ComPtr<ID3D11Texture2D> _normalTexture = { nullptr };
 	ComPtr<ID3D11RenderTargetView> _normalRTV = { nullptr };
