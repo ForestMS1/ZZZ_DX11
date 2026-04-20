@@ -19,9 +19,9 @@ public:
 	bool Intersects(Ray& ray, OUT float& distance) override;
 	bool Intersects(const shared_ptr<Collider> other) override;
 
-
 	// _colliderBox의 스케일.
-	void SetScale(Vec3 scale) { _colliderBox.Extents = scale; };
+	virtual void SetScale(Vec3 scale) override { _colliderBox.Extents = scale; };
+	virtual Vec3 GetScale() override { return _colliderBox.Extents; }
 
 	BoundingBox& GetBoundingBox() { return _colliderBox; }
 

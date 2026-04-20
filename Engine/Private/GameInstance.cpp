@@ -140,6 +140,8 @@ void GameInstance::Clear_Resource(uint32 iClearLevelIndex)
 	_objectManager->Clear(iClearLevelIndex);
 
 	_prototypeManager->Clear(iClearLevelIndex);
+
+	_collisionManager->ClearPair();
 }
 
 #pragma region TIMER_MANAGER

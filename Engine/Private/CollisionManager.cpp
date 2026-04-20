@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CollisionManager.h"
 #include "GameObject.h"
-#include "Collider.h"
 #include "Layer.h"
 #include "MonoBehaviour.h"
+#include "AABBCollider.h"
 
 CollisionManager::CollisionManager()
 {
@@ -59,6 +59,9 @@ void CollisionManager::FixedUpdate()
 						//충돌 검사.
 						if (srcCollider->Intersects(dscCollider))
 						{
+							// AABB끼리고 둘다 Trigger false면 밀어냄, 둘중 하나라도 Trigger true면 겹친 값만 Collision에 저장
+							Collision_RectEx(srcCollider, dscCollider, &collision);
+
 							// Enter
 							if (_currentPairs.find(collisionPair) == _currentPairs.end())
 							{
@@ -123,6 +126,11 @@ void CollisionManager::AddCollisionLayer(uint32 iLayerLevelIndex, const wstring&
 	_collisionLayerTable[iLayerLevelIndex].emplace(strLayerTagA, strLayerTagB);
 }
 
+void CollisionManager::ClearPair()
+{
+	_currentPairs.erase(_currentPairs.begin(), _currentPairs.end());
+}
+
 unique_ptr<CollisionManager> CollisionManager::Create(uint32 iNumLevels)
 {
 	unique_ptr<CollisionManager> pInstance = unique_ptr<CollisionManager>(new CollisionManager);
@@ -133,4 +141,53 @@ unique_ptr<CollisionManager> CollisionManager::Create(uint32 iNumLevels)
 	}
 
 	return pInstance;
+}
+
+void CollisionManager::Collision_RectEx(shared_ptr<Collider> pSrcAABB, shared_ptr<Collider> pDstAABB, Collision* pInfo)
+{
+	auto src = dynamic_pointer_cast<AABBCollider>(pSrcAABB);
+	auto dsc = dynamic_pointer_cast<AABBCollider>(pDstAABB);
+	if (src == nullptr || dsc == nullptr)
+		return;
+	if (src->IsTrigger() || dsc->IsTrigger())
+		return;
+
+	auto& boxA = src->GetBoundingBox();
+	auto& boxB = dsc->GetBoundingBox();
+
+	// 공식: (A반지름 + B반지름) - |A중심 - B중심|
+	float overlapX = (boxA.Extents.x + boxB.Extents.x) - fabsf(boxA.Center.x - boxB.Center.x);
+	float overlapY = (boxA.Extents.y + boxB.Extents.y) - fabsf(boxA.Center.y - boxB.Center.y);
+	float overlapZ = (boxA.Extents.z + boxB.Extents.z) - fabsf(boxA.Center.z - boxB.Center.z);
+
+	// Collision 구조체에 값 저장
+	pInfo->overlapX = overlapX;
+	pInfo->overlapY = overlapY;
+	pInfo->overlapZ = overlapZ;
+
+
+	auto transform = pSrcAABB->GetTransform();
+	Vec3 pos = transform->GetLocalPosition();
+
+	// X축 겹침이 가장 작을 때
+	if (overlapX < overlapY && overlapX < overlapZ)
+	{
+		// src가 dsc보다 오른쪽에 있으면 +방향, 왼쪽에 있으면 -방향으로 밀기
+		float dir = (boxA.Center.x > boxB.Center.x) ? 1.0f : -1.0f;
+		pos.x += overlapX * dir;
+	}
+	// Y축 겹침이 가장 작을 때
+	else if (overlapY < overlapX && overlapY < overlapZ)
+	{
+		float dir = (boxA.Center.y > boxB.Center.y) ? 1.0f : -1.0f;
+		pos.y += overlapY * dir;
+	}
+	// Z축 겹침이 가장 작을 때
+	else
+	{
+		float dir = (boxA.Center.z > boxB.Center.z) ? 1.0f : -1.0f;
+		pos.z += overlapZ * dir;
+	}
+
+	transform->SetLocalPosition(pos);
 }

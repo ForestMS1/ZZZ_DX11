@@ -21,6 +21,7 @@ void AABBCollider::LateUpdate()
 
 void AABBCollider::FixedUpdate()
 {
+	
 }
 
 HRESULT AABBCollider::Render()

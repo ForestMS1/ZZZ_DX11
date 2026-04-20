@@ -20,7 +20,8 @@ public:
 
 
 	// _colliderBox의 스케일.
-	void SetScale(Vec3 scale) { _colliderBox.Extents = scale; };
+	virtual void SetScale(Vec3 scale) override { _colliderBox.Extents = scale; };
+	virtual Vec3 GetScale() override { return _colliderBox.Extents; }
 
 	BoundingOrientedBox& GetBoundingOrientedBox() { return _colliderBox; }
 

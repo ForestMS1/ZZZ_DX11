@@ -35,7 +35,7 @@ HRESULT Level_Loading::Initialize(LEVEL eNextLevelIndex)
 void Level_Loading::Update()
 {
 	if (true == _loader->IsFinished() &&
-		GetKeyState(VK_RETURN) & 0x8000)
+		GAME.Key_Down(DIK_RETURN))
 	{
 		unique_ptr<Level> pNewLevel = { nullptr };
 

@@ -20,7 +20,8 @@ public:
 
 
 	// _colliderBox의 스케일.
-	void SetRadius(float radius) { _colliderSphere.Radius = radius; };
+	virtual void SetScale(Vec3 scale) override { _colliderSphere.Radius = scale.x; };
+	virtual Vec3 GetScale() override { return Vec3(_colliderSphere.Radius); }
 
 	BoundingSphere& GetBoundingSphere() { return _colliderSphere; }
 

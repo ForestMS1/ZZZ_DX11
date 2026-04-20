@@ -28,6 +28,11 @@ public:
 
 	// 충돌 레이어 추가
 	void	AddCollisionLayer(uint32 iLayerLevelIndex, const wstring& strLayerTagA, const wstring& strLayerTagB);
+	
+	void	Collision_RectEx(shared_ptr<Collider> pSrcAABB, shared_ptr<Collider> pDstAABB, struct Collision* pInfo);
+
+	// 씬이 바뀌었을때 충돌 쌍 정보 날리기
+	void	ClearPair();
 
 private:
 	// 충돌처리 레이어 테이블 (인덱스는 레벨의미)

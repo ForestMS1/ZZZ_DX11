@@ -15,6 +15,8 @@ void Collider::OnInspectorGUI()
 {
     Component::OnInspectorGUI();
 
+    ImGui::Checkbox("isTrigger", &_isTrigger);
+
     if (ImGui::TreeNodeEx("Collider", ImGuiTreeNodeFlags_DefaultOpen))
     {
         // 현재 콜라이더 타입 표시
