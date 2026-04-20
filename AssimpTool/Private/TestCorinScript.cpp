@@ -82,3 +82,33 @@ void TestCorinScript::Update()
 	if (fsm->GetCurAnimState()->GetName().compare(L"Idle"))
 		GetTransform()->SetPosition(pos);
 }
+
+void TestCorinScript::OnCollisionEnter(const Collision& collision)
+{
+	auto collider = GetGameObject()->GetCollider();
+	if (collider == nullptr)
+		return;
+
+	shared_ptr<Collider> otherCollider;
+	if (collider == collision.colliderA)
+		otherCollider = collision.colliderB;
+	else
+		otherCollider = collision.colliderA;
+
+	collider->SetDebugColor(Colors::Red);
+}
+
+void TestCorinScript::OnCollisionExit(const Collision& collision)
+{
+	auto collider = GetGameObject()->GetCollider();
+	if (collider == nullptr)
+		return;
+
+	shared_ptr<Collider> otherCollider;
+	if (collider == collision.colliderA)
+		otherCollider = collision.colliderB;
+	else
+		otherCollider = collision.colliderA;
+
+	collider->SetDebugColor(Colors::LimeGreen);
+}

@@ -75,9 +75,15 @@ public:
 	// 빈 레이어 만들어서 등록시켜주는 함수
 	HRESULT Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
+	shared_ptr<class Layer> Find_CurrentLevel_Layer(const wstring& strLayerTag);
+
 	// Gui 말고 코드레벨에서 Save-Load 가능하도록 인터페이스 열어줌
 	void SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 	void LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+#pragma endregion
+
+#pragma region COLLISION_MANAGER
+	void AddCollisionLayer(uint32 iLayerLevelIndex, const wstring& strLayerTagA, const wstring& strLayerTagB);
 #pragma endregion
 
 #pragma region RESOURCE_MANAGER
@@ -142,6 +148,7 @@ private:
 	unique_ptr<class Level_Manager> _levelManager = { nullptr };
 	unique_ptr<class Prototype_Manager> _prototypeManager = { nullptr };
 	unique_ptr<class Object_Manager> _objectManager = { nullptr };
+	unique_ptr<class CollisionManager> _collisionManager = { nullptr };
 	unique_ptr<class Renderer> _renderer = { nullptr };
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };

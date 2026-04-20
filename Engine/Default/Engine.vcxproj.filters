@@ -151,6 +151,9 @@
     <Filter Include="ComputeShader\Buffer">
       <UniqueIdentifier>{1f61a34c-89b8-42d4-ae01-d3d2fdf605f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Collider\Manager">
+      <UniqueIdentifier>{c1630147-6e0c-48b7-a4f4-3dc83b60d3e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -385,6 +388,9 @@
     <ClInclude Include="..\Public\StructuredBuffer.h">
       <Filter>ComputeShader\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CollisionManager.h">
+      <Filter>06.Component\Collider\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -602,6 +608,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StructuredBuffer.cpp">
       <Filter>ComputeShader\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CollisionManager.cpp">
+      <Filter>06.Component\Collider\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,6 +11,12 @@ enum class ColliderType
 	END
 };
 
+struct Collision
+{
+	shared_ptr<class Collider> colliderA;
+	shared_ptr<class Collider> colliderB;
+};
+
 class ENGINE_DLL Collider abstract : public Component
 {
 public:
@@ -18,11 +24,6 @@ public:
 	virtual ~Collider();
 
 public:
-
-	// TODO : 이벤트 함수 만들기
-	// OnCollisionEnter
-	// OnCollisionStay
-	// OnCollisionExit 
 
 	virtual bool Intersects(Ray& ray, OUT float& distance) = 0;
 	virtual bool Intersects(const shared_ptr<Collider> other) = 0;
@@ -32,12 +33,19 @@ public:
 
 	ColliderType GetColliderType() const { return _colliderType; }
 
+	// 디버그 컬러 변경
+	void SetDebugColor(XMVECTORF32 debugColor) { _debugColor = debugColor; }
+
 	virtual void OnInspectorGUI() override;
 
 protected:
 	ColliderType _colliderType = ColliderType::END;
 	Vec3 _offset;
 	XMVECTORF32 _debugColor = Colors::Lime;
+
+
+	// 지금 하나라도 충돌중인가
+	bool _isCollision = false; 
 };
 
 NS_END

@@ -40,6 +40,9 @@ HRESULT Level_StaticMeshTest::Initialize()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
+	// 충돌처리 할 레이어 쌍 정의
+	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
+
 	return S_OK;
 }
 

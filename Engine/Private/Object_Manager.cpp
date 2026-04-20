@@ -231,6 +231,15 @@ bool Object_Manager::isEveryCameraOff()
 	return true;
 }
 
+shared_ptr<Layer> Object_Manager::Find_CurrentLevel_Layer(const wstring& strLayerTag)
+{
+	auto iter = _layerMaps[_currentLevelIndex].find(strLayerTag);
+	if (iter == _layerMaps[_currentLevelIndex].end())
+		return nullptr;
+
+	return iter->second;
+}
+
 const list<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	// 레이어를 찾지 못했을 때 안전하게 반환할 빈 리스트

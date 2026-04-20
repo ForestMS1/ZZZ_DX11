@@ -2,7 +2,7 @@
 #include "TestCam.h"
 #include "TestCamScript.h"
 #include "TestPlayCamScript.h"
-
+#include "AABBCollider.h"
 TestCam::TestCam(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -29,6 +29,9 @@ HRESULT TestCam::Initialize(void* pArg)
 	GameObject::Set_ClassName(L"TestCam");
 	AddComponent(make_shared<Camera>());
 	AddComponent(make_shared<TestCamScript>());
+
+	shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
+	AddComponent(collider);
 
 	GetTransform()->SetPosition(Vec3{ 0.f, 0.f, -5.f });
 	return S_OK;

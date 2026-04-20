@@ -14,6 +14,8 @@
 #include "Shader.h"
 #include "GameObjectFactory.h"
 #include "imnodes.h"
+#include "Layer.h"
+#include "CollisionManager.h"
 
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> GameInstance::_batch = nullptr;
 std::unique_ptr<DirectX::BasicEffect> GameInstance::_effect = nullptr;
@@ -49,6 +51,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 
 	_objectManager = Object_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == _objectManager)
+		return E_FAIL;
+	
+	_collisionManager = CollisionManager::Create(EngineDesc.iNumLevels);
+	if (nullptr == _collisionManager)
 		return E_FAIL;
 
 	_renderer = Renderer::Create(pOutDevice, pOutDeviceContext);
@@ -110,6 +116,8 @@ void GameInstance::Update_Engine()
 	_objectManager->LateUpdate();
 
 	_objectManager->FixedUpdate();
+
+	_collisionManager->FixedUpdate();
 	
 	_objectManager->EndOfFrame();
 
@@ -281,6 +289,12 @@ HRESULT GameInstance::Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayer
 {
 	return _objectManager->Add_Layer(iLayerLevelIndex, strLayerTag);
 }
+
+shared_ptr<Layer> GameInstance::Find_CurrentLevel_Layer(const wstring& strLayerTag)
+{
+	return _objectManager->Find_CurrentLevel_Layer(strLayerTag);
+}
+
 // Gui 말고 코드레벨에서 Save-Load 가능하도록 인터페이스 열어줌
 void GameInstance::SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
@@ -289,6 +303,13 @@ void GameInstance::SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag
 void GameInstance::LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	_objectManager->LoadLevel(iLayerLevelIndex, strLayerTag);
+}
+#pragma endregion
+
+#pragma region COLLISION_MANAGER
+void GameInstance::AddCollisionLayer(uint32 iLayerLevelIndex, const wstring& strLayerTagA, const wstring& strLayerTagB)
+{
+	_collisionManager->AddCollisionLayer(iLayerLevelIndex, strLayerTagA, strLayerTagB);
 }
 #pragma endregion
 
@@ -479,6 +500,7 @@ void GameInstance::Release_Engine()
 	_levelManager.reset();
 	_timerManager.reset();
 	_objectManager.reset();
+	_collisionManager.reset();
 	_prototypeManager.reset();
 	_resourceManager.reset();
 	_gameObjectFactory.reset();
