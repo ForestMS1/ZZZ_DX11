@@ -14,6 +14,7 @@ AABBCollider::~AABBCollider()
 
 void AABBCollider::LateUpdate()
 {
+	// TODO : 임시 / 디버그 렌더용
 	GAME.Add_RenderObject(RENDERGROUP::BLEND, GetGameObject());
 
 	Vec3 gameObjectPosition = GetGameObject()->GetTransform()->GetLocalPosition();
