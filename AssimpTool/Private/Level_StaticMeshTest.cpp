@@ -113,6 +113,9 @@ HRESULT Level_StaticMeshTest::Ready_Layer_UI(const wstring& strLayerTag)
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
 
+	//auto ui = make_shared<TestUI>(DEVICE, CONTEXT);
+	//ui->Initialize();
+	//GAME.Add_GameObject_toLayerNoClone(ETOUI(LEVEL::TESTMESH), strLayerTag, ui);
 	return S_OK;
 }
 
