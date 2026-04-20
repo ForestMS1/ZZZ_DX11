@@ -30,6 +30,8 @@ HRESULT Level_StaticMeshTest::Initialize()
 	GAME.Register(L"TestCorin", []() { auto obj = make_shared<TestCorin>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 	GAME.Register(L"TestSphere", []() {  auto obj = make_shared<TestSphere>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 	GAME.Register(L"TestUI", []() {  auto obj = make_shared<TestUI>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
+	// 빈 오브젝트
+	GAME.Register(L"GameObject", []() {  auto obj = make_shared<GameObject>(DEVICE, CONTEXT); obj->Initialize(); return obj; });
 
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
@@ -41,6 +43,7 @@ HRESULT Level_StaticMeshTest::Initialize()
 		return E_FAIL;
 
 	// 충돌처리 할 레이어 쌍 정의
+	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Basic");
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
 	return S_OK;
@@ -76,13 +79,6 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
 
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
-
-	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
-	//	return E_FAIL;
 
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
@@ -97,6 +93,14 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Camera(const wstring& strLayerTag)
 	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
 	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
 
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
+
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -104,6 +108,10 @@ HRESULT Level_StaticMeshTest::Ready_Layer_UI(const wstring& strLayerTag)
 {
 	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
 	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
+
+	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

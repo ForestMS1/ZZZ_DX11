@@ -16,6 +16,8 @@ void Collider::OnInspectorGUI()
     Component::OnInspectorGUI();
 
     ImGui::Checkbox("isTrigger", &_isTrigger);
+    ImGui::SameLine();
+    ImGui::Checkbox("isFix", &_isFix);
 
     if (ImGui::TreeNodeEx("Collider", ImGuiTreeNodeFlags_DefaultOpen))
     {

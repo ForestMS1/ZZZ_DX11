@@ -6,7 +6,9 @@
 #include "ModelRenderer.h"
 #include "ModelAnimator.h"
 #include "SpriteRenderer.h"
-#include "Collider.h"
+#include "AABBCollider.h"
+#include "OBBCollider.h"
+#include "SphereCollider.h"
 
 NS_BEGIN(Engine)
 

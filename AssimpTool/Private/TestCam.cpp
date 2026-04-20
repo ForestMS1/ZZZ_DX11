@@ -30,16 +30,10 @@ HRESULT TestCam::Initialize(void* pArg)
 	AddComponent(make_shared<Camera>());
 	AddComponent(make_shared<TestCamScript>());
 
-	shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
-	AddComponent(collider);
+	//shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
+	//AddComponent(collider);
 
 	GetTransform()->SetPosition(Vec3{ 0.f, 0.f, -5.f });
-	return S_OK;
-}
-
-HRESULT TestCam::Render()
-{
-
 	return S_OK;
 }
 

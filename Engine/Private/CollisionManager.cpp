@@ -21,6 +21,9 @@ HRESULT CollisionManager::Initialize(uint32 iNumLevels)
 
 void CollisionManager::FixedUpdate()
 {
+	// 이번 프레임에 충돌 중인 쌍들을 모을 임시 컨테이너
+	set<CollisionPair> currentPairs;
+
 	for (auto& pair : _collisionLayerTable[GAME.GetCurrentLevelIndex()])
 	{
 		shared_ptr<Layer> srcLayer = GAME.Find_CurrentLevel_Layer(pair.first);
@@ -47,26 +50,22 @@ void CollisionManager::FixedUpdate()
 
 					if (shared_ptr<Collider> dscCollider = dscGameObject->GetCollider())
 					{
-						// 충돌체 구조체 만들고
-						Collision collision;
-						collision.colliderA = srcCollider;
-						collision.colliderB = dscCollider;
-
-						CollisionPair collisionPair;
-						collisionPair.colliderA = srcCollider;
-						collisionPair.colliderB = dscCollider;
-
 						//충돌 검사.
 						if (srcCollider->Intersects(dscCollider))
 						{
+							CollisionPair cp(srcCollider, dscCollider); // 정렬된 쌍 생성
+							currentPairs.insert(cp);
+
+							Collision collision{ srcCollider, dscCollider };
+
 							// AABB끼리고 둘다 Trigger false면 밀어냄, 둘중 하나라도 Trigger true면 겹친 값만 Collision에 저장
 							Collision_RectEx(srcCollider, dscCollider, &collision);
+							if(srcLayer != dscLayer) // 같은 레이어면 어차피 두번 됨
+								Collision_RectEx(dscCollider, srcCollider, nullptr);
 
 							// Enter
-							if (_currentPairs.find(collisionPair) == _currentPairs.end())
+							if (_previousPairs.find(cp) == _previousPairs.end())
 							{
-								// 충돌쌍 삽입
-								_currentPairs.insert(collisionPair);
 								// 충돌한 오브젝트들의 MonoBehaviour 스크립트에 뿌려준다.
 								for (shared_ptr<MonoBehaviour> script : srcGameObject->GetScripts())
 								{
@@ -77,9 +76,8 @@ void CollisionManager::FixedUpdate()
 									script->OnCollisionEnter(collision);
 								}
 							}
-
 							// Stay
-							if (_currentPairs.find(collisionPair) != _currentPairs.end())
+							else
 							{
 								// 충돌한 오브젝트들의 MonoBehaviour 스크립트에 뿌려준다.
 								for (shared_ptr<MonoBehaviour> script : srcGameObject->GetScripts())
@@ -89,25 +87,6 @@ void CollisionManager::FixedUpdate()
 								for (shared_ptr<MonoBehaviour> script : dscGameObject->GetScripts())
 								{
 									script->OnCollisionStay(collision);
-								}
-							}
-						}
-						// 둘이 이번프레임에 충돌안했음
-						else
-						{
-							//Exit
-							if (_currentPairs.find(collisionPair) != _currentPairs.end())
-							{
-								// 충돌 쌍 제거
-								_currentPairs.erase(collisionPair);
-								// 충돌한 오브젝트들의 MonoBehaviour 스크립트에 뿌려준다.
-								for (shared_ptr<MonoBehaviour> script : srcGameObject->GetScripts())
-								{
-									script->OnCollisionExit(collision);
-								}
-								for (shared_ptr<MonoBehaviour> script : dscGameObject->GetScripts())
-								{
-									script->OnCollisionExit(collision);
 								}
 							}
 						}
@@ -116,6 +95,24 @@ void CollisionManager::FixedUpdate()
 			}
 		}
 	}
+
+	for (const auto& prevPair : _previousPairs)
+	{
+		if (currentPairs.find(prevPair) == currentPairs.end())
+		{
+			Collision exitCollision{ prevPair.colliderA, prevPair.colliderB, 0.f, 0.f, 0.f };
+			for (shared_ptr<MonoBehaviour> script : prevPair.colliderA->GetGameObject()->GetScripts())
+			{
+				script->OnCollisionExit(exitCollision);
+			}
+			for (shared_ptr<MonoBehaviour> script : prevPair.colliderB->GetGameObject()->GetScripts())
+			{
+				script->OnCollisionExit(exitCollision);
+			}
+		}
+	}
+
+	_previousPairs = std::move(currentPairs);
 }
 
 void CollisionManager::AddCollisionLayer(uint32 iLayerLevelIndex, const wstring& strLayerTagA, const wstring& strLayerTagB)
@@ -123,12 +120,12 @@ void CollisionManager::AddCollisionLayer(uint32 iLayerLevelIndex, const wstring&
 	if (iLayerLevelIndex >= _collisionLayerTable.size())
 		return;
 
-	_collisionLayerTable[iLayerLevelIndex].emplace(strLayerTagA, strLayerTagB);
+	_collisionLayerTable[iLayerLevelIndex].push_back(make_pair(strLayerTagA, strLayerTagB));
 }
 
 void CollisionManager::ClearPair()
 {
-	_currentPairs.erase(_currentPairs.begin(), _currentPairs.end());
+	_previousPairs.erase(_previousPairs.begin(), _previousPairs.end());
 }
 
 unique_ptr<CollisionManager> CollisionManager::Create(uint32 iNumLevels)
@@ -161,10 +158,15 @@ void CollisionManager::Collision_RectEx(shared_ptr<Collider> pSrcAABB, shared_pt
 	float overlapZ = (boxA.Extents.z + boxB.Extents.z) - fabsf(boxA.Center.z - boxB.Center.z);
 
 	// Collision 구조체에 값 저장
-	pInfo->overlapX = overlapX;
-	pInfo->overlapY = overlapY;
-	pInfo->overlapZ = overlapZ;
+	if (pInfo != nullptr)
+	{
+		pInfo->overlapX = overlapX;
+		pInfo->overlapY = overlapY;
+		pInfo->overlapZ = overlapZ;
+	}
 
+	if (pSrcAABB->IsFix())
+		return;
 
 	auto transform = pSrcAABB->GetTransform();
 	Vec3 pos = transform->GetLocalPosition();

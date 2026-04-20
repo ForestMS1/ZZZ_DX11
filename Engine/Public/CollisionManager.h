@@ -35,11 +35,11 @@ public:
 	void	ClearPair();
 
 private:
-	// 충돌처리 레이어 테이블 (인덱스는 레벨의미)
-	vector<map<const wstring, const wstring>> _collisionLayerTable;
+	// 충돌처리 레이어 테이블 (첫 인덱스는 레벨의미)
+	vector<vector<std::pair<const wstring, const wstring>>> _collisionLayerTable;
 
 	// 충돌 쌍 정보 (이벤트 함수 호출 타이밍을 관리하기 위해)
-	std::set<CollisionPair> _currentPairs;
+	std::set<CollisionPair> _previousPairs;
 
 public:
 	static unique_ptr<CollisionManager> Create(uint32 iNumLevels);

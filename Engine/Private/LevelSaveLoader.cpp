@@ -58,6 +58,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         auto spriteRenderer = gameObject->GetSpriteRenderer();
         if (spriteRenderer != nullptr && spriteRenderer->IsUI())
         {
+            data.uiData.isSave = true;
             data.uiData.x = spriteRenderer->GetUIPosX();
             data.uiData.y = spriteRenderer->GetUIPosY();
             data.uiData.width = spriteRenderer->GetUIWidth();
@@ -67,7 +68,10 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         auto collider = gameObject->GetCollider();
         if (collider != nullptr)
         {
+            data.colliderData.isSave = true;
+            data.colliderData.type = collider->GetColliderType();
             data.colliderData.isTrigger = collider->IsTrigger();
+            data.colliderData.isFix = collider->IsFix();
             data.colliderData.extents = collider->GetScale();
             data.colliderData.offset = collider->GetOffset();
         }
@@ -170,7 +174,17 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         transform->SetLocalPosition(tData.localPosition);
 
         auto spriteRenderer = newObj->GetSpriteRenderer();
-        if (spriteRenderer != nullptr)
+        if (uData.isSave == true && spriteRenderer == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            auto newSpriteRenderer = make_shared<SpriteRenderer>(GAME.GetResource<Shader>(L"UI.fx"));
+            newSpriteRenderer->SetUI(true);
+            newSpriteRenderer->SetUIPosX(uData.x);
+            newSpriteRenderer->SetUIPosY(uData.y);
+            newSpriteRenderer->SetUIWidth(uData.width);
+            newSpriteRenderer->SetUIHeight(uData.height);
+            newObj->AddComponent(newSpriteRenderer);
+        }
+        else if (spriteRenderer != nullptr)
         {
             spriteRenderer->SetUI(true);
             spriteRenderer->SetUIPosX(uData.x);
@@ -180,9 +194,34 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         }
 
         auto collider = newObj->GetCollider();
-        if (collider != nullptr)
+        if (colData.isSave == true && collider == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<Collider> newCollider;
+            switch (colData.type)
+            {
+            case ColliderType::AABB:
+                newCollider = make_shared<AABBCollider>();
+                break;
+            case ColliderType::OBB:
+                newCollider = make_shared<OBBCollider>();
+                break;
+            case ColliderType::Sphere:
+                newCollider = make_shared<SphereCollider>();
+                break;
+            default:
+                break;
+            }
+            newCollider->SetTrigger(colData.isTrigger);
+            newCollider->SetFix(colData.isFix);
+            newCollider->SetScale(colData.extents);
+            newCollider->SetOffset(colData.offset);
+
+            newObj->AddComponent(newCollider);
+        }
+        else if (collider != nullptr)
         {
             collider->SetTrigger(colData.isTrigger);
+            collider->SetFix(colData.isFix);
             collider->SetScale(colData.extents);
             collider->SetOffset(colData.offset);
         }

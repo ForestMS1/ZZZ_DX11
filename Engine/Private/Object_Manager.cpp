@@ -2,6 +2,10 @@
 #include "Object_Manager.h"
 #include "Layer.h"
 
+// ------------ Component ----------------
+#include "AABBCollider.h"
+#include "ModelAnimator.h"
+//--------------------------------------
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "LevelSaveLoader.h"
@@ -288,6 +292,19 @@ void Object_Manager::ShowHiearchy(const char** levelNames)
 
 		bool isNodeOpen = ImGui::TreeNodeEx(tagStr.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen);
 
+		// --- 우클릭 오브젝트 추가 로직 ---
+		// BeginPopupContextItem은 바로 직전에 호출된 위젯(TreeNode)을 대상으로 우클릭을 감지
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Create Empty Object"))
+			{
+				shared_ptr<GameObject> newObj = GAME.CreateFromFactory(L"GameObject");
+				// 리스트에 추가 (레이어 등록)
+				GAME.Add_GameObject_toLayerNoClone(_currentLevelIndex, layerTag, newObj);
+			}
+			ImGui::EndPopup();
+		}
+
 		if (ImGui::BeginDragDropTarget())
 		{
 			// 모델 리소스 매니저로부터 드래그 온 경우
@@ -461,7 +478,7 @@ void Object_Manager::ShowInspector()
 	if (ImGui::InputText("Name", buf, 256))
 	{
 		_selectedObject->SetName(Utils::ToWString(buf)); // 수정 시 즉시 반영
-		_selectedObject->Set_ClassName(Utils::ToWString(buf));
+		//_selectedObject->Set_ClassName(Utils::ToWString(buf));
 	}
 
 	ImGui::Separator();
@@ -605,6 +622,40 @@ void Object_Manager::ShowInspector()
 			pTransform->SetScale(Vec3(1.f, 1.f, 1.f));
 		}
 	}
+
+	// ------------------------------------------- AddComponent -----------------------------------------------------
+	if (ImGui::Button("Add Component", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+	{
+		ImGui::OpenPopup("ComponentSearchPopup");
+	}
+
+	// 팝업 내부 로직
+	if (ImGui::BeginPopup("ComponentSearchPopup"))
+	{
+		ImGui::TextDisabled("Fixed Components");
+		ImGui::Separator();
+
+		if (ImGui::Selectable("Mesh Renderer"))
+		{
+			// TODO: 컴포넌트 추가 로직 (예: targetGameObject->AddComponent<MeshRenderer>())
+		}
+
+		if (_selectedObject->GetCollider() == nullptr && ImGui::Selectable("AABB Collider"))
+		{
+			// TODO: 컴포넌트 추가 로직
+			shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
+			_selectedObject->AddComponent(collider);
+		}
+
+		if (ImGui::Selectable("Script Component"))
+		{
+			// TODO: 컴포넌트 추가 로직
+		}
+
+		ImGui::EndPopup();
+	}
+
+	// ------------------------------------------- AddComponent -----------------------------------------------------
 
 	for (const auto& fixedComponent : _selectedObject->GetComponents())
 	{

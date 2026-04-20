@@ -30,22 +30,26 @@ public:
 
 public:
 
+	// 충돌 감지
 	virtual bool Intersects(Ray& ray, OUT float& distance) = 0;
 	virtual bool Intersects(const shared_ptr<Collider> other) = 0;
 
+
+	// Save & Load, 콜라이더마다 Bounding 구조체가 다르기 때문에 가상화
 	virtual void SetScale(Vec3 scale) = 0;
 	virtual Vec3 GetScale() = 0;
 
-
-	// 플레이어 Transform 중심점으로부터 얼마나 떨어진 위치에 _colliderBox의 중심점을 둘 것인가.
+	// 오브젝트의 Transform 중심점으로부터 얼마나 떨어진 위치에 _colliderBox의 중심점을 둘 것인가.
 	void SetOffset(Vec3 offset) { _offset = offset; };
 	Vec3 GetOffset() { return _offset; }
 
-	ColliderType GetColliderType() const { return _colliderType; }
-
-
 	bool IsTrigger() const { return _isTrigger; }
 	void SetTrigger(bool trigger = true) { _isTrigger = trigger; }
+
+	bool IsFix() const { return _isFix; }
+	void SetFix(bool fix = true) { _isFix = fix; }
+
+	ColliderType GetColliderType() const { return _colliderType; }
 
 	// 디버그 컬러 변경
 	void SetDebugColor(XMVECTORF32 debugColor) { _debugColor = debugColor; }
@@ -57,7 +61,10 @@ protected:
 	Vec3 _offset;
 	XMVECTORF32 _debugColor = Colors::Lime;
 
+	// 충돌감지만(true일때)
 	bool _isTrigger = false;
+	// 충돌한만큼 밀려날것인지 (벽, 맵, 몬스터 같은 애들 true)
+	bool _isFix = true;
 };
 
 NS_END

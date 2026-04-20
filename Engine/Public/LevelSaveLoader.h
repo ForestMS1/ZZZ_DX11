@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Collider.h"
 NS_BEGIN(Engine)
 
 struct TransformData
@@ -13,6 +13,8 @@ struct TransformData
 
 struct UIData
 {
+	//Save 할 때 저장이 된건지 여부
+	bool isSave = false;
 	float x = 0.f;
 	float y = 0.f;
 	float width = 0.f;
@@ -21,7 +23,10 @@ struct UIData
 
 struct ColliderData
 {
+	bool isSave = false;
+	ColliderType type = ColliderType::END;
 	bool isTrigger = false;
+	bool isFix = true;
 	Vec3 extents = { 0.f, 0.f, 0.f };
 	Vec3 offset = { 0.f, 0.f, 0.f };
 };

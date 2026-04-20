@@ -14,6 +14,8 @@ AABBCollider::~AABBCollider()
 
 void AABBCollider::LateUpdate()
 {
+	GAME.Add_RenderObject(RENDERGROUP::BLEND, GetGameObject());
+
 	Vec3 gameObjectPosition = GetGameObject()->GetTransform()->GetLocalPosition();
 
 	_colliderBox.Center = gameObjectPosition + _offset;

@@ -32,12 +32,6 @@ HRESULT TestPlayCam::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT TestPlayCam::Render()
-{
-
-	return S_OK;
-}
-
 unique_ptr<TestPlayCam> TestPlayCam::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
 	auto pInstance = unique_ptr<TestPlayCam>(new TestPlayCam(pDevice, pDeviceContext));

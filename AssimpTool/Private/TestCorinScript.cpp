@@ -96,6 +96,7 @@ void TestCorinScript::OnCollisionEnter(const Collision& collision)
 		otherCollider = collision.colliderA;
 
 	collider->SetDebugColor(Colors::Red);
+	_collisionCount++;
 }
 
 void TestCorinScript::OnCollisionExit(const Collision& collision)
@@ -110,5 +111,7 @@ void TestCorinScript::OnCollisionExit(const Collision& collision)
 	else
 		otherCollider = collision.colliderA;
 
-	collider->SetDebugColor(Colors::LimeGreen);
+	_collisionCount--;
+	if(_collisionCount <= 0)
+		collider->SetDebugColor(Colors::LimeGreen);
 }

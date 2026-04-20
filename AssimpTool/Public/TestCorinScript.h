@@ -8,5 +8,8 @@ class TestCorinScript : public MonoBehaviour
 
 	virtual void OnCollisionEnter(const Collision& collision) override;
 	virtual void OnCollisionExit(const Collision& collision) override;
+
+private:
+	uint32 _collisionCount = 0;
 };
 
