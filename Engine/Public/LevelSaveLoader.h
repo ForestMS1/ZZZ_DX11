@@ -19,6 +19,13 @@ struct UIData
 	float height = 0.f;
 };
 
+struct ColliderData
+{
+	bool isTrigger = false;
+	Vec3 extents = { 0.f, 0.f, 0.f };
+	Vec3 offset = { 0.f, 0.f, 0.f };
+};
+
 struct GameObjectData
 {
 	char className[64];
@@ -27,6 +34,7 @@ struct GameObjectData
 	UUID parentId; // 부모가 없으면 -1
 	TransformData transformData;
 	UIData uiData;
+	ColliderData colliderData;
 };
 
 

@@ -64,6 +64,15 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             data.uiData.height = spriteRenderer->GetUIHeight();
         }
 
+        auto collider = gameObject->GetCollider();
+        if (collider != nullptr)
+        {
+            data.colliderData.isTrigger = collider->IsTrigger();
+            data.colliderData.extents = collider->GetScale();
+            data.colliderData.offset = collider->GetOffset();
+        }
+
+
 
         // className 저장 (길이 -> 데이터)
         uint32_t classLen = static_cast<uint32_t>(className.size());
@@ -80,6 +89,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<char*>(&data.parentId), sizeof(UUID));
         outFile.write(reinterpret_cast<char*>(&data.transformData), sizeof(TransformData));
         outFile.write(reinterpret_cast<char*>(&data.uiData), sizeof(UIData));
+        outFile.write(reinterpret_cast<char*>(&data.colliderData), sizeof(ColliderData));
     }
 
     outFile.close();
@@ -137,10 +147,12 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         UUID objId, parentId;
         TransformData tData;
         UIData uData;
+        ColliderData colData;
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&tData), sizeof(TransformData));
         inFile.read(reinterpret_cast<char*>(&uData), sizeof(UIData));
+        inFile.read(reinterpret_cast<char*>(&colData), sizeof(ColliderData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -165,6 +177,14 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             spriteRenderer->SetUIPosY(uData.y);
             spriteRenderer->SetUIWidth(uData.width);
             spriteRenderer->SetUIHeight(uData.height);
+        }
+
+        auto collider = newObj->GetCollider();
+        if (collider != nullptr)
+        {
+            collider->SetTrigger(colData.isTrigger);
+            collider->SetScale(colData.extents);
+            collider->SetOffset(colData.offset);
         }
 
         // 리스트에 추가 (레이어 등록)
