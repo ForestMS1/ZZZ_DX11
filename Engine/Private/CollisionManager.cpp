@@ -100,12 +100,26 @@ void CollisionManager::FixedUpdate()
 	{
 		if (currentPairs.find(prevPair) == currentPairs.end())
 		{
+			// 객체 및 콜라이더 유효성 체크
+			if (prevPair.colliderA.expired() || prevPair.colliderB.expired())
+				continue;
+
+			auto objA = prevPair.colliderA.lock()->GetGameObject();
+			auto objB = prevPair.colliderB.lock()->GetGameObject();
+
+			// 오브젝트가 삭제 대기 상태(REMOVE)인지 확인
+			if (objA == nullptr || objB == nullptr)
+				continue;
+
+			if (objA->GetLifeState() == LIFESTATE::REMOVE || objB->GetLifeState() == LIFESTATE::REMOVE)
+				continue;
+
 			Collision exitCollision{ prevPair.colliderA, prevPair.colliderB, 0.f, 0.f, 0.f };
-			for (shared_ptr<MonoBehaviour> script : prevPair.colliderA->GetGameObject()->GetScripts())
+			for (shared_ptr<MonoBehaviour> script : prevPair.colliderA.lock()->GetGameObject()->GetScripts())
 			{
 				script->OnCollisionExit(exitCollision);
 			}
-			for (shared_ptr<MonoBehaviour> script : prevPair.colliderB->GetGameObject()->GetScripts())
+			for (shared_ptr<MonoBehaviour> script : prevPair.colliderB.lock()->GetGameObject()->GetScripts())
 			{
 				script->OnCollisionExit(exitCollision);
 			}

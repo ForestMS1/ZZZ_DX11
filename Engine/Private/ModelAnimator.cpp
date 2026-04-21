@@ -11,6 +11,11 @@
 #include "AnimFSM.h"
 #include "AnimState.h"
 #include "Transition.h"
+
+ModelAnimator::ModelAnimator()
+	: Component(ComponentType::Animator)
+{
+}
 ModelAnimator::ModelAnimator(shared_ptr<Shader> shader)
 	: Component(ComponentType::Animator), _shader(shader)
 {
@@ -98,6 +103,8 @@ void ModelAnimator::Update()
 HRESULT ModelAnimator::Render()
 {
 	if (_model == nullptr)
+		return E_FAIL;
+	if (_shader == nullptr)
 		return E_FAIL;
 	if (_texture == nullptr)
 		CreateTexture();
@@ -302,6 +309,7 @@ void ModelAnimator::CreateAnimationTransform(uint32 index)
 
 void ModelAnimator::OnInspectorGUI()
 {
+	GuiRemoveButton("ModelAnimator");
 	if (ImGui::CollapsingHeader("ModelAnimator", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Indent();

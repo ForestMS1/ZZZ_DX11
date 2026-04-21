@@ -13,8 +13,8 @@ enum class ColliderType
 
 struct Collision
 {
-	shared_ptr<class Collider> colliderA;
-	shared_ptr<class Collider> colliderB;
+	weak_ptr<class Collider> colliderA;
+	weak_ptr<class Collider> colliderB;
 	
 	// x,y,z 축 얼마나 겹치는지
 	float overlapX;

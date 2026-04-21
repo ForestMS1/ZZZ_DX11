@@ -4,6 +4,12 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "GameObject.h"
+
+SpriteRenderer::SpriteRenderer()
+	: Component(ComponentType::SpriteRenderer)
+{
+}
+
 SpriteRenderer::SpriteRenderer(shared_ptr<Shader> shader)
 	: Component(ComponentType::SpriteRenderer)
 	, _shader(shader)
@@ -21,6 +27,7 @@ SpriteRenderer::SpriteRenderer(shared_ptr<Shader> shader)
 
 SpriteRenderer::~SpriteRenderer()
 {
+
 }
 
 void SpriteRenderer::Awake()
@@ -61,6 +68,8 @@ HRESULT SpriteRenderer::Render()
 {
 	if (_mesh == nullptr)
 		return E_FAIL;
+	if (_shader == nullptr)
+		return E_FAIL;
 
 	//GlobalData
 	if (_ui)
@@ -95,6 +104,8 @@ HRESULT SpriteRenderer::Render()
 
 void SpriteRenderer::OnInspectorGUI()
 {
+	GuiRemoveButton("SpriteRenderer");
+
     if (ImGui::CollapsingHeader("SpriteRenderer", ImGuiTreeNodeFlags_DefaultOpen))
     {
 		// Shader

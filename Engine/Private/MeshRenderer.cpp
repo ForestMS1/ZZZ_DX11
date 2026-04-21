@@ -51,6 +51,7 @@ HRESULT MeshRenderer::Render()
 
 void MeshRenderer::OnInspectorGUI()
 {
+	GuiRemoveButton("MeshRenderer");
 
     if (ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen))
     {

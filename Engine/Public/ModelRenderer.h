@@ -9,6 +9,7 @@ class Model;
 class ENGINE_DLL ModelRenderer : public Component
 {
 public:
+	ModelRenderer();
 	ModelRenderer(shared_ptr<Shader> shader);
 	virtual ~ModelRenderer();
 

@@ -8,6 +8,7 @@ class Texture;
 class ENGINE_DLL SpriteRenderer : public Component
 {
 public:
+	SpriteRenderer();
 	SpriteRenderer(shared_ptr<Shader> shader);
 	~SpriteRenderer();
 public:

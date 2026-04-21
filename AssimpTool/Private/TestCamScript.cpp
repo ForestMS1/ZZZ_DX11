@@ -3,7 +3,8 @@
 
 void TestCamScript::LateUpdate()
 {
-	if (!GetGameObject()->GetCamera()->IsActive())
+	if (auto camera = GetGameObject()->GetCamera())
+		if(!camera->IsActive())
 		return;
 
 

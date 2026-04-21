@@ -6,7 +6,7 @@ class TestPlayCamScript : public MonoBehaviour
 	virtual void LateUpdate() override;
 
 private:
-	shared_ptr<GameObject> _target;
+	weak_ptr<GameObject> _target;
 	float _pitch = 0.f;	// 상하 회전
 	float _yaw = 0.f; // 좌우 회전
 	float _roll = 0.f;

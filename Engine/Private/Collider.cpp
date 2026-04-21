@@ -13,7 +13,7 @@ Collider::~Collider()
 
 void Collider::OnInspectorGUI()
 {
-    Component::OnInspectorGUI();
+    GuiRemoveButton("Collider");
 
     ImGui::Checkbox("isTrigger", &_isTrigger);
     ImGui::SameLine();

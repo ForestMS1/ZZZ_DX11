@@ -89,12 +89,6 @@ void TestCorinScript::OnCollisionEnter(const Collision& collision)
 	if (collider == nullptr)
 		return;
 
-	shared_ptr<Collider> otherCollider;
-	if (collider == collision.colliderA)
-		otherCollider = collision.colliderB;
-	else
-		otherCollider = collision.colliderA;
-
 	collider->SetDebugColor(Colors::Red);
 	_collisionCount++;
 }
@@ -104,12 +98,6 @@ void TestCorinScript::OnCollisionExit(const Collision& collision)
 	auto collider = GetGameObject()->GetCollider();
 	if (collider == nullptr)
 		return;
-
-	shared_ptr<Collider> otherCollider;
-	if (collider == collision.colliderA)
-		otherCollider = collision.colliderB;
-	else
-		otherCollider = collision.colliderA;
 
 	_collisionCount--;
 	if(_collisionCount <= 0)

@@ -9,8 +9,14 @@ void TestPlayCamScript::Awake()
 
 void TestPlayCamScript::LateUpdate()
 {
-    if (!GetGameObject()->GetCamera()->IsActive())
+    if (_target.expired())
+    {
+        _target.reset();
         return;
+    }
+    if (auto camera = GetGameObject()->GetCamera())
+        if(!camera->IsActive())
+            return;
 
     if (GAME.Key_Down(DIK_Q))
         _mouseFix = !_mouseFix;
@@ -45,7 +51,7 @@ void TestPlayCamScript::LateUpdate()
 
 
     offset = Vec3::TransformNormal(offset, matRot);
-    Vec3 targetPos = _target->GetTransform()->GetPosition();
+    Vec3 targetPos = _target.lock()->GetTransform()->GetPosition();
     Vec3 finalPos = targetPos + offset + Vec3(0.f, 1.5f, 0.f);
 
 

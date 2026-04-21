@@ -6,12 +6,12 @@ class Collider;
 
 struct CollisionPair
 {
-	shared_ptr<Collider> colliderA;
-	shared_ptr<Collider> colliderB;
+	weak_ptr<Collider> colliderA;
+	weak_ptr<Collider> colliderB;
 
 	bool operator< (const CollisionPair& rhs) const
 	{
-		return colliderA < rhs.colliderA;
+		return colliderA.lock() < rhs.colliderA.lock();
 	}
 };
 

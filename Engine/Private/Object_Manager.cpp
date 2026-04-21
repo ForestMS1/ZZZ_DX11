@@ -642,21 +642,62 @@ void Object_Manager::ShowInspector()
 		ImGui::TextDisabled("Fixed Components");
 		ImGui::Separator();
 
-		if (ImGui::Selectable("Mesh Renderer"))
+		if (_selectedObject->GetCamera() == nullptr && ImGui::Selectable("Camera"))
 		{
-			// TODO: 컴포넌트 추가 로직 (예: targetGameObject->AddComponent<MeshRenderer>())
+			shared_ptr<Camera> camera = make_shared<Camera>();
+			_selectedObject->AddComponent(camera);
 		}
 
 		if (_selectedObject->GetCollider() == nullptr && ImGui::Selectable("AABB Collider"))
 		{
-			// TODO: 컴포넌트 추가 로직
 			shared_ptr<AABBCollider> collider = make_shared<AABBCollider>();
 			_selectedObject->AddComponent(collider);
 		}
 
+		if (_selectedObject->GetCollider() == nullptr && ImGui::Selectable("OBB Collider"))
+		{
+			shared_ptr<OBBCollider> collider = make_shared<OBBCollider>();
+			_selectedObject->AddComponent(collider);
+		}
+
+		if (_selectedObject->GetCollider() == nullptr && ImGui::Selectable("Sphere Collider"))
+		{
+			shared_ptr<SphereCollider> collider = make_shared<SphereCollider>();
+			_selectedObject->AddComponent(collider);
+		}
+
+		bool renderer = (_selectedObject->GetMeshRenderer() == nullptr && 
+			_selectedObject->GetModelRenderer() == nullptr &&
+			_selectedObject->GetModelAnimator() == nullptr &&
+			_selectedObject->GetSpriteRenderer() == nullptr);
+
+		if (renderer && ImGui::Selectable("MeshRenderer"))
+		{
+			shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+			_selectedObject->AddComponent(meshRenderer);
+		}
+
+		if (renderer && ImGui::Selectable("ModelRenderer"))
+		{
+			shared_ptr<ModelRenderer> modelRenderer = make_shared<ModelRenderer>();
+			_selectedObject->AddComponent(modelRenderer);
+		}
+
+		if (renderer && ImGui::Selectable("ModelAnimator"))
+		{
+			shared_ptr<ModelAnimator> modelAnimator = make_shared<ModelAnimator>();
+			_selectedObject->AddComponent(modelAnimator);
+		}
+
+		if (renderer && ImGui::Selectable("SpriteRenderer"))
+		{
+			shared_ptr<SpriteRenderer> spriteRenderer = make_shared<SpriteRenderer>();
+			_selectedObject->AddComponent(spriteRenderer);
+		}
+
 		if (ImGui::Selectable("Script Component"))
 		{
-			// TODO: 컴포넌트 추가 로직
+
 		}
 
 		ImGui::EndPopup();

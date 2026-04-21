@@ -45,10 +45,21 @@ public:
 	virtual void FixedUpdate() {}
 	virtual HRESULT Render() { return S_OK; }
 
+
 	// ImGUI Inspector 창 정보
-	virtual void OnInspectorGUI() {}
+	virtual void OnInspectorGUI() {};
+	// ImGuI Inspector에서 사용
+	void GuiRemoveButton(string componentName = "");
+	void RemoveSelf() { this->SetLifeState(LIFESTATE::REMOVE); }
+	// 컴포넌트가 객체로부터 떨어질 때 컴포넌트안의 메모리 정리 기회
+	virtual void	  OnDestroy() {};
 
 public:
+	// LIFESTATE Property
+	LIFESTATE GetLifeState() const { return _lifeState; }
+	void	  SetLifeState(LIFESTATE eLifeState) { _lifeState = eLifeState; }
+
+
 	// 컴포넌트 타입 리턴
 	ComponentType GetType() { return _type; }
 
@@ -66,6 +77,9 @@ private:
 protected:
 	ComponentType _type;
 	weak_ptr<GameObject> _gameObject;
+
+	// 컴포넌트도 생명주기 가져야 함
+	LIFESTATE _lifeState = LIFESTATE::NONE;
 
 };
 

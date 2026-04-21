@@ -37,13 +37,20 @@ void	GameObject::Awake()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::NONE)
+		{
 			component->Awake();
+			component->SetLifeState(LIFESTATE::AWAKED);
+		}
 	}
 
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
-		script->Awake();
+		if (script->GetLifeState() == LIFESTATE::NONE)
+		{
+			script->Awake();
+			script->SetLifeState(LIFESTATE::AWAKED);
+		}
 	}
 }
 
@@ -51,13 +58,20 @@ void	GameObject::Start()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::AWAKED)
+		{
 			component->Start();
+			component->SetLifeState(LIFESTATE::STARTED);
+		}
 	}
 
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
-		script->Start();
+		if (script->GetLifeState() == LIFESTATE::AWAKED)
+		{
+			script->Start();
+			script->SetLifeState(LIFESTATE::STARTED);
+		}
 	}
 }
 
@@ -65,13 +79,14 @@ void	GameObject::Update()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
 			component->Update();
 	}
 
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
-		script->Update();
+		if (script->GetLifeState() == LIFESTATE::STARTED)
+			script->Update();
 	}
 }
 
@@ -79,13 +94,14 @@ void	GameObject::LateUpdate()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
 			component->LateUpdate();
 	}
 
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
-		script->LateUpdate();
+		if (script->GetLifeState() == LIFESTATE::STARTED)
+			script->LateUpdate();
 	}
 }
 
@@ -93,13 +109,41 @@ void	GameObject::FixedUpdate()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
 			component->FixedUpdate();
 	}
 
 	for (shared_ptr<MonoBehaviour> script : _scripts)
 	{
-		script->FixedUpdate();
+		if (script->GetLifeState() == LIFESTATE::STARTED)
+			script->FixedUpdate();
+	}
+}
+
+void	GameObject::EndOfFrame()
+{
+	// 죽은 컴포넌트들 삭제
+	for (int i = 0; i < FIXED_COMPONENT_COUNT; ++i)
+	{
+		if (_components[i] != nullptr && _components[i]->GetLifeState() == LIFESTATE::REMOVE)
+		{
+			_components[i]->SetGameObject(nullptr);
+			_components[i]->OnDestroy();
+			_components[i] = nullptr;
+		}
+	}
+	for (auto iter = _scripts.begin(); iter != _scripts.end();)
+	{
+		if ((*iter)->GetLifeState() == LIFESTATE::REMOVE)
+		{
+			(*iter)->SetGameObject(nullptr);
+			(*iter)->OnDestroy();
+			iter = _scripts.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
 	}
 }
 
@@ -107,7 +151,7 @@ HRESULT	GameObject::Render()
 {
 	for (shared_ptr<Component> component : _components)
 	{
-		if (component)
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
 		{
 			if(FAILED(component->Render()))
 				return E_FAIL;
@@ -133,10 +177,16 @@ void GameObject::SetLifeState(LIFESTATE eLifeState)
 	_lifeState = eLifeState;
 	if (_lifeState == LIFESTATE::REMOVE)
 	{
-		for (auto& childTransform : GetTransform()->GetChildrenTransform())
+		for (auto& component : _components)
 		{
-			childTransform->GetGameObject()->SetLifeState(_lifeState);
+			if(component)
+				component->SetLifeState(LIFESTATE::REMOVE);
 		}
+		for (auto& script : _scripts)
+			script->SetLifeState(LIFESTATE::REMOVE);
+
+		for (auto& childTransform : GetTransform()->GetChildrenTransform())
+			childTransform->GetGameObject()->SetLifeState(_lifeState);
 	}
 }
 
@@ -214,5 +264,18 @@ void GameObject::AddComponent(shared_ptr<Component> component)
 	else
 	{
 		_scripts.push_back(dynamic_pointer_cast<MonoBehaviour>(component));
+	}
+}
+
+void GameObject::RemoveFixedComponent(ComponentType eType)
+{
+	// 트랜스폼은 지울 수 없음
+	if (eType == ComponentType::Transform)
+		return;
+
+	uint8 index = static_cast<uint8>(eType);
+	if (index < FIXED_COMPONENT_COUNT)
+	{
+		_components[index]->SetLifeState(LIFESTATE::REMOVE);
 	}
 }

@@ -23,6 +23,7 @@ struct ENGINE_DLL AnimTransform
 class ENGINE_DLL ModelAnimator : public Component
 {
 public:
+	ModelAnimator();
 	ModelAnimator(shared_ptr<Shader> shader);
 	~ModelAnimator();
 

@@ -63,6 +63,8 @@ void Camera::UpdateMatrix()
 //ImGui
 void Camera::OnInspectorGUI()
 {
+	GuiRemoveButton("Camera");
+
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Indent();

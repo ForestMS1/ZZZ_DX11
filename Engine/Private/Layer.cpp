@@ -47,7 +47,7 @@ void Layer::BeginFrame()
 {
 	for (auto& gameObject : _gameObjectList)
 	{
-		switch (gameObject->GetLifeState())
+		/*switch (gameObject->GetLifeState())
 		{
 		case LIFESTATE::NONE:
 			gameObject->Awake();
@@ -59,7 +59,12 @@ void Layer::BeginFrame()
 			break;
 		default:
 			break;
-		}
+		}*/
+		if (gameObject->GetLifeState() == LIFESTATE::REMOVE)
+			continue;
+		gameObject->Awake();
+		gameObject->Start();
+		gameObject->SetLifeState(LIFESTATE::STARTED);
 	}
 }
 
@@ -105,6 +110,12 @@ void Layer::EndOfFrame()
 		{
 			++iter;
 		}
+	}
+
+	// 객체 내 삭제예정인 컴포넌트 있으면 삭제
+	for (auto& gameObject : _gameObjectList)
+	{
+		gameObject->EndOfFrame();
 	}
 }
 

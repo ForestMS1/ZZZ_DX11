@@ -42,6 +42,7 @@ public:
 	void	Update();
 	void	LateUpdate();
 	void	FixedUpdate();
+	void	EndOfFrame();
 
 	virtual HRESULT	Render();
 
@@ -62,6 +63,35 @@ public:
 	// Add Component
 	shared_ptr<Transform> GetOrAddTransform();
 	void AddComponent(shared_ptr<Component> component);
+
+	// 선형탐색. Update같은 루프에서 사용하지말고 Awake나 Start에서 캐싱해서 쓰도록
+	template<typename T>
+	shared_ptr<T>	GetScript()
+	{
+		for (auto& script : _scripts)
+		{
+			shared_ptr<T> casted = dynamic_pointer_cast<T>(script);
+			if (casted)
+				return casted;
+		}
+		return nullptr;
+	}
+
+	// Remove Component
+	void RemoveFixedComponent(ComponentType eType);
+
+	template<typename T>
+	void RemoveScriptComponent()
+	{
+		for (auto& script : _scripts)
+		{
+			if (dynamic_pointer_cast<T>(script))
+			{
+				script->SetLifeState(LIFESTATE::REMOVE);
+				break; 
+			}
+		}
+	}
 
 	// name
 	void SetName(const wstring& name) { _name = name; }

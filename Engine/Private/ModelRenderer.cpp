@@ -3,6 +3,11 @@
 #include "Camera.h"
 #include "Transform.h"
 
+ModelRenderer::ModelRenderer()
+	: Component(ComponentType::ModelRenderer)
+{
+}
+
 ModelRenderer::ModelRenderer(shared_ptr<Shader> shader)
 	: Component(ComponentType::ModelRenderer)
 	, _shader(shader)
@@ -25,7 +30,9 @@ void ModelRenderer::Update()
 HRESULT ModelRenderer::Render()
 {
 	if (_model == nullptr)
-		return E_FAIL;
+		return S_OK;
+	if (_shader == nullptr)
+		return S_OK;
 
 	//GlobalData
 	_shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
@@ -92,6 +99,7 @@ void ModelRenderer::SetModel(shared_ptr<Model> model)
 
 void ModelRenderer::OnInspectorGUI()
 {
+	GuiRemoveButton("ModelRenderer");
 	if (ImGui::CollapsingHeader("ModelRenderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		if (_shader)
