@@ -361,10 +361,11 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             shared_ptr<ModelAnimator> newModelAnimator = make_shared<ModelAnimator>(GAME.GetResource<Shader>(modelAnimData->shaderName));
 
             newModelAnimator->SetModel(GAME.GetResource<Model>(modelAnimData->modelName));
-            if (modelAnimData->animFSMFileName)
+            if (modelAnimData->animFSMFileName[0] != L'\0')
             {
                 shared_ptr<AnimFSM> fsm = make_shared<AnimFSM>(newModelAnimator);
                 fsm->Load(Utils::ToString(modelAnimData->animFSMFileName), newModelAnimator);
+                newModelAnimator->SetFSM(fsm);
             }
             newModelAnimator->SetTechnique(modelAnimData->techniqueIndex);
             newModelAnimator->SetPass(modelAnimData->pass);
@@ -374,10 +375,11 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         else if (modelAnimator != nullptr)
         {
             modelAnimator->SetModel(GAME.GetResource<Model>(modelAnimData->modelName));
-            if (modelAnimData->animFSMFileName)
+            if (modelAnimData->animFSMFileName[0] != L'\0')
             {
                 shared_ptr<AnimFSM> fsm = make_shared<AnimFSM>(modelAnimator);
                 fsm->Load(Utils::ToString(modelAnimData->animFSMFileName), modelAnimator);
+                modelAnimator->SetFSM(fsm);
             }
             modelAnimator->SetTechnique(modelAnimData->techniqueIndex);
             modelAnimator->SetPass(modelAnimData->pass);
