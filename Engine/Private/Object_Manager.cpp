@@ -472,13 +472,20 @@ void Object_Manager::ShowInspector()
 
 	// --- 기본 정보 (이름 등) ---
 	char buf[256];
+	char classBuf[256];
 	string currentName = Utils::ToString(_selectedObject->GetName());
+	string currentClassName = Utils::ToString(_selectedObject->Get_ClassName());
 	strcpy_s(buf, currentName.c_str());
+	strcpy_s(classBuf, currentClassName.c_str());
 
 	if (ImGui::InputText("Name", buf, 256))
 	{
 		_selectedObject->SetName(Utils::ToWString(buf)); // 수정 시 즉시 반영
 		//_selectedObject->Set_ClassName(Utils::ToWString(buf));
+	}
+	if (ImGui::InputText("ClassName", classBuf, 256))
+	{
+		_selectedObject->Set_ClassName(Utils::ToWString(classBuf));// 수정 시 즉시 반영
 	}
 
 	ImGui::Separator();
