@@ -152,6 +152,10 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             auto fsm = modelAnimator->GetFSM();
             if (fsm != nullptr)
             {
+                // fsm 먼저 xml파일로 저장 (게임오브젝트 이름 + FSM으로 저장하자)
+                string fsmSaveName = Utils::ToString(fsm->GetAnimator()->GetGameObject()->GetName()) + "FSM";
+                fsm->Save(fsmSaveName);
+
                 size_t copyLen = std::min((int)fsm->GetFileName().size(), 63); // 마지막 널 문자를 위해 63자 제한
                 wcsncpy_s(data->modelAnimData.animFSMFileName, fsm->GetFileName().c_str(), copyLen);
                 data->modelAnimData.animFSMFileName[copyLen] = L'\0';
