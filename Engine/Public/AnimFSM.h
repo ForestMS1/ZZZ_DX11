@@ -51,6 +51,7 @@ public:
 	// FSM Save & Load XML파일
 	void Save(const string& fileName);
 	void Load(const string& fileName, shared_ptr<ModelAnimator> animatorComponent);
+	wstring GetFileName() { return _fileName; };
 
 	//Gui용 함수들
 private:
@@ -76,6 +77,9 @@ private:
 	shared_ptr<Transition> _curTransition;
 	// AnimState들 unordered_map으로 관리
 	unordered_map<wstring, shared_ptr<AnimState>> _animStates;
+
+	// xml 파일이름
+	wstring _fileName;
 
 	// 파라미터
 	map<wstring, bool> _boolParams;

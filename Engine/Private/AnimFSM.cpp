@@ -325,6 +325,8 @@ void AnimFSM::Save(const string& fileName)
     // 경로 설정 (파일명 포함)
     string fullPath = "../../Saved/FSM/" + fileName + ".xml";
 
+    _fileName = Utils::ToWString(fileName);
+
     // 폴더 생성
     filesystem::create_directories("../../Saved/FSM/");
 
@@ -409,6 +411,8 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
 {
     _animatorComponent = animatorComponent;
     string fullPath = "../../Saved/FSM/" + fileName + ".xml";
+
+    _fileName = Utils::ToWString(fileName);
 
     tinyxml2::XMLDocument document;
     if (document.LoadFile(fullPath.c_str()) != tinyxml2::XML_SUCCESS)

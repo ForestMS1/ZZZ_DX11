@@ -78,8 +78,8 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
-
-
+	//
+	//
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
@@ -96,7 +96,7 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Camera(const wstring& strLayerTag)
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
-
+	//
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
@@ -112,7 +112,7 @@ HRESULT Level_StaticMeshTest::Ready_Layer_UI(const wstring& strLayerTag)
 	//if (FAILED(GameInstance::Get().Add_GameObject_toLayer(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
-
+	//
 	//auto ui = make_shared<TestUI>(DEVICE, CONTEXT);
 	//ui->Initialize();
 	//GAME.Add_GameObject_toLayerNoClone(ETOUI(LEVEL::TESTMESH), strLayerTag, ui);

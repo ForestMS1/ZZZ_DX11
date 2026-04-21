@@ -54,6 +54,10 @@ public:
 	float GetUIWidth() const { return _width; }
 	float GetUIHeight() const { return _height; }
 
+	// Texutre 개수 Get
+	uint8 GetTextureCount() { return _textures.size(); }
+	vector<shared_ptr<Texture>>& GetTextures() { return _textures; }
+
 	// MRT 사용하기위해 Set
 	void SetSRV(ComPtr<ID3D11ShaderResourceView> srv) { _externalSRV = srv; }
 

@@ -34,8 +34,15 @@ public:
 	// Model Property
 	void SetModel(shared_ptr<Model> model);
 	shared_ptr<Model> GetModel() { return _model; }
-
+	// Shader Property
+	
+	shared_ptr<Shader> GetShader() { return _shader; }
+	// Technique Property
+	void SetTechnique(uint8 technique) { _techniqueIndex = technique; }
+	uint8 GetTechnique() { return _techniqueIndex; }
+	// Pass Property
 	void SetPass(uint8 pass) { _pass = pass; }
+	uint8 GetPass() { return _pass; }
 
 	// Renderer RenderGroup Property
 	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }

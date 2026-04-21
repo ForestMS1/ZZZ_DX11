@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LevelSaveLoader.h"
 #include "GameObject.h"
+#include "Texture.h"
 #include <filesystem>
 #include <fstream>
 LevelSaveLoader::LevelSaveLoader()
@@ -35,45 +36,128 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
 
     for (const auto& gameObject : gameObjectList)
     {
-        GameObjectData data = {};
+        shared_ptr<newGameObjectData> data = make_shared<newGameObjectData>();
         // 고유 타입 설정
         const wstring& className = gameObject->Get_ClassName();
         const wstring& objectName = gameObject->GetName();
 
-        data.objectId = gameObject->GetId();
+        data->objectId = gameObject->GetId();
 
         if (gameObject->GetTransform()->HasParent())
-            data.parentId = gameObject->GetTransform()->GetParentTransform()->GetGameObject()->GetId();
+            data->parentId = gameObject->GetTransform()->GetParentTransform()->GetGameObject()->GetId();
         else
-            UuidCreateNil(&data.parentId);
+            UuidCreateNil(&data->parentId);
 
         // Transform 데이터 구조체 채우기
-        data.transformData.localScale = gameObject->GetTransform()->GetLocalScale();
-        data.transformData.localRotation = gameObject->GetTransform()->GetLocalRotation();
-        data.transformData.localPosition = gameObject->GetTransform()->GetLocalPosition();
-        data.transformData.matLocal = gameObject->GetTransform()->GetLocalMatrix();
-        data.transformData.matWorld = gameObject->GetTransform()->GetWorldMatrix();
+        data->transformData.localScale = gameObject->GetTransform()->GetLocalScale();
+        data->transformData.localRotation = gameObject->GetTransform()->GetLocalRotation();
+        data->transformData.localPosition = gameObject->GetTransform()->GetLocalPosition();
+        data->transformData.matLocal = gameObject->GetTransform()->GetLocalMatrix();
+        data->transformData.matWorld = gameObject->GetTransform()->GetWorldMatrix();
 
         // UI 오브젝트라면 UI 위치 저장
         auto spriteRenderer = gameObject->GetSpriteRenderer();
         if (spriteRenderer != nullptr && spriteRenderer->IsUI())
         {
-            data.uiData.isSave = true;
-            data.uiData.x = spriteRenderer->GetUIPosX();
-            data.uiData.y = spriteRenderer->GetUIPosY();
-            data.uiData.width = spriteRenderer->GetUIWidth();
-            data.uiData.height = spriteRenderer->GetUIHeight();
+            data->uiData.isSave = true;
+            data->uiData.x = spriteRenderer->GetUIPosX();
+            data->uiData.y = spriteRenderer->GetUIPosY();
+            data->uiData.width = spriteRenderer->GetUIWidth();
+            data->uiData.height = spriteRenderer->GetUIHeight();
+            data->uiData.textureCount = spriteRenderer->GetTextureCount();
+            
+            // 쉐이더 이름 저장
+            auto shader = spriteRenderer->GetShader();
+            if (shader != nullptr)
+            {
+                size_t copyLen = std::min((int)shader->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->uiData.shaderName, shader->GetName().c_str(), copyLen);
+                data->uiData.shaderName[copyLen] = L'\0';
+            }
+
+            auto& textures = spriteRenderer->GetTextures();
+            for (uint32 i = 0; i < textures.size(); ++i)
+            {
+                auto& tex = textures[i];
+
+                size_t copyLen = std::min((int)tex->GetName().size(), 127); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->uiData.textureNames[i], tex->GetName().c_str(), copyLen);
+                data->uiData.textureNames[i][copyLen] = L'\0';
+            }
+
+            data->uiData.speed = spriteRenderer->GetSpeed();
+            data->uiData.loop = spriteRenderer->IsLoop();
+            data->uiData.play = spriteRenderer->IsPlay();
         }
 
+        // 콜라이더 저장
         auto collider = gameObject->GetCollider();
         if (collider != nullptr)
         {
-            data.colliderData.isSave = true;
-            data.colliderData.type = collider->GetColliderType();
-            data.colliderData.isTrigger = collider->IsTrigger();
-            data.colliderData.isFix = collider->IsFix();
-            data.colliderData.extents = collider->GetScale();
-            data.colliderData.offset = collider->GetOffset();
+            data->colliderData.isSave = true;
+            data->colliderData.type = collider->GetColliderType();
+            data->colliderData.isTrigger = collider->IsTrigger();
+            data->colliderData.isFix = collider->IsFix();
+            data->colliderData.extents = collider->GetScale();
+            data->colliderData.offset = collider->GetOffset();
+        }
+
+        // 모델렌더러 저장
+        auto modelRenderer = gameObject->GetModelRenderer();
+        if (modelRenderer != nullptr)
+        {
+            data->modelRenderData.isSave = true;
+            // 쉐이더 이름 저장
+            auto shader = modelRenderer->GetShader();
+            if (shader != nullptr)
+            {
+                size_t copyLen = std::min((int)shader->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->modelRenderData.shaderName, shader->GetName().c_str(), copyLen);
+                data->modelRenderData.shaderName[copyLen] = L'\0';
+            }
+            // 모델 이름 저장
+            auto model = modelRenderer->GetModel();
+            if(model != nullptr)
+            {
+                size_t copyLen = std::min((int)model->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->modelRenderData.modelName, model->GetName().c_str(), copyLen);
+                data->modelRenderData.modelName[copyLen] = L'\0';
+            }
+            data->modelRenderData.techniqueIndex = modelRenderer->GetTechnique();
+            data->modelRenderData.pass = modelRenderer->GetPass();
+        }
+
+        // 모델애니메이터 저장
+        auto modelAnimator = gameObject->GetModelAnimator();
+        if (modelAnimator != nullptr)
+        {
+            data->modelAnimData.isSave = true;
+            // 쉐이더 이름 저장
+            auto shader = modelAnimator->GetShader();
+            if (shader != nullptr)
+            {
+                size_t copyLen = std::min((int)shader->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->modelAnimData.shaderName, shader->GetName().c_str(), copyLen);
+                data->modelAnimData.shaderName[copyLen] = L'\0';
+            }
+            // 모델 이름 저장
+            auto model = modelAnimator->GetModel();
+            if (model != nullptr)
+            {
+                size_t copyLen = std::min((int)model->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->modelAnimData.modelName, model->GetName().c_str(), copyLen);
+                data->modelAnimData.modelName[copyLen] = L'\0';
+            }
+            // 애니메이션 fsm 파일 이름 저장
+            auto fsm = modelAnimator->GetFSM();
+            if (fsm != nullptr)
+            {
+                size_t copyLen = std::min((int)fsm->GetFileName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->modelAnimData.animFSMFileName, fsm->GetFileName().c_str(), copyLen);
+                data->modelAnimData.animFSMFileName[copyLen] = L'\0';
+            }
+            data->modelAnimData.techniqueIndex = modelAnimator->GetTechnique();
+            data->modelAnimData.pass = modelAnimator->GetPass();
         }
 
 
@@ -89,11 +173,13 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<const char*>(objectName.data()), nameLen * sizeof(wchar_t));
 
         // [데이터 쓰기 시작]
-        outFile.write(reinterpret_cast<char*>(&data.objectId), sizeof(UUID));
-        outFile.write(reinterpret_cast<char*>(&data.parentId), sizeof(UUID));
-        outFile.write(reinterpret_cast<char*>(&data.transformData), sizeof(TransformData));
-        outFile.write(reinterpret_cast<char*>(&data.uiData), sizeof(UIData));
-        outFile.write(reinterpret_cast<char*>(&data.colliderData), sizeof(ColliderData));
+        outFile.write(reinterpret_cast<char*>(&data->objectId), sizeof(UUID));
+        outFile.write(reinterpret_cast<char*>(&data->parentId), sizeof(UUID));
+        outFile.write(reinterpret_cast<char*>(&data->transformData), sizeof(TransformData));
+        outFile.write(reinterpret_cast<char*>(&data->uiData), sizeof(UIData));
+        outFile.write(reinterpret_cast<char*>(&data->colliderData), sizeof(ColliderData));
+        outFile.write(reinterpret_cast<char*>(&data->modelRenderData), sizeof(ModelRenderData));
+        outFile.write(reinterpret_cast<char*>(&data->modelAnimData), sizeof(ModelAnimData));
     }
 
     outFile.close();
@@ -149,14 +235,19 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
 
         // 고정 데이터(ID, Transform) 읽기
         UUID objId, parentId;
-        TransformData tData;
-        UIData uData;
-        ColliderData colData;
+        shared_ptr<TransformData> tData = make_shared<TransformData>();
+        shared_ptr<UIData> uData = make_shared<UIData>();
+        shared_ptr<ColliderData> colData = make_shared<ColliderData>();
+        shared_ptr<ModelRenderData> modelRenderData = make_shared<ModelRenderData>();
+        shared_ptr<ModelAnimData> modelAnimData = make_shared<ModelAnimData>();
+
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
-        inFile.read(reinterpret_cast<char*>(&tData), sizeof(TransformData));
-        inFile.read(reinterpret_cast<char*>(&uData), sizeof(UIData));
-        inFile.read(reinterpret_cast<char*>(&colData), sizeof(ColliderData));
+        inFile.read(reinterpret_cast<char*>(tData.get()), sizeof(TransformData));
+        inFile.read(reinterpret_cast<char*>(uData.get()), sizeof(UIData));
+        inFile.read(reinterpret_cast<char*>(colData.get()), sizeof(ColliderData));
+        inFile.read(reinterpret_cast<char*>(modelRenderData.get()), sizeof(ModelRenderData));
+        inFile.read(reinterpret_cast<char*>(modelAnimData.get()), sizeof(ModelAnimData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -169,35 +260,55 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         newObj->SetId(objId); // 세이브된 ID 유지
 
         auto transform = newObj->GetTransform();
-        transform->SetLocalScale(tData.localScale);
-        transform->SetLocalRotation(tData.localRotation);
-        transform->SetLocalPosition(tData.localPosition);
+        transform->SetLocalScale(tData->localScale);
+        transform->SetLocalRotation(tData->localRotation);
+        transform->SetLocalPosition(tData->localPosition);
 
         auto spriteRenderer = newObj->GetSpriteRenderer();
-        if (uData.isSave == true && spriteRenderer == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        if (uData->isSave == true && spriteRenderer == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
         {
-            auto newSpriteRenderer = make_shared<SpriteRenderer>(GAME.GetResource<Shader>(L"UI.fx"));
+            auto newSpriteRenderer = make_shared<SpriteRenderer>(GAME.GetResource<Shader>(uData->shaderName));
             newSpriteRenderer->SetUI(true);
-            newSpriteRenderer->SetUIPosX(uData.x);
-            newSpriteRenderer->SetUIPosY(uData.y);
-            newSpriteRenderer->SetUIWidth(uData.width);
-            newSpriteRenderer->SetUIHeight(uData.height);
+            newSpriteRenderer->SetUIPosX(uData->x);
+            newSpriteRenderer->SetUIPosY(uData->y);
+            newSpriteRenderer->SetUIWidth(uData->width);
+            newSpriteRenderer->SetUIHeight(uData->height);
+
+            // 텍스쳐 셋팅
+            for (uint8 i = 0; i < uData->textureCount; ++i)
+            {
+                newSpriteRenderer->Add_Texture(GAME.GetResource<Texture>(uData->textureNames[i]));
+            }
+            newSpriteRenderer->SetSpeed(uData->speed);
+            newSpriteRenderer->SetLoop(uData->loop);
+            newSpriteRenderer->SetPlay(uData->play);
             newObj->AddComponent(newSpriteRenderer);
         }
         else if (spriteRenderer != nullptr)
         {
+            spriteRenderer->SetShader(GAME.GetResource<Shader>(uData->shaderName));
             spriteRenderer->SetUI(true);
-            spriteRenderer->SetUIPosX(uData.x);
-            spriteRenderer->SetUIPosY(uData.y);
-            spriteRenderer->SetUIWidth(uData.width);
-            spriteRenderer->SetUIHeight(uData.height);
+            spriteRenderer->SetUIPosX(uData->x);
+            spriteRenderer->SetUIPosY(uData->y);
+            spriteRenderer->SetUIWidth(uData->width);
+            spriteRenderer->SetUIHeight(uData->height);
+
+            spriteRenderer->GetTextures().clear();
+            // 텍스쳐 셋팅
+            for (uint8 i = 0; i < uData->textureCount; ++i)
+            {
+                spriteRenderer->Add_Texture(GAME.GetResource<Texture>(uData->textureNames[i]));
+            }
+            spriteRenderer->SetSpeed(uData->speed);
+            spriteRenderer->SetLoop(uData->loop);
+            spriteRenderer->SetPlay(uData->play);
         }
 
         auto collider = newObj->GetCollider();
-        if (colData.isSave == true && collider == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        if (colData->isSave == true && collider == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
         {
             shared_ptr<Collider> newCollider;
-            switch (colData.type)
+            switch (colData->type)
             {
             case ColliderType::AABB:
                 newCollider = make_shared<AABBCollider>();
@@ -211,19 +322,65 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             default:
                 break;
             }
-            newCollider->SetTrigger(colData.isTrigger);
-            newCollider->SetFix(colData.isFix);
-            newCollider->SetScale(colData.extents);
-            newCollider->SetOffset(colData.offset);
+            newCollider->SetTrigger(colData->isTrigger);
+            newCollider->SetFix(colData->isFix);
+            newCollider->SetScale(colData->extents);
+            newCollider->SetOffset(colData->offset);
 
             newObj->AddComponent(newCollider);
         }
         else if (collider != nullptr)
         {
-            collider->SetTrigger(colData.isTrigger);
-            collider->SetFix(colData.isFix);
-            collider->SetScale(colData.extents);
-            collider->SetOffset(colData.offset);
+            collider->SetTrigger(colData->isTrigger);
+            collider->SetFix(colData->isFix);
+            collider->SetScale(colData->extents);
+            collider->SetOffset(colData->offset);
+        }
+
+        auto modelRenderer = newObj->GetModelRenderer();
+        if (modelRenderData->isSave == true && modelRenderer == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<ModelRenderer> newModelRenderer = make_shared<ModelRenderer>(GAME.GetResource<Shader>(modelRenderData->shaderName));
+          
+            newModelRenderer->SetModel(GAME.GetResource<Model>(modelRenderData->modelName));
+            newModelRenderer->SetTechnique(modelRenderData->techniqueIndex);
+            newModelRenderer->SetPass(modelRenderData->pass);
+
+            newObj->AddComponent(newModelRenderer);
+        }
+        else if (modelRenderer != nullptr)
+        {
+            modelRenderer->SetModel(GAME.GetResource<Model>(modelRenderData->modelName));
+            modelRenderer->SetTechnique(modelRenderData->techniqueIndex);
+            modelRenderer->SetPass(modelRenderData->pass);
+        }
+
+        auto modelAnimator = newObj->GetModelAnimator();
+        if (modelAnimData->isSave == true && modelAnimator == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<ModelAnimator> newModelAnimator = make_shared<ModelAnimator>(GAME.GetResource<Shader>(modelAnimData->shaderName));
+
+            newModelAnimator->SetModel(GAME.GetResource<Model>(modelAnimData->modelName));
+            if (modelAnimData->animFSMFileName)
+            {
+                shared_ptr<AnimFSM> fsm = make_shared<AnimFSM>(newModelAnimator);
+                fsm->Load(Utils::ToString(modelAnimData->animFSMFileName), newModelAnimator);
+            }
+            newModelAnimator->SetTechnique(modelAnimData->techniqueIndex);
+            newModelAnimator->SetPass(modelAnimData->pass);
+
+            newObj->AddComponent(newModelAnimator);
+        }
+        else if (modelAnimator != nullptr)
+        {
+            modelAnimator->SetModel(GAME.GetResource<Model>(modelAnimData->modelName));
+            if (modelAnimData->animFSMFileName)
+            {
+                shared_ptr<AnimFSM> fsm = make_shared<AnimFSM>(modelAnimator);
+                fsm->Load(Utils::ToString(modelAnimData->animFSMFileName), modelAnimator);
+            }
+            modelAnimator->SetTechnique(modelAnimData->techniqueIndex);
+            modelAnimator->SetPass(modelAnimData->pass);
         }
 
         // 리스트에 추가 (레이어 등록)
