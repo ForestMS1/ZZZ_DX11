@@ -9,6 +9,7 @@ class ENGINE_DLL MonoBehaviour abstract : public Component
 {
 protected:
 	MonoBehaviour();
+	MonoBehaviour(const MonoBehaviour& rhs);
 public:
 	virtual ~MonoBehaviour();
 

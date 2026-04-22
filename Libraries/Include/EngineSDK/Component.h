@@ -31,6 +31,7 @@ class ENGINE_DLL Component abstract: public Prototype
 {
 protected:
 	Component(ComponentType eType);
+	//Component(const Component& rhs);
 public:
 	virtual ~Component();
 

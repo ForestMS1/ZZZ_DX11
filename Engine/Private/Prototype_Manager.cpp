@@ -21,7 +21,9 @@ HRESULT Prototype_Manager::Add_Prototype(uint32 iLevelIndex, const wstring& strP
 	if (nullptr != Find_Prototype(iLevelIndex, strPrototypeTag))
 		return E_FAIL;
 
+	pPrototype->SetPrototypeName(strPrototypeTag);
 	_protoTypes[iLevelIndex].emplace(strPrototypeTag, std::move(pPrototype));
+
 
 	return S_OK;
 }

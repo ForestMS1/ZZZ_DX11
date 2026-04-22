@@ -14,8 +14,16 @@ public:
 public:
 	// Mesh, Material Set
 	void SetMesh(shared_ptr<Mesh> mesh) { _mesh = mesh; }
+	shared_ptr<Mesh> GetMesh() { return _mesh; }
+
 	void SetMaterial(shared_ptr<Material> material) { _material = material; }
+	shared_ptr<Material> GetMaterial() { return _material; }
+
 	void SetPass(uint8 pass) { _pass = pass; }
+	uint8 GetPass() { return _pass; }
+
+	void SetTechnique(uint8 technique) { _techniqueIndex = technique; }
+	uint8 GetTechnique() { return _techniqueIndex; }
 
 	// 생명주기 함수
 	virtual void Update() override;

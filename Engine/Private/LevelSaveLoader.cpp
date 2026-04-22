@@ -36,7 +36,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
 
     for (const auto& gameObject : gameObjectList)
     {
-        shared_ptr<newGameObjectData> data = make_shared<newGameObjectData>();
+        shared_ptr<GameObjectData> data = make_shared<GameObjectData>();
         // 고유 타입 설정
         const wstring& className = gameObject->Get_ClassName();
         const wstring& objectName = gameObject->GetName();
@@ -164,6 +164,48 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             data->modelAnimData.pass = modelAnimator->GetPass();
         }
 
+        // 스크립트 저장
+        const auto& scriptVec = gameObject->GetScripts();
+        uint8 scriptCount = scriptVec.size();
+        if (scriptCount > 0)
+        {
+            data->scriptData.isSave = true;
+            data->scriptData.scriptCount = scriptCount;
+            for (uint8 i = 0; i < scriptCount; ++i)
+            {
+                wstring test = scriptVec[i]->GetPrototypeName();
+                size_t copyLen = std::min((int)scriptVec[i]->GetPrototypeName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->scriptData.scriptPrototypeNames[i], scriptVec[i]->GetPrototypeName().c_str(), copyLen);
+                data->scriptData.scriptPrototypeNames[i][copyLen] = L'\0';
+            }
+        }
+
+        // 메쉬렌더러 저장
+        auto meshRenderer = gameObject->GetMeshRenderer();
+        if (meshRenderer != nullptr)
+        {
+            data->meshRenderData.isSave = true;
+            // 메쉬이름 저장
+            auto mesh = meshRenderer->GetMesh();
+            if (mesh != nullptr)
+            {
+                size_t copyLen = std::min((int)mesh->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->meshRenderData.meshName, mesh->GetName().c_str(), copyLen);
+                data->meshRenderData.meshName[copyLen] = L'\0';
+            }
+            // 머테리얼 이름 저장
+            auto material = meshRenderer->GetMaterial();
+            if (material != nullptr)
+            {
+                size_t copyLen = std::min((int)material->GetName().size(), 63); // 마지막 널 문자를 위해 63자 제한
+                wcsncpy_s(data->meshRenderData.materialName, material->GetName().c_str(), copyLen);
+                data->meshRenderData.materialName[copyLen] = L'\0';
+            }
+            data->meshRenderData.techniqueIndex = meshRenderer->GetTechnique();
+            data->meshRenderData.pass = meshRenderer->GetPass();
+        }
+
+
 
 
         // className 저장 (길이 -> 데이터)
@@ -184,6 +226,8 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<char*>(&data->colliderData), sizeof(ColliderData));
         outFile.write(reinterpret_cast<char*>(&data->modelRenderData), sizeof(ModelRenderData));
         outFile.write(reinterpret_cast<char*>(&data->modelAnimData), sizeof(ModelAnimData));
+        outFile.write(reinterpret_cast<char*>(&data->scriptData), sizeof(MonoBehaviourData));
+        outFile.write(reinterpret_cast<char*>(&data->meshRenderData), sizeof(MeshRenderData));
     }
 
     outFile.close();
@@ -244,6 +288,8 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         shared_ptr<ColliderData> colData = make_shared<ColliderData>();
         shared_ptr<ModelRenderData> modelRenderData = make_shared<ModelRenderData>();
         shared_ptr<ModelAnimData> modelAnimData = make_shared<ModelAnimData>();
+        shared_ptr<MonoBehaviourData> scriptData = make_shared<MonoBehaviourData>();
+        shared_ptr<MeshRenderData> meshRenderData = make_shared<MeshRenderData>();
 
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
@@ -252,6 +298,8 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         inFile.read(reinterpret_cast<char*>(colData.get()), sizeof(ColliderData));
         inFile.read(reinterpret_cast<char*>(modelRenderData.get()), sizeof(ModelRenderData));
         inFile.read(reinterpret_cast<char*>(modelAnimData.get()), sizeof(ModelAnimData));
+        inFile.read(reinterpret_cast<char*>(scriptData.get()), sizeof(MonoBehaviourData));
+        inFile.read(reinterpret_cast<char*>(meshRenderData.get()), sizeof(MeshRenderData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -388,6 +436,52 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             modelAnimator->SetTechnique(modelAnimData->techniqueIndex);
             modelAnimator->SetPass(modelAnimData->pass);
         }
+
+
+        // MonoBehaviour
+        if (scriptData->isSave == true)
+        {
+            uint8 scriptCount = scriptData->scriptCount;
+            for (uint8 i = 0; i < scriptCount; ++i)
+            {
+                const auto& prototypeMap = GAME.GetLevelPrototype(iLevelIndex);
+                for (const auto& pair : prototypeMap)
+                {
+                    wstring key = pair.first;
+
+                    if (scriptData->scriptPrototypeNames[i] == key)
+                    {
+                        shared_ptr<MonoBehaviour> script = dynamic_pointer_cast<MonoBehaviour>(GAME.Clone_Prototype(iLevelIndex, key, nullptr));
+                        if (script != nullptr)
+                            newObj->AddComponent(script);
+                        continue;
+                    }
+                }
+            }
+
+        }
+        
+        // MeshRenderer
+        auto meshRenderer = newObj->GetMeshRenderer();
+        if (meshRenderData->isSave == true && meshRenderer == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<MeshRenderer> newMeshRenderer = make_shared<MeshRenderer>();
+
+            newMeshRenderer->SetMesh(GAME.GetResource<Mesh>(meshRenderData->meshName));
+            newMeshRenderer->SetMaterial(GAME.GetResource<Material>(meshRenderData->materialName));
+            newMeshRenderer->SetTechnique(meshRenderData->techniqueIndex);
+            newMeshRenderer->SetPass(meshRenderData->pass);
+
+            newObj->AddComponent(newMeshRenderer);
+        }
+        else if (meshRenderer != nullptr)
+        {
+            meshRenderer->SetMesh(GAME.GetResource<Mesh>(meshRenderData->meshName));
+            meshRenderer->SetMaterial(GAME.GetResource<Material>(meshRenderData->materialName));
+            meshRenderer->SetTechnique(meshRenderData->techniqueIndex);
+            meshRenderer->SetPass(meshRenderData->pass);
+        }
+        
 
         // 리스트에 추가 (레이어 등록)
         GAME.Add_GameObject_toLayerNoClone(iLevelIndex, strLayerTag, newObj);

@@ -6,6 +6,11 @@ MonoBehaviour::MonoBehaviour()
 {
 }
 
+MonoBehaviour::MonoBehaviour(const MonoBehaviour& rhs)
+	: Component(rhs)
+{
+}
+
 MonoBehaviour::~MonoBehaviour()
 {
 }

@@ -11,7 +11,31 @@ struct TransformData
 	Matrix matWorld;
 };
 
+struct MonoBehaviourData
+{
+	bool isSave = false;
+
+	// 프로토타입 이름만 저장
+	// 스크립트 컴포넌트 개수
+	uint8 scriptCount = 0;
+	// 최대 32개 스크립트 프로토타입 이름 (64자 제한)
+	wchar_t scriptPrototypeNames[32][64];
+
+};
 // 리소스 이름 = 리소스매니저 map 키값!!
+
+// 메쉬 렌더러 컴포넌트
+struct MeshRenderData
+{
+	bool isSave = false;
+	// 메쉬 이름
+	wchar_t meshName[64];
+	// 머테리얼 이름
+	wchar_t materialName[64];
+
+	uint8 techniqueIndex = 0;
+	uint8 pass = 0;
+};
 
 // 모델 애니메이터에서 사용
 struct ModelAnimData
@@ -79,7 +103,7 @@ struct ColliderData
 	Vec3 offset = { 0.f, 0.f, 0.f };
 };
 
-struct newGameObjectData
+struct GameObjectData
 {
 	char className[64];
 	wchar_t objectName[64];
@@ -90,17 +114,8 @@ struct newGameObjectData
 	ColliderData colliderData;
 	ModelRenderData modelRenderData;
 	ModelAnimData modelAnimData;
-};
-
-struct GameObjectData
-{
-	char className[64];
-	wchar_t objectName[64];
-	UUID objectId; // 본인의 id
-	UUID parentId; // 부모가 없으면 -1
-	TransformData transformData;
-	UIData uiData;
-	ColliderData colliderData;
+	MonoBehaviourData scriptData;
+	MeshRenderData meshRenderData;
 };
 
 

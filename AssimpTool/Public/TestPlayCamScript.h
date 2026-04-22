@@ -5,7 +5,7 @@ class TestPlayCamScript : public MonoBehaviour
 	virtual void Awake() override;
 	virtual void LateUpdate() override;
 
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return make_shared<TestPlayCamScript>(); }
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return make_shared<TestPlayCamScript>(*this); }
 
 	virtual void OnInspectorGUI() override;
 

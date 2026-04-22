@@ -9,7 +9,7 @@ class TestCorinScript : public MonoBehaviour
 	virtual void OnCollisionEnter(const Collision& collision) override;
 	virtual void OnCollisionExit(const Collision& collision) override;
 
-	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return make_shared<TestCorinScript>(); }
+	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return make_shared<TestCorinScript>(*this); }
 
 	virtual void OnInspectorGUI() override;
 

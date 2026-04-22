@@ -6,6 +6,13 @@ Component::Component(ComponentType eType) : _type(eType)
 {
 }
 
+//Component::Component(const Component& rhs)
+//	: Prototype(rhs)
+//{
+//	_type = rhs._type;
+//	_lifeState = rhs._lifeState;
+//}
+
 Component::~Component()
 {
 }
