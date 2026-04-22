@@ -24,10 +24,13 @@ HRESULT Level_Converter::Initialize()
 	//converter->ExportModelData(L"Corin/Corin");
 	//converter->ExportAnimationDataAll(L"Corin");
 
-	converter->ReadAssetFile(L"StageRoot/StageRoot.fbx");
-	converter->ExportMaterialData(L"StageRoot/StageRoot");
-	converter->ExportModelData(L"StageRoot/StageRoot");
+	//converter->ReadAssetFile(L"StageRoot/StageRoot.fbx");
+	//converter->ExportMaterialData(L"StageRoot/StageRoot");
+	//converter->ExportModelData(L"StageRoot/StageRoot");
 
+	converter->ReadAssetFile(L"MetroCol.fbx");
+	converter->ExportMaterialData(L"MetroCol/MetroCol");
+	converter->ExportModelData(L"MetroCol/MetroCol");
 	return S_OK;
 }
 

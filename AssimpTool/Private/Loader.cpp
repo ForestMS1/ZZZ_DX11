@@ -263,6 +263,19 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
 	//GAME.AddResource<Model>(L"Stage", StageModel);
 
+	//ExaPlaceBasement
+	shared_ptr<Model> StageModel = make_shared<Model>();
+	StageModel->ReadModel(L"ExaPlaceBasement/ExaPlaceBasement");
+	StageModel->ReadMaterial(L"ExaPlaceBasement/ExaPlaceBasement");
+	StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	GAME.AddResource<Model>(L"ExaPlaceBasement", StageModel);
+
+	//StageModel = make_shared<Model>();
+	//StageModel->ReadModel(L"MetroCol/MetroCol");
+	//StageModel->ReadMaterial(L"MetroCol/MetroCol");
+	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"MetroCol", StageModel);
+
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 
 	// ----------------------------------------------------Script Load--------------------------------------------------------
