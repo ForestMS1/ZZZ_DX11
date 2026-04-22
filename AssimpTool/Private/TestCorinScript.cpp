@@ -5,7 +5,7 @@
 #include "AnimState.h"
 void TestCorinScript::Awake()
 {
-
+	fsm = GetGameObject()->GetModelAnimator()->GetFSM();
 }
 void TestCorinScript::Start()
 {
@@ -14,8 +14,13 @@ void TestCorinScript::Start()
 
 void TestCorinScript::Update()
 {
-	shared_ptr<AnimFSM> fsm = GetGameObject()->GetModelAnimator()->GetFSM();
-	fsm->SetBool(L"isMove", true);
+	if (fsm.expired())
+	{
+		fsm.reset();
+		return;
+	}
+	
+	fsm.lock()->SetBool(L"isMove", true);
 
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
@@ -76,10 +81,10 @@ void TestCorinScript::Update()
 	}
 	else
 	{
-		fsm->SetBool(L"isMove", false);
+		fsm.lock()->SetBool(L"isMove", false);
 	}
 
-	if (fsm->GetCurAnimState()->GetName().compare(L"Idle"))
+	if (fsm.lock()->GetCurAnimState()->GetName().compare(L"Idle"))
 		GetTransform()->SetPosition(pos);
 }
 
@@ -102,4 +107,27 @@ void TestCorinScript::OnCollisionExit(const Collision& collision)
 	_collisionCount--;
 	if(_collisionCount <= 0)
 		collider->SetDebugColor(Colors::LimeGreen);
+}
+
+
+unique_ptr<TestCorinScript> TestCorinScript::Create()
+{
+	auto pInstance = unique_ptr<TestCorinScript>(new TestCorinScript);
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : TestCorinScript");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+
+void TestCorinScript::OnInspectorGUI()
+{
+	GuiRemoveButton("TestCorinScript");
+	if (ImGui::CollapsingHeader("TestCorinScript", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+
+	}
 }

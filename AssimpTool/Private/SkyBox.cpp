@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SkyBox.h"
-#include "SkyBoxScript.h"
 
 SkyBox::SkyBox(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
@@ -28,7 +27,7 @@ HRESULT SkyBox::Initialize(void* pArg)
 	GameObject::Initialize(pArg);
 	GameObject::SetName(L"SkyBox");
 	GameObject::Set_ClassName(L"SkyBox");
-	AddComponent(make_shared<SkyBoxScript>());
+
 
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	shared_ptr<Material> material = GAME.GetResource<Material>(L"Sky");

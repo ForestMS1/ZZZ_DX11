@@ -154,13 +154,7 @@
     <ClInclude Include="..\Public\TestPlayCamScript.h">
       <Filter>03.Scirpts</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SkyBoxScript.h">
-      <Filter>03.Scirpts</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\TestCorinScript.h">
-      <Filter>03.Scirpts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TestSphereScript.h">
       <Filter>03.Scirpts</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\TestUI.h">
@@ -275,13 +269,7 @@
     <ClCompile Include="..\Private\TestPlayCamScript.cpp">
       <Filter>03.Scirpts</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SkyBoxScript.cpp">
-      <Filter>03.Scirpts</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\TestCorinScript.cpp">
-      <Filter>03.Scirpts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TestSphereScript.cpp">
       <Filter>03.Scirpts</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\TestUI.cpp">

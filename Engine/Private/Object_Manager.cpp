@@ -695,9 +695,20 @@ void Object_Manager::ShowInspector()
 			_selectedObject->AddComponent(spriteRenderer);
 		}
 
-		if (ImGui::Selectable("Script Component"))
-		{
+		ImGui::TextDisabled("Script Components");
+		ImGui::Separator();
 
+		const auto& prototypeMap = GAME.GetLevelPrototype(_currentLevelIndex);
+		for (const auto& pair :prototypeMap)
+		{
+			string key = Utils::ToString(pair.first);
+
+			if (key.find("Script") != string::npos && ImGui::Selectable(key.c_str()))
+			{
+				shared_ptr<MonoBehaviour> script = dynamic_pointer_cast<MonoBehaviour>(GAME.Clone_Prototype(_currentLevelIndex, pair.first, nullptr));
+				if(script != nullptr)
+					_selectedObject->AddComponent(script);
+			}
 		}
 
 		ImGui::EndPopup();

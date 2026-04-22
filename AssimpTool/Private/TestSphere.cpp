@@ -7,7 +7,6 @@
 #include "Material.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "TestSphereScript.h"
 #include "SpriteRenderer.h"
 #include "OBBCollider.h"
 TestSphere::TestSphere(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
@@ -36,7 +35,6 @@ HRESULT TestSphere::Initialize(void* pArg)
 	GameObject::Initialize(pArg);
 	GameObject::SetName(L"TestSphere");
 	GameObject::Set_ClassName(L"TestSphere");
-	AddComponent(make_shared<TestSphereScript>());
 
 	//shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"Test.fx");
 	//shared_ptr<Model> model = GAME.GetResource<Model>(L"Stage");

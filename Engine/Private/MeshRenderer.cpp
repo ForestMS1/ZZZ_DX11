@@ -62,10 +62,31 @@ void MeshRenderer::OnInspectorGUI()
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), meshName.c_str());
 
-        // 메쉬 변경 버튼 - 리소스 매니저와 연동 필요
-        if (ImGui::Button("Change Mesh##Mesh")) {
-            // 리소스 선택 팝업 등을 띄우는 로직
-        }
+
+		// 메쉬 변경 버튼
+		if (ImGui::Button("Change Mesh##Mesh", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("MeshResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("MeshResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Meshes");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::MESH)])
+			{
+				const auto& mesh = pair.second;
+				if (ImGui::Selectable(Utils::ToString(mesh->GetName()).c_str()))
+				{
+					_mesh = static_pointer_cast<Mesh>(mesh);
+				}
+			}
+			ImGui::EndPopup();
+		}
 
         ImGui::Separator();
 
@@ -92,11 +113,64 @@ void MeshRenderer::OnInspectorGUI()
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.8f, 0.4f, 0.1f, 1.0f), matName.c_str());
 
+		// Material 변경 버튼
+		if (ImGui::Button("Change Material##Material", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("MaterialResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("MaterialResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Materials");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::MATERIAL)])
+			{
+				const auto& material = pair.second;
+				if (ImGui::Selectable(Utils::ToString(material->GetName()).c_str()))
+				{
+					_material = static_pointer_cast<Material>(material);
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		// --- Shader 정보 ---
+		if (_material == nullptr)
+			return;
+
 		string shaderName = _material->GetShader() ? Utils::ToString(_material->GetShader()->GetName()) : "None";
 		ImGui::Text("Shader: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), shaderName.c_str());
+
+		//// Shader 변경 버튼 // Material의 쉐이더 변경하면 Material 들고있는 객체들 다 쉐이더 바뀜
+		//if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		//{
+		//	ImGui::OpenPopup("ShaderResourceSearchPopup");
+		//}
+
+		//// 팝업 내부 로직
+		//if (ImGui::BeginPopup("ShaderResourceSearchPopup"))
+		//{
+		//	ImGui::TextDisabled("Shaders");
+		//	ImGui::Separator();
+
+		//	const auto& resources = GAME.GetResourceArray();
+
+		//	for (const auto& pair : resources[static_cast<uint8>(ResourceType::SHADER)])
+		//	{
+		//		const auto& shader = pair.second;
+		//		if (ImGui::Selectable(Utils::ToString(shader->GetName()).c_str()))
+		//		{
+		//			_material->SetShader(static_pointer_cast<Shader>(shader));
+		//		}
+		//	}
+		//	ImGui::EndPopup();
+		//}
 
 		// Shader가 가진 Technique 개수만큼 순회하며 이름을 가져옴
 		uint32 techCount = _material->GetShader()->GetTechniqueCount();

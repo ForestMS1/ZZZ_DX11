@@ -11,7 +11,7 @@
 #include "AnimFSM.h"
 #include "AnimState.h"
 #include "Transition.h"
-
+#include <filesystem>
 ModelAnimator::ModelAnimator()
 	: Component(ComponentType::Animator)
 {
@@ -330,11 +330,42 @@ void ModelAnimator::OnInspectorGUI()
 		}
 		ImGui::Separator();
 
+
+		// Shader 변경 버튼
+		if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("ShaderResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("ShaderResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Shaders");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::SHADER)])
+			{
+				const auto& shader = pair.second;
+				if (ImGui::Selectable(Utils::ToString(shader->GetName()).c_str()))
+				{
+					_shader = static_pointer_cast<Shader>(shader);
+					if (_model)
+						SetModel(_model);
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		// --- Shader 정보 ---
 		string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
 		ImGui::Text("Shader: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), shaderName.c_str());
+
+		if (_shader == nullptr)
+			return;
 
 		// Shader가 가진 Technique 개수만큼 순회하며 이름을 가져옴
 		uint32 techCount = _shader->GetTechniqueCount();
@@ -369,6 +400,33 @@ void ModelAnimator::OnInspectorGUI()
 		ImGui::SameLine();
 		if (ImGui::Button("R##Pass")) _pass = 0;
 
+
+
+		// Model 변경 버튼
+		if (ImGui::Button("Change Model##Model", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("ModelResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("ModelResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Models");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::MODEL)])
+			{
+				const auto& model = pair.second;
+				if (ImGui::Selectable(Utils::ToString(model->GetName()).c_str()))
+				{
+					SetModel(static_pointer_cast<Model>(model));
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		// --- Model 정보 ---
 		string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
 		ImGui::Text("Model: ");
@@ -389,32 +447,42 @@ void ModelAnimator::OnInspectorGUI()
 
 		ImGui::Separator();
 
-		// --- Animation 제어 (KeyframeDesc / TweenDesc) ---
-		if (ImGui::TreeNodeEx("Animation State", ImGuiTreeNodeFlags_DefaultOpen))
+		// FSM
+		if (_model)
 		{
-			// 현재 애니메이션 인덱스 제어
-			int animIdx = _tweenDesc.curr.animIndex;
-			int maxAnimCount = _model ? (int)_model->GetAnimationCount() : 0;
+			// --- FSM 정보 ---
+			string fsmName = _animFSM ? Utils::ToString(_animFSM->GetFileName()) : "None";
+			ImGui::Text("animFSM: ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), fsmName.c_str());
 
-			if (ImGui::SliderInt("Anim Index", &animIdx, 0, maxAnimCount - 1))
+			// AnimFSM 변경 버튼
+			if (ImGui::Button("Change AnimFSM##AnimFSM", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
 			{
-				_tweenDesc.curr.animIndex = animIdx;
-				// 필요 시 애니메이션 변경에 따른 초기화 로직 호출
-				_tweenDesc.ClearNextAnim();
+				ImGui::OpenPopup("AnimFSMSearchPopup");
 			}
 
-			// 프레임 정보 및 진행률 (보통 0.0 ~ 1.0)
-			ImGui::SliderInt("Current Frame", (int*)&_tweenDesc.curr.currFrame, 0, 500); // MAX_MODEL_KEYFRAMES 참고
-			ImGui::SliderFloat("Progress", &_tweenDesc.curr.ratio, 0.0f, 1.0f);
-
-			if (ImGui::TreeNode("Tweening (Blending)"))
+			// 팝업 내부 로직
+			if (ImGui::BeginPopup("AnimFSMSearchPopup"))
 			{
-				ImGui::SliderInt("Next Anim", (int*)&_tweenDesc.next.animIndex, 0, maxAnimCount - 1);
-				ImGui::SliderFloat("Tween Ratio", &_tweenDesc.tweenRatio, 0.0f, 1.0f);
-				ImGui::TreePop();
-			}
+				ImGui::TextDisabled("AnimFSM");
+				ImGui::Separator();
 
-			ImGui::TreePop();
+				std::string path = "../../Saved/FSM/"; // 파일명을 가져올 폴더 경로
+
+				for (const auto& entry : filesystem::directory_iterator(path)) 
+				{
+					// 파일명만 출력
+					const auto& fileName = entry.path().stem().string();
+					if (ImGui::Selectable(fileName.c_str()))
+					{
+						shared_ptr<AnimFSM> fsm = make_shared<AnimFSM>(SHARED_THIS(ModelAnimator));
+						fsm->Load(fileName, SHARED_THIS(ModelAnimator));
+						SetFSM(fsm);
+					}
+				}
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::Separator();
@@ -423,6 +491,10 @@ void ModelAnimator::OnInspectorGUI()
 		ImGui::Unindent();
 	}
 	ImGui::Separator();
-	if (_animFSM)
+
+	static bool onEdit = false;
+	if (ImGui::Button(onEdit ? "exitEdit" : "onEdit"))
+		onEdit = !onEdit;
+	if (_animFSM && onEdit)
 		_animFSM->OnInspectorGUI();
 }

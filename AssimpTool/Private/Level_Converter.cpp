@@ -38,8 +38,8 @@ void Level_Converter::Update()
 	GAME.ShowInspector();
 	GAME.RenderGizmo();
 
-	if (GAME.Key_Down(DIK_RETURN))
-		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::TESTMESH),true);
+	//if (GAME.Key_Down(DIK_RETURN))
+	//	GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::TESTMESH),true);
 }
 
 HRESULT Level_Converter::Render()

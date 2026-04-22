@@ -53,6 +53,7 @@ public:
 #pragma region PROTOTYPE_MANAGER
 	HRESULT Add_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, unique_ptr<class Prototype> pPrototype);
 	shared_ptr<class Prototype> Clone_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
+	const map<wstring, unique_ptr<Prototype>>& GetLevelPrototype(uint32 iLevelIndex) const;
 #pragma endregion
 
 
@@ -102,6 +103,8 @@ public:
 	void ClearResourceManager();
 
 	void ShowResourceList();
+	using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
+	const array<KeyObjMap, RESOURCE_TYPE_COUNT>& GetResourceArray() const;
 #pragma endregion
 
 #pragma region RENDERER

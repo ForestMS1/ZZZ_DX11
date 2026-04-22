@@ -33,8 +33,11 @@ public:
 	// 메모리에 있는 리소스들 싹 다 날려주는 함수
 	void ClearResource();
 
-	//ImGui
+	// ImGui
 	void ShowResourceList();
+	// ImGui에 보여주기 위해 리소스 array 전달
+	using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
+	const array<KeyObjMap, RESOURCE_TYPE_COUNT>& GetResourceArray() const { return _resources; }
 
 private:
 	void CreateDefaultMesh();
@@ -56,7 +59,7 @@ private:
 	shared_ptr<Material> _selectedMaterial;
 
 private:
-	using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
+	//using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
 	array<KeyObjMap, RESOURCE_TYPE_COUNT> _resources;
 
 public:

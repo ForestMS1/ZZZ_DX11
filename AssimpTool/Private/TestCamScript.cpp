@@ -77,3 +77,26 @@ void TestCamScript::LateUpdate()
 
 	GetTransform()->SetLocalPosition(pos);
 }
+
+unique_ptr<TestCamScript> TestCamScript::Create()
+{
+	auto pInstance = unique_ptr<TestCamScript>(new TestCamScript);
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : TestCamScript");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+
+
+void TestCamScript::OnInspectorGUI()
+{
+	GuiRemoveButton("TestCamScript");
+	if (ImGui::CollapsingHeader("TestCamScript", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+
+	}
+}

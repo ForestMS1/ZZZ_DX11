@@ -10,6 +10,12 @@
 #include "SkyBox.h"
 #include "Texture.h"
 #include "SpriteRenderer.h"
+
+// --------------------Script-------------------
+#include "TestCorinScript.h"
+#include "TestCamScript.h"
+#include "TestPlayCamScript.h"
+// ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
 	, _deviceContext(pDeviceContext)
@@ -258,6 +264,26 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	//GAME.AddResource<Model>(L"Stage", StageModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
+
+	// ----------------------------------------------------Script Load--------------------------------------------------------
+
+	_loadingText = L"스크립트 생성 중 입니다.";
+	/* Script_TestCorin */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_TestCorin",
+		TestCorinScript::Create())))
+		return E_FAIL;
+
+	/* Script_TestCam */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_TestCam",
+		TestCamScript::Create())))
+		return E_FAIL;
+
+	/* Script_TestPlayCam */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_TestPlayCam",
+		TestPlayCamScript::Create())))
+		return E_FAIL;
+
+	// ----------------------------------------------------Script Load--------------------------------------------------------
 
 
 

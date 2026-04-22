@@ -58,3 +58,24 @@ void TestPlayCamScript::LateUpdate()
     GetTransform()->SetLocalPosition(finalPos);
     GetTransform()->LookAt(targetPos + Vec3(0.f, 1.0f, 0.f)); // 플레이어의 허리/머리 쪽을 응시
 }
+
+void TestPlayCamScript::OnInspectorGUI()
+{
+    GuiRemoveButton("TestPlayCamScript");
+    if (ImGui::CollapsingHeader("TestPlayCamScript", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+
+    }
+}
+
+unique_ptr<TestPlayCamScript> TestPlayCamScript::Create()
+{
+    auto pInstance = unique_ptr<TestPlayCamScript>(new TestPlayCamScript);
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : TestPlayCamScript");
+        return nullptr;
+    }
+
+    return pInstance;
+}

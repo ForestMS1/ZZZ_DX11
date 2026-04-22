@@ -238,6 +238,11 @@ shared_ptr<Prototype> GameInstance::Clone_Prototype(uint32 iLevelIndex, const ws
 {
 	return _prototypeManager->Clone_Prototype(iLevelIndex, strPrototypeTag, pArg);
 }
+
+const map<wstring, unique_ptr<Prototype>>& GameInstance::GetLevelPrototype(uint32 iLevelIndex) const
+{
+	return _prototypeManager->GetLevelPrototype(iLevelIndex);
+}
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
@@ -329,6 +334,12 @@ void GameInstance::ClearResourceManager()
 void GameInstance::ShowResourceList()
 {
 	_resourceManager->ShowResourceList();
+}
+
+using KeyObjMap = map<wstring, shared_ptr<ResourceBase>>;
+const array<KeyObjMap, RESOURCE_TYPE_COUNT>& GameInstance::GetResourceArray() const
+{
+	return _resourceManager->GetResourceArray();
 }
 #pragma endregion
 #pragma region RENDERER

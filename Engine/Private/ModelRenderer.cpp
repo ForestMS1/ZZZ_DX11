@@ -102,6 +102,33 @@ void ModelRenderer::OnInspectorGUI()
 	GuiRemoveButton("ModelRenderer");
 	if (ImGui::CollapsingHeader("ModelRenderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		// Shader 변경 버튼
+		if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("ShaderResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("ShaderResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Shaders");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::SHADER)])
+			{
+				const auto& shader = pair.second;
+				if (ImGui::Selectable(Utils::ToString(shader->GetName()).c_str()))
+				{
+					_shader = static_pointer_cast<Shader>(shader);
+					if(_model)
+						SetModel(_model);
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		if (_shader)
 		{
 			// RENDERGROUP 순회하면서 이름 가져옴
@@ -157,29 +184,54 @@ void ModelRenderer::OnInspectorGUI()
 
 			ImGui::SameLine();
 			if (ImGui::Button("R##Pass")) _pass = 0;
+
+			ImGui::Separator();
+
+			// --- Model 정보 ---
+			string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
+			ImGui::Text("Model: ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), modelName.c_str());
+
+			// Model 변경 버튼
+			if (ImGui::Button("Change Model##Model", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+			{
+				ImGui::OpenPopup("ModelResourceSearchPopup");
+			}
+
+			// 팝업 내부 로직
+			if (ImGui::BeginPopup("ModelResourceSearchPopup"))
+			{
+				ImGui::TextDisabled("Models");
+				ImGui::Separator();
+
+				const auto& resources = GAME.GetResourceArray();
+
+				for (const auto& pair : resources[static_cast<uint8>(ResourceType::MODEL)])
+				{
+					const auto& model = pair.second;
+					if (ImGui::Selectable(Utils::ToString(model->GetName()).c_str()))
+					{
+						SetModel(static_pointer_cast<Model>(model));
+					}
+				}
+				ImGui::EndPopup();
+			}
+
+			// 모델 상세 정보
+			if (_model && ImGui::TreeNodeEx("Model Details", ImGuiTreeNodeFlags_FramePadding))
+			{
+				ImGui::BulletText("Mesh Count: %d", _model->GetMeshCount());
+				ImGui::BulletText("Animation Count: %d", _model->GetAnimationCount());
+
+
+				ImGui::BulletText("Bone Count: %d", _model->GetBoneCount());
+
+				ImGui::TreePop();
+			}
+
+			ImGui::Separator();
 		}
-
-		ImGui::Separator();
-
-		// --- Model 정보 ---
-		string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
-		ImGui::Text("Model: ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), modelName.c_str());
-
-		// 모델 상세 정보
-		if (_model && ImGui::TreeNodeEx("Model Details", ImGuiTreeNodeFlags_FramePadding))
-		{
-			ImGui::BulletText("Mesh Count: %d", _model->GetMeshCount());
-			ImGui::BulletText("Animation Count: %d", _model->GetAnimationCount());
-
-
-			ImGui::BulletText("Bone Count: %d", _model->GetBoneCount());
-
-			ImGui::TreePop();
-		}
-
-		ImGui::Separator();
 	}
 	ImGui::Separator();
 }

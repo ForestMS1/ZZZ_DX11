@@ -19,6 +19,8 @@ public:
 	shared_ptr<Prototype> Clone_Prototype(uint32 iLevelIndex, const wstring& strPrototypeTag, void* pArg);
 	void Clear(uint32 iClearLevelIndex);
 
+	const map<wstring, unique_ptr<Prototype>>& GetLevelPrototype(uint32 iLevelIndex) const { return _protoTypes[iLevelIndex]; }
+
 private:
 	uint32 _numLevels = {};
 private:

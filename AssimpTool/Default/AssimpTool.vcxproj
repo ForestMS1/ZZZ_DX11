@@ -151,7 +151,6 @@
     <ClInclude Include="..\Public\Level_StaticMeshTest.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
-    <ClInclude Include="..\Public\SkyBoxScript.h" />
     <ClInclude Include="..\Public\TestCam.h" />
     <ClInclude Include="..\Public\TestCamScript.h" />
     <ClInclude Include="..\Public\TestCorin.h" />
@@ -159,7 +158,6 @@
     <ClInclude Include="..\Public\TestPlayCam.h" />
     <ClInclude Include="..\Public\TestPlayCamScript.h" />
     <ClInclude Include="..\Public\TestSphere.h" />
-    <ClInclude Include="..\Public\TestSphereScript.h" />
     <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\ToolApp.h" />
     <ClInclude Include="AssimpTool.h" />
@@ -190,7 +188,6 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
-    <ClCompile Include="..\Private\SkyBoxScript.cpp" />
     <ClCompile Include="..\Private\TestCam.cpp" />
     <ClCompile Include="..\Private\TestCamScript.cpp" />
     <ClCompile Include="..\Private\TestCorin.cpp" />
@@ -198,7 +195,6 @@
     <ClCompile Include="..\Private\TestPlayCam.cpp" />
     <ClCompile Include="..\Private\TestPlayCamScript.cpp" />
     <ClCompile Include="..\Private\TestSphere.cpp" />
-    <ClCompile Include="..\Private\TestSphereScript.cpp" />
     <ClCompile Include="..\Private\TestUI.cpp" />
     <ClCompile Include="..\Private\tinyxml2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
