@@ -5,7 +5,10 @@
 #include "AnimState.h"
 void TestCorinScript::Awake()
 {
-	fsm = GetGameObject()->GetModelAnimator()->GetFSM();
+	if (auto animator = GetGameObject()->GetModelAnimator())
+	{
+		_fsm = animator->GetFSM();
+	}
 }
 void TestCorinScript::Start()
 {
@@ -14,13 +17,13 @@ void TestCorinScript::Start()
 
 void TestCorinScript::Update()
 {
-	if (fsm.expired())
+	if (_fsm.expired())
 	{
-		fsm.reset();
+		_fsm.reset();
 		return;
 	}
 	
-	fsm.lock()->SetBool(L"isMove", true);
+	_fsm.lock()->SetBool(L"isMove", true);
 
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
@@ -81,10 +84,10 @@ void TestCorinScript::Update()
 	}
 	else
 	{
-		fsm.lock()->SetBool(L"isMove", false);
+		_fsm.lock()->SetBool(L"isMove", false);
 	}
 
-	if (fsm.lock()->GetCurAnimState()->GetName().compare(L"Idle"))
+	if (_fsm.lock()->GetCurAnimState()->GetName().compare(L"Idle"))
 		GetTransform()->SetPosition(pos);
 }
 
@@ -107,6 +110,11 @@ void TestCorinScript::OnCollisionExit(const Collision& collision)
 	_collisionCount--;
 	if(_collisionCount <= 0)
 		collider->SetDebugColor(Colors::LimeGreen);
+}
+
+void TestCorinScript::OnDestroy()
+{
+	_fsm.reset();
 }
 
 

@@ -452,6 +452,22 @@ void Object_Manager::ShowInspector()
 		{
 			_levelSaveLoader->Save(_currentLevelIndex, pair.first);
 		}
+
+		// 팝업을 열라고 명령만 내림
+		ImGui::OpenPopup("SaveCheck");
+	}
+
+	// 팝업 렌더링 코드는 버튼 검사 외부(매 프레임 실행되는 영역)에 위치해야 함
+	if (ImGui::BeginPopupModal("SaveCheck", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Save Complete!\n");
+		ImGui::Separator();
+
+		if (ImGui::Button("OK", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup(); // BeginPopupModal을 썼다면 반드시 EndPopup을 호출해야 함
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Level Load"))
@@ -460,6 +476,20 @@ void Object_Manager::ShowInspector()
 		{
 			_levelSaveLoader->Load(_currentLevelIndex, pair.first);
 		}
+		// 팝업을 열라고 명령만 내림
+		ImGui::OpenPopup("LoadCheck");
+	}
+	// 팝업 렌더링 코드는 버튼 검사 외부(매 프레임 실행되는 영역)에 위치해야 함
+	if (ImGui::BeginPopupModal("LoadCheck", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Load Complete!\n");
+		ImGui::Separator();
+
+		if (ImGui::Button("OK", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup(); // BeginPopupModal을 썼다면 반드시 EndPopup을 호출해야 함
 	}
 	ImGui::Separator();
 

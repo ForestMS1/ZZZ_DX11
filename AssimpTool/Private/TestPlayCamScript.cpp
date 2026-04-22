@@ -4,7 +4,7 @@
 
 void TestPlayCamScript::Awake()
 {
-	_target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TestCorin");
+	_target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin");
 }
 
 void TestPlayCamScript::LateUpdate()
