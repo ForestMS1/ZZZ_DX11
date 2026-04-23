@@ -121,10 +121,10 @@ HRESULT ModelAnimator::Render()
 	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
 
 	LightDesc lightDesc;
-	lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
-	lightDesc.diffuse = Vec4(1.f);
-	lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
-	lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
+	lightDesc.ambient = Vec4(0.4f, 0.45f, 0.55f, 1.0f);
+	lightDesc.diffuse = Vec4(1.0f, 0.98f, 0.95f, 1.0f);
+	lightDesc.specular = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
+	lightDesc.direction = Vec3(-1.f, -1.0f, 0.5f);
 	lightDesc.direction.Normalize();
 	_shader->PushLightData(lightDesc);
 
