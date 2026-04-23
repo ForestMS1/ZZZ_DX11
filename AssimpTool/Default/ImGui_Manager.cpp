@@ -74,12 +74,28 @@ void ImGui_Manager::Update()
 
 	ImGuiIO& io = ImGui::GetIO();
 	
-	ImGui::Begin("Guizmo");
+	// 기즈모를 그릴 "보이지 않는 배경 창" 강제 생성
+	ImGui::SetNextWindowPos(viewport->WorkPos);
+	ImGui::SetNextWindowSize(viewport->WorkSize);
+	ImGui::SetNextWindowViewport(viewport->ID);
+
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
+		ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+
+	ImGui::Begin("Editor_Background", nullptr, window_flags);
+
+	// 이 위치에서 기즈모를 그리면, 다른 창들이 다 밖에 나가있어도 메인 클라이언트 화면 위에 항상 그려짐
+	// ImGuizmo::SetDrawlist(); // 필요한 경우 현재 배경 창의 DrawList를 지정
+	// ... 기즈모 렌더링 코드 ...
 }
 
 void ImGui_Manager::Render()
 {
+	// 더미 창 End
 	ImGui::End();
+
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
