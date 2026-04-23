@@ -1,11 +1,16 @@
-﻿// Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// AssimpTool.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "pch.h"
+#include <ShellScalingApi.h>
+#pragma comment(lib, "Shcore.lib")
+#define IDC_CLIENT 109
+#include "framework.h"
 #include "Client.h"
 
 #include "MainApp.h"
 #include "GameInstance.h"
+#include "imgui_impl_win32.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -35,7 +40,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
+    SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -58,8 +63,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    unique_ptr<MainApp>        pMainApp = MainApp::Create();
-    if (nullptr == pMainApp)
+    unique_ptr<MainApp>        pToolApp = MainApp::Create();
+    if (nullptr == pToolApp)
         return FALSE;
 
     if (FAILED(GameInstance::Get().Add_Timer(TEXT("Timer_Default"))))
@@ -93,8 +98,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             GameInstance::Get().Compute_TimeDelta(TIMER_60);
 
             //pMainApp->Update(GameInstance::Get().Get_TimeDelta(TEXT("Timer_Default")));
-            pMainApp->Update();
-            pMainApp->Render();
+            pToolApp->Update();
+            pToolApp->Render();
 
             fTimeAcc = 0.f;
         }
@@ -123,7 +128,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CLIENT));
+    wcex.hIcon = NULL;// LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CLIENT));
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;//MAKEINTRESOURCEW(IDC_CLIENT);
@@ -151,7 +156,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, TRUE);
 
     HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, nullptr, nullptr, hInstance, nullptr);
+        0, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
     {
