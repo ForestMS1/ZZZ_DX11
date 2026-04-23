@@ -225,13 +225,35 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	CorinAnimModel->ReadMaterial(L"Corin/Corin");
 	CorinAnimModel->GetMaterialByIndex(0)->SetShader(TweenTestShader);
 
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Idle");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk_Start");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Walk");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run_Start");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run_End");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_TurnBack");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Idle");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Taunt");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_Start");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Landed");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_QuestStart");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_LevelSwitch");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_HitFly_Front");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_HitFly_Back");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Hit_Shake");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Hit_L_Front");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Hit_L_Back");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Hit_H_Front");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Hit_H_Back");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Front");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Back");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Die");
 	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
 
 	// Ellen 기본 T자 모델
@@ -270,11 +292,35 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
 	GAME.AddResource<Model>(L"ExaPlaceBasement", StageModel);
 
+	shared_ptr<Model> VR2Model = make_shared<Model>();
+	VR2Model->ReadModel(L"VR2/VR2");
+	VR2Model->ReadMaterial(L"VR2/VR2");
+	VR2Model->GetMaterialByIndex(0)->SetShader(TestShader);
+	GAME.AddResource<Model>(L"VR2", VR2Model);
+
+	//shared_ptr<Model> StageRoot = make_shared<Model>();
+	//StageRoot->ReadModel(L"StageRoot/StageRoot");
+	//StageRoot->ReadMaterial(L"StageRoot/StageRoot");
+	//StageRoot->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"StageRoot", StageRoot);
+
 	//StageModel = make_shared<Model>();
 	//StageModel->ReadModel(L"MetroCol/MetroCol");
 	//StageModel->ReadMaterial(L"MetroCol/MetroCol");
 	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
 	//GAME.AddResource<Model>(L"MetroCol", StageModel);
+
+	// 몬스터 애니메이션 담은 모델
+	shared_ptr<Model> PalicusAnimModel = make_shared<Model>();
+	PalicusAnimModel->ReadModelRotatedY180(L"Monster_Palicus/Monster_Palicus");
+	PalicusAnimModel->ReadMaterial(L"Monster_Palicus/Monster_Palicus");
+	PalicusAnimModel->GetMaterialByIndex(0)->SetShader(TweenTestShader);
+	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Monster_Palicus_Ani_Attack_08_01");
+	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Monster_Palicus_Ani_Attack_08_02");
+	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Monster_Palicus_Ani_Attack_08_03");
+	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Death_Ani_Walk_L");
+	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Death_Ani_Walk_R");
+	GAME.AddResource<Model>(L"Monster_Palicus", PalicusAnimModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 

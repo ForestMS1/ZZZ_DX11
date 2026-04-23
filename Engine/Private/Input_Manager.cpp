@@ -40,7 +40,7 @@ HRESULT Engine::Input_Manager::Initialize(HINSTANCE hInst, HWND hWnd)
 	_keyBoard->SetDataFormat(&c_dfDIKeyboard);
 
 	// 장치에 대한 독점권을 설정해주는 함수, (클라이언트가 떠있는 상태에서 키 입력을 받을지 말지를 결정하는 함수)
-	_keyBoard->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+	_keyBoard->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 
 	// 장치에 대한 access 버전을 받아오는 함수
 	_keyBoard->Acquire();
@@ -55,7 +55,7 @@ HRESULT Engine::Input_Manager::Initialize(HINSTANCE hInst, HWND hWnd)
 	_mouse->SetDataFormat(&c_dfDIMouse);
 
 	// 장치에 대한 독점권을 설정해주는 함수, 클라이언트가 떠있는 상태에서 키 입력을 받을지 말지를 결정하는 함수
-	_mouse->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+	_mouse->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 
 	// 장치에 대한 access 버전을 받아오는 함수
 	_mouse->Acquire();
@@ -66,8 +66,27 @@ HRESULT Engine::Input_Manager::Initialize(HINSTANCE hInst, HWND hWnd)
 
 void Engine::Input_Manager::Update_InputDev(void)
 {
-	_keyBoard->GetDeviceState(256, _keyStates);
-	_mouse->GetDeviceState(sizeof(_mouseState), &_mouseState);
+	// 키보드 상태 가져오기 시도
+	HRESULT hrKey = _keyBoard->GetDeviceState(256, _keyStates);
+	if (FAILED(hrKey))
+	{
+		// 포커스를 잃었거나 장치를 잃어버린 경우 다시 획득 시도
+		_keyBoard->Acquire();
+		// 포커스가 없으면 모든 상태를 초기화하고 리턴 (이게 안되면 키가 눌린 상태로 유지됨)
+		ZeroMemory(_keyStates, sizeof(_keyStates));
+		ZeroMemory(_keyPressingStates, sizeof(_keyPressingStates));
+		return;
+	}
+
+	// 마우스 상태 가져오기 시도
+	HRESULT hrMouse = _mouse->GetDeviceState(sizeof(_mouseState), &_mouseState);
+	if (FAILED(hrMouse))
+	{
+		_mouse->Acquire();
+		ZeroMemory(&_mouseState, sizeof(_mouseState));
+		ZeroMemory(_mousePressingStates, sizeof(_mousePressingStates));
+		return;
+	}
 
 	// 키 체킹
 	{

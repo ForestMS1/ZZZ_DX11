@@ -18,6 +18,12 @@ void TestPlayCamScript::LateUpdate()
         if(!camera->IsActive())
             return;
 
+    if (g_hWnd != GetFocus())
+    {
+        ShowCursor(true);
+        return;
+    }
+
     if (GAME.Key_Down(DIK_Q))
         _mouseFix = !_mouseFix;
 

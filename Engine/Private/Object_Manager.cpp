@@ -279,6 +279,10 @@ void Object_Manager::ShowHiearchy(const char** levelNames)
 		ImGui::Text("Current Level: %d", _currentLevelIndex);
 	else
 		ImGui::Text("Current Level: %s", levelNames[_currentLevelIndex]);
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::Text("average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+
 	ImGui::Separator();
 
 	auto& currentLayerMap = _layerMaps[_currentLevelIndex];

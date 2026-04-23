@@ -21,9 +21,9 @@ HRESULT Shader::Initialize(const wstring& file)
 
 	_initialStateBlock = make_shared<StateBlock>();
 	{
-		CONTEXT->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());
-		CONTEXT->OMGetBlendState(_initialStateBlock->OMBlendState.GetAddressOf(), _initialStateBlock->OMBlendFactor, &_initialStateBlock->OMSampleMask);
-		CONTEXT->OMGetDepthStencilState(_initialStateBlock->OMDepthStencilState.GetAddressOf(), &_initialStateBlock->OMStencilRef);
+		//CONTEXT->RSGetState(_initialStateBlock->RSRasterizerState.GetAddressOf());
+		//CONTEXT->OMGetBlendState(_initialStateBlock->OMBlendState.GetAddressOf(), _initialStateBlock->OMBlendFactor, &_initialStateBlock->OMSampleMask);
+		//CONTEXT->OMGetDepthStencilState(_initialStateBlock->OMDepthStencilState.GetAddressOf(), &_initialStateBlock->OMStencilRef);
 	}
 
 	CreateEffect();

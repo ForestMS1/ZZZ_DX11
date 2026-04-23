@@ -26,7 +26,11 @@ void Converter::ReadAssetFile(const wstring& file)
 		aiProcess_Triangulate |
 		aiProcess_GenUVCoords |
 		aiProcess_GenNormals |
-		aiProcess_CalcTangentSpace
+		aiProcess_CalcTangentSpace |
+		aiProcess_RemoveRedundantMaterials |
+		aiProcess_OptimizeMeshes |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_ImproveCacheLocality
 	);
 
 	assert(_scene != nullptr);

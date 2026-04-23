@@ -18,19 +18,29 @@ HRESULT Level_Converter::Initialize()
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
 
-	shared_ptr<Converter> converter = make_shared<Converter>();
+	//shared_ptr<Converter> converter = make_shared<Converter>();
 	//converter->ReadAssetFile(L"Corin/Avatar_Female_Size01_Corin_Model.fbx");
 	//converter->ExportMaterialData(L"Corin/Corin");
 	//converter->ExportModelData(L"Corin/Corin");
 	//converter->ExportAnimationDataAll(L"Corin");
 
-	//converter->ReadAssetFile(L"StageRoot/StageRoot.fbx");
+	//converter->ReadAssetFile(L"StageRootCombined.fbx");
 	//converter->ExportMaterialData(L"StageRoot/StageRoot");
 	//converter->ExportModelData(L"StageRoot/StageRoot");
 
-	converter->ReadAssetFile(L"MetroCol.fbx");
-	converter->ExportMaterialData(L"MetroCol/MetroCol");
-	converter->ExportModelData(L"MetroCol/MetroCol");
+	//converter->ReadAssetFile(L"VR2.fbx");
+	//converter->ExportMaterialData(L"VR2/VR2");
+	//converter->ExportModelData(L"VR2/VR2");
+
+	//converter->ReadAssetFile(L"MetroCol.fbx");
+	//converter->ExportMaterialData(L"MetroCol/MetroCol");
+	//converter->ExportModelData(L"MetroCol/MetroCol");
+
+	//converter->ReadAssetFile(L"Monster_Palicus/Monster_Palicus.fbx");
+	//converter->ExportMaterialData(L"Monster_Palicus/Monster_Palicus");
+	//converter->ExportModelData(L"Monster_Palicus/Monster_Palicus");
+	//converter->ExportAnimationDataAll(L"Monster_Palicus");
+
 	return S_OK;
 }
 

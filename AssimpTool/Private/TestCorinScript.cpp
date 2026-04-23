@@ -86,8 +86,6 @@ void TestCorinScript::Update()
 	{
 		_fsm.lock()->SetBool(L"isMove", false);
 	}
-
-	if (_fsm.lock()->GetCurAnimState()->GetName().compare(L"Idle"))
 		GetTransform()->SetPosition(pos);
 }
 
