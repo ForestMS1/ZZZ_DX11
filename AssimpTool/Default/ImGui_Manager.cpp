@@ -73,10 +73,13 @@ void ImGui_Manager::Update()
 	ImGui::DockSpaceOverViewport(0, viewport, flags);
 
 	ImGuiIO& io = ImGui::GetIO();
+	
+	ImGui::Begin("Guizmo");
 }
 
 void ImGui_Manager::Render()
 {
+	ImGui::End();
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
