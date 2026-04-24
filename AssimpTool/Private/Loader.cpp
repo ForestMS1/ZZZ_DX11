@@ -192,18 +192,34 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	// ----------------------------------------------------Material Load--------------------------------------------------------
 	_loadingText = L"머테리얼 로딩 중 입니다.";
-	shared_ptr<Material> material = make_shared<Material>();
-	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"SkyBox.fx");
+	{
+		shared_ptr<Material> material = make_shared<Material>();
+		shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"SkyBox.fx");
 
-	material->SetShader(shader);
-	auto texture = GAME.GetOrAddTexture(L"Sky", L"..\\..\\Resources\\Textures\\Sky.jpg");
-	material->SetDiffuseMap(texture);
-	MaterialDesc& desc = material->GetMaterialDesc();
-	desc.ambient = Vec4(1.f);
-	desc.diffuse = Vec4(1.f);
-	desc.specular = Vec4(1.f);
+		material->SetShader(shader);
+		auto texture = GAME.GetOrAddTexture(L"Sky", L"..\\..\\Resources\\Textures\\Sky.jpg");
+		material->SetDiffuseMap(texture);
+		MaterialDesc& desc = material->GetMaterialDesc();
+		desc.ambient = Vec4(1.f);
+		desc.diffuse = Vec4(1.f);
+		desc.specular = Vec4(1.f);
 
-	GAME.AddResource(L"Sky", material);
+		GAME.AddResource(L"Sky", material);
+	}
+
+	{
+		shared_ptr<Material> material = make_shared<Material>();
+
+		material->SetShader(SkyBoxShader);
+		auto texture = GAME.GetOrAddTexture(L"Sky01", L"..\\..\\Resources\\Textures\\Sky01.jpg");
+		material->SetDiffuseMap(texture);
+		MaterialDesc& desc = material->GetMaterialDesc();
+		desc.ambient = Vec4(1.f);
+		desc.diffuse = Vec4(1.f);
+		desc.specular = Vec4(1.f);
+
+		GAME.AddResource(L"Sky01", material);
+	}
 
 	// ----------------------------------------------------Material Load--------------------------------------------------------
 

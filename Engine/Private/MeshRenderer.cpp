@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Light.h"
 
 MeshRenderer::MeshRenderer() : Component(ComponentType::MeshRenderer)
 {
@@ -32,6 +33,13 @@ HRESULT MeshRenderer::Render()
 		return E_FAIL;
 
 	_material->Update();
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		shader->PushLightData(lightDesc);
+	}
 
 	// GlobalData
 	shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);

@@ -71,8 +71,8 @@ HRESULT Graphic_Device::Clear_BackBuffer_View(const Vec4* pClearColor)
 
 	// 먼저 셰이더 읽기 슬롯(SRV)을 깨끗하게 비운다
 	// 지난 프레임에 UI에서 썼던 노말 텍스처 등을 여기서 해제
-	ID3D11ShaderResourceView* nullSRVs[128] = { nullptr };
-	_deviceContext->PSSetShaderResources(0, 128, nullSRVs);
+	ID3D11ShaderResourceView* nullSRVs[8] = { nullptr };
+	_deviceContext->PSSetShaderResources(0, 8, nullSRVs);
 
 	ID3D11RenderTargetView* pRTVS[] = {
 		_backBufferRTV.Get(),

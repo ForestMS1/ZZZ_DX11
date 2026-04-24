@@ -143,6 +143,11 @@ public:
 	void DrawRay(const Ray& ray, bool normalize, FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
 #pragma endregion
 
+#pragma region LIGHTMANAGER
+	HRESULT Add_LightObject(shared_ptr<class Light> pLight);
+	list<shared_ptr<class Light>>& GetLigthList();
+#pragma endregion
+
 	void SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext = nullptr);
 
 private:
@@ -156,6 +161,8 @@ private:
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
+	//임시
+	unique_ptr<class LightManager> _lightManager = { nullptr };
 
 	// Debug Draw
 	// Debug Draw를 위한 도구들

@@ -2,7 +2,7 @@
 #include "ModelRenderer.h"
 #include "Camera.h"
 #include "Transform.h"
-
+#include "Light.h"
 ModelRenderer::ModelRenderer()
 	: Component(ComponentType::ModelRenderer)
 {
@@ -44,13 +44,20 @@ HRESULT ModelRenderer::Render()
 	//if (lightObj)
 	//	_shader->PushLightData(lightObj->GetLight()->GetLightDesc());
 
-	LightDesc lightDesc;
-	lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
-	lightDesc.diffuse = Vec4(1.f);
-	lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
-	lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
-	lightDesc.direction.Normalize();
-	_shader->PushLightData(lightDesc);
+	//LightDesc lightDesc;
+	//lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
+	//lightDesc.diffuse = Vec4(1.f);
+	//lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
+	//lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
+	//lightDesc.direction.Normalize();
+	//_shader->PushLightData(lightDesc);
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shader->PushLightData(lightDesc);
+	}
 
 	//Bones
 	//BoneDesc boneDesc;

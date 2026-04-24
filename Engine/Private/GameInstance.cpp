@@ -16,6 +16,7 @@
 #include "imnodes.h"
 #include "Layer.h"
 #include "CollisionManager.h"
+#include "LightManager.h"
 
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> GameInstance::_batch = nullptr;
 std::unique_ptr<DirectX::BasicEffect> GameInstance::_effect = nullptr;
@@ -71,6 +72,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 
 	_gameObjectFactory = GameObjectFactory::Create();
 	if (nullptr == _gameObjectFactory)
+		return E_FAIL;
+
+	_lightManager = LightManager::Create(pOutDevice, pOutDeviceContext);
+	if (nullptr == _lightManager)
 		return E_FAIL;
 
 
@@ -131,6 +136,9 @@ HRESULT GameInstance::Draw()
 
 	if (FAILED(_levelManager->Render()))
 		return E_FAIL;
+
+	//임시 (매 프레임마다 들고있는 light list 비움)
+	_lightManager->Clear_LightObject();
 
 	return S_OK;
 }
@@ -493,6 +501,17 @@ void GameInstance::DrawRay(const Ray& ray, bool normalize, FXMVECTOR color, Dire
 
 #pragma endregion
 
+#pragma region LIGHTMANAGER
+HRESULT GameInstance::Add_LightObject(shared_ptr<Light> pLight)
+{
+	return _lightManager->Add_LightObject(pLight);
+}
+
+list<shared_ptr<Light>>& GameInstance::GetLigthList()
+{
+	return _lightManager->GetLigthList();
+}
+#pragma endregion
 void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext)
 {
 	// DLL 영역의 전역 변수 GImGui를 EXE에서 만든 컨텍스트로 셋팅
@@ -507,6 +526,10 @@ void GameInstance::Release_Engine()
 	_effect.reset();
 	_inputLayout.Reset();
 	//-----------------------
+
+	//임시
+	_lightManager.reset();
+
 	ShaderManager::Clear();
 	_inputManager.reset();
 	_renderer.reset();
