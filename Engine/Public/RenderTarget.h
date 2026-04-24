@@ -1,0 +1,32 @@
+#pragma once
+
+NS_BEGIN(Engine)
+
+class ENGINE_DLL RenderTarget
+{
+public:
+	RenderTarget(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
+	virtual ~RenderTarget();
+
+public:
+	HRESULT CreateRTVWithSRV(DXGI_FORMAT format, int32 sizeX, int32 sizeY);
+
+	// RenderTargetManager에서 호출
+	HRESULT ClearRenderTarget(const Vec4* pClearColor) { _deviceContext->ClearRenderTargetView(_rtv.Get(), reinterpret_cast<const float*>(pClearColor)); }
+
+
+	ComPtr<ID3D11Texture2D>				GetTexture2D()		{ return _texture2D; }
+	ComPtr<ID3D11RenderTargetView>		GetRTV()			{ return _rtv; }
+	ComPtr<ID3D11ShaderResourceView>	GetSRV()			{ return _srv; }
+
+
+private:
+	ComPtr<ID3D11Device>					_device = { nullptr };
+	ComPtr<ID3D11DeviceContext>				_deviceContext = { nullptr };
+
+	ComPtr<ID3D11Texture2D>					_texture2D = { nullptr };
+	ComPtr<ID3D11RenderTargetView>			_rtv = { nullptr };
+	ComPtr<ID3D11ShaderResourceView>		_srv = { nullptr };
+};
+
+NS_END

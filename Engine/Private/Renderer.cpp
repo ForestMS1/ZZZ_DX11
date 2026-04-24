@@ -14,7 +14,7 @@ Renderer::~Renderer()
 
 HRESULT Renderer::Initialize()
 {
-
+	// 디퓨즈 노말 깊이 렌더타겟 MRT로 집어넣기
 	return S_OK;
 }
 
