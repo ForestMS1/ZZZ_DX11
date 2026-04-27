@@ -11,6 +11,7 @@
 #include "AnimFSM.h"
 #include "AnimState.h"
 #include "Transition.h"
+#include "Light.h"
 #include <filesystem>
 ModelAnimator::ModelAnimator()
 	: Component(ComponentType::Animator)
@@ -120,13 +121,20 @@ HRESULT ModelAnimator::Render()
 	// SRV를 통해 정보 전달
 	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
 
-	LightDesc lightDesc;
-	lightDesc.ambient = Vec4(0.4f, 0.45f, 0.55f, 1.0f);
-	lightDesc.diffuse = Vec4(1.0f, 0.98f, 0.95f, 1.0f);
-	lightDesc.specular = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
-	lightDesc.direction = Vec3(-1.f, -1.0f, 0.5f);
-	lightDesc.direction.Normalize();
-	_shader->PushLightData(lightDesc);
+	//LightDesc lightDesc;
+	//lightDesc.ambient = Vec4(0.4f, 0.45f, 0.55f, 1.0f);
+	//lightDesc.diffuse = Vec4(1.0f, 0.98f, 0.95f, 1.0f);
+	//lightDesc.specular = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
+	//lightDesc.direction = Vec3(-1.f, -1.0f, 0.5f);
+	//lightDesc.direction.Normalize();
+	//_shader->PushLightData(lightDesc);
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shader->PushLightData(lightDesc);
+	}
 
 	// Bones
 	BoneDesc boneDesc;

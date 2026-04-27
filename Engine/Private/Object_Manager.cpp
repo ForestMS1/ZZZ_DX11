@@ -700,6 +700,12 @@ void Object_Manager::ShowInspector()
 			_selectedObject->AddComponent(collider);
 		}
 
+		if (_selectedObject->GetLight() == nullptr && ImGui::Selectable("Light"))
+		{
+			shared_ptr<Light> light = make_shared<Light>();
+			_selectedObject->AddComponent(light);
+		}
+
 		bool renderer = (_selectedObject->GetMeshRenderer() == nullptr && 
 			_selectedObject->GetModelRenderer() == nullptr &&
 			_selectedObject->GetModelAnimator() == nullptr &&

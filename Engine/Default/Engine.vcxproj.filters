@@ -154,6 +154,8 @@
     <Filter Include="06.Component\Collider\Manager">
       <UniqueIdentifier>{c1630147-6e0c-48b7-a4f4-3dc83b60d3e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Light">
+      <UniqueIdentifier>{87b81121-1ad2-498d-9d6c-ca6b3743b3e1}</UniqueIdentifier>
     <Filter Include="RenderTarget">
       <UniqueIdentifier>{d926ae2e-82ac-4fed-a0b9-e0219788389f}</UniqueIdentifier>
     </Filter>
@@ -394,6 +396,11 @@
     <ClInclude Include="..\Public\CollisionManager.h">
       <Filter>06.Component\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>06.Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LightManager.h">
+      <Filter>06.Component\Light</Filter>
     <ClInclude Include="..\Public\RenderTarget.h">
       <Filter>RenderTarget</Filter>
     </ClInclude>
@@ -621,6 +628,11 @@
     <ClCompile Include="..\Private\CollisionManager.cpp">
       <Filter>06.Component\Collider\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>06.Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightManager.cpp">
+      <Filter>06.Component\Light</Filter>
     <ClCompile Include="..\Private\RenderTarget.cpp">
       <Filter>RenderTarget</Filter>
     </ClCompile>

@@ -241,6 +241,12 @@ shared_ptr<Collider> GameObject::GetCollider()
 	return static_pointer_cast<Collider>(component);
 }
 
+shared_ptr<Light> GameObject::GetLight()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::Light);
+	return static_pointer_cast<Light>(component);
+}
+
 shared_ptr<Transform> GameObject::GetOrAddTransform()
 {
 	if (nullptr == GetTransform())
