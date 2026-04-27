@@ -7,11 +7,14 @@ class Shader;
 
 class RenderTargetManager
 {
+private:
+	RenderTargetManager(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 public:
-	RenderTargetManager(ComPtr<ID3D11RenderTargetView> backBufferRTV, ComPtr<ID3D11DepthStencilView> depthStencilView);
 	~RenderTargetManager();
 
 public:
+	HRESULT Initialize(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
+
 	// _renderTargets에 추가
 	void Add_RenderTarget(const wstring& name, shared_ptr<RenderTarget> renderTarget);
 	// _renderTargets에 있는 애를 MRT그룹에 추가
@@ -21,9 +24,15 @@ public:
 	void MultiRenderTargetBind(const wstring& mrtName);
 	void MultiRenderTargetUnbind();
 
-private:
-	shared_ptr<RenderTarget> FindRenderTarget(const wstring renderTargetName);
+public:
+	HRESULT RenderRTV(const wstring& pMRTTag, shared_ptr<Shader> pShader, uint8 pass = 1);
+
+public:
+	// 특정 렌더타겟 Get
+	shared_ptr<RenderTarget> FindRenderTarget(const wstring& renderTargetName);
 	list<shared_ptr<RenderTarget>>* FindMRT(const wstring& mrtName);
+
+	HRESULT Ready_Debug(const wstring& pTargetTag, float x, float y, float sizeX, float sizeY);
 
 private:
 	map<wstring, shared_ptr<RenderTarget>>			_renderTargets;
@@ -36,6 +45,9 @@ private:
 	ComPtr<ID3D11DepthStencilView> _depthStencilView;
 
 	Vec4 _clearColor = { 0.f, 0.f, 1.f, 1.f };
+
+public:
+	static unique_ptr<RenderTargetManager> Create(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 };
 
 NS_END

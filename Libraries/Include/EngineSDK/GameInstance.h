@@ -19,7 +19,7 @@ public:
 	void Clear_Resource(uint32 iClearLevelIndex);
 
 public:
-	ENGINE_DESC GetEngineDesc() const { return _desc; }
+	const ENGINE_DESC& GetEngineDesc() { return _desc; }
 
 public:
 #pragma region TIMER_MANGER
@@ -45,8 +45,6 @@ public:
 	ComPtr<IDXGISwapChain> GetSwapChain();
 
 	ComPtr<ID3D11RenderTargetView> GetBackRTV();
-	ComPtr<ID3D11ShaderResourceView> GetNormalSRV();
-	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV();
 	ComPtr<ID3D11ShaderResourceView> GetDepthSRV();
 #pragma endregion
 
@@ -135,6 +133,22 @@ public:
 	shared_ptr<GameObject> CreateFromFactory(const wstring& className);
 #pragma endregion
 
+#pragma region RENDERTARGETMANANGER
+	// _renderTargets에 추가
+	void Add_RenderTarget(const wstring& name, shared_ptr<class RenderTarget> renderTarget);
+	// _renderTargets에 있는 애를 MRT그룹에 추가
+	void Add_RenderTargetToMRT(const wstring& mrtName, const wstring& renderTargetName);
+
+	// MRT그룹을 바인드/언바인드
+	void MultiRenderTargetBind(const wstring& mrtName);
+	void MultiRenderTargetUnbind();
+
+	shared_ptr<RenderTarget> FindRenderTarget(const wstring& renderTargetName);
+
+	HRESULT Ready_Debug(const wstring& pTargetTag, float x, float y, float sizeX, float sizeY);
+	HRESULT RenderRTV(const wstring& pMRTTag, shared_ptr<Shader> pShader, uint8 pass = 1);
+#pragma endregion
+
 #pragma region DEBUGDRAW
 	void DrawBox(const DirectX::BoundingBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
 	void DrawOrientedBox(const DirectX::BoundingOrientedBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world = DirectX::XMMatrixIdentity());
@@ -156,6 +170,7 @@ private:
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
+	unique_ptr<class RenderTargetManager> _renderTargetManager = { nullptr };
 
 	// Debug Draw
 	// Debug Draw를 위한 도구들

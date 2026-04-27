@@ -40,6 +40,9 @@ void SpriteRenderer::Update()
 	if (_mesh == nullptr)
 		_mesh = GAME.GetResource<Mesh>(L"Quad"); // ±âº» DefaultMesh
 
+	if (_textures.size() <= 0)
+		return;
+
 	if(_play)
 		_curTextureIndex += DT * _speed;
 
@@ -90,7 +93,7 @@ HRESULT SpriteRenderer::Render()
 		ID3D11RenderTargetView* backRTV[] = { GAME.GetBackRTV().Get() };
 		CONTEXT->OMSetRenderTargets(1, backRTV, nullptr);
 	}
-	else if(_textures[(uint32)_curTextureIndex])
+	else if(_textures[(uint32)_curTextureIndex] != nullptr)
 		_textureEffectBuffer->SetResource(_textures[(uint32)_curTextureIndex]->GetComPtr().Get());
 
 	//IA

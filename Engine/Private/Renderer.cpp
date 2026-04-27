@@ -2,6 +2,11 @@
 #include "Renderer.h"
 #include "GameObject.h"
 
+#include "RenderTarget.h"
+#include "Shader.h"
+#include "GeometryHelper.h"
+#include "Geometry.h"
+#include "VertexBuffer.h"
 Renderer::Renderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
 	, _deviceContext(pDeviceContext)
@@ -14,7 +19,49 @@ Renderer::~Renderer()
 
 HRESULT Renderer::Initialize()
 {
+	const ENGINE_DESC& desc = GAME.GetEngineDesc();
+
 	// 디퓨즈 노말 깊이 렌더타겟 MRT로 집어넣기
+	shared_ptr<RenderTarget> diffuseRenderTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(0.f, 0.f, 0.f, 0.f));
+	diffuseRenderTarget->CreateRTVWithSRV(DXGI_FORMAT_B8G8R8A8_UNORM, desc.iWinSizeX, desc.iWinSizeY);
+	GAME.Add_RenderTarget(L"Target_Diffuse", diffuseRenderTarget);
+
+	shared_ptr<RenderTarget> normalRenderTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(0.5f, 0.5f, 1.f, 1.f));
+	normalRenderTarget->CreateRTVWithSRV(DXGI_FORMAT_R16G16B16A16_UNORM, desc.iWinSizeX, desc.iWinSizeY);
+	GAME.Add_RenderTarget(L"Target_Normal", normalRenderTarget);
+
+	shared_ptr<RenderTarget> depthRenderTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f));
+	depthRenderTarget->CreateRTVWithSRV(DXGI_FORMAT_R32G32B32A32_FLOAT, desc.iWinSizeX, desc.iWinSizeY);
+	GAME.Add_RenderTarget(L"Target_Depth", depthRenderTarget);
+
+	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
+	//shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
+	//shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048, 2048); // 깊이만 저장하므로 R32_FLOAT
+	//GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
+
+	//_shadowShader = Shader::Create(L"Shadow.fx"); // 그림자 기록용 셰이더
+
+	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Diffuse");
+	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Normal");
+	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Depth");
+
+
+	_finalBindShader = Shader::Create(L"FinalBind.fx");
+	_renderTargetShader = Shader::Create(L"UI.fx");
+
+	auto geometry = make_shared<Geometry<VertexTextureData>>();
+	GeometryHelper::CreateQuad(geometry);
+	_vertexBuffer = make_shared<VertexBuffer>();
+	_vertexBuffer->Create(geometry->GetVertices());
+
+	if (FAILED(GAME.Ready_Debug(L"Target_Diffuse", 0.f, 0.f, 200.f, 150.f)))
+		return E_FAIL;
+	if (FAILED(GAME.Ready_Debug(L"Target_Normal", 0.f, 150.f, 200.f, 150.f)))
+		return E_FAIL;
+	if (FAILED(GAME.Ready_Debug(L"Target_Depth", 0.f, 300.f, 200.f, 150.f)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -31,10 +78,19 @@ HRESULT Renderer::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObje
 
 HRESULT Renderer::Draw()
 {
+	GAME.MultiRenderTargetBind(L"MRT_Deferred");
+
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
 
 	if (FAILED(Render_NonBlend()))
+		return E_FAIL;
+
+	GAME.MultiRenderTargetUnbind();
+
+	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
+
+	if (FAILED(Render_Deferred_Lighting()))
 		return E_FAIL;
 
 	if (FAILED(Render_Blend()))
@@ -42,6 +98,8 @@ HRESULT Renderer::Draw()
 
 	if (FAILED(Render_UI()))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -94,6 +152,38 @@ HRESULT Renderer::Render_UI()
 	}
 
 	_renderObjects[ETOUI(RENDERGROUP::UI)].clear();
+
+	return S_OK;
+}
+
+HRESULT Renderer::Render_Deferred_Lighting()
+{
+	// Unbind 에서 백버퍼를 다시 출력 타겟으로 잡았음
+
+
+	// MRT 결과물들을 셰이더의 SRV 슬롯에 세팅
+	// (Target_Diffuse, Target_Normal, Target_Depth 등)
+	auto diffuse = GAME.FindRenderTarget(L"Target_Diffuse")->GetSRV();
+	auto normal = GAME.FindRenderTarget(L"Target_Normal")->GetSRV();
+	auto depth = GAME.FindRenderTarget(L"Target_Depth")->GetSRV();
+
+	// 셰이더에 텍스처 전달
+	_finalBindShader->GetSRV("g_AlbedoTex")->SetResource(diffuse.Get());
+	_finalBindShader->GetSRV("g_NormalTex")->SetResource(normal.Get());
+	_finalBindShader->GetSRV("g_DepthTex")->SetResource(depth.Get());
+
+	_vertexBuffer->PushData();
+
+	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_finalBindShader->Draw(0, 0, _vertexBuffer->GetCount(), 0);
+
+
+	// 사용한 SRV 해제 (중요: 다음 프레임에 다시 RTV로 써야 하므로)
+	ID3D11ShaderResourceView* nullSRVs[3] = { nullptr, nullptr, nullptr };
+	// 픽셀 셰이더뿐만 아니라 모든 단계의 슬롯을 비워주는 것이 좋습니다.
+	_deviceContext->VSSetShaderResources(0, 3, nullSRVs);
+	_deviceContext->PSSetShaderResources(0, 3, nullSRVs);
+	_deviceContext->GSSetShaderResources(0, 3, nullSRVs);
 
 	return S_OK;
 }

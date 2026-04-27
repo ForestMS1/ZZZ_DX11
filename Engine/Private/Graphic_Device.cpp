@@ -32,20 +32,12 @@ HRESULT Graphic_Device::Initialize(HWND hwnd, WINMODE eWinMode, int32 iWinSizeX,
 	if (FAILED(Ready_DepthStencilView(iWinSizeX, iWinSizeY)))
 		return E_FAIL;
 
-	if (FAILED(Ready_NormalRenderTargetView(iWinSizeX, iWinSizeY)))
-		return E_FAIL;
-
-	if (FAILED(Ready_SpecularRenderTargetView(iWinSizeX, iWinSizeY)))
-		return E_FAIL;
-
 
 	ID3D11RenderTargetView* pRTVS[] = {
 		_backBufferRTV.Get(),
-		_normalRTV.Get(),
-		_specularRTV.Get(),
 	};
 
-	_deviceContext->OMSetRenderTargets(3, pRTVS, _depthStencilView.Get());
+	_deviceContext->OMSetRenderTargets(1, pRTVS, _depthStencilView.Get());
 
 	D3D11_VIEWPORT		ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
@@ -69,29 +61,15 @@ HRESULT Graphic_Device::Clear_BackBuffer_View(const Vec4* pClearColor)
 	if (_deviceContext == nullptr)
 		return E_FAIL;
 
-	// 먼저 셰이더 읽기 슬롯(SRV)을 깨끗하게 비운다
-	// 지난 프레임에 UI에서 썼던 노말 텍스처 등을 여기서 해제
-	ID3D11ShaderResourceView* nullSRVs[8] = { nullptr };
-	_deviceContext->PSSetShaderResources(0, 8, nullSRVs);
-
 	ID3D11RenderTargetView* pRTVS[] = {
 		_backBufferRTV.Get(),
-		_normalRTV.Get(),
-		_specularRTV.Get(),
 	};
 
 	// MRT 바인딩
-	_deviceContext->OMSetRenderTargets(3, pRTVS, _depthStencilView.Get());
+	_deviceContext->OMSetRenderTargets(1, pRTVS, _depthStencilView.Get());
 
 	// 메인 화면 Clear
 	_deviceContext->ClearRenderTargetView(_backBufferRTV.Get(), reinterpret_cast<const float*>(pClearColor));
-
-	// 노말 화면 Clear
-	float ClearColor[4] = { 0.f, 0.f, 0.f, 1.f };
-	_deviceContext->ClearRenderTargetView(_normalRTV.Get(), ClearColor);
-
-	// 스페큘러 화면 Clear
-	_deviceContext->ClearRenderTargetView(_specularRTV.Get(), ClearColor);
 
 	return S_OK;
 }
@@ -249,75 +227,6 @@ HRESULT Graphic_Device::Ready_DepthStencilView(int32 iWinCX, int32 iWinCY)
 	srvDesc.Texture2D.MipLevels = -1; // 모든 밉 레벨 접근
 
 	if(FAILED(_device->CreateShaderResourceView(_depthTexture.Get(), &srvDesc, _depthSRV.GetAddressOf())))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT Graphic_Device::Ready_NormalRenderTargetView(int32 iWinCX, int32 iWinCY)
-{
-	if (_device == nullptr)
-		return E_FAIL;
-
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = iWinCX;
-	desc.Height = iWinCY;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-
-	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
-
-
-	if (FAILED(_device->CreateTexture2D(&desc, nullptr, _normalTexture.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateRenderTargetView(_normalTexture.Get(), nullptr, _normalRTV.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateShaderResourceView(_normalTexture.Get(), nullptr, _normalSRV.GetAddressOf())))
-		return E_FAIL;
-
-
-	return S_OK;
-}
-
-HRESULT Graphic_Device::Ready_SpecularRenderTargetView(int32 iWinCX, int32 iWinCY)
-{
-	if (_device == nullptr)
-		return E_FAIL;
-
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = iWinCX;
-	desc.Height = iWinCY;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-
-	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
-
-	if (FAILED(_device->CreateTexture2D(&desc, nullptr, _specularTexture.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateRenderTargetView(_specularTexture.Get(), nullptr, _specularRTV.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateShaderResourceView(_specularTexture.Get(), nullptr, _specularSRV.GetAddressOf())))
 		return E_FAIL;
 
 	return S_OK;

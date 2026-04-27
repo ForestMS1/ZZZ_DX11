@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "RenderTarget.h"
-
-RenderTarget::RenderTarget(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext)
-	: _device(device), _deviceContext(deviceContext)
+#include "GeometryHelper.h"
+#include "Camera.h"
+RenderTarget::RenderTarget(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, Vec4 clearColor)
+	: _device(device), _deviceContext(deviceContext), _clearColor(clearColor)
 {
 }
 
@@ -41,6 +42,50 @@ HRESULT RenderTarget::CreateRTVWithSRV(DXGI_FORMAT format, int32 sizeX, int32 si
 	if (FAILED(_device->CreateShaderResourceView(_texture2D.Get(), nullptr, _srv.GetAddressOf())))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT RenderTarget::Ready_Debug(float x, float y, float sizeX, float sizeY)
+{
+	_x = x;
+	_y = y;
+	_sizeX = sizeX;
+	_sizeY = sizeY;
+
+	uint32 iViewPortCount = 1;
+	D3D11_VIEWPORT ViewPortDesc;
+	_deviceContext->RSGetViewports(&iViewPortCount, &ViewPortDesc);
+
+	// ÁÂÇ¥ º¸Á¤ ¿¹½Ã (x, y´Â È­¸é»óÀÇ ÇÈ¼¿ ÁÂÇ¥)
+	float viewX = _x - (ViewPortDesc.Width * 0.5f) + (_sizeX * 0.5f);
+	float viewY = -_y + (ViewPortDesc.Height * 0.5f) - (_sizeY * 0.5f);
+
+	_worldMatrix = Matrix::CreateScale(_sizeX, _sizeY, 1.f) * Matrix::CreateTranslation(viewX, viewY, 0.f);
+	_projMatrix = Matrix::CreateOrthographic(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f);
+	if (_geometry == nullptr)
+	{
+		_geometry = make_shared<Geometry<VertexTextureData>>();
+		GeometryHelper::CreateQuad(_geometry);
+		_vertexBuffer = make_shared<VertexBuffer>();
+		_vertexBuffer->Create(_geometry->GetVertices());
+		_indexBuffer = make_shared<IndexBuffer>();
+		_indexBuffer->Create(_geometry->GetIndices());
+	}
+	return S_OK;
+}
+
+HRESULT RenderTarget::RenderRTV(shared_ptr<Shader> shader, uint8 pass)
+{
+	shader->PushGlobalData(Matrix::Identity, _projMatrix);
+	shader->PushTransformData(TransformDesc{ _worldMatrix });
+
+	shader->GetSRV("RenderTargetUI")->SetResource(_srv.Get());
+
+	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_vertexBuffer->PushData();
+	_indexBuffer->PushData();
+	shader->DrawIndexed(0, pass, _indexBuffer->GetCount(), 0, 0);
 
 	return S_OK;
 }

@@ -17,6 +17,8 @@
 #include "Layer.h"
 #include "CollisionManager.h"
 
+#include "RenderTargetManager.h"
+
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> GameInstance::_batch = nullptr;
 std::unique_ptr<DirectX::BasicEffect> GameInstance::_effect = nullptr;
 ComPtr<ID3D11InputLayout> GameInstance::_inputLayout = nullptr;
@@ -55,6 +57,11 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	
 	_collisionManager = CollisionManager::Create(EngineDesc.iNumLevels);
 	if (nullptr == _collisionManager)
+		return E_FAIL;
+
+	// _renderer보다 먼저 생성
+	_renderTargetManager = RenderTargetManager::Create(pOutDevice, pOutDeviceContext);
+	if (nullptr == _renderTargetManager)
 		return E_FAIL;
 
 	_renderer = Renderer::Create(pOutDevice, pOutDeviceContext);
@@ -210,16 +217,6 @@ ComPtr<IDXGISwapChain> GameInstance::GetSwapChain()
 ComPtr<ID3D11RenderTargetView> GameInstance::GetBackRTV()
 {
 	return _graphicDevice->GetBackRTV();
-}
-
-ComPtr<ID3D11ShaderResourceView> GameInstance::GetNormalSRV()
-{
-	return _graphicDevice->GetNormalSRV();
-}
-
-ComPtr<ID3D11ShaderResourceView> GameInstance::GetSpecularSRV()
-{
-	return _graphicDevice->GetSpecularSRV();
 }
 ComPtr<ID3D11ShaderResourceView> GameInstance::GetDepthSRV()
 {
@@ -404,6 +401,47 @@ shared_ptr<GameObject> GameInstance::CreateFromFactory(const wstring& className)
 {
 	return _gameObjectFactory->CreateFromFactory(className);
 }
+#pragma endregion
+
+#pragma region RENDERTARGETMANANGER
+
+// _renderTargets에 추가
+void GameInstance::Add_RenderTarget(const wstring& name, shared_ptr<class RenderTarget> renderTarget)
+{
+	_renderTargetManager->Add_RenderTarget(name, renderTarget);
+}
+// _renderTargets에 있는 애를 MRT그룹에 추가
+void GameInstance::Add_RenderTargetToMRT(const wstring& mrtName, const wstring& renderTargetName)
+{
+	_renderTargetManager->Add_RenderTargetToMRT(mrtName, renderTargetName);
+}
+
+// MRT그룹을 바인드/언바인드
+void GameInstance::MultiRenderTargetBind(const wstring& mrtName)
+{
+	_renderTargetManager->MultiRenderTargetBind(mrtName);
+}
+void GameInstance::MultiRenderTargetUnbind()
+{
+	_renderTargetManager->MultiRenderTargetUnbind();
+}
+
+shared_ptr<RenderTarget> GameInstance::FindRenderTarget(const wstring& renderTargetName)
+{
+	return _renderTargetManager->FindRenderTarget(renderTargetName);
+}
+
+HRESULT GameInstance::Ready_Debug(const wstring& pTargetTag, float x, float y, float sizeX, float sizeY)
+{
+	return _renderTargetManager->Ready_Debug(pTargetTag, x, y, sizeX, sizeY);
+}
+
+HRESULT GameInstance::RenderRTV(const wstring& pMRTTag, shared_ptr<Shader> pShader, uint8 pass)
+{
+	return _renderTargetManager->RenderRTV(pMRTTag, pShader, pass);
+}
+#pragma endregion
+
 
 void GameInstance::DrawBox(const DirectX::BoundingBox& box, DirectX::FXMVECTOR color, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection, DirectX::CXMMATRIX world)
 {
@@ -517,6 +555,7 @@ void GameInstance::Release_Engine()
 	_prototypeManager.reset();
 	_resourceManager.reset();
 	_gameObjectFactory.reset();
+	_renderTargetManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();
 }

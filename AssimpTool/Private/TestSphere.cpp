@@ -53,7 +53,7 @@ HRESULT TestSphere::Initialize(void* pArg)
 		spriteRenderer->Add_Texture(texture);
 	}
 	AddComponent(spriteRenderer);
-	spriteRenderer->SetSRV(GAME.GetDepthSRV());
+	//spriteRenderer->SetSRV(GAME.GetDepthSRV());
 
 	//shared_ptr<OBBCollider> collider = make_shared<OBBCollider>();
 	//AddComponent(collider);
