@@ -21,6 +21,14 @@ ModelRenderer::~ModelRenderer()
 
 
 
+void ModelRenderer::Awake()
+{
+	if (_shadowShader == nullptr)
+	{
+		_shadowShader = Shader::Create(L"ShadowNoAnim.fx");
+	}
+}
+
 void ModelRenderer::Update()
 {
 	//TODO 임시, 렌더그룹변경하자
@@ -39,25 +47,17 @@ HRESULT ModelRenderer::Render()
 	auto world = GetTransform()->GetWorldMatrix();
 	_shader->PushTransformData(TransformDesc{ world });
 
-	// TODO : Light
-	//auto lightObj = SCENE->GetCurrentScene()->GetLight();
-	//if (lightObj)
-	//	_shader->PushLightData(lightObj->GetLight()->GetLightDesc());
+	//auto& lightList = GAME.GetLigthList();
+	//if (!lightList.empty())
+	//{
+	//	auto& lightDesc = lightList.front()->GetLightDesc();
+	//	_shader->PushLightData(lightDesc);
 
-	//LightDesc lightDesc;
-	//lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
-	//lightDesc.diffuse = Vec4(1.f);
-	//lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
-	//lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
-	//lightDesc.direction.Normalize();
-	//_shader->PushLightData(lightDesc);
-
-	auto& lightList = GAME.GetLigthList();
-	if (!lightList.empty())
-	{
-		auto& lightDesc = lightList.front()->GetLightDesc();
-		_shader->PushLightData(lightDesc);
-	}
+	//	const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+	//	const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+	//	_shader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+	//	_shader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	//}
 
 	//Bones
 	//BoneDesc boneDesc;
@@ -96,6 +96,42 @@ HRESULT ModelRenderer::Render()
 		mesh->indexBuffer->PushData();
 
 		_shader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
+	}
+
+	return S_OK;
+}
+
+HRESULT ModelRenderer::RenderShadow()
+{
+	if (_shadowShader == nullptr)
+		return E_FAIL;
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shadowShader->PushLightData(lightDesc);
+
+		const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+		const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+		_shadowShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+		_shadowShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	}
+
+	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
+
+	const auto& meshes = _model->GetMeshes();
+	for (auto& mesh : meshes)
+	{
+		Matrix finalMatrix = mesh->bone->transform * gameObjectWorld;
+		_shadowShader->PushTransformData(TransformDesc{ finalMatrix });
+
+		//IA
+		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mesh->vertexBuffer->PushData();
+		mesh->indexBuffer->PushData();
+
+		_shadowShader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
 	}
 
 	return S_OK;

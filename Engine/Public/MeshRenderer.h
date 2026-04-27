@@ -26,8 +26,10 @@ public:
 	uint8 GetTechnique() { return _techniqueIndex; }
 
 	// 생명주기 함수
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual HRESULT Render() override;
+	virtual HRESULT RenderShadow() override;
 
 	// RenderGroup Property
 	RENDERGROUP GetCurRenderGroup() { return _renderGroup; }
@@ -43,6 +45,7 @@ public:
 private:
 	shared_ptr<Mesh> _mesh;
 	shared_ptr<Material> _material;
+	shared_ptr<Shader> _shadowShader;
 
 	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;

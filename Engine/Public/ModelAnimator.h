@@ -29,8 +29,10 @@ public:
 
 public:
 	// 생명주기 함수
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual HRESULT Render() override;
+	HRESULT RenderShadow() override;
 
 	// Model Property
 	void SetModel(shared_ptr<Model> model);
@@ -82,6 +84,7 @@ private:
 
 private:
 	shared_ptr<Shader>	_shader;
+	shared_ptr<Shader> _shadowShader;
 	uint8				_techniqueIndex = 0;
 	uint8				_pass = 0;
 	// 애니메이션, 메쉬, 머터리얼을 가지고 있는 Model

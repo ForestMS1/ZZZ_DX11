@@ -24,7 +24,12 @@ public:
 	// 생명주기 함수
 	virtual void Update() override;
 
+	void UpdateMatrix();
+
 	LightDesc& GetLightDesc() { return _lightDesc; }
+	LIGHTTYPE GetLightType() { return _lightType; }
+	const Matrix& GetLighViewMatrix() { return _lightViewMatrix; }
+	const Matrix& GetLighProjMatrix() { return _lightProjMatrix; }
 
 	void SetLightDesc(LightDesc& desc) { _lightDesc = desc; }
 	void SetAmbient(const Color& color) { _lightDesc.ambient = color; }
@@ -32,6 +37,7 @@ public:
 	void SetSpecular(const Color& color) { _lightDesc.specular = color; }
 	void SetEmissive(const Color& color) { _lightDesc.emissive = color; }
 	void SetLightDirection(Vec3 direction) { _lightDesc.direction = direction; }
+	void SetLightType(LIGHTTYPE type) { _lightType = type; }
 
 	// ImGUI Inspector 창 정보
 	virtual void	OnInspectorGUI() override;
@@ -43,6 +49,9 @@ public:
 private:
 	LightDesc _lightDesc;
 	LIGHTTYPE _lightType = LIGHTTYPE::End;
+
+	Matrix _lightViewMatrix;
+	Matrix _lightProjMatrix;
 };
 
 NS_END

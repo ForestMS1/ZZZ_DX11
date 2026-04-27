@@ -14,8 +14,10 @@ public:
 	virtual ~ModelRenderer();
 
 	// 생명주기 함수
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual HRESULT Render() override;
+	HRESULT RenderShadow() override;
 
 	// 그릴 Model Resource를 Set
 	void SetModel(shared_ptr<Model> model);
@@ -44,6 +46,7 @@ public:
 private:
 	shared_ptr<Shader> _shader;
 	shared_ptr<Model> _model;
+	shared_ptr<Shader> _shadowShader;
 
 	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;

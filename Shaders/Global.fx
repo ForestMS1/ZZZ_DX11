@@ -82,9 +82,10 @@ struct MeshOutput
 {
     float4 position : SV_POSITION;
     float3 worldPosition : POSITION1;
-    float2 uv : TEXCOORD;
+    float2 uv : TEXCOORD0;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
+    float4 clipPos : TEXCOORD1; // 깊이 비교를 위해 전달
 };
 
 //---------------------------vertex output----------------------------------------
@@ -94,7 +95,7 @@ struct PixelOutput
 {
     float4 color : SV_Target0; // 메인 화면 (Diffuse)
     float4 normal : SV_Target1; // 노말 (World Normal)
-    float4 specular : SV_Target2; // 스페큘러 (또는 깊이 등 원하는 데이터)
+    float4 depth : SV_Target2; //  깊이 등 원하는 데이터
 };
 //---------------------------pixel output (MRT)----------------------------------
 
@@ -105,6 +106,7 @@ SamplerState LinearSampler
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Wrap;
     AddressV = Wrap;
+    
 };
 
 SamplerState PointSampler

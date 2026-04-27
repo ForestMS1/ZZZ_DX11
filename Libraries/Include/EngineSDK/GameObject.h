@@ -46,6 +46,7 @@ public:
 	void	EndOfFrame();
 
 	virtual HRESULT	Render();
+	virtual HRESULT RenderShadow();
 
 	// LIFESTATE Property
 	LIFESTATE GetLifeState() const { return _lifeState; }

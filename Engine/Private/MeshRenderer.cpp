@@ -17,6 +17,14 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
+void MeshRenderer::Awake()
+{
+	if (_shadowShader == nullptr)
+	{
+		_shadowShader = Shader::Create(L"ShadowNoAnim.fx");
+	}
+}
+
 void MeshRenderer::Update()
 {
 	//TODO юс╫ц
@@ -34,17 +42,22 @@ HRESULT MeshRenderer::Render()
 
 	_material->Update();
 
-	auto& lightList = GAME.GetLigthList();
-	if (!lightList.empty())
-	{
-		auto& lightDesc = lightList.front()->GetLightDesc();
-		shader->PushLightData(lightDesc);
-	}
-
 	// GlobalData
 	shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
 	auto world = GetTransform()->GetWorldMatrix();
 	shader->PushTransformData(TransformDesc{ world });
+
+	//auto& lightList = GAME.GetLigthList();
+	//if (!lightList.empty())
+	//{
+	//	auto& lightDesc = lightList.front()->GetLightDesc();
+	//	shader->PushLightData(lightDesc);
+
+	//	const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+	//	const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+	//	shader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+	//	shader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	//}
 	
 	// IA
 	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -53,6 +66,38 @@ HRESULT MeshRenderer::Render()
 
 
 	shader->DrawIndexed(_techniqueIndex, _pass, _mesh->GetIndexBuffer()->GetCount(), 0, 0);
+
+	return S_OK;
+}
+
+HRESULT MeshRenderer::RenderShadow()
+{
+	if (_shadowShader == nullptr)
+		return E_FAIL;
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shadowShader->PushLightData(lightDesc);
+
+		const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+		const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+		_shadowShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+		_shadowShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	}
+
+	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
+	_shadowShader->PushTransformData(TransformDesc{ gameObjectWorld });
+
+
+	//IA
+	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_mesh->GetVertexBuffer()->PushData();
+	_mesh->GetIndexBuffer()->PushData();
+
+	_shadowShader->DrawIndexed(_techniqueIndex, _pass, _mesh->GetIndexBuffer()->GetCount(), 0, 0);
+
 
 	return S_OK;
 }

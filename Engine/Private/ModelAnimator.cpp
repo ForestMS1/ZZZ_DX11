@@ -28,6 +28,14 @@ ModelAnimator::~ModelAnimator()
 
 }
 
+void ModelAnimator::Awake()
+{
+	if (_shadowShader == nullptr)
+	{
+		_shadowShader = Shader::Create(L"ShadowAnim.fx");
+	}
+}
+
 void ModelAnimator::Update()
 {
 	if (_model == nullptr)
@@ -121,21 +129,18 @@ HRESULT ModelAnimator::Render()
 	// SRV를 통해 정보 전달
 	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
 
-	//LightDesc lightDesc;
-	//lightDesc.ambient = Vec4(0.4f, 0.45f, 0.55f, 1.0f);
-	//lightDesc.diffuse = Vec4(1.0f, 0.98f, 0.95f, 1.0f);
-	//lightDesc.specular = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
-	//lightDesc.direction = Vec3(-1.f, -1.0f, 0.5f);
-	//lightDesc.direction.Normalize();
-	//_shader->PushLightData(lightDesc);
-
-	auto& lightList = GAME.GetLigthList();
-	if (!lightList.empty())
-	{
-		auto& lightDesc = lightList.front()->GetLightDesc();
-		_shader->PushLightData(lightDesc);
-	}
-
+	//auto& lightList = GAME.GetLigthList();
+	//if (!lightList.empty())
+	//{
+	//	auto& lightDesc = lightList.front()->GetLightDesc();
+	//	_shader->PushLightData(lightDesc);
+	//
+	//	const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+	//	const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+	//	_shader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+	//	_shader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	//}
+	
 	// Bones
 	BoneDesc boneDesc;
 
@@ -174,6 +179,43 @@ HRESULT ModelAnimator::Render()
 		_shader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
 		//GAME.DrawBox(mesh->boundingBox, Colors::Lime, Camera::S_MatView, Camera::S_MatProjection, world);
 	}
+	return S_OK;
+}
+
+HRESULT ModelAnimator::RenderShadow()
+{
+	if (_shadowShader == nullptr)
+		return E_FAIL;
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shadowShader->PushLightData(lightDesc);
+
+		const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+		const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+		_shadowShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+		_shadowShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	}
+
+	_shadowShader->PushTweenTempData(_tweenDesc);
+	_shadowShader->GetSRV("TransformMap")->SetResource(_srv.Get());
+
+	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
+	_shadowShader->PushTransformData(TransformDesc{ gameObjectWorld });
+
+	const auto& meshes = _model->GetMeshes();
+	for (auto& mesh : meshes)
+	{
+		//IA
+		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mesh->vertexBuffer->PushData();
+		mesh->indexBuffer->PushData();
+
+		_shadowShader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
+	}
+
 	return S_OK;
 }
 

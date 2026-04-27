@@ -283,7 +283,10 @@
     <FxCompile Include="..\..\Shaders\FinalBind.fx">
       <Filter>97.Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Shaders\Shadow.fx">
+    <FxCompile Include="..\..\Shaders\ShadowNoAnim.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\ShadowAnim.fx">
       <Filter>97.Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>

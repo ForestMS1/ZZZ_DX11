@@ -35,15 +35,17 @@ HRESULT Renderer::Initialize()
 	GAME.Add_RenderTarget(L"Target_Depth", depthRenderTarget);
 
 	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
-	//shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
-	//shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048, 2048); // 깊이만 저장하므로 R32_FLOAT
-	//GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
+	shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
+	shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, desc.iWinSizeX, desc.iWinSizeY); // 깊이만 저장하므로 R32_FLOAT
+	GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
 
 	//_shadowShader = Shader::Create(L"Shadow.fx"); // 그림자 기록용 셰이더
 
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Diffuse");
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Normal");
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Depth");
+
+	GAME.Add_RenderTargetToMRT(L"MRT_Shadow", L"Target_Shadow");
 
 
 	_finalBindShader = Shader::Create(L"FinalBind.fx");
@@ -78,6 +80,16 @@ HRESULT Renderer::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObje
 
 HRESULT Renderer::Draw()
 {
+	//GAME.MultiRenderTargetBind(L"MRT_Shadow");
+
+	// 강제로 현재 컨텍스트의 모든 타겟을 비우고 그림자용 RTV만 세팅
+	ID3D11RenderTargetView* shadowRTV = GAME.FindRenderTarget(L"Target_Shadow")->GetRTV().Get();
+	_deviceContext->OMSetRenderTargets(1, &shadowRTV, nullptr); // DSV를 nullptr로!
+
+	if (FAILED(Render_Shadow()))
+		return E_FAIL;
+
+
 	GAME.MultiRenderTargetBind(L"MRT_Deferred");
 
 	if (FAILED(Render_Priority()))
@@ -88,7 +100,9 @@ HRESULT Renderer::Draw()
 
 	GAME.MultiRenderTargetUnbind();
 
-	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
+#ifdef _DEBUG
+	//GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
+#endif
 
 	if (FAILED(Render_Deferred_Lighting()))
 		return E_FAIL;
@@ -104,11 +118,26 @@ HRESULT Renderer::Draw()
 	return S_OK;
 }
 
+HRESULT Renderer::Render_Shadow()
+{
+	for (auto& object : _renderObjects[ETOUI(RENDERGROUP::PRIORITY)])
+	{
+		if (object != nullptr)
+			object->RenderShadow();
+	}
+	for (auto& object : _renderObjects[ETOUI(RENDERGROUP::NONBLEND)])
+	{
+		if (object != nullptr)
+			object->RenderShadow();
+	}
+	return S_OK;
+}
+
 HRESULT Renderer::Render_Priority()
 {
 	for (auto& object : _renderObjects[ETOUI(RENDERGROUP::PRIORITY)])
 	{
-		if(object != nullptr)
+		if (object != nullptr)
 			object->Render();
 	}
 
@@ -166,11 +195,25 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	auto diffuse = GAME.FindRenderTarget(L"Target_Diffuse")->GetSRV();
 	auto normal = GAME.FindRenderTarget(L"Target_Normal")->GetSRV();
 	auto depth = GAME.FindRenderTarget(L"Target_Depth")->GetSRV();
+	auto shadowDepth = GAME.FindRenderTarget(L"Target_Shadow")->GetSRV();
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_finalBindShader->PushLightData(lightDesc);
+	
+		const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+		const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+		_finalBindShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+		_finalBindShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	}
 
 	// 셰이더에 텍스처 전달
 	_finalBindShader->GetSRV("g_AlbedoTex")->SetResource(diffuse.Get());
 	_finalBindShader->GetSRV("g_NormalTex")->SetResource(normal.Get());
 	_finalBindShader->GetSRV("g_DepthTex")->SetResource(depth.Get());
+	_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
 
 	_vertexBuffer->PushData();
 
@@ -179,11 +222,11 @@ HRESULT Renderer::Render_Deferred_Lighting()
 
 
 	// 사용한 SRV 해제 (중요: 다음 프레임에 다시 RTV로 써야 하므로)
-	ID3D11ShaderResourceView* nullSRVs[3] = { nullptr, nullptr, nullptr };
+	ID3D11ShaderResourceView* nullSRVs[4] = { nullptr, nullptr, nullptr, nullptr };
 	// 픽셀 셰이더뿐만 아니라 모든 단계의 슬롯을 비워주는 것이 좋습니다.
-	_deviceContext->VSSetShaderResources(0, 3, nullSRVs);
-	_deviceContext->PSSetShaderResources(0, 3, nullSRVs);
-	_deviceContext->GSSetShaderResources(0, 3, nullSRVs);
+	_deviceContext->VSSetShaderResources(0, 4, nullSRVs);
+	_deviceContext->PSSetShaderResources(0, 4, nullSRVs);
+	_deviceContext->GSSetShaderResources(0, 4, nullSRVs);
 
 	return S_OK;
 }

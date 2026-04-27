@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Light.h"
-
+#include "GameObject.h"
 Light::Light() 
 	: Component(ComponentType::Light)
 {
@@ -23,7 +23,25 @@ HRESULT Light::Initialize(void* pArg)
 void Light::Update()
 {
 	GAME.Add_LightObject(SHARED_THIS(Light));
+	UpdateMatrix();
 }
+
+void Light::UpdateMatrix()
+{
+	// 1. 조명의 방향 벡터를 가져옵니다.
+	Vec3 lightDir = _lightDesc.direction;
+	lightDir.Normalize();
+
+	Vec3 eyePosition = GetTransform()->GetLocalPosition();
+	Vec3 focusPosition = eyePosition + lightDir;
+	Vec3 upDirection = { 0,1,0 };
+	
+	_lightViewMatrix = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+
+	// 가로 2000, 세로 2000, 근거리 1, 원거리 5000 범위의 직교 투영 행렬
+	_lightProjMatrix = ::XMMatrixOrthographicLH(2000, 2000, 0.f, 5000.f);
+}
+
 
 void Light::OnInspectorGUI()
 {
