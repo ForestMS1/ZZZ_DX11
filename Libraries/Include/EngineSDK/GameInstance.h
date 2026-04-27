@@ -19,7 +19,7 @@ public:
 	void Clear_Resource(uint32 iClearLevelIndex);
 
 public:
-	ENGINE_DESC GetEngineDesc() const { return _desc; }
+	const ENGINE_DESC& GetEngineDesc() { return _desc; }
 
 public:
 #pragma region TIMER_MANGER
@@ -45,8 +45,6 @@ public:
 	ComPtr<IDXGISwapChain> GetSwapChain();
 
 	ComPtr<ID3D11RenderTargetView> GetBackRTV();
-	ComPtr<ID3D11ShaderResourceView> GetNormalSRV();
-	ComPtr<ID3D11ShaderResourceView> GetSpecularSRV();
 	ComPtr<ID3D11ShaderResourceView> GetDepthSRV();
 #pragma endregion
 
@@ -70,15 +68,15 @@ public:
 	void RenderGizmo();
 
 	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
-	// ÇÁ·ÎÅäÅ¸ÀÔ->Å¬·Ğ ¾øÀÌ ¹Ù·Î ·¹º§¿¡ ¿ÀºêÁ§Æ® Ãß°¡ÇÏ´Â ÇÔ¼ö
+	// í”„ë¡œí† íƒ€ì…->í´ë¡  ì—†ì´ ë°”ë¡œ ë ˆë²¨ì— ì˜¤ë¸Œì íŠ¸ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
 	HRESULT Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring& strLayerTag, shared_ptr<GameObject> pGameObject);
 
-	// ºó ·¹ÀÌ¾î ¸¸µé¾î¼­ µî·Ï½ÃÄÑÁÖ´Â ÇÔ¼ö
+	// ë¹ˆ ë ˆì´ì–´ ë§Œë“¤ì–´ì„œ ë“±ë¡ì‹œì¼œì£¼ëŠ” í•¨ìˆ˜
 	HRESULT Add_Layer(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
 	shared_ptr<class Layer> Find_CurrentLevel_Layer(const wstring& strLayerTag);
 
-	// Gui ¸»°í ÄÚµå·¹º§¿¡¼­ Save-Load °¡´ÉÇÏµµ·Ï ÀÎÅÍÆäÀÌ½º ¿­¾îÁÜ
+	// Gui ë§ê³  ì½”ë“œë ˆë²¨ì—ì„œ Save-Load ê°€ëŠ¥í•˜ë„ë¡ ì¸í„°í˜ì´ìŠ¤ ì—´ì–´ì¤Œ
 	void SaveLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 	void LoadLevel(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 #pragma endregion
@@ -99,7 +97,7 @@ public:
 
 	shared_ptr<Texture> GetOrAddTexture(const wstring& key, const wstring& path);
 
-	// ¾ê´Â ¾À ÀüÈ¯ÇÒ¶§¸¶´Ù ÀÚµ¿È£Ãâ X, ³»°¡¿øÇÒ ¶§ µû·Î È£ÃâÇØÁÖÀÚ
+	// ì–˜ëŠ” ì”¬ ì „í™˜í• ë•Œë§ˆë‹¤ ìë™í˜¸ì¶œ X, ë‚´ê°€ì›í•  ë•Œ ë”°ë¡œ í˜¸ì¶œí•´ì£¼ì
 	void ClearResourceManager();
 
 	void ShowResourceList();
@@ -116,7 +114,7 @@ public:
 
 	signed char	Get_DIMouseState(MOUSEKEYSTATE eMouse);
 
-	// ÇöÀç ¸¶¿ì½ºÀÇ Æ¯Á¤ Ãà ÁÂÇ¥¸¦ ¹İÈ¯
+	// í˜„ì¬ ë§ˆìš°ìŠ¤ì˜ íŠ¹ì • ì¶• ì¢Œí‘œë¥¼ ë°˜í™˜
 	signed long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 
 	bool Key_Pressing(unsigned char byKeyID);
@@ -133,6 +131,22 @@ public:
 	void Register(const wstring& className, CreatorFunc func);
 
 	shared_ptr<GameObject> CreateFromFactory(const wstring& className);
+#pragma endregion
+
+#pragma region RENDERTARGETMANANGER
+	// _renderTargetsì— ì¶”ê°€
+	void Add_RenderTarget(const wstring& name, shared_ptr<class RenderTarget> renderTarget);
+	// _renderTargetsì— ìˆëŠ” ì• ë¥¼ MRTê·¸ë£¹ì— ì¶”ê°€
+	void Add_RenderTargetToMRT(const wstring& mrtName, const wstring& renderTargetName);
+
+	// MRTê·¸ë£¹ì„ ë°”ì¸ë“œ/ì–¸ë°”ì¸ë“œ
+	void MultiRenderTargetBind(const wstring& mrtName);
+	void MultiRenderTargetUnbind();
+
+	shared_ptr<RenderTarget> FindRenderTarget(const wstring& renderTargetName);
+
+	HRESULT Ready_Debug(const wstring& pTargetTag, float x, float y, float sizeX, float sizeY);
+	HRESULT RenderRTV(const wstring& pMRTTag, shared_ptr<Shader> pShader, uint8 pass = 1);
 #pragma endregion
 
 #pragma region DEBUGDRAW
@@ -161,12 +175,13 @@ private:
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
-	//ÀÓ½Ã
+	//ì„ì‹œ
 	unique_ptr<class LightManager> _lightManager = { nullptr };
+	unique_ptr<class RenderTargetManager> _renderTargetManager = { nullptr };
 
 	// Debug Draw
-	// Debug Draw¸¦ À§ÇÑ µµ±¸µé
-	// staticÀ¸·Î °ü¸®
+	// Debug Drawë¥¼ ìœ„í•œ ë„êµ¬ë“¤
+	// staticìœ¼ë¡œ ê´€ë¦¬
 	static std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> _batch;
 	static std::unique_ptr<BasicEffect> _effect;
 	static ComPtr<ID3D11InputLayout> _inputLayout;

@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "SpriteRenderer.h"
+#include "RenderTarget.h"
 TestUI::TestUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -46,7 +47,7 @@ HRESULT TestUI::Initialize(void* pArg)
 	//	spriteRenderer->Add_Texture(texture);
 	//}
 	AddComponent(spriteRenderer);
-	spriteRenderer->SetSRV(GAME.GetNormalSRV());
+	//spriteRenderer->SetSRV(GAME.FindRenderTarget(L"Target_Depth")->GetSRV());
 
 	GetTransform()->SetScale(Vec3(1.f));
 

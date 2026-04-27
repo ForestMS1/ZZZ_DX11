@@ -280,5 +280,11 @@
     <FxCompile Include="..\..\Shaders\UI.fx">
       <Filter>97.Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\Shaders\FinalBind.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Shaders\Shadow.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -32,20 +32,12 @@ HRESULT Graphic_Device::Initialize(HWND hwnd, WINMODE eWinMode, int32 iWinSizeX,
 	if (FAILED(Ready_DepthStencilView(iWinSizeX, iWinSizeY)))
 		return E_FAIL;
 
-	if (FAILED(Ready_NormalRenderTargetView(iWinSizeX, iWinSizeY)))
-		return E_FAIL;
-
-	if (FAILED(Ready_SpecularRenderTargetView(iWinSizeX, iWinSizeY)))
-		return E_FAIL;
-
 
 	ID3D11RenderTargetView* pRTVS[] = {
 		_backBufferRTV.Get(),
-		_normalRTV.Get(),
-		_specularRTV.Get(),
 	};
 
-	_deviceContext->OMSetRenderTargets(3, pRTVS, _depthStencilView.Get());
+	_deviceContext->OMSetRenderTargets(1, pRTVS, _depthStencilView.Get());
 
 	D3D11_VIEWPORT		ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
@@ -69,29 +61,15 @@ HRESULT Graphic_Device::Clear_BackBuffer_View(const Vec4* pClearColor)
 	if (_deviceContext == nullptr)
 		return E_FAIL;
 
-	// ¸ÕÀú ¼ÎÀÌ´õ ÀÐ±â ½½·Ô(SRV)À» ±ú²ýÇÏ°Ô ºñ¿î´Ù
-	// Áö³­ ÇÁ·¹ÀÓ¿¡ UI¿¡¼­ ½è´ø ³ë¸» ÅØ½ºÃ³ µîÀ» ¿©±â¼­ ÇØÁ¦
-	ID3D11ShaderResourceView* nullSRVs[8] = { nullptr };
-	_deviceContext->PSSetShaderResources(0, 8, nullSRVs);
-
 	ID3D11RenderTargetView* pRTVS[] = {
 		_backBufferRTV.Get(),
-		_normalRTV.Get(),
-		_specularRTV.Get(),
 	};
 
-	// MRT ¹ÙÀÎµù
-	_deviceContext->OMSetRenderTargets(3, pRTVS, _depthStencilView.Get());
+	// MRT ë°”ì¸ë”©
+	_deviceContext->OMSetRenderTargets(1, pRTVS, _depthStencilView.Get());
 
-	// ¸ÞÀÎ È­¸é Clear
+	// ë©”ì¸ í™”ë©´ Clear
 	_deviceContext->ClearRenderTargetView(_backBufferRTV.Get(), reinterpret_cast<const float*>(pClearColor));
-
-	// ³ë¸» È­¸é Clear
-	float ClearColor[4] = { 0.f, 0.f, 0.f, 1.f };
-	_deviceContext->ClearRenderTargetView(_normalRTV.Get(), ClearColor);
-
-	// ½ºÆäÅ§·¯ È­¸é Clear
-	_deviceContext->ClearRenderTargetView(_specularRTV.Get(), ClearColor);
 
 	return S_OK;
 }
@@ -217,12 +195,12 @@ HRESULT Graphic_Device::Ready_DepthStencilView(int32 iWinCX, int32 iWinCY)
 	TextureDesc.Height = iWinCY;
 	TextureDesc.MipLevels = 1;
 	TextureDesc.ArraySize = 1;
-	TextureDesc.Format = DXGI_FORMAT_R32_TYPELESS; // R32_TYPLESS´Â ³ªÁß¿¡ DSV·Îµµ, SRV·Îµµ ¾µ ¼ö ÀÖ´Â À¯¿¬ÇÑ Æ÷¸ËÀÔ´Ï´Ù.
+	TextureDesc.Format = DXGI_FORMAT_R32_TYPELESS; // R32_TYPLESSëŠ” ë‚˜ì¤‘ì— DSVë¡œë„, SRVë¡œë„ ì“¸ ìˆ˜ ìžˆëŠ” ìœ ì—°í•œ í¬ë§·ìž…ë‹ˆë‹¤.
 
 	TextureDesc.SampleDesc.Quality = 0;
 	TextureDesc.SampleDesc.Count = 1;
 
-	TextureDesc.Usage = D3D11_USAGE_DEFAULT /* Á¤Àû */;
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT /* ì •ì  */;
 
 	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 		/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
@@ -232,21 +210,21 @@ HRESULT Graphic_Device::Ready_DepthStencilView(int32 iWinCX, int32 iWinCY)
 	if (FAILED(_device->CreateTexture2D(&TextureDesc, nullptr, _depthTexture.GetAddressOf())))
 		return E_FAIL;
 
-	// ±íÀÌ Å×½ºÆ®¿ë ºä (DSV)
+	// ê¹Šì´ í…ŒìŠ¤íŠ¸ìš© ë·° (DSV)
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
 	ZeroMemory(&dsvDesc, sizeof(dsvDesc));
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT; // ½ÇÁ¦ ±íÀÌ °ªÀº floatÀ¸·Î Ã³¸®
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT; // ì‹¤ì œ ê¹Šì´ ê°’ì€ floatìœ¼ë¡œ ì²˜ë¦¬
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
 	if (FAILED(_device->CreateDepthStencilView(_depthTexture.Get(), &dsvDesc, _depthStencilView.GetAddressOf())))
 		return E_FAIL;
 
-	// ¼ÎÀÌ´õ¿¡¼­ ÀÐ±â¿ë ºä (SRV)
+	// ì…°ì´ë”ì—ì„œ ì½ê¸°ìš© ë·° (SRV)
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	ZeroMemory(&srvDesc, sizeof(srvDesc));
 	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = -1; // ¸ðµç ¹Ó ·¹º§ Á¢±Ù
+	srvDesc.Texture2D.MipLevels = -1; // ëª¨ë“  ë°‰ ë ˆë²¨ ì ‘ê·¼
 
 	if(FAILED(_device->CreateShaderResourceView(_depthTexture.Get(), &srvDesc, _depthSRV.GetAddressOf())))
 		return E_FAIL;
@@ -254,78 +232,9 @@ HRESULT Graphic_Device::Ready_DepthStencilView(int32 iWinCX, int32 iWinCY)
 	return S_OK;
 }
 
-HRESULT Graphic_Device::Ready_NormalRenderTargetView(int32 iWinCX, int32 iWinCY)
-{
-	if (_device == nullptr)
-		return E_FAIL;
-
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = iWinCX;
-	desc.Height = iWinCY;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-
-	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
-
-
-	if (FAILED(_device->CreateTexture2D(&desc, nullptr, _normalTexture.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateRenderTargetView(_normalTexture.Get(), nullptr, _normalRTV.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateShaderResourceView(_normalTexture.Get(), nullptr, _normalSRV.GetAddressOf())))
-		return E_FAIL;
-
-
-	return S_OK;
-}
-
-HRESULT Graphic_Device::Ready_SpecularRenderTargetView(int32 iWinCX, int32 iWinCY)
-{
-	if (_device == nullptr)
-		return E_FAIL;
-
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = iWinCX;
-	desc.Height = iWinCY;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-
-	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
-
-	if (FAILED(_device->CreateTexture2D(&desc, nullptr, _specularTexture.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateRenderTargetView(_specularTexture.Get(), nullptr, _specularRTV.GetAddressOf())))
-		return E_FAIL;
-
-	if (FAILED(_device->CreateShaderResourceView(_specularTexture.Get(), nullptr, _specularSRV.GetAddressOf())))
-		return E_FAIL;
-
-	return S_OK;
-}
-
 unique_ptr<Graphic_Device> Graphic_Device::Create(HWND hwnd, WINMODE eWinMode, int32 iWinSizeX, int32 iWinSizeY, ComPtr<ID3D11Device>& pOutDevice, ComPtr<ID3D11DeviceContext>& pOutDeviceContext)
 {
-	auto pInstance = unique_ptr<Graphic_Device>(new Graphic_Device); // »ý¼ºÀÚ°¡ privateÀÌ¾î¼­ make_unique »ç¿ë ºÒ°¡ 
+	auto pInstance = unique_ptr<Graphic_Device>(new Graphic_Device); // ìƒì„±ìžê°€ privateì´ì–´ì„œ make_unique ì‚¬ìš© ë¶ˆê°€ 
 
 	if (FAILED(pInstance->Initialize(hwnd, eWinMode, iWinSizeX, iWinSizeY, pOutDevice, pOutDeviceContext)))
 	{
