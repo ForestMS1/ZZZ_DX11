@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "Light.h"
+#include "BindShaderDesc.h"
+
 ModelRenderer::ModelRenderer()
 	: Component(ComponentType::ModelRenderer)
 {
@@ -59,17 +61,6 @@ HRESULT ModelRenderer::Render()
 		_shader->PushLightData(lightDesc);
 	}
 
-	//Bones
-	//BoneDesc boneDesc;
-	//
-	//const uint32 boneCount = _model->GetBoneCount();
-	//for (uint32 i = 0; i < boneCount; ++i)
-	//{
-	//	shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
-	//	boneDesc.transforms[i] = bone->transform;
-	//}
-	//_shader->PushBoneData(boneDesc);
-
 	// 모델의 월드 행렬의 역행렬 계산
 	Matrix invWorldMat = world.Invert();
 
@@ -88,7 +79,8 @@ HRESULT ModelRenderer::Render()
 			mesh->material->Update();
 
 		//BoneIndex
-		_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
+		//_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
+		//_shader->GetMatrix("BoneTransform")->SetMatrix((float*)&mesh->bone->transform);
 
 		//IA
 		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

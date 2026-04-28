@@ -4,7 +4,7 @@
 // MRT 소스들
 Texture2D g_AlbedoTex;
 Texture2D g_NormalTex;
-Texture2D g_DepthTex;
+Texture2D g_WorldTex;
 
 struct VS_IN
 {
@@ -38,7 +38,7 @@ float4 PS_Main(VS_OUT input) : SV_Target
     // MRT 샘플링
     float4 albedo = g_AlbedoTex.Sample(LinearSampler, input.uv);
     float3 normal = g_NormalTex.Sample(LinearSampler, input.uv).xyz;
-    float4 depthData = g_DepthTex.Sample(LinearSampler, input.uv);
+    float4 worldPositionData = g_WorldTex.Sample(LinearSampler, input.uv);
 
     // 배경 처리
     if (albedo.a == 0)
@@ -46,7 +46,7 @@ float4 PS_Main(VS_OUT input) : SV_Target
 
     // 데이터 복원
     normal = normalize(normal * 2.0f - 1.0f);
-    float3 worldPos = depthData.xyz;
+    float3 worldPos = worldPositionData.xyz;
 
     float3 finalColor = albedo.rgb;
 

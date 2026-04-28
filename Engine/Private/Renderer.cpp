@@ -32,7 +32,7 @@ HRESULT Renderer::Initialize()
 
 	shared_ptr<RenderTarget> depthRenderTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f));
 	depthRenderTarget->CreateRTVWithSRV(DXGI_FORMAT_R32G32B32A32_FLOAT, desc.iWinSizeX, desc.iWinSizeY);
-	GAME.Add_RenderTarget(L"Target_Depth", depthRenderTarget);
+	GAME.Add_RenderTarget(L"Target_World", depthRenderTarget);
 
 	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
 	//shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
@@ -43,7 +43,7 @@ HRESULT Renderer::Initialize()
 
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Diffuse");
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Normal");
-	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Depth");
+	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_World");
 
 
 	_finalBindShader = Shader::Create(L"FinalBind.fx");
@@ -58,7 +58,7 @@ HRESULT Renderer::Initialize()
 		return E_FAIL;
 	if (FAILED(GAME.Ready_Debug(L"Target_Normal", 0.f, 150.f, 200.f, 150.f)))
 		return E_FAIL;
-	if (FAILED(GAME.Ready_Debug(L"Target_Depth", 0.f, 300.f, 200.f, 150.f)))
+	if (FAILED(GAME.Ready_Debug(L"Target_World", 0.f, 300.f, 200.f, 150.f)))
 		return E_FAIL;
 
 
@@ -87,6 +87,7 @@ HRESULT Renderer::Draw()
 		return E_FAIL;
 
 	GAME.MultiRenderTargetUnbind();
+
 
 	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
 
@@ -165,16 +166,17 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	// (Target_Diffuse, Target_Normal, Target_Depth 등)
 	auto diffuse = GAME.FindRenderTarget(L"Target_Diffuse")->GetSRV();
 	auto normal = GAME.FindRenderTarget(L"Target_Normal")->GetSRV();
-	auto depth = GAME.FindRenderTarget(L"Target_Depth")->GetSRV();
+	auto world = GAME.FindRenderTarget(L"Target_World")->GetSRV();
 
 	// 셰이더에 텍스처 전달
 	_finalBindShader->GetSRV("g_AlbedoTex")->SetResource(diffuse.Get());
 	_finalBindShader->GetSRV("g_NormalTex")->SetResource(normal.Get());
-	_finalBindShader->GetSRV("g_DepthTex")->SetResource(depth.Get());
+	_finalBindShader->GetSRV("g_WorldTex")->SetResource(world.Get());
 
-	_vertexBuffer->PushData();
 
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_vertexBuffer->PushData();
+
 	_finalBindShader->Draw(0, 0, _vertexBuffer->GetCount(), 0);
 
 

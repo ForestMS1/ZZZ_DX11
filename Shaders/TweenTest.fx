@@ -153,7 +153,7 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
     output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
 
     // Å¸°Ù 2: ¿ùµå
-    output.world = float4(input.worldPosition.xyz, 1.f);
+    output.world = float4(input.worldPosition.xyz * 0.01f, 1.0f);
     
     return output;
 }
