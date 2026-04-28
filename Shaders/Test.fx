@@ -33,7 +33,7 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
     // 타겟 2:깊이 값(Z/W)을 R 채널에 기록 (0~1 사이 값)
     //float depth = input.clipPos.z / input.clipPos.w;
     //output.depth = float4(depth, depth, depth, 1.0f);
-    output.depth = float4(input.worldPosition, 1.0f);
+    output.worldPos = float4(input.worldPosition, 1.0f);
 
     return output;
 }

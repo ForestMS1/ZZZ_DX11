@@ -2,7 +2,7 @@
 #include "Light.fx"
 
 #define MAX_MODEL_TRANSFORMS 350
-#define MAX_MODEL_KEYFRAMES 500
+#define MAX_MODEL_KEYFRAMES 700
 
 struct KeyframeDesc
 {
@@ -105,13 +105,6 @@ matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
 }
 
 
-
-struct VS_OUT
-{
-    float4 position : SV_POSITION;
-    float4 clipPos : TEXCOORD0; // 깊이 비교를 위해 전달
-};
-
 struct PS_OUT
 {
     float4 shadowDepth : SV_Target0;
@@ -145,9 +138,5 @@ PS_OUT PS_Main(MeshOutput input) : SV_Target
 
 technique11 T0
 {
-    pass P0
-    {
-        SetVertexShader(CompileShader(vs_5_0, VS_Main()));
-        SetPixelShader(CompileShader(ps_5_0, PS_Main()));
-    }
+    PASS_RS_VP(P0, FrontCounterClockwiseTrue, VS_Main, PS_Main)
 };

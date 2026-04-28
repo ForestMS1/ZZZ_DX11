@@ -24,6 +24,11 @@ HRESULT Level_Converter::Initialize()
 	//converter->ExportModelData(L"Corin/Corin");
 	//converter->ExportAnimationDataAll(L"Corin");
 
+	//converter->ReadAssetFile(L"Alice/Avatar_Female_Size02_Alice_Model_LOD3.fbx");
+	//converter->ExportMaterialData(L"Alice/Alice");
+	//converter->ExportModelData(L"Alice/Alice");
+	//converter->ExportAnimationDataAll(L"Alice");
+
 	//converter->ReadAssetFile(L"StageRootCombined.fbx");
 	//converter->ExportMaterialData(L"StageRoot/StageRoot");
 	//converter->ExportModelData(L"StageRoot/StageRoot");

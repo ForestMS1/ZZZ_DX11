@@ -294,6 +294,16 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
 	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
 
+	// Alice 애니메이션 담은 모델
+	shared_ptr<Model> AliceAnimModel = make_shared<Model>();
+	AliceAnimModel->ReadModelRotatedY180(L"Alice/Alice");
+	AliceAnimModel->ReadMaterial(L"Alice/Alice");
+	AliceAnimModel->GetMaterialByIndex(0)->SetShader(TweenTestShader);
+
+	AliceAnimModel->ReadAnimationRotatedY180NoMove(L"Alice/Avatar_Female_Size02_Alice_Ani_QuestStart");
+	AliceAnimModel->ReadAnimationRotatedY180NoMove(L"Alice/Avatar_Female_Size02_Alice_Ani_Idle_Loop");
+	GAME.AddResource<Model>(L"AliceAnimModel", AliceAnimModel);
+
 	// Stage
 	//shared_ptr<Model> StageModel = make_shared<Model>();
 	//StageModel->ReadModelCombined(L"StageRoot/StageRoot");

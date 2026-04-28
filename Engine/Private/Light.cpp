@@ -36,10 +36,11 @@ void Light::UpdateMatrix()
 	Vec3 focusPosition = eyePosition + lightDir;
 	Vec3 upDirection = { 0,1,0 };
 	
-	_lightViewMatrix = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
 
+	_lightViewMatrix = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+	
 	// 가로 2000, 세로 2000, 근거리 1, 원거리 5000 범위의 직교 투영 행렬
-	_lightProjMatrix = ::XMMatrixOrthographicLH(2000, 2000, 0.f, 5000.f);
+	_lightProjMatrix = ::XMMatrixOrthographicLH(2048, 2048, 0.1f, 50000.f);
 }
 
 

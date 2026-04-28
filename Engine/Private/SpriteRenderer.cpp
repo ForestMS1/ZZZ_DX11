@@ -83,17 +83,7 @@ HRESULT SpriteRenderer::Render()
 	auto world = GetTransform()->GetWorldMatrix();
 	_shader->PushTransformData(TransformDesc{ world });
 
-	if (_externalSRV)
-	{
-		ID3D11RenderTargetView* nullRTVs[3] = { nullptr, nullptr, nullptr };
-		CONTEXT->OMSetRenderTargets(3, nullRTVs, nullptr);
-
-		_textureEffectBuffer->SetResource(_externalSRV.Get());
-
-		ID3D11RenderTargetView* backRTV[] = { GAME.GetBackRTV().Get() };
-		CONTEXT->OMSetRenderTargets(1, backRTV, nullptr);
-	}
-	else if(_textures[(uint32)_curTextureIndex] != nullptr)
+	if(_textures[(uint32)_curTextureIndex] != nullptr)
 		_textureEffectBuffer->SetResource(_textures[(uint32)_curTextureIndex]->GetComPtr().Get());
 
 	//IA

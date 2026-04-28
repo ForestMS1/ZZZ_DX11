@@ -40,14 +40,14 @@ float4 PS_Main(VS_OUT input) : SV_Target
     // 1. MRT 샘플링
     float4 albedo = g_AlbedoTex.Sample(LinearSampler, input.uv);
     float3 normal = g_NormalTex.Sample(LinearSampler, input.uv).xyz;
-    float4 depthData = g_DepthTex.Sample(LinearSampler, input.uv);
+    float4 worldPosData = g_DepthTex.Sample(LinearSampler, input.uv);
 
     if (albedo.a == 0)
         discard;
 
     // 2. 데이터 복원
     normal = normalize(normal * 2.0f - 1.0f);
-    float3 worldPos = depthData.xyz;
+    float3 worldPos = worldPosData.xyz;
     
     // 3. 그림자 판정 (Shadow Mapping)
     float shadowFactor = 1.0f;
@@ -63,25 +63,26 @@ float4 PS_Main(VS_OUT input) : SV_Target
     
     // NDC (-1~1) -> UV (0~1) 변환
     float2 shadowUV = ndcPos.xy * 0.5f + 0.5f;
-    //shadowUV.y = 1.0f - shadowUV.y;
 
     // 광원 범위(NDC 상의 Z축 포함) 안에 있는 픽셀만 계산
     if (shadowUV.x >= 0 && shadowUV.x <= 1 && shadowUV.y >= 0 && shadowUV.y <= 1)
     {
-        float shadowDepth = g_ShadowTex.Sample(PointSampler, shadowUV).r;
         // [주의] 현재 픽셀의 깊이값은 ndcPos.z를 사용합니다.
         float currentDepth = ndcPos.z;
+        
+        float shadowDepth = g_ShadowTex.SampleCmpLevelZero(ShadowSampler, shadowUV, currentDepth).r;
 
         // Shadow Acne 방지를 위한 Bias
-        if (currentDepth > shadowDepth + 0.0005f)
+        if (currentDepth > shadowDepth + 0.01f)
         {
             shadowFactor = 0.5f;
         }
     }
+    
 
     // 4. 최종 색상 결정
     // 나중에 ComputeToonLight 함수가 완성되면 여기에 shadowFactor를 곱하세요.
-    float3 finalColor = albedo.rgb * shadowFactor;
+    float3 finalColor = ComputeToonDefferedLight(albedo, normal, input.uv, worldPos) * shadowFactor;
     
    return float4(finalColor, albedo.a);
 }

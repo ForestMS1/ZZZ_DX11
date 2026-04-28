@@ -36,7 +36,7 @@ HRESULT Renderer::Initialize()
 
 	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
 	shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
-	shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, desc.iWinSizeX, desc.iWinSizeY); // 깊이만 저장하므로 R32_FLOAT
+	shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048.f, 2048.f); // 깊이만 저장하므로 R32_FLOAT
 	GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
 
 	//_shadowShader = Shader::Create(L"Shadow.fx"); // 그림자 기록용 셰이더
@@ -88,7 +88,6 @@ HRESULT Renderer::Draw()
 
 	if (FAILED(Render_Shadow()))
 		return E_FAIL;
-
 
 	GAME.MultiRenderTargetBind(L"MRT_Deferred");
 
@@ -215,9 +214,10 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	_finalBindShader->GetSRV("g_DepthTex")->SetResource(depth.Get());
 	_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
 
-	_vertexBuffer->PushData();
 
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_vertexBuffer->PushData();
+
 	_finalBindShader->Draw(0, 0, _vertexBuffer->GetCount(), 0);
 
 

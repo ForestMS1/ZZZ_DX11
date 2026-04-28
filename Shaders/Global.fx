@@ -85,7 +85,7 @@ struct MeshOutput
     float2 uv : TEXCOORD0;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
-    float4 clipPos : TEXCOORD1; // 깊이 비교를 위해 전달
+    float4 clipPos : POSITION2; // 깊이 비교를 위해 전달
 };
 
 //---------------------------vertex output----------------------------------------
@@ -95,7 +95,7 @@ struct PixelOutput
 {
     float4 color : SV_Target0; // 메인 화면 (Diffuse)
     float4 normal : SV_Target1; // 노말 (World Normal)
-    float4 depth : SV_Target2; //  깊이 등 원하는 데이터
+    float4 worldPos : SV_Target2; //  깊이 등 원하는 데이터
 };
 //---------------------------pixel output (MRT)----------------------------------
 
@@ -114,6 +114,15 @@ SamplerState PointSampler
     Filter = MIN_MAG_MIP_POINT;
     AddressU = Wrap;
     AddressV = Wrap;
+};
+
+SamplerComparisonState ShadowSampler
+{
+    Filter = COMPARISON_MIN_MAG_MIP_LINEAR; // 선형 보간 포함
+    AddressU = Border;
+    AddressV = Border;
+    BorderColor = float4(1, 1, 1, 1);
+    ComparisonFunc = LESS_EQUAL; // 하드웨어가 직접 깊이 비교
 };
 
 //---------------------------SamplerState----------------------------------------

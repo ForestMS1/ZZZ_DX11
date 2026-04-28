@@ -119,12 +119,12 @@ HRESULT ModelRenderer::RenderShadow()
 	}
 
 	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
-
+	_shadowShader->PushTransformData(TransformDesc{ gameObjectWorld });
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
 	{
-		Matrix finalMatrix = mesh->bone->transform * gameObjectWorld;
-		_shadowShader->PushTransformData(TransformDesc{ finalMatrix });
+		//Matrix finalMatrix = mesh->bone->transform * gameObjectWorld;
+		//_shadowShader->PushTransformData(TransformDesc{ finalMatrix });
 
 		//IA
 		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
