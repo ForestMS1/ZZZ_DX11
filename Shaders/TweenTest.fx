@@ -80,7 +80,7 @@ matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
 
         matrix result = lerp(curr, next, ratio[0]);
 
-		// ´ÙÀ½ ¾Ö´Ï¸ŞÀÌ¼Ç
+		// ë‹¤ìŒ ì• ë‹ˆë©”ì´ì…˜
         if (animIndex[1] >= 0)
         {
             c0 = TransformMap.Load(int4(indices[i] * 4 + 0, currFrame[1], animIndex[1], 0));
@@ -119,7 +119,7 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
     output.clipPos = output.position;
     output.uv = input.uv;
     
-    // ¾Ö´Ï¸ŞÀÌ¼Ç Çà·Ä mÀ» ¸ÕÀú °öÇÑ µÚ ¿ùµå Çà·ÄÀ» °öÇØ¾ß ÇÔ.
+    // ì• ë‹ˆë©”ì´ì…˜ í–‰ë ¬ mì„ ë¨¼ì € ê³±í•œ ë’¤ ì›”ë“œ í–‰ë ¬ì„ ê³±í•´ì•¼ í•¨.
     output.normal = mul(input.normal, (float3x3) m);
     output.normal = mul(output.normal, (float3x3) W);
     
@@ -140,23 +140,21 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
    //
    // return color;
     
-    // ³ë¸Ö È®ÀÎ µğ¹ö±×
+    // ë…¸ë©€ í™•ì¸ ë””ë²„ê·¸
     //float3 debugNormal = normalize(input.normal);
     //return float4(debugNormal * 0.5f + 0.5f, 1.0f);
     
     PixelOutput output;
 
-    // Å¸°Ù 0: µğÇ»Áî »ö»ó
+    // íƒ€ê²Ÿ 0: ë””í“¨ì¦ˆ ìƒ‰ìƒ
     output.color = DiffuseMap.Sample(LinearSampler, input.uv);
     //output.color = floor(ComputeToonLight(input.normal, input.uv, input.worldPosition) * _StariNum) * (1 / _StariNum);
 
-    // Å¸°Ù 1: ³ë¸» (½Ã°¢È­¸¦ À§ÇØ 0.5 °öÇÏ°í 0.5 ´õÇÔ)
+    // íƒ€ê²Ÿ 1: ë…¸ë§ (ì‹œê°í™”ë¥¼ ìœ„í•´ 0.5 ê³±í•˜ê³  0.5 ë”í•¨)
     output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
 
-    // Å¸°Ù 2:±íÀÌ °ª(Z/W)À» R Ã¤³Î¿¡ ±â·Ï (0~1 »çÀÌ °ª)
-    //float depth = input.clipPos.z / input.clipPos.w;
-    //output.depth = float4(depth, depth, depth, 1.0f);
-    output.worldPos = float4(input.worldPosition, 1.0f);
+    // íƒ€ê²Ÿ 2: ì›”ë“œ
+    output.world = float4(input.worldPosition.xyz * 0.01f, 1.0f);
     
     return output;
 }

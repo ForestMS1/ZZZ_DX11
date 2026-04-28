@@ -85,7 +85,7 @@ struct MeshOutput
     float2 uv : TEXCOORD0;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
-    float4 clipPos : POSITION2; // ±íÀÌ ºñ±³¸¦ À§ÇØ Àü´Ş
+    float4 clipPos : POSITION2; // ê¹Šì´ ë¹„êµë¥¼ ìœ„í•´ ì „ë‹¬
 };
 
 //---------------------------vertex output----------------------------------------
@@ -93,9 +93,9 @@ struct MeshOutput
 //---------------------------pixel output (MRT)----------------------------------
 struct PixelOutput
 {
-    float4 color : SV_Target0; // ¸ŞÀÎ È­¸é (Diffuse)
-    float4 normal : SV_Target1; // ³ë¸» (World Normal)
-    float4 worldPos : SV_Target2; //  ±íÀÌ µî ¿øÇÏ´Â µ¥ÀÌÅÍ
+    float4 color : SV_Target0; // ë©”ì¸ í™”ë©´ (Diffuse)
+    float4 normal : SV_Target1; // ë…¸ë§ (World Normal)
+    float4 world : SV_Target2; // í”½ì…€ì˜ ì›”ë“œ ì¢Œí‘œ
 };
 //---------------------------pixel output (MRT)----------------------------------
 
@@ -118,11 +118,11 @@ SamplerState PointSampler
 
 SamplerComparisonState ShadowSampler
 {
-    Filter = COMPARISON_MIN_MAG_MIP_LINEAR; // ¼±Çü º¸°£ Æ÷ÇÔ
+    Filter = COMPARISON_MIN_MAG_MIP_LINEAR; // ì„ í˜• ë³´ê°„ í¬í•¨
     AddressU = Border;
     AddressV = Border;
     BorderColor = float4(1, 1, 1, 1);
-    ComparisonFunc = LESS_EQUAL; // ÇÏµå¿ş¾î°¡ Á÷Á¢ ±íÀÌ ºñ±³
+    ComparisonFunc = LESS_EQUAL; // í•˜ë“œì›¨ì–´ê°€ ì§ì ‘ ê¹Šì´ ë¹„êµ
 };
 
 //---------------------------SamplerState----------------------------------------
