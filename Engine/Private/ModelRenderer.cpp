@@ -23,9 +23,17 @@ ModelRenderer::~ModelRenderer()
 
 
 
+void ModelRenderer::Awake()
+{
+	if (_shadowShader == nullptr)
+	{
+		_shadowShader = Shader::Create(L"ShadowNoAnim.fx");
+	}
+}
+
 void ModelRenderer::Update()
 {
-	//TODO ÀÓ½Ã, ·»´õ±×·ìº¯°æÇÏÀÚ
+	//TODO ì„ì‹œ, ë Œë”ê·¸ë£¹ë³€ê²½í•˜ì
 	GAME.Add_RenderObject(RENDERGROUP::NONBLEND, GetGameObject());
 }
 
@@ -41,37 +49,29 @@ HRESULT ModelRenderer::Render()
 	auto world = GetTransform()->GetWorldMatrix();
 	_shader->PushTransformData(TransformDesc{ world });
 
-	// TODO : Light
-	//auto lightObj = SCENE->GetCurrentScene()->GetLight();
-	//if (lightObj)
-	//	_shader->PushLightData(lightObj->GetLight()->GetLightDesc());
+	//auto& lightList = GAME.GetLigthList();
+	//if (!lightList.empty())
+	//{
+	//	auto& lightDesc = lightList.front()->GetLightDesc();
+	//	_shader->PushLightData(lightDesc);
 
-	//LightDesc lightDesc;
-	//lightDesc.ambient = Vec4(0.55f, 0.55f, 0.6f, 1.0f);
-	//lightDesc.diffuse = Vec4(1.f);
-	//lightDesc.specular = Vec4(0.8f, 0.8f, 0.8f, 1.0f);
-	//lightDesc.direction = Vec3(-0.5f, -0.8f, 1.0f);
-	//lightDesc.direction.Normalize();
-	//_shader->PushLightData(lightDesc);
+	//	const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+	//	const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+	//	_shader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+	//	_shader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	//}
 
-	auto& lightList = GAME.GetLigthList();
-	if (!lightList.empty())
-	{
-		auto& lightDesc = lightList.front()->GetLightDesc();
-		_shader->PushLightData(lightDesc);
-	}
-
-	// ¸ğµ¨ÀÇ ¿ùµå Çà·ÄÀÇ ¿ªÇà·Ä °è»ê
+	// ëª¨ë¸ì˜ ì›”ë“œ í–‰ë ¬ì˜ ì—­í–‰ë ¬ ê³„ì‚°
 	Matrix invWorldMat = world.Invert();
 
-	// 2. Ä«¸Ş¶ó FrustumÀ» ¸ğµ¨ÀÇ ·ÎÄÃ °ø°£À¸·Î º¯È¯
+	// 2. ì¹´ë©”ë¼ Frustumì„ ëª¨ë¸ì˜ ë¡œì»¬ ê³µê°„ìœ¼ë¡œ ë³€í™˜
 	BoundingFrustum localFrustum;
 	Camera::S_Frustum.Transform(localFrustum, invWorldMat);
 
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
 	{
-		// Ãæµ¹ °Ë»ç (½Ã¾ß ¹Û¿¡ ÀÖ´Ù¸é Åë°ú)
+		// ì¶©ëŒ ê²€ì‚¬ (ì‹œì•¼ ë°–ì— ìˆë‹¤ë©´ í†µê³¼)
 		if (localFrustum.Contains(mesh->boundingBox) == DirectX::DISJOINT)
 			continue;
 
@@ -80,7 +80,6 @@ HRESULT ModelRenderer::Render()
 
 		//BoneIndex
 		//_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
-		//_shader->GetMatrix("BoneTransform")->SetMatrix((float*)&mesh->bone->transform);
 
 		//IA
 		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -88,6 +87,42 @@ HRESULT ModelRenderer::Render()
 		mesh->indexBuffer->PushData();
 
 		_shader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
+	}
+
+	return S_OK;
+}
+
+HRESULT ModelRenderer::RenderShadow()
+{
+	if (_shadowShader == nullptr)
+		return E_FAIL;
+
+	auto& lightList = GAME.GetLigthList();
+	if (!lightList.empty())
+	{
+		auto& lightDesc = lightList.front()->GetLightDesc();
+		_shadowShader->PushLightData(lightDesc);
+
+		const Matrix& lightView = lightList.front()->GetLighViewMatrix();
+		const Matrix& lightProj = lightList.front()->GetLighProjMatrix();
+		_shadowShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
+		_shadowShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
+	}
+
+	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
+	_shadowShader->PushTransformData(TransformDesc{ gameObjectWorld });
+	const auto& meshes = _model->GetMeshes();
+	for (auto& mesh : meshes)
+	{
+		//Matrix finalMatrix = mesh->bone->transform * gameObjectWorld;
+		//_shadowShader->PushTransformData(TransformDesc{ finalMatrix });
+
+		//IA
+		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mesh->vertexBuffer->PushData();
+		mesh->indexBuffer->PushData();
+
+		_shadowShader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
 	}
 
 	return S_OK;
@@ -109,13 +144,13 @@ void ModelRenderer::OnInspectorGUI()
 	GuiRemoveButton("ModelRenderer");
 	if (ImGui::CollapsingHeader("ModelRenderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		// Shader º¯°æ ¹öÆ°
-		if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // ³Êºñ¸¦ °¡µæ Ã¤¿ì·Á¸é ImVec2(-1, 0)
+		// Shader ë³€ê²½ ë²„íŠ¼
+		if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // ë„ˆë¹„ë¥¼ ê°€ë“ ì±„ìš°ë ¤ë©´ ImVec2(-1, 0)
 		{
 			ImGui::OpenPopup("ShaderResourceSearchPopup");
 		}
 
-		// ÆË¾÷ ³»ºÎ ·ÎÁ÷
+		// íŒì—… ë‚´ë¶€ ë¡œì§
 		if (ImGui::BeginPopup("ShaderResourceSearchPopup"))
 		{
 			ImGui::TextDisabled("Shaders");
@@ -138,7 +173,7 @@ void ModelRenderer::OnInspectorGUI()
 
 		if (_shader)
 		{
-			// RENDERGROUP ¼øÈ¸ÇÏ¸é¼­ ÀÌ¸§ °¡Á®¿È
+			// RENDERGROUP ìˆœíšŒí•˜ë©´ì„œ ì´ë¦„ ê°€ì ¸ì˜´
 			uint8 renderGroupCount = static_cast<uint8>(RENDERGROUP::END);
 			if (ImGui::BeginCombo("RenderGruop", Utils::ToString(RENDERGROUP_NAMES[static_cast<uint8>(_renderGroup)]).c_str()))
 			{
@@ -159,7 +194,7 @@ void ModelRenderer::OnInspectorGUI()
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), shaderName.c_str());
 
-			// Shader°¡ °¡Áø Technique °³¼ö¸¸Å­ ¼øÈ¸ÇÏ¸ç ÀÌ¸§À» °¡Á®¿È.
+			// Shaderê°€ ê°€ì§„ Technique ê°œìˆ˜ë§Œí¼ ìˆœíšŒí•˜ë©° ì´ë¦„ì„ ê°€ì ¸ì˜´.
 			uint32 techCount = _shader->GetTechniqueCount();
 			string currentTechName = _shader->GetTechniqueName(_techniqueIndex);
 
@@ -171,18 +206,18 @@ void ModelRenderer::OnInspectorGUI()
 					if (ImGui::Selectable(_shader->GetTechniqueName(i).c_str(), isSelected))
 					{
 						_techniqueIndex = i;
-						_pass = 0; // TechniqueÀÌ ¹Ù²î¸é Pass´Â 0À¸·Î ¸®¼ÂÇØ¾ß ¾ÈÀüÇÔ
+						_pass = 0; // Techniqueì´ ë°”ë€Œë©´ PassëŠ” 0ìœ¼ë¡œ ë¦¬ì…‹í•´ì•¼ ì•ˆì „í•¨
 					}
 				}
 				ImGui::EndCombo();
 			}
 
-			// --- Pass ¼±ÅÃ ---
+			// --- Pass ì„ íƒ ---
 			uint32 maxPassCount = _shader->GetPassCount(_techniqueIndex);
 			int p = static_cast<int>(_pass);
 
 			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.6f);
-			// ÇØ´ç TechniqueÀÌ °¡Áø Pass °³¼ö ³»¿¡¼­¸¸ Á¶Àı °¡´ÉÇÏ°Ô Á¦ÇÑ
+			// í•´ë‹¹ Techniqueì´ ê°€ì§„ Pass ê°œìˆ˜ ë‚´ì—ì„œë§Œ ì¡°ì ˆ ê°€ëŠ¥í•˜ê²Œ ì œí•œ
 			if (ImGui::SliderInt("Pass", &p, 0, maxPassCount - 1))
 			{
 				_pass = static_cast<uint32>(p);
@@ -194,19 +229,19 @@ void ModelRenderer::OnInspectorGUI()
 
 			ImGui::Separator();
 
-			// --- Model Á¤º¸ ---
+			// --- Model ì •ë³´ ---
 			string modelName = _model ? Utils::ToString(_model->GetName()) : "None";
 			ImGui::Text("Model: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), modelName.c_str());
 
-			// Model º¯°æ ¹öÆ°
-			if (ImGui::Button("Change Model##Model", ImVec2(-1, 0))) // ³Êºñ¸¦ °¡µæ Ã¤¿ì·Á¸é ImVec2(-1, 0)
+			// Model ë³€ê²½ ë²„íŠ¼
+			if (ImGui::Button("Change Model##Model", ImVec2(-1, 0))) // ë„ˆë¹„ë¥¼ ê°€ë“ ì±„ìš°ë ¤ë©´ ImVec2(-1, 0)
 			{
 				ImGui::OpenPopup("ModelResourceSearchPopup");
 			}
 
-			// ÆË¾÷ ³»ºÎ ·ÎÁ÷
+			// íŒì—… ë‚´ë¶€ ë¡œì§
 			if (ImGui::BeginPopup("ModelResourceSearchPopup"))
 			{
 				ImGui::TextDisabled("Models");
@@ -225,7 +260,7 @@ void ModelRenderer::OnInspectorGUI()
 				ImGui::EndPopup();
 			}
 
-			// ¸ğµ¨ »ó¼¼ Á¤º¸
+			// ëª¨ë¸ ìƒì„¸ ì •ë³´
 			if (_model && ImGui::TreeNodeEx("Model Details", ImGuiTreeNodeFlags_FramePadding))
 			{
 				ImGui::BulletText("Mesh Count: %d", _model->GetMeshCount());

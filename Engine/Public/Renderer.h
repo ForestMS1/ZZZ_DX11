@@ -17,6 +17,7 @@ public:
 	HRESULT Draw();
 
 private:
+	HRESULT Render_Shadow();
 	HRESULT Render_Priority();
 	HRESULT Render_NonBlend();
 	HRESULT Render_Blend();

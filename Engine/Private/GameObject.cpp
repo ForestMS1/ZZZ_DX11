@@ -172,6 +172,19 @@ HRESULT	GameObject::Render()
 	return S_OK;
 }
 
+HRESULT GameObject::RenderShadow()
+{
+	for (shared_ptr<Component> component : _components)
+	{
+		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
+		{
+			if (FAILED(component->RenderShadow()))
+				return E_FAIL;
+		}
+	}
+	return S_OK;
+}
+
 void GameObject::SetLifeState(LIFESTATE eLifeState)
 { 
 	_lifeState = eLifeState;

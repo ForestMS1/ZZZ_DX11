@@ -36,7 +36,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
 
     for (const auto& gameObject : gameObjectList)
     {
-        shared_ptr<GameObjectData> data = make_shared<GameObjectData>();
+        shared_ptr<newGameObjectData> data = make_shared<newGameObjectData>();
         // 고유 타입 설정
         const wstring& className = gameObject->Get_ClassName();
         const wstring& objectName = gameObject->GetName();
@@ -205,6 +205,26 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             data->meshRenderData.pass = meshRenderer->GetPass();
         }
 
+        // light컴포넌트 저장
+        auto light = gameObject->GetLight();
+        if (light != nullptr)
+        {
+            data->lightData.isSave = true;
+            // Light Type저장
+            auto lightType = light->GetLightType();
+            if (lightType != LIGHTTYPE::End)
+            {
+                data->lightData.type = lightType;
+            }
+            // Light Desc 저장
+            auto& lightDesc = light->GetLightDesc();
+            data->lightData.desc.ambient = lightDesc.ambient;
+            data->lightData.desc.diffuse = lightDesc.diffuse;
+            data->lightData.desc.specular = lightDesc.specular;
+            data->lightData.desc.emissive = lightDesc.emissive;
+            data->lightData.desc.direction = lightDesc.direction;
+        }
+
 
 
 
@@ -228,6 +248,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<char*>(&data->modelAnimData), sizeof(ModelAnimData));
         outFile.write(reinterpret_cast<char*>(&data->scriptData), sizeof(MonoBehaviourData));
         outFile.write(reinterpret_cast<char*>(&data->meshRenderData), sizeof(MeshRenderData));
+        outFile.write(reinterpret_cast<char*>(&data->lightData), sizeof(LightData));
     }
 
     outFile.close();
@@ -290,6 +311,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         shared_ptr<ModelAnimData> modelAnimData = make_shared<ModelAnimData>();
         shared_ptr<MonoBehaviourData> scriptData = make_shared<MonoBehaviourData>();
         shared_ptr<MeshRenderData> meshRenderData = make_shared<MeshRenderData>();
+        shared_ptr<LightData> lightData = make_shared<LightData>();
 
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
@@ -300,6 +322,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         inFile.read(reinterpret_cast<char*>(modelAnimData.get()), sizeof(ModelAnimData));
         inFile.read(reinterpret_cast<char*>(scriptData.get()), sizeof(MonoBehaviourData));
         inFile.read(reinterpret_cast<char*>(meshRenderData.get()), sizeof(MeshRenderData));
+        inFile.read(reinterpret_cast<char*>(lightData.get()), sizeof(LightData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -480,6 +503,23 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             meshRenderer->SetMaterial(GAME.GetResource<Material>(meshRenderData->materialName));
             meshRenderer->SetTechnique(meshRenderData->techniqueIndex);
             meshRenderer->SetPass(meshRenderData->pass);
+        }
+
+        // Light
+        auto light = newObj->GetLight();
+        if (lightData->isSave == true && light == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<Light> newLight = make_shared<Light>();
+
+            newLight->SetLightDesc(lightData->desc);
+            newLight->SetLightType(lightData->type);
+
+            newObj->AddComponent(newLight);
+        }
+        else if (light != nullptr)
+        {
+            light->SetLightDesc(lightData->desc);
+            light->SetLightType(lightData->type);
         }
         
 

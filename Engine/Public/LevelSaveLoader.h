@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+#include "Light.h"
 NS_BEGIN(Engine)
 
 struct TransformData
@@ -9,6 +10,14 @@ struct TransformData
 	Vec3 localPosition;
 	Matrix matLocal;
 	Matrix matWorld;
+};
+
+struct LightData
+{
+	bool isSave = false;
+
+	LIGHTTYPE type;
+	LightDesc desc;
 };
 
 struct MonoBehaviourData
@@ -101,6 +110,22 @@ struct ColliderData
 	bool isFix = true;
 	Vec3 extents = { 0.f, 0.f, 0.f };
 	Vec3 offset = { 0.f, 0.f, 0.f };
+};
+
+struct newGameObjectData
+{
+	char className[64];
+	wchar_t objectName[64];
+	UUID objectId; // 본인의 id
+	UUID parentId; // 부모가 없으면 -1
+	TransformData transformData;
+	UIData uiData;
+	ColliderData colliderData;
+	ModelRenderData modelRenderData;
+	ModelAnimData modelAnimData;
+	MonoBehaviourData scriptData;
+	MeshRenderData meshRenderData;
+	LightData lightData;
 };
 
 struct GameObjectData

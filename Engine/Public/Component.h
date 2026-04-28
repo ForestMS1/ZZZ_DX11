@@ -46,6 +46,7 @@ public:
 	virtual void LateUpdate() {}
 	virtual void FixedUpdate() {}
 	virtual HRESULT Render() { return S_OK; }
+	virtual HRESULT RenderShadow() { return S_OK; }
 
 
 	// ImGUI Inspector Ã¢ Á¤º¸

@@ -12,6 +12,7 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
     output.position = mul(input.position, W);
     output.worldPosition = output.position.xyz;
     output.position = mul(output.position, VP);
+    output.clipPos = output.position;
     output.uv = input.uv;
 
     
@@ -28,14 +29,14 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
     
     PixelOutput output;
 
-    // Å¸°Ù 0: µğÇ»Áî »ö»ó
+    // íƒ€ê²Ÿ 0: ë””í“¨ì¦ˆ ìƒ‰ìƒ
     output.color = DiffuseMap.Sample(LinearSampler, input.uv);
     //output.color = floor(ComputeToonLight(input.normal, input.uv, input.worldPosition) * _StariNum) * (1 / _StariNum); //DiffuseMap.Sample(LinearSampler, input.uv);
 
-    // Å¸°Ù 1: ³ë¸» (½Ã°¢È­¸¦ À§ÇØ 0.5 °öÇÏ°í 0.5 ´õÇÔ)
+    // íƒ€ê²Ÿ 1: ë…¸ë§ (ì‹œê°í™”ë¥¼ ìœ„í•´ 0.5 ê³±í•˜ê³  0.5 ë”í•¨)
     output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
 
-    // Å¸°Ù 2: ¿ùµå
+    // íƒ€ê²Ÿ 2: ì›”ë“œ
     output.world = float4(input.worldPosition.xyz * 0.01f, 1.0f);
 
     return output;

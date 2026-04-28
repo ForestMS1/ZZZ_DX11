@@ -35,7 +35,6 @@ cbuffer BoneBuffer
     matrix BoneTransforms[MAX_MODEL_TRANSFORMS];
 };
 
-uint BoneIndex;
 Texture2DArray TransformMap;
 
 matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
@@ -80,7 +79,7 @@ matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
 
         matrix result = lerp(curr, next, ratio[0]);
 
-		// 다음 애니메이션
+		// ���� �ִϸ��̼�
         if (animIndex[1] >= 0)
         {
             c0 = TransformMap.Load(int4(indices[i] * 4 + 0, currFrame[1], animIndex[1], 0));
@@ -105,68 +104,39 @@ matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
     return transform;
 }
 
-MeshOutput VS(VertexTextureNormalTangentBlend input)
+
+struct PS_OUT
+{
+    float4 shadowDepth : SV_Target0;
+};
+
+MeshOutput VS_Main(VertexTextureNormalTangentBlend input)
 {
     MeshOutput output;
-
-	// TODO
+    
     matrix m = GetAnimationMatrix(input);
 
     output.position = mul(input.position, m);
     output.position = mul(output.position, W);
     output.worldPosition = output.position.xyz;
-    output.position = mul(output.position, VP);
+    output.position = mul(output.position, g_LightView);
+    output.position = mul(output.position, g_LightProj);
     output.clipPos = output.position;
-    output.uv = input.uv;
-    
-    // 애니메이션 행렬 m을 먼저 곱한 뒤 월드 행렬을 곱해야 함.
-    output.normal = mul(input.normal, (float3x3) m);
-    output.normal = mul(output.normal, (float3x3) W);
-    
-    output.tangent = mul(input.tangent, (float3x3) m);
-    output.tangent = mul(output.tangent, (float3x3) W);
 
-    return output;
-}
-
-float _StariNum = 50;
-
-PixelOutput PS(MeshOutput input) : SV_TARGET
-{
-	//ComputeNormalMapping(input.normal, input.tangent, input.uv);
-	//float4 color = ComputeLight(input.normal, input.uv, input.worldPosition);
-   // float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
-   // 
-   //
-   // return color;
-    
-    // 노멀 확인 디버그
-    //float3 debugNormal = normalize(input.normal);
-    //return float4(debugNormal * 0.5f + 0.5f, 1.0f);
-    
-    PixelOutput output;
-
-    // 타겟 0: 디퓨즈 색상
-    output.color = DiffuseMap.Sample(LinearSampler, input.uv);
-    //output.color = floor(ComputeToonLight(input.normal, input.uv, input.worldPosition) * _StariNum) * (1 / _StariNum);
-
-    // 타겟 1: 노말 (시각화를 위해 0.5 곱하고 0.5 더함)
-    output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
-
-    // 타겟 2: 월드
-    output.world = float4(input.worldPosition.xyz * 0.01f, 1.0f);
     
     return output;
 }
 
-float4 PS_RED(MeshOutput input) : SV_TARGET
+PS_OUT PS_Main(MeshOutput input) : SV_Target
 {
-    return float4(1, 0, 0, 1);
+    PS_OUT output;
+    // ���� ��(Z/W)�� R ä�ο� ��� (0~1 ���� ��)
+    float depth = input.clipPos.z / input.clipPos.w;
+    output.shadowDepth = float4(depth, depth, depth, 1.0f);
+    return output;
 }
 
 technique11 T0
 {
-	PASS_VP(P0, VS, PS)
-    PASS_RS_VP(P1, FillModeWireFrame, VS, PS)
-	PASS_RS_VP(P2, FillModeWireFrame, VS, PS_RED)
+    PASS_RS_VP(P0, FrontCounterClockwiseTrue, VS_Main, PS_Main)
 };
