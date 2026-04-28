@@ -229,11 +229,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	_loadingText = L"모델을 로딩 중 입니다.";
 
 	// Corin 기본 T자 모델
-	shared_ptr<Model> CorinModel = make_shared<Model>();
-	CorinModel->ReadModelRotatedY180(L"Corin/Corin");
-	CorinModel->ReadMaterial(L"Corin/Corin");
-	CorinModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	GAME.AddResource<Model>(L"CorinModel", CorinModel);
+	//shared_ptr<Model> CorinModel = make_shared<Model>();
+	//CorinModel->ReadModelRotatedY180(L"Corin/Corin");
+	//CorinModel->ReadMaterial(L"Corin/Corin");
+	//CorinModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"CorinModel", CorinModel);
 
 	// Corin 애니메이션 담은 모델
 	shared_ptr<Model> CorinAnimModel = make_shared<Model>();
@@ -273,11 +273,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
 
 	// Ellen 기본 T자 모델
-	shared_ptr<Model> EllenModel = make_shared<Model>();
-	EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
-	EllenModel->ReadMaterial(L"Ellen/Ellen");
-	EllenModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	GAME.AddResource<Model>(L"EllenModel", EllenModel);
+	//shared_ptr<Model> EllenModel = make_shared<Model>();
+	//EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
+	//EllenModel->ReadMaterial(L"Ellen/Ellen");
+	//EllenModel->GetMaterialByIndex(0)->SetShader(TestShader);
+	//GAME.AddResource<Model>(L"EllenModel", EllenModel);
 
 	// Ellen 애니메이션 담은 모델
 	shared_ptr<Model> EllenAnimModel = make_shared<Model>();
@@ -375,30 +375,30 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	// ----------------------------------------------------GameObject Load--------------------------------------------------------
 	_loadingText = L"객체원형 생성 중 입니다.";
 
-	/* Prototype_GameObject_TestCam */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
-		TestCam::Create(_device, _deviceContext))))
-		return E_FAIL;
+	///* Prototype_GameObject_TestCam */
+	//if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCam",
+	//	TestCam::Create(_device, _deviceContext))))
+	//	return E_FAIL;
 
-	/* Prototype_GameObject_TestPlayCam */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
-		TestPlayCam::Create(_device, _deviceContext))))
-		return E_FAIL;
+	///* Prototype_GameObject_TestPlayCam */
+	//if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestPlayCam",
+	//	TestPlayCam::Create(_device, _deviceContext))))
+	//	return E_FAIL;
 
-	/* Prototype_GameObject_TestCorin */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
-		TestCorin::Create(_device, _deviceContext))))
-		return E_FAIL;
+	///* Prototype_GameObject_TestCorin */
+	//if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestCorin",
+	//	TestCorin::Create(_device, _deviceContext))))
+	//	return E_FAIL;
 
-	/* Prototype_GameObject_TestSphere */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
-		TestSphere::Create(_device, _deviceContext))))
-		return E_FAIL;
+	///* Prototype_GameObject_TestSphere */
+	//if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_TestSphere",
+	//	TestSphere::Create(_device, _deviceContext))))
+	//	return E_FAIL;
 
-	/* Prototype_GameObject_SkyBox */
-	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
-		SkyBox::Create(_device, _deviceContext))))
-		return E_FAIL;
+	///* Prototype_GameObject_SkyBox */
+	//if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Prototype_GameObject_SkyBox",
+	//	SkyBox::Create(_device, _deviceContext))))
+	//	return E_FAIL;
 
 	// ----------------------------------------------------GameObject Load--------------------------------------------------------
 	_loadingText = L"로딩이 완료되었습니다.";

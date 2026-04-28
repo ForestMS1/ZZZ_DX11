@@ -18,12 +18,10 @@ void TestCorinScript::Start()
 void TestCorinScript::Update()
 {
 	if (_fsm.expired())
-	{
 		_fsm.reset();
-		return;
-	}
 	
-	_fsm.lock()->SetBool(L"isMove", true);
+	if(!_fsm.expired())
+		_fsm.lock()->SetBool(L"isMove", true);
 
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
@@ -82,7 +80,7 @@ void TestCorinScript::Update()
 		rotation.y += XM_PI * 0.25f;
 		GetTransform()->SetLocalRotation(rotation);
 	}
-	else
+	else if(!_fsm.expired())
 	{
 		_fsm.lock()->SetBool(L"isMove", false);
 	}
