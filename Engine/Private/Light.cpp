@@ -41,7 +41,7 @@ void Light::UpdateMatrix()
 
 	_lightViewMatrix = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
 	
-	_lightProjMatrix = ::XMMatrixOrthographicLH(100.f, 100.f, 0.1f, 500.f);
+	_lightProjMatrix = ::XMMatrixOrthographicLH(2048.f, 2048.f, 0.1f, 5000.f);
 }
 
 

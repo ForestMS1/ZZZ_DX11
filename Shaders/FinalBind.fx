@@ -80,9 +80,8 @@ float4 PS_Main(VS_OUT input) : SV_Target
         }
     }
     
-    
     // 최종 색상 결정
-    float3 finalColor =  /*ComputeToonDefferedLight(albedo, normal, input.uv, worldPos).rgb*/  albedo.rgb * shadowFactor;
+    float3 finalColor =  ComputeToonDefferedLight(albedo, normal, input.uv, worldPos).rgb *  albedo.rgb * shadowFactor;
     
    return float4(finalColor, albedo.a);
 }
