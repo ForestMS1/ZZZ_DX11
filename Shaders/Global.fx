@@ -94,7 +94,7 @@ struct PixelOutput
 {
     float4 color : SV_Target0; // 메인 화면 (Diffuse)
     float4 normal : SV_Target1; // 노말 (World Normal)
-    float4 specular : SV_Target2; // 스페큘러 (또는 깊이 등 원하는 데이터)
+    float4 world : SV_Target2; // 픽셀의 월드 좌표
 };
 //---------------------------pixel output (MRT)----------------------------------
 

@@ -2,7 +2,7 @@
 #include "Light.fx"
 
 #define MAX_MODEL_TRANSFORMS 350
-#define MAX_MODEL_KEYFRAMES 500
+#define MAX_MODEL_KEYFRAMES 700
 
 struct KeyframeDesc
 {
@@ -146,14 +146,14 @@ PixelOutput PS(MeshOutput input) : SV_TARGET
     PixelOutput output;
 
     // 타겟 0: 디퓨즈 색상
-    //output.color = DiffuseMap.Sample(LinearSampler, input.uv);
-    output.color = floor(ComputeToonLight(input.normal, input.uv, input.worldPosition) * _StariNum) * (1 / _StariNum);
+    output.color = DiffuseMap.Sample(LinearSampler, input.uv);
+    //output.color = floor(ComputeToonLight(input.normal, input.uv, input.worldPosition) * _StariNum) * (1 / _StariNum);
 
     // 타겟 1: 노말 (시각화를 위해 0.5 곱하고 0.5 더함)
     output.normal = float4(normalize(input.normal) * 0.5f + 0.5f, 1.0f);
 
-    // 타겟 2: 스페큘러 (예시로 빨간색)
-    output.specular = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    // 타겟 2: 월드
+    output.world = float4(input.worldPosition.xyz, 1.f);
     
     return output;
 }

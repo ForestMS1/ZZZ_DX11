@@ -37,7 +37,7 @@ struct MaterialDesc
 
 // Bone
 #define MAX_MODEL_TRANSFORMS 350
-#define MAX_MODEL_KEYFRAMES 500
+#define MAX_MODEL_KEYFRAMES 700
 #define MAX_MODEL_INSTANCE 500
 
 struct BoneDesc
