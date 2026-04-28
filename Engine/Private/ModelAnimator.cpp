@@ -184,8 +184,12 @@ HRESULT ModelAnimator::Render()
 
 HRESULT ModelAnimator::RenderShadow()
 {
+	if (_model == nullptr)
+		return E_FAIL;
 	if (_shadowShader == nullptr)
 		return E_FAIL;
+	if (_texture == nullptr)
+		CreateTexture();
 
 	auto& lightList = GAME.GetLigthList();
 	if (!lightList.empty())
@@ -198,22 +202,38 @@ HRESULT ModelAnimator::RenderShadow()
 		_shadowShader->GetMatrix("g_LightView")->SetMatrix((float*)&lightView);
 		_shadowShader->GetMatrix("g_LightProj")->SetMatrix((float*)&lightProj);
 	}
-
-	_shadowShader->PushTweenTempData(_tweenDesc);
-	_shadowShader->GetSRV("TransformMap")->SetResource(_srv.Get());
-
+	// Transform
 	auto gameObjectWorld = GetTransform()->GetWorldMatrix();
 	_shadowShader->PushTransformData(TransformDesc{ gameObjectWorld });
+
+	_shadowShader->PushTweenTempData(_tweenDesc);
+
+
+	_shadowShader->GetSRV("TransformMap")->SetResource(_srv.Get());
+
+	BoneDesc boneDesc;
+
+	const uint32 boneCount = _model->GetBoneCount();
+	for (uint32 i = 0; i < boneCount; i++)
+	{
+		shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
+		boneDesc.transforms[i] = bone->transform;
+	}
+	_shadowShader->PushBoneData(boneDesc);
+
 
 	const auto& meshes = _model->GetMeshes();
 	for (auto& mesh : meshes)
 	{
+		// BoneIndex
+		_shadowShader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
+
 		//IA
 		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		mesh->vertexBuffer->PushData();
 		mesh->indexBuffer->PushData();
 
-		_shadowShader->DrawIndexed(_techniqueIndex, _pass, mesh->indexBuffer->GetCount(), 0, 0);
+		_shadowShader->DrawIndexed(0, 0, mesh->indexBuffer->GetCount(), 0, 0);
 	}
 
 	return S_OK;

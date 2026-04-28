@@ -35,6 +35,7 @@ cbuffer BoneBuffer
     matrix BoneTransforms[MAX_MODEL_TRANSFORMS];
 };
 
+uint BoneIndex;
 Texture2DArray TransformMap;
 
 matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
@@ -104,39 +105,65 @@ matrix GetAnimationMatrix(VertexTextureNormalTangentBlend input)
     return transform;
 }
 
+struct VS_OUT
+{
+    float4 position : SV_POSITION;
+    float4 clipPos : TEXCOORD0; // 깊이 비교를 위해 전달
+};
 
 struct PS_OUT
 {
     float4 shadowDepth : SV_Target0;
 };
 
-MeshOutput VS_Main(VertexTextureNormalTangentBlend input)
+VS_OUT VS_Main(VertexTextureNormalTangentBlend input)
 {
-    MeshOutput output;
+    VS_OUT output;
     
     matrix m = GetAnimationMatrix(input);
 
     output.position = mul(input.position, m);
+    //output.position = mul(output.position, W);
     output.position = mul(output.position, W);
-    output.worldPosition = output.position.xyz;
+    //output.worldPosition = output.position.xyz;
     output.position = mul(output.position, g_LightView);
     output.position = mul(output.position, g_LightProj);
+    output.position = float4(output.position.xyz, 1.f);
     output.clipPos = output.position;
 
     
     return output;
 }
 
-PS_OUT PS_Main(MeshOutput input) : SV_Target
+VS_OUT VS_Mainee(VertexTextureNormalTangentBlend input)
+{
+    VS_OUT output;
+    
+    // 1. 애니메이션 적용 (이게 문제인지 확인)
+    matrix m = GetAnimationMatrix(input);
+    float4 pos = mul(input.position, m);
+    pos = mul(pos, W);
+
+    // 2. 뷰/투영 행렬을 무시하고 NDC 공간에 직접 투사
+    // 캐릭터가 모델링된 크기대로 화면 중앙에 나타나야 함
+    output.position = float4(pos.xyz, 1.0f);
+    output.clipPos = output.position;
+
+    return output;
+}
+
+PS_OUT PS_Main(VS_OUT input) : SV_Target
 {
     PS_OUT output;
     // 깊이 값(Z/W)을 R 채널에 기록 (0~1 사이 값)
-    float depth = input.clipPos.z / input.clipPos.w;
-    output.shadowDepth = float4(depth, depth, depth, 1.0f);
+    //float depth = input.clipPos.z / input.clipPos.w;
+    //output.shadowDepth = float4(depth, depth, depth, 1.0f);
+    output.shadowDepth = float4(0, 0, 0, 1.0f);
     return output;
 }
 
 technique11 T0
 {
-    PASS_RS_VP(P0, FrontCounterClockwiseTrue, VS_Main, PS_Main)
+    PASS_VP(P0, VS_Main, PS_Main)
+    //PASS_RS_VP(P1, FrontCounterClockwiseTrue, VS_Main, PS_Main)
 };

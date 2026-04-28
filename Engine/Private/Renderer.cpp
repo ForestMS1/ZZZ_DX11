@@ -35,9 +35,9 @@ HRESULT Renderer::Initialize()
 	GAME.Add_RenderTarget(L"Target_World", depthRenderTarget);
 
 	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
-	//shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
-	//shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048.f, 2048.f); // 깊이만 저장하므로 R32_FLOAT
-	//GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
+	shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
+	shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048.f, 2048.f); // 깊이만 저장하므로 R32_FLOAT
+	GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
 
 	//_shadowShader = Shader::Create(L"Shadow.fx"); // 그림자 기록용 셰이더
 
@@ -45,7 +45,7 @@ HRESULT Renderer::Initialize()
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Normal");
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_World");
 
-	//GAME.Add_RenderTargetToMRT(L"MRT_Shadow", L"Target_Shadow");
+	GAME.Add_RenderTargetToMRT(L"MRT_Shadow", L"Target_Shadow");
 
 
 	_finalBindShader = Shader::Create(L"FinalBind.fx");
@@ -61,6 +61,9 @@ HRESULT Renderer::Initialize()
 	if (FAILED(GAME.Ready_Debug(L"Target_Normal", 0.f, 150.f, 200.f, 150.f)))
 		return E_FAIL;
 	if (FAILED(GAME.Ready_Debug(L"Target_World", 0.f, 300.f, 200.f, 150.f)))
+		return E_FAIL;
+
+	if (FAILED(GAME.Ready_Debug(L"Target_Shadow", 0.f, 450.f, 200.f, 150.f)))
 		return E_FAIL;
 
 
@@ -80,14 +83,35 @@ HRESULT Renderer::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObje
 
 HRESULT Renderer::Draw()
 {
-	//GAME.MultiRenderTargetBind(L"MRT_Shadow");
+	GAME.MultiRenderTargetBind(L"MRT_Shadow", false);
 
 	// 강제로 현재 컨텍스트의 모든 타겟을 비우고 그림자용 RTV만 세팅
 	//ID3D11RenderTargetView* shadowRTV = GAME.FindRenderTarget(L"Target_Shadow")->GetRTV().Get();
 	//_deviceContext->OMSetRenderTargets(1, &shadowRTV, nullptr); // DSV를 nullptr로!
 
-	//if (FAILED(Render_Shadow()))
-	//	return E_FAIL;
+	D3D11_VIEWPORT		ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+	ViewPortDesc.TopLeftX = 0;
+	ViewPortDesc.TopLeftY = 0;
+	ViewPortDesc.Width = 2048.f;
+	ViewPortDesc.Height = 2048.f;
+	ViewPortDesc.MinDepth = 0.f;
+	ViewPortDesc.MaxDepth = 1.f;
+	_deviceContext->RSSetViewports(1, &ViewPortDesc);
+
+
+	if (FAILED(Render_Shadow()))
+		return E_FAIL;
+
+
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+	ViewPortDesc.TopLeftX = 0;
+	ViewPortDesc.TopLeftY = 0;
+	ViewPortDesc.Width = (float)GAME.GetEngineDesc().iWinSizeX;
+	ViewPortDesc.Height = (float)GAME.GetEngineDesc().iWinSizeY;
+	ViewPortDesc.MinDepth = 0.f;
+	ViewPortDesc.MaxDepth = 1.f;
+	_deviceContext->RSSetViewports(1, &ViewPortDesc);
 
 	GAME.MultiRenderTargetBind(L"MRT_Deferred");
 
@@ -101,6 +125,9 @@ HRESULT Renderer::Draw()
 
 #ifdef _DEBUG
 	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
+#endif
+#ifdef _DEBUG
+	GAME.RenderRTV(L"MRT_Shadow", _renderTargetShader, 1);
 #endif
 
 	if (FAILED(Render_Deferred_Lighting()))
@@ -194,7 +221,7 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	auto diffuse = GAME.FindRenderTarget(L"Target_Diffuse")->GetSRV();
 	auto normal = GAME.FindRenderTarget(L"Target_Normal")->GetSRV();
 	auto world = GAME.FindRenderTarget(L"Target_World")->GetSRV();
-	//auto shadowDepth = GAME.FindRenderTarget(L"Target_Shadow")->GetSRV();
+	auto shadowDepth = GAME.FindRenderTarget(L"Target_Shadow")->GetSRV();
 
 	auto& lightList = GAME.GetLigthList();
 	if (!lightList.empty())
@@ -212,7 +239,7 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	_finalBindShader->GetSRV("g_AlbedoTex")->SetResource(diffuse.Get());
 	_finalBindShader->GetSRV("g_NormalTex")->SetResource(normal.Get());
 	_finalBindShader->GetSRV("g_WorldTex")->SetResource(world.Get());
-	//_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
+	_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
 
 
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

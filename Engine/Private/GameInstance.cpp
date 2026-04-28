@@ -425,9 +425,9 @@ void GameInstance::Add_RenderTargetToMRT(const wstring& mrtName, const wstring& 
 }
 
 // MRT그룹을 바인드/언바인드
-void GameInstance::MultiRenderTargetBind(const wstring& mrtName)
+void GameInstance::MultiRenderTargetBind(const wstring& mrtName, bool originDepthStencilApply)
 {
-	_renderTargetManager->MultiRenderTargetBind(mrtName);
+	_renderTargetManager->MultiRenderTargetBind(mrtName, originDepthStencilApply);
 }
 void GameInstance::MultiRenderTargetUnbind()
 {

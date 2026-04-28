@@ -46,7 +46,7 @@ void RenderTargetManager::Add_RenderTargetToMRT(const wstring& mrtName, const ws
 	targetList.push_back(renderTarget);
 }
 
-void RenderTargetManager::MultiRenderTargetBind(const wstring& mrtName)
+void RenderTargetManager::MultiRenderTargetBind(const wstring& mrtName, bool originDepthStencilApply)
 {
 	list<shared_ptr<RenderTarget>>* pList = FindMRT(mrtName);
 	if (pList == nullptr)
@@ -63,8 +63,9 @@ void RenderTargetManager::MultiRenderTargetBind(const wstring& mrtName)
 		bindRenderTargets[viewCount++] = renderTarget->GetRTV().Get();
 	}
 
+	_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	originDepthStencilApply ? _deviceContext->OMSetRenderTargets(viewCount, bindRenderTargets, _depthStencilView.Get()) : _deviceContext->OMSetRenderTargets(viewCount, bindRenderTargets, nullptr);
 
-	_deviceContext->OMSetRenderTargets(viewCount, bindRenderTargets, _depthStencilView.Get());
 	// ºäÆ÷Æ® ¼³Á¤
 }
 

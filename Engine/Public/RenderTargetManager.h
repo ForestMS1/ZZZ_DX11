@@ -21,7 +21,7 @@ public:
 	void Add_RenderTargetToMRT(const wstring& mrtName, const wstring& renderTargetName);
 
 	// MRT그룹을 바인드/언바인드
-	void MultiRenderTargetBind(const wstring& mrtName);
+	void MultiRenderTargetBind(const wstring& mrtName, bool originDepthStencilApply = true);
 	void MultiRenderTargetUnbind();
 
 public:

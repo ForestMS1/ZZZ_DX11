@@ -37,18 +37,20 @@ private:
 
 
 private:
-	ComPtr<ID3D11Device>	_device = { nullptr };
-	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
+	ComPtr<ID3D11Device>				_device = { nullptr };
+	ComPtr<ID3D11DeviceContext>			_deviceContext = { nullptr };
 
-	ComPtr<IDXGISwapChain>	_swapChain = { nullptr };
+	ComPtr<IDXGISwapChain>				_swapChain = { nullptr };
 
-	ComPtr<ID3D11RenderTargetView> _backBufferRTV = { nullptr };
+	ComPtr<ID3D11RenderTargetView>		_backBufferRTV = { nullptr };
 
-	ComPtr<ID3D11Texture2D> _depthTexture = { nullptr };
-	ComPtr<ID3D11DepthStencilView> _depthStencilView = { nullptr };
+	ComPtr<ID3D11Texture2D>				_depthTexture = { nullptr };
+	ComPtr<ID3D11DepthStencilView>		_depthStencilView = { nullptr };
 	// 깊이 정보 쉐이더에서 쓸 수 있게 SRV 추가
-	ComPtr<ID3D11ShaderResourceView> _depthSRV = { nullptr };
+	ComPtr<ID3D11ShaderResourceView>	_depthSRV = { nullptr };
 
+
+	D3D11_VIEWPORT						_viewPortDesc;
 public:
 	static unique_ptr<Graphic_Device> Create(HWND hwnd, WINMODE eWinMode, int32 iWinSizeX, int32 iWinSizeY,
 		ComPtr<ID3D11Device>& pOutDevice, ComPtr<ID3D11DeviceContext>& pOutDeviceContext);

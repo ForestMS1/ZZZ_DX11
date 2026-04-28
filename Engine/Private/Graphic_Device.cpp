@@ -39,16 +39,16 @@ HRESULT Graphic_Device::Initialize(HWND hwnd, WINMODE eWinMode, int32 iWinSizeX,
 
 	_deviceContext->OMSetRenderTargets(1, pRTVS, _depthStencilView.Get());
 
-	D3D11_VIEWPORT		ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-	ViewPortDesc.TopLeftX = 0;
-	ViewPortDesc.TopLeftY = 0;
-	ViewPortDesc.Width = (float)iWinSizeX;
-	ViewPortDesc.Height = (float)iWinSizeY;
-	ViewPortDesc.MinDepth = 0.f;
-	ViewPortDesc.MaxDepth = 1.f;
+	//D3D11_VIEWPORT		ViewPortDesc;
+	ZeroMemory(&_viewPortDesc, sizeof(D3D11_VIEWPORT));
+	_viewPortDesc.TopLeftX = 0;
+	_viewPortDesc.TopLeftY = 0;
+	_viewPortDesc.Width = (float)iWinSizeX;
+	_viewPortDesc.Height = (float)iWinSizeY;
+	_viewPortDesc.MinDepth = 0.f;
+	_viewPortDesc.MaxDepth = 1.f;
 
-	_deviceContext->RSSetViewports(1, &ViewPortDesc);
+	_deviceContext->RSSetViewports(1, &_viewPortDesc);
 
 	pOutDevice = _device;
 	pOutDeviceContext = _deviceContext;

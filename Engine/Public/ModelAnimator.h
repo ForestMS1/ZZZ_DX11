@@ -9,7 +9,7 @@ struct ENGINE_DLL AnimTransform
 {
 	// [ ][ ][ ][ ][ ][ ][ ] ... 350°³
 	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
-	// [ ][ ][ ][ ][ ][ ][ ] ... 500 °³
+	// [ ][ ][ ][ ][ ][ ][ ] ... 700 °³
 	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
 };
 
