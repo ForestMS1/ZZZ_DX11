@@ -32,20 +32,20 @@ HRESULT Renderer::Initialize()
 
 	shared_ptr<RenderTarget> depthRenderTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f));
 	depthRenderTarget->CreateRTVWithSRV(DXGI_FORMAT_R32G32B32A32_FLOAT, desc.iWinSizeX, desc.iWinSizeY);
-	GAME.Add_RenderTarget(L"Target_Depth", depthRenderTarget);
+	GAME.Add_RenderTarget(L"Target_World", depthRenderTarget);
 
 	// 보통 그림자 맵은 퀄리티를 위해 해상도를 높게 잡음 (예: 2048x2048)
-	shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
-	shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048.f, 2048.f); // 깊이만 저장하므로 R32_FLOAT
-	GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
+	//shared_ptr<RenderTarget> shadowTarget = make_shared<RenderTarget>(_device, _deviceContext, Vec4(1.f, 1.f, 1.f, 1.f));
+	//shadowTarget->CreateRTVWithSRV(DXGI_FORMAT_R32_FLOAT, 2048.f, 2048.f); // 깊이만 저장하므로 R32_FLOAT
+	//GAME.Add_RenderTarget(L"Target_Shadow", shadowTarget);
 
 	//_shadowShader = Shader::Create(L"Shadow.fx"); // 그림자 기록용 셰이더
 
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Diffuse");
 	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Normal");
-	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_Depth");
+	GAME.Add_RenderTargetToMRT(L"MRT_Deferred", L"Target_World");
 
-	GAME.Add_RenderTargetToMRT(L"MRT_Shadow", L"Target_Shadow");
+	//GAME.Add_RenderTargetToMRT(L"MRT_Shadow", L"Target_Shadow");
 
 
 	_finalBindShader = Shader::Create(L"FinalBind.fx");
@@ -60,7 +60,7 @@ HRESULT Renderer::Initialize()
 		return E_FAIL;
 	if (FAILED(GAME.Ready_Debug(L"Target_Normal", 0.f, 150.f, 200.f, 150.f)))
 		return E_FAIL;
-	if (FAILED(GAME.Ready_Debug(L"Target_Depth", 0.f, 300.f, 200.f, 150.f)))
+	if (FAILED(GAME.Ready_Debug(L"Target_World", 0.f, 300.f, 200.f, 150.f)))
 		return E_FAIL;
 
 
@@ -83,11 +83,11 @@ HRESULT Renderer::Draw()
 	//GAME.MultiRenderTargetBind(L"MRT_Shadow");
 
 	// 강제로 현재 컨텍스트의 모든 타겟을 비우고 그림자용 RTV만 세팅
-	ID3D11RenderTargetView* shadowRTV = GAME.FindRenderTarget(L"Target_Shadow")->GetRTV().Get();
-	_deviceContext->OMSetRenderTargets(1, &shadowRTV, nullptr); // DSV를 nullptr로!
+	//ID3D11RenderTargetView* shadowRTV = GAME.FindRenderTarget(L"Target_Shadow")->GetRTV().Get();
+	//_deviceContext->OMSetRenderTargets(1, &shadowRTV, nullptr); // DSV를 nullptr로!
 
-	if (FAILED(Render_Shadow()))
-		return E_FAIL;
+	//if (FAILED(Render_Shadow()))
+	//	return E_FAIL;
 
 	GAME.MultiRenderTargetBind(L"MRT_Deferred");
 
@@ -193,8 +193,8 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	// (Target_Diffuse, Target_Normal, Target_Depth 등)
 	auto diffuse = GAME.FindRenderTarget(L"Target_Diffuse")->GetSRV();
 	auto normal = GAME.FindRenderTarget(L"Target_Normal")->GetSRV();
-	auto depth = GAME.FindRenderTarget(L"Target_Depth")->GetSRV();
-	auto shadowDepth = GAME.FindRenderTarget(L"Target_Shadow")->GetSRV();
+	auto world = GAME.FindRenderTarget(L"Target_World")->GetSRV();
+	//auto shadowDepth = GAME.FindRenderTarget(L"Target_Shadow")->GetSRV();
 
 	auto& lightList = GAME.GetLigthList();
 	if (!lightList.empty())
@@ -211,8 +211,8 @@ HRESULT Renderer::Render_Deferred_Lighting()
 	// 셰이더에 텍스처 전달
 	_finalBindShader->GetSRV("g_AlbedoTex")->SetResource(diffuse.Get());
 	_finalBindShader->GetSRV("g_NormalTex")->SetResource(normal.Get());
-	_finalBindShader->GetSRV("g_DepthTex")->SetResource(depth.Get());
-	_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
+	_finalBindShader->GetSRV("g_WorldTex")->SetResource(world.Get());
+	//_finalBindShader->GetSRV("g_ShadowTex")->SetResource(shadowDepth.Get());
 
 
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

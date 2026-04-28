@@ -88,7 +88,7 @@ HRESULT ModelRenderer::Render()
 			mesh->material->Update();
 
 		//BoneIndex
-		_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
+		//_shader->GetScalar("BoneIndex")->SetInt(mesh->boneIndex);
 
 		//IA
 		CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
