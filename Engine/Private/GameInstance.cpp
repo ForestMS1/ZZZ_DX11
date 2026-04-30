@@ -231,6 +231,11 @@ ComPtr<ID3D11ShaderResourceView> GameInstance::GetDepthSRV()
 	return _graphicDevice->GetDepthSRV();
 }
 
+void GameInstance::SetViewPort(uint32 width, uint32 height)
+{
+	_graphicDevice->SetViewPort(width, height);
+}
+
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -287,7 +292,7 @@ void GameInstance::RenderGizmo()
 	_objectManager->RenderGizmo();
 }
 
-const list<shared_ptr<GameObject>>& GameInstance::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+const vector<shared_ptr<GameObject>>& GameInstance::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	return _objectManager->Get_GameObjects(iLayerLevelIndex, strLayerTag);
 }

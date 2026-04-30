@@ -28,7 +28,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
     std::ofstream outFile(filePath, std::ios::binary);
     if (!outFile.is_open()) return;
 
-    const list<shared_ptr<GameObject>>& gameObjectList = GAME.Get_GameObjects(iLevelIndex, strLayerTag);
+    const vector<shared_ptr<GameObject>>& gameObjectList = GAME.Get_GameObjects(iLevelIndex, strLayerTag);
 
     // 먼저 오브젝트 개수를 저장 (로드할 때 루프 횟수 결정용)
     uint32_t objCount = static_cast<uint32_t>(gameObjectList.size());

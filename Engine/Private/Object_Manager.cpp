@@ -244,10 +244,10 @@ shared_ptr<Layer> Object_Manager::Find_CurrentLevel_Layer(const wstring& strLaye
 	return iter->second;
 }
 
-const list<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
+const vector<shared_ptr<GameObject>>& Object_Manager::Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag)
 {
 	// 레이어를 찾지 못했을 때 안전하게 반환할 빈 리스트
-	static const list<shared_ptr<GameObject>> emptyList;
+	static const vector<shared_ptr<GameObject>> emptyList;
 
 	shared_ptr<Layer> pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
 
@@ -363,7 +363,7 @@ void Object_Manager::ShowHiearchy(const char** levelNames)
 		}
 		if (isNodeOpen)
 		{
-			const list<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
+			const vector<shared_ptr<GameObject>>& objects = pLayer->Get_GameObjects();
 
 			for (auto& pGameObject : objects)
 			{

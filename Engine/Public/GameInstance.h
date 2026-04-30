@@ -46,6 +46,8 @@ public:
 
 	ComPtr<ID3D11RenderTargetView> GetBackRTV();
 	ComPtr<ID3D11ShaderResourceView> GetDepthSRV();
+
+	void SetViewPort(uint32 width, uint32 height);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -67,7 +69,7 @@ public:
 	void ShowInspector();
 	void RenderGizmo();
 
-	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	const vector<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 	// 프로토타입->클론 없이 바로 레벨에 오브젝트 추가하는 함수
 	HRESULT Add_GameObject_toLayerNoClone(uint32 iLayerLevelIndex, const wstring& strLayerTag, shared_ptr<GameObject> pGameObject);
 

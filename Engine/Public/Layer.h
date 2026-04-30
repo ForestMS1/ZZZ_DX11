@@ -22,11 +22,11 @@ public:
 	void EndOfFrame();
 
 
-	const list<shared_ptr<GameObject>>& Get_GameObjects() const { return _gameObjectList; }
+	const vector<shared_ptr<GameObject>>& Get_GameObjects() const { return _gameObjectList; }
 	bool CheckGameObjectInLayer(shared_ptr<GameObject> pGameObject);
 
 private:
-	list<shared_ptr<GameObject>>	_gameObjectList;
+	vector<shared_ptr<GameObject>>	_gameObjectList;
 public:
 	static unique_ptr<Layer>	Create();
 };

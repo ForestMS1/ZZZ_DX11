@@ -41,7 +41,7 @@ public:
 	shared_ptr<Layer>					Find_CurrentLevel_Layer(const wstring& strLayerTag);
 	shared_ptr<GameObject>				Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
 	// 레벨 저장/불러오기를 위해 특정 레벨의 특정Layer의 gameObjectlist 넘겨주는 함수 만듦
-	const list<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
+	const vector<shared_ptr<GameObject>>& Get_GameObjects(uint32 iLayerLevelIndex, const wstring& strLayerTag);
 
 
 	// 카메라관리

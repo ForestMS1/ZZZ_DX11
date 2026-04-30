@@ -126,6 +126,19 @@ void Graphic_Device::ShutDown()
 	_device.Reset();
 }
 
+void Graphic_Device::SetViewPort(uint32 width, uint32 height)
+{
+	ZeroMemory(&_viewPortDesc,0, sizeof(_viewPortDesc));
+	_viewPortDesc.TopLeftX = 0.f;
+	_viewPortDesc.TopLeftY = 0.f;
+	_viewPortDesc.Width = (float)width;
+	_viewPortDesc.Height = (float)height;
+	_viewPortDesc.MinDepth = 0.f;
+	_viewPortDesc.MaxDepth = 1.f;
+
+	_deviceContext->RSSetViewports(1, &_viewPortDesc);
+}
+
 HRESULT Graphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, int32_t iWinCX, int32_t iWinCY)
 {
 	ComPtr<IDXGIDevice>		pDevice = nullptr;
