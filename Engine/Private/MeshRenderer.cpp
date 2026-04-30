@@ -74,6 +74,8 @@ HRESULT MeshRenderer::RenderShadow()
 {
 	if (_shadowShader == nullptr)
 		return E_FAIL;
+	if (_mesh == nullptr)
+		return E_FAIL;
 
 	auto& lightList = GAME.GetLigthList();
 	if (!lightList.empty())

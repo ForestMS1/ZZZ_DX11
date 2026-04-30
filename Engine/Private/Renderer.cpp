@@ -121,15 +121,15 @@ HRESULT Renderer::Draw()
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
 
+	// 기존 백버퍼와, DSV로 되돌림
 	GAME.MultiRenderTargetUnbind();
 
 #ifdef _DEBUG
 	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
-#endif
-#ifdef _DEBUG
 	GAME.RenderRTV(L"MRT_Shadow", _renderTargetShader, 1);
 #endif
 
+	// 모든 텍스쳐들을 합쳐서 한 장면으로
 	if (FAILED(Render_Deferred_Lighting()))
 		return E_FAIL;
 
@@ -138,7 +138,6 @@ HRESULT Renderer::Draw()
 
 	if (FAILED(Render_UI()))
 		return E_FAIL;
-
 
 
 	return S_OK;

@@ -25,9 +25,11 @@ ModelRenderer::~ModelRenderer()
 
 void ModelRenderer::Awake()
 {
+	_shadowShader = GAME.GetResource<Shader>(L"ShadowNoAnim.fx");
 	if (_shadowShader == nullptr)
 	{
 		_shadowShader = Shader::Create(L"ShadowNoAnim.fx");
+		GAME.AddResource<Shader>(L"ShadowNoAnim.fx", _shadowShader);
 	}
 }
 
@@ -94,6 +96,8 @@ HRESULT ModelRenderer::Render()
 
 HRESULT ModelRenderer::RenderShadow()
 {
+	if (_model == nullptr)
+		return E_FAIL;
 	if (_shadowShader == nullptr)
 		return E_FAIL;
 

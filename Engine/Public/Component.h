@@ -14,6 +14,7 @@ enum class ComponentType : uint8
 	Animator,
 	Collider,
 	Light,
+	BillBoard,
 	//...
 	Script,
 

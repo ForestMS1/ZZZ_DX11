@@ -84,7 +84,7 @@ private:
 
 private:
 	shared_ptr<Shader>	_shader;
-	shared_ptr<Shader> _shadowShader;
+	shared_ptr<Shader> _shadowShader = nullptr;
 	uint8				_techniqueIndex = 0;
 	uint8				_pass = 0;
 	// 애니메이션, 메쉬, 머터리얼을 가지고 있는 Model

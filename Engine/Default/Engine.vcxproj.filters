@@ -156,9 +156,12 @@
     </Filter>
     <Filter Include="06.Component\Light">
       <UniqueIdentifier>{87b81121-1ad2-498d-9d6c-ca6b3743b3e1}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="RenderTarget">
       <UniqueIdentifier>{d926ae2e-82ac-4fed-a0b9-e0219788389f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI&amp;Effect">
+      <UniqueIdentifier>{d64ee036-4599-4cde-b2fd-9d37a5138c51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -402,12 +405,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\LightManager.h">
       <Filter>06.Component\Light</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Public\RenderTarget.h">
       <Filter>RenderTarget</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderTargetManager.h">
       <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BillBoard.h">
+      <Filter>08.UI&amp;Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -635,12 +641,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\LightManager.cpp">
       <Filter>06.Component\Light</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Private\RenderTarget.cpp">
       <Filter>RenderTarget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderTargetManager.cpp">
       <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BillBoard.cpp">
+      <Filter>08.UI&amp;Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

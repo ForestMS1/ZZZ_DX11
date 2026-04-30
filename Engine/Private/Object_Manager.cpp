@@ -706,6 +706,12 @@ void Object_Manager::ShowInspector()
 			_selectedObject->AddComponent(light);
 		}
 
+		if (_selectedObject->GetBillBoard() == nullptr && ImGui::Selectable("BillBoard"))
+		{
+			shared_ptr<BillBoard> billBoard = make_shared<BillBoard>();
+			_selectedObject->AddComponent(billBoard);
+		}
+
 		bool renderer = (_selectedObject->GetMeshRenderer() == nullptr && 
 			_selectedObject->GetModelRenderer() == nullptr &&
 			_selectedObject->GetModelAnimator() == nullptr &&

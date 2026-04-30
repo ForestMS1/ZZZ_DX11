@@ -10,6 +10,7 @@
 #include "OBBCollider.h"
 #include "SphereCollider.h"
 #include "Light.h"
+#include "BillBoard.h"
 
 NS_BEGIN(Engine)
 
@@ -62,6 +63,7 @@ public:
 	shared_ptr<SpriteRenderer>	GetSpriteRenderer();
 	shared_ptr<Collider>		GetCollider();
 	shared_ptr<Light>			GetLight();
+	shared_ptr<BillBoard>		GetBillBoard();
 
 	// Add Component
 	shared_ptr<Transform> GetOrAddTransform();

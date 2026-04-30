@@ -140,6 +140,12 @@ RasterizerState FrontCounterClockwiseTrue
 {
     FrontCounterClockwise = true;
 };
+// 깊이 테스트 끄기 설정
+DepthStencilState DepthDisable
+{
+    DepthEnable = FALSE;
+    DepthWriteMask = ZERO;
+};
 
 //---------------------------RasterizerState----------------------------------------
 

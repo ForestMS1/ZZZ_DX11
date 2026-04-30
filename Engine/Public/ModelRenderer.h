@@ -46,7 +46,7 @@ public:
 private:
 	shared_ptr<Shader> _shader;
 	shared_ptr<Model> _model;
-	shared_ptr<Shader> _shadowShader;
+	shared_ptr<Shader> _shadowShader = nullptr;
 
 	uint8 _techniqueIndex = 0;
 	uint8 _pass = 0;

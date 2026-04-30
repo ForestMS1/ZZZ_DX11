@@ -30,9 +30,11 @@ ModelAnimator::~ModelAnimator()
 
 void ModelAnimator::Awake()
 {
+	_shadowShader = GAME.GetResource<Shader>(L"ShadowAnim.fx");
 	if (_shadowShader == nullptr)
 	{
 		_shadowShader = Shader::Create(L"ShadowAnim.fx");
+		GAME.AddResource<Shader>(L"ShadowAnim.fx", _shadowShader);
 	}
 }
 

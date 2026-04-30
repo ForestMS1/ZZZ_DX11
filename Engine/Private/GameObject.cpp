@@ -260,6 +260,12 @@ shared_ptr<Light> GameObject::GetLight()
 	return static_pointer_cast<Light>(component);
 }
 
+shared_ptr<BillBoard> GameObject::GetBillBoard()
+{
+	shared_ptr<Component> component = GetFixedComponent(ComponentType::BillBoard);
+	return static_pointer_cast<BillBoard>(component);
+}
+
 shared_ptr<Transform> GameObject::GetOrAddTransform()
 {
 	if (nullptr == GetTransform())

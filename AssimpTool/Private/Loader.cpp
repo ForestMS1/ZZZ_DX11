@@ -186,6 +186,15 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	shared_ptr<Shader> UIShader = Shader::Create(L"UI.fx");
 	GAME.AddResource<Shader>(L"UI.fx", UIShader);
 
+	shared_ptr<Shader> ShadowAnimShader = Shader::Create(L"ShadowAnim.fx");
+	GAME.AddResource<Shader>(L"ShadowAnim.fx", ShadowAnimShader);
+
+	shared_ptr<Shader> ShadowNoAnimShader = Shader::Create(L"ShadowNoAnim.fx");
+	GAME.AddResource<Shader>(L"ShadowNoAnim.fx", ShadowNoAnimShader);
+
+	shared_ptr<Shader> BillBoardShader = Shader::Create(L"BillBoard.fx");
+	GAME.AddResource<Shader>(L"BillBoard.fx", BillBoardShader);
+
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 
 
@@ -219,6 +228,20 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		desc.specular = Vec4(1.f);
 
 		GAME.AddResource(L"Sky01", material);
+	}
+
+	{
+		shared_ptr<Material> material = make_shared<Material>();
+
+		material->SetShader(BillBoardShader);
+		auto texture = GAME.GetOrAddTexture(L"Sky01", L"..\\..\\Resources\\Textures\\Sky01.jpg");
+		material->SetDiffuseMap(texture);
+		MaterialDesc& desc = material->GetMaterialDesc();
+		desc.ambient = Vec4(1.f);
+		desc.diffuse = Vec4(1.f);
+		desc.specular = Vec4(1.f);
+
+		GAME.AddResource(L"Sky01BillBoard", material);
 	}
 
 	// ----------------------------------------------------Material Load--------------------------------------------------------
