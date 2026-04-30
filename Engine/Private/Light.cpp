@@ -32,7 +32,6 @@ void Light::UpdateMatrix()
 	Vec3& lightDir = _lightDesc.direction;
 	if (lightDir == Vec3::Zero)
 		lightDir = Vec3::Backward;
-	lightDir.Normalize();
 
 	Vec3 eyePosition = GetTransform()->GetPosition();
 	Vec3 focusPosition = eyePosition + lightDir;
@@ -41,7 +40,7 @@ void Light::UpdateMatrix()
 
 	_lightViewMatrix = ::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
 	
-	_lightProjMatrix = ::XMMatrixOrthographicLH(2048.f, 2048.f, 0.1f, 5000.f);
+	_lightProjMatrix = ::XMMatrixOrthographicLH(300.f, 300.f, 0.1f, 1000.f);
 }
 
 

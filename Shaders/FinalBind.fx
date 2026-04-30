@@ -74,7 +74,7 @@ float4 PS_Main(VS_OUT input) : SV_Target
         float shadowDepth = g_ShadowTex.Sample(LinearSampler, shadowUV).r;
     
         // Shadow Acne 방지를 위한 Bias
-        if (currentDepth > shadowDepth + 0.0001f)
+        if (currentDepth > shadowDepth + 0.001f)
         {
             shadowFactor = 0.5f;
         }
