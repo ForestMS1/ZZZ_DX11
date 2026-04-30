@@ -21,7 +21,6 @@ V_OUT VS(VertexInput input)
     float4 position = mul(input.position, W);
 
     float3 up = float3(0, 1, 0);
-    //float3 forward = float3(0, 0, 1); // TODO
     float3 forward = position.xyz - CameraPosition(); // BillBoard
     float3 right = normalize(cross(up, forward));
 

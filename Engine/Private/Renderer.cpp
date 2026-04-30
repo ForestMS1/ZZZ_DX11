@@ -83,35 +83,17 @@ HRESULT Renderer::Add_RenderObject(RENDERGROUP eRenderGroup, shared_ptr<GameObje
 
 HRESULT Renderer::Draw()
 {
+	// DSV를 nullptr로!
 	GAME.MultiRenderTargetBind(L"MRT_Shadow", false);
 
-	// 강제로 현재 컨텍스트의 모든 타겟을 비우고 그림자용 RTV만 세팅
-	//ID3D11RenderTargetView* shadowRTV = GAME.FindRenderTarget(L"Target_Shadow")->GetRTV().Get();
-	//_deviceContext->OMSetRenderTargets(1, &shadowRTV, nullptr); // DSV를 nullptr로!
-
-	D3D11_VIEWPORT		ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-	ViewPortDesc.TopLeftX = 0;
-	ViewPortDesc.TopLeftY = 0;
-	ViewPortDesc.Width = 2048.f;
-	ViewPortDesc.Height = 2048.f;
-	ViewPortDesc.MinDepth = 0.f;
-	ViewPortDesc.MaxDepth = 1.f;
-	_deviceContext->RSSetViewports(1, &ViewPortDesc);
-
+	// 그림자 기록 텍스쳐만큼 뷰포트 사이즈 변경
+	GAME.SetViewPort(2048, 2048);
 
 	if (FAILED(Render_Shadow()))
 		return E_FAIL;
 
-
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-	ViewPortDesc.TopLeftX = 0;
-	ViewPortDesc.TopLeftY = 0;
-	ViewPortDesc.Width = (float)GAME.GetEngineDesc().iWinSizeX;
-	ViewPortDesc.Height = (float)GAME.GetEngineDesc().iWinSizeY;
-	ViewPortDesc.MinDepth = 0.f;
-	ViewPortDesc.MaxDepth = 1.f;
-	_deviceContext->RSSetViewports(1, &ViewPortDesc);
+	// 다시 원래 뷰포트 사이즈로 복원
+	GAME.SetViewPort(GAME.GetEngineDesc().iWinSizeX, GAME.GetEngineDesc().iWinSizeY);
 
 	GAME.MultiRenderTargetBind(L"MRT_Deferred");
 

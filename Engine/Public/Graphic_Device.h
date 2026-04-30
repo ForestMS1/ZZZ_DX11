@@ -29,6 +29,8 @@ public:
 	// SRV
 	ComPtr<ID3D11ShaderResourceView> GetDepthSRV() { return _depthSRV; }
 
+	void SetViewPort(uint32 width, uint32 height);
+
 
 private:
 	HRESULT Ready_SwapChain(HWND hWnd, WINMODE isWindowed, int32_t iWinCX, int32_t iWinCY);
