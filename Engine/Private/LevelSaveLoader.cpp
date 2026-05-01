@@ -123,6 +123,8 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
                 wcsncpy_s(data->modelRenderData.modelName, model->GetName().c_str(), copyLen);
                 data->modelRenderData.modelName[copyLen] = L'\0';
             }
+            // ·»´õ ±×·ì ÀúÀå
+            data->modelRenderData._renderGroup = modelRenderer->GetCurRenderGroup();
             data->modelRenderData.techniqueIndex = modelRenderer->GetTechnique();
             data->modelRenderData.pass = modelRenderer->GetPass();
         }
@@ -160,6 +162,8 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
                 wcsncpy_s(data->modelAnimData.animFSMFileName, fsm->GetFileName().c_str(), copyLen);
                 data->modelAnimData.animFSMFileName[copyLen] = L'\0';
             }
+            //·»´õ±×·ìÀúÀå
+            data->modelAnimData.renderGroup = modelAnimator->GetCurRenderGroup();
             data->modelAnimData.techniqueIndex = modelAnimator->GetTechnique();
             data->modelAnimData.pass = modelAnimator->GetPass();
         }
@@ -420,6 +424,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             newModelRenderer->SetModel(GAME.GetResource<Model>(modelRenderData->modelName));
             newModelRenderer->SetTechnique(modelRenderData->techniqueIndex);
             newModelRenderer->SetPass(modelRenderData->pass);
+            newModelRenderer->SetCurRenderGroup(modelRenderData->_renderGroup);
 
             newObj->AddComponent(newModelRenderer);
         }
@@ -428,6 +433,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             modelRenderer->SetModel(GAME.GetResource<Model>(modelRenderData->modelName));
             modelRenderer->SetTechnique(modelRenderData->techniqueIndex);
             modelRenderer->SetPass(modelRenderData->pass);
+            modelRenderer->SetCurRenderGroup(modelRenderData->_renderGroup);
         }
 
         auto modelAnimator = newObj->GetModelAnimator();
@@ -444,6 +450,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             }
             newModelAnimator->SetTechnique(modelAnimData->techniqueIndex);
             newModelAnimator->SetPass(modelAnimData->pass);
+            newModelAnimator->SetCurRenderGroup(modelAnimData->renderGroup);
 
             newObj->AddComponent(newModelAnimator);
         }
@@ -458,6 +465,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             }
             modelAnimator->SetTechnique(modelAnimData->techniqueIndex);
             modelAnimator->SetPass(modelAnimData->pass);
+            modelAnimator->SetCurRenderGroup(modelAnimData->renderGroup);
         }
 
 

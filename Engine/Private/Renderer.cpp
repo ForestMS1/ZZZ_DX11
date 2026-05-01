@@ -111,14 +111,14 @@ HRESULT Renderer::Draw()
 	GAME.RenderRTV(L"MRT_Shadow", _renderTargetShader, 1);
 #endif
 
-	// 모든 텍스쳐들을 합쳐서 한 장면으로
-	if (FAILED(Render_Deferred_Lighting()))
-		return E_FAIL;
-
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 
 	if (FAILED(Render_UI()))
+		return E_FAIL;
+
+	// 모든 텍스쳐들을 합쳐서 한 장면으로
+	if (FAILED(Render_Deferred_Lighting()))
 		return E_FAIL;
 
 
