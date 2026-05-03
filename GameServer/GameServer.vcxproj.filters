@@ -11,6 +11,12 @@
     <Filter Include="SimpleChatServer">
       <UniqueIdentifier>{077a84c3-fc98-4ed0-9a98-9ed85b045013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AsyncEchoServer">
+      <UniqueIdentifier>{6d3ada7c-ed34-417e-aead-91c9356814f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Session">
+      <UniqueIdentifier>{91bda370-e9eb-4f3b-84b1-f4a79903b4d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServer.cpp">
@@ -25,6 +31,12 @@
     <ClCompile Include="SimpleChatServer.cpp">
       <Filter>SimpleChatServer</Filter>
     </ClCompile>
+    <ClCompile Include="AsyncEchoServer.cpp">
+      <Filter>AsyncEchoServer</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -35,6 +47,12 @@
     </ClInclude>
     <ClInclude Include="SimpleChatServer.h">
       <Filter>SimpleChatServer</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncEchoServer.h">
+      <Filter>AsyncEchoServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Session</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,9 @@
     <Filter Include="SynchronousEchoClient">
       <UniqueIdentifier>{e2ad08a3-febb-4bd0-8f4a-46a142968708}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AsyncEchoClient">
+      <UniqueIdentifier>{0f27036a-ad47-4245-bc6f-69f1ed5b66e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -19,6 +22,9 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="AsyncEchoClient.cpp">
+      <Filter>AsyncEchoClient</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SynchronousEchoClient.h">
@@ -26,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncEchoClient.h">
+      <Filter>AsyncEchoClient</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

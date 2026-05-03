@@ -244,56 +244,56 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\Shaders\Global.fx">
+    <Text Include="..\..\Shaders\FinalBind.fx">
       <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\Test.fx">
-      <Filter>97.Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\Light.fx">
+    </Text>
+    <Text Include="..\..\Shaders\Global.fx">
       <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\AnimTest.fx">
-      <Filter>97.Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\TweenTest.fx">
-      <Filter>97.Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\SkyBox.fx">
-      <Filter>97.Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\RawBufferTest.fx">
+    </Text>
+    <Text Include="..\..\Shaders\Light.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\Render.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\ShadowAnim.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\ShadowNoAnim.fx">
+      <Filter>97.Shaders\Common</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\CullingLogic.fx">
       <Filter>97.Shaders\Compute</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\TextureBufferTest.fx">
+    </Text>
+    <Text Include="..\..\Shaders\DownSample.fx">
       <Filter>97.Shaders\Compute</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\StructuredBufferTest.fx">
+    </Text>
+    <Text Include="..\..\Shaders\RawBufferTest.fx">
       <Filter>97.Shaders\Compute</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\DownSample.fx">
+    </Text>
+    <Text Include="..\..\Shaders\StructuredBufferTest.fx">
       <Filter>97.Shaders\Compute</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\CullingLogic.fx">
+    </Text>
+    <Text Include="..\..\Shaders\TextureBufferTest.fx">
       <Filter>97.Shaders\Compute</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\UI.fx">
+    </Text>
+    <Text Include="..\..\Shaders\AnimTest.fx">
       <Filter>97.Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\FinalBind.fx">
-      <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\ShadowNoAnim.fx">
-      <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\ShadowAnim.fx">
-      <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\Render.fx">
-      <Filter>97.Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\Shaders\BillBoard.fx">
+    </Text>
+    <Text Include="..\..\Shaders\BillBoard.fx">
       <Filter>97.Shaders</Filter>
-    </FxCompile>
+    </Text>
+    <Text Include="..\..\Shaders\SkyBox.fx">
+      <Filter>97.Shaders</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\Test.fx">
+      <Filter>97.Shaders</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\TweenTest.fx">
+      <Filter>97.Shaders</Filter>
+    </Text>
+    <Text Include="..\..\Shaders\UI.fx">
+      <Filter>97.Shaders</Filter>
+    </Text>
   </ItemGroup>
 </Project>
