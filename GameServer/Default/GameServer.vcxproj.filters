@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{7db96276-dd01-4b92-acfd-89e3b573f36c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Common">
+      <UniqueIdentifier>{2bf01f9d-021f-4118-9e89-0554d5d96db6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameUDPServer">
+      <UniqueIdentifier>{8d09895f-7957-417a-b90a-d8942a74f352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Session">
+      <UniqueIdentifier>{91bda370-e9eb-4f3b-84b1-f4a79903b4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.AsyncEchoServer">
+      <UniqueIdentifier>{2c181f23-1e2d-4ac6-97ac-f809cba4c60c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Session.cpp">
+      <Filter>02.Session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameUDPServer.cpp">
+      <Filter>01.GameUDPServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AsyncEchoServer.cpp">
+      <Filter>03.AsyncEchoServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CommonStruct.cpp">
+      <Filter>00.Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AsyncEchoServer.h">
+      <Filter>03.AsyncEchoServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Session.h">
+      <Filter>02.Session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameUDPServer.h">
+      <Filter>01.GameUDPServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CommonStruct.h">
+      <Filter>00.Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Enum.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Function.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Server_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

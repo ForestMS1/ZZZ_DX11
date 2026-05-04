@@ -105,6 +105,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>../Common/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>../Common/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,15 +133,21 @@
   <ItemGroup>
     <ClCompile Include="AsyncEchoClient.cpp" />
     <ClCompile Include="DummyClient.cpp" />
+    <ClCompile Include="GameEventBroadcaster.cpp" />
+    <ClCompile Include="GameUDPClient.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RealTimePositionSync.cpp" />
     <ClCompile Include="SynchronousEchoClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncEchoClient.h" />
+    <ClInclude Include="GameEventBroadcaster.h" />
+    <ClInclude Include="GameUDPClient.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RealTimePositionSync.h" />
     <ClInclude Include="SynchronousEchoClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

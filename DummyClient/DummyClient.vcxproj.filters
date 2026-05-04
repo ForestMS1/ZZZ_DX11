@@ -11,6 +11,15 @@
     <Filter Include="AsyncEchoClient">
       <UniqueIdentifier>{0f27036a-ad47-4245-bc6f-69f1ed5b66e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameUDPClient">
+      <UniqueIdentifier>{6dd166f1-d0f4-4830-ae2b-f6e1da6aa5ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUDPClient\RealTimePositionSync">
+      <UniqueIdentifier>{0e648f2d-83f7-450f-b407-17b231bee4e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUDPClient\GameEventBroadcaster">
+      <UniqueIdentifier>{eb5d17c8-9e06-45e9-93e3-1ad614f5d057}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -25,6 +34,15 @@
     <ClCompile Include="AsyncEchoClient.cpp">
       <Filter>AsyncEchoClient</Filter>
     </ClCompile>
+    <ClCompile Include="GameUDPClient.cpp">
+      <Filter>GameUDPClient</Filter>
+    </ClCompile>
+    <ClCompile Include="RealTimePositionSync.cpp">
+      <Filter>GameUDPClient\RealTimePositionSync</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEventBroadcaster.cpp">
+      <Filter>GameUDPClient\GameEventBroadcaster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SynchronousEchoClient.h">
@@ -35,6 +53,15 @@
     </ClInclude>
     <ClInclude Include="AsyncEchoClient.h">
       <Filter>AsyncEchoClient</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUDPClient.h">
+      <Filter>GameUDPClient</Filter>
+    </ClInclude>
+    <ClInclude Include="RealTimePositionSync.h">
+      <Filter>GameUDPClient\RealTimePositionSync</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEventBroadcaster.h">
+      <Filter>GameUDPClient\GameEventBroadcaster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
