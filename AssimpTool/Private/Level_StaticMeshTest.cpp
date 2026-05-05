@@ -12,6 +12,7 @@
 #include "TestSphere.h"
 #include "TestUI.h"
 #include "SkyBox.h"
+#include "NetworkManager.h"
 Level_StaticMeshTest::Level_StaticMeshTest(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
 {
@@ -45,6 +46,9 @@ HRESULT Level_StaticMeshTest::Initialize()
 	// 충돌처리 할 레이어 쌍 정의
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Basic");
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
+
+
+	NetworkManager::Get();
 
 	return S_OK;
 }

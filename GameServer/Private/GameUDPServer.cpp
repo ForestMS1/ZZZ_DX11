@@ -58,7 +58,6 @@ void GameUDPServer::UpdateClientInfo(const udp::endpoint& endpoint, uint32_t seq
 	auto iter = _activeClients.find(clientKey);
 	if (iter == _activeClients.end())
 	{
-		// 여기가 실제 '첫 접속' 시점
 		std::cout << "New Client Connected: " << clientKey << std::endl;
 	}
 
@@ -74,10 +73,12 @@ void GameUDPServer::ProcessGamePacket(const GamePacket* packet, std::size_t tota
 
 	switch (packet->type)
 	{
-	case GameDataType::PLAYER_POSITION:
-		HandlePlayerPosition(data, packet->dataSize);
+	case GameDataType::OBJECT_SYNC:
+		std::cout << "OBJECT_SYNC 메시지 받음" << std::endl;
+		HandlePlayerPosition(packet, data, packet->dataSize);
 		break;
 	case GameDataType::HEARTBEAT:
+		std::cout << "HEARTBEAT 메시지 받음" << std::endl;
 		HandleHeartBeat();
 		break;
 	case GameDataType::BROADCAST_MESSAGE:
@@ -90,18 +91,27 @@ void GameUDPServer::ProcessGamePacket(const GamePacket* packet, std::size_t tota
 	}
 }
 
-void GameUDPServer::HandlePlayerPosition(const char* data, uint32_t dataSize)
+void GameUDPServer::HandlePlayerPosition(const GamePacket* packet, const char* data, uint32_t dataSize)
 {
 	if (dataSize < sizeof(PlayerPosition))
 		return;
 
 	auto pos = reinterpret_cast<const PlayerPosition*>(data);
-	std::cout << "Player " << pos->playerId
-		<< " position: (" << pos->x << ", " << pos->y << ", " << pos->z << ")"
-		<< std::endl;
+
+	// 1. 누가 보냈는지 식별 (IP와 Port 추출)
+	std::string clientAddr = _remoteEndpoint.address().to_string();
+	unsigned short clientPort = _remoteEndpoint.port();
+
+	// 2. 로그 출력 (형식: [IP:Port] Sync - Pos: (x, y, z))
+	// 숫자가 너무 길어지지 않게 소수점 2자리 정도로 제한하면 더 깔끔합니다.
+	printf("[%s:%d] OBJECT_SYNC -> Pos: (%.2f, %.2f, %.2f) | Rot: (%.2f, %.2f, %.2f)\n",
+		clientAddr.c_str(),
+		clientPort,
+		pos->position.x, pos->position.y, pos->position.z,
+		pos->rotation.x, pos->rotation.y, pos->rotation.z);
 
 	// 다른 클라이언트들에게 브로드캐스트
-	BroadcastPlayerPosition(*pos);
+	BroadcastPlayerPosition(packet, *pos);
 }
 
 void GameUDPServer::HandleHeartBeat()
@@ -116,15 +126,17 @@ void GameUDPServer::HandleBroadcastMessage(const char* data, uint32_t dataSize)
 	BroadcastToAllClients(message);
 }
 
-void GameUDPServer::BroadcastPlayerPosition(const PlayerPosition& pos)
+void GameUDPServer::BroadcastPlayerPosition(const GamePacket* packet, const PlayerPosition& pos)
 {
-	GamePacket packet;
-	packet.type = GameDataType::PLAYER_POSITION;
-	packet.sequenceNumber = ++_sequenceNumber;
-	packet.dataSize = sizeof(PlayerPosition);
+	GamePacket newPacket;
+	newPacket.type = GameDataType::OBJECT_SYNC;
+	newPacket.objectId = packet->objectId;
+	newPacket.sequenceNumber = ++_sequenceNumber;
+	newPacket.syncFlags = packet->syncFlags;
+	newPacket.dataSize = sizeof(PlayerPosition);
 
 	auto buffer = make_shared<vector<char>>(sizeof(GamePacket) + sizeof(PlayerPosition));
-	::memcpy(buffer->data(), &packet, sizeof(GamePacket));
+	::memcpy(buffer->data(), &newPacket, sizeof(GamePacket));
 	::memcpy(buffer->data() + sizeof(GamePacket), &pos, sizeof(PlayerPosition));	
 
 	lock_guard<mutex> lock(_clientMutex);

@@ -15,6 +15,8 @@
 #include "TestCorinScript.h"
 #include "TestCamScript.h"
 #include "TestPlayCamScript.h"
+#include "NetworkView.h"
+#include "NetworkTransformView.h"
 // ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -391,6 +393,15 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		TestPlayCamScript::Create())))
 		return E_FAIL;
 
+	/* NetworkView */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_NetworkView",
+		NetworkView::Create())))
+		return E_FAIL;
+
+	/* NetworkTransformView */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_NetworkTransformView",
+		NetworkTransformView::Create())))
+		return E_FAIL;
 	// ----------------------------------------------------Script Load--------------------------------------------------------
 
 

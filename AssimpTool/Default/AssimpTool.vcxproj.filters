@@ -61,6 +61,15 @@
     <Filter Include="02.GameObject\TestUI">
       <UniqueIdentifier>{bab82520-cb48-495a-bf35-77d927bad2b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Scirpts\Network">
+      <UniqueIdentifier>{128203a3-7286-4fd0-8da8-a823255c1ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\NetworkTransformView">
+      <UniqueIdentifier>{2431a41f-b55c-4087-a745-0a115db5b129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\Manager">
+      <UniqueIdentifier>{e5cbc62f-329e-43bb-90e2-ec9a845b6349}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -159,6 +168,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\TestUI.h">
       <Filter>02.GameObject\TestUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkView.h">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\INetworkObservable.h">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkTransformView.h">
+      <Filter>03.Scirpts\Network\NetworkTransformView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkManager.h">
+      <Filter>03.Scirpts\Network\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +295,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\TestUI.cpp">
       <Filter>02.GameObject\TestUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkView.cpp">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\INetworkObservable.cpp">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkTransformView.cpp">
+      <Filter>03.Scirpts\Network\NetworkTransformView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkManager.cpp">
+      <Filter>03.Scirpts\Network\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

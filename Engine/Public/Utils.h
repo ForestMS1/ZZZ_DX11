@@ -13,6 +13,8 @@ public:
 
 	static wstring ToWString(const string& value);
 	static string ToString(const wstring& value);
+
+	static uint32_t GUIDToUint32(const GUID& guid);
 };
 
 NS_END

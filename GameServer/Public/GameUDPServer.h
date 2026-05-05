@@ -17,20 +17,24 @@ private:
 		udp::endpoint endpoint;
 		std::chrono::steady_clock::time_point lastSeen;
 		uint32_t lastSequence;
+		uint32_t networkID;
 	};
 
 	void StartReceive();
 	void HandleClientMessage(size_t bytesTransferred);
 	void UpdateClientInfo(const udp::endpoint& endpoint, uint32_t sequence);
 	void ProcessGamePacket(const GamePacket* packet, std::size_t totalSize);
-	void HandlePlayerPosition(const char* data, uint32_t dataSize);
+	void HandlePlayerPosition(const GamePacket* packet, const char* data, uint32_t dataSize);
 	void HandleHeartBeat();
 	void HandleBroadcastMessage(const char* data, uint32_t dataSize);
-	void BroadcastPlayerPosition(const PlayerPosition& pos);
+	void BroadcastPlayerPosition(const GamePacket* packet, const PlayerPosition& pos);
 	void SendToClient(const clientInfo& client, const string& message);
 	void SendHeartbeatResponse(const udp::endpoint& endpoint);
 	void StartHeartbeat();
 	void CleanupInactiveClients();
+
+
+	void SendIDAssignment(const udp::endpoint& endpoint, uint32_t assignedID);
 
 
 private:
