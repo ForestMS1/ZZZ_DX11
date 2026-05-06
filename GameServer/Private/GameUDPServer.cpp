@@ -2,7 +2,7 @@
 #include "GameUDPServer.h"
 
 GameUDPServer::GameUDPServer(io_context& io_context, short port)
-	: _socket(io_context, udp::endpoint(boost::asio::ip::make_address("127.0.0.1"), port))
+	: _socket(io_context, udp::endpoint(udp::v4(), port))
 	, _sequenceNumber(0)
 {
 	StartReceive();
