@@ -3,6 +3,12 @@
 #include "INetworkObservable.h"
 #include "NetworkManager.h"
 
+HRESULT NetworkView::Initialize_Prototype()
+{
+    _observedComponents.fill(nullptr);
+    return S_OK;
+}
+
 void NetworkView::Awake()
 {
     _networkID = Utils::GUIDToUint32(GetGameObject()->GetId());
@@ -82,7 +88,12 @@ void NetworkView::SerializeState()
 	// 등록된 컴포넌트들로부터 데이터 수집
 	for (auto& obj : _observedComponents)
 	{
+        if (obj == nullptr)
+            continue;
+
 		obj->OnSerialize(payload, syncFlags);
+        // 각 컴포넌트가 끝날 때마다 사이즈가 늘어나는지 확인
+         printf("Component Serialized. Current Size: %llu\n", payload.size());
 	}
 
 	// 만약 보낼 데이터가 하나도 없다면 전송 중단

@@ -2,7 +2,6 @@
 #include "NetworkManager.h"
 #include "GameObject.h"
 #include "NetworkTransformView.h"
-#include "NetworkAnimationView.h"
 #include "NetworkView.h"
 NetworkManager::NetworkManager(const string& host, const string& port)
 	: _socket(_io_context)
@@ -49,7 +48,6 @@ void NetworkManager::AddNetworkView(shared_ptr<NetworkView> networkView)
 {
 	if (networkView == nullptr) 
 		return; 
-	std::lock_guard<std::mutex> lock(_viewMapMutex);
 
 	uint32_t objId = networkView->GetNetworkID();
 
@@ -133,9 +131,6 @@ void NetworkManager::HandleObjectSync(const GamePacket& header, const char* payl
 	auto view = FindNetworkView(header.objectId);
 	if (view == nullptr) 
 		return;
-
-	// 내 캐릭터라면 서버의 데이터를 무시 (내가 보낸 게 돌아온 것)
-	if (view->IsMine()) return;
 	
 	// 시퀀스 번호 체크 (UDP 패킷 순서 뒤바뀜 방지)
 	if (header.sequenceNumber <= view->GetLastSequence())
@@ -143,40 +138,23 @@ void NetworkManager::HandleObjectSync(const GamePacket& header, const char* payl
 
 	view->SetLastSequence(header.sequenceNumber);
 
+	// 내 캐릭터라면 서버의 데이터를 무시 (내가 보낸 게 돌아온 것)
+	//if (view->IsMine()) return;
+
 	// syncFlags를 체크하여 어떤 데이터가 들어있는지 확인
 	uint32_t offset = 0;
 
-	if (header.syncFlags & SyncFlag::POSITION) 
-	{
+	if (header.syncFlags & SyncFlag::POSITION) {
 		// 찾은 NetworkView를 통해 실제 컴포넌트에 데이터 전달
 		// (직접 전달하거나, View 내부의 인터페이스를 호출)
-		if (auto transformView = view->GetGameObject()->GetScript<NetworkTransformView>()) 
-		{
+		if (auto transformView = view->GetGameObject()->GetScript<NetworkTransformView>()) {
 			transformView->OnDeserialize(payload + offset);
 		}
 		offset += sizeof(PlayerPosition);
 	}
 
-	// 애니메이션 데이터 처리 (Animation + Params)
-	if (header.syncFlags & SyncFlag::ANIMATION) 
-	{
-		// 먼저 포인터를 확보하여 유효성을 확인합니다.
-		const AnimationData* animHeader = reinterpret_cast<const AnimationData*>(payload + offset);
-
-		// [보안/안정성] paramCount가 비정상적으로 크면 데이터가 깨진 것임
-		if (animHeader->paramCount < 100) // 적절한 최대값 설정
-		{
-			if (auto animView = view->GetGameObject()->GetScript<NetworkAnimationView>())
-			{
-				animView->OnDeserialize(payload + offset);
-			}
-
-			// 다음을 위해 오프셋 미리 계산
-			offset += sizeof(AnimationData) + (animHeader->paramCount * sizeof(AnimParamData));
-		}
-	}
-
-	// HP나 다른 데이터가 있다면 이어서 처리...
+	// 애니메이션 등 추가 데이터가 있다면 동일하게 처리
+	// if (header.syncFlags & SyncFlag::ANIMATION) { ... }
 }
 
 void NetworkManager::HandleHeartbeatResponse()
@@ -202,7 +180,7 @@ void NetworkManager::SendGameData(GameDataType type, const void* data, size_t da
 	::memcpy(buffer.data(), &packet, sizeof(GamePacket));
 	if (dataSize > 0)
 	{
-		::memcpy(buffer.data() + sizeof(GamePacket), data, dataSize);
+		::memcpy(buffer.data(), data, dataSize);
 	}
 
 	auto sendBuffer = make_shared<vector<char>>(std::move(buffer));

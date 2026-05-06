@@ -151,6 +151,7 @@
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_StaticMeshTest.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\NetworkAnimationView.h" />
     <ClInclude Include="..\Public\NetworkManager.h" />
     <ClInclude Include="..\Public\NetworkTransformView.h" />
     <ClInclude Include="..\Public\NetworkView.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_StaticMeshTest.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\Private\NetworkAnimationView.cpp" />
     <ClCompile Include="..\Private\NetworkManager.cpp" />
     <ClCompile Include="..\Private\NetworkTransformView.cpp" />
     <ClCompile Include="..\Private\NetworkView.cpp" />

@@ -102,6 +102,29 @@ void AnimFSM::SetTweenDesc(const TweenDesc& desc)
 	_animatorComponent.lock()->SetTweenDesc(desc);
 }
 
+void AnimFSM::UpdateParamByHash(uint32_t paramHash, float value)
+{
+    // Float 파라미터에서 찾기
+    for (auto& [name, val] : _floatParams)
+    {
+        if (Utils::Hash(name) == paramHash)
+        {
+            val = value;
+            return; // 찾았으면 종료
+        }
+    }
+
+    // Bool 파라미터에서 찾기
+    for (auto& [name, val] : _boolParams)
+    {
+        if (Utils::Hash(name) == paramHash)
+        {
+            val = (value != 0.0f); // 0이 아니면 true
+            return;
+        }
+    }
+}
+
 void AnimFSM::OnInspectorGUI()
 {
     ImGui::Begin("Animator FSM Editor");

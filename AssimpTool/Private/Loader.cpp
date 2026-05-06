@@ -17,6 +17,7 @@
 #include "TestPlayCamScript.h"
 #include "NetworkView.h"
 #include "NetworkTransformView.h"
+#include "NetworkAnimationView.h"
 // ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -378,6 +379,9 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	// ----------------------------------------------------Script Load--------------------------------------------------------
 
 	_loadingText = L"스크립트 생성 중 입니다.";
+
+	// 이름 Script로 시작해야 에디터에서 인식
+
 	/* Script_TestCorin */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_TestCorin",
 		TestCorinScript::Create())))
@@ -401,6 +405,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	/* NetworkTransformView */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_NetworkTransformView",
 		NetworkTransformView::Create())))
+		return E_FAIL;
+
+	/* NetworkAnimationView */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_NetworkAnimationView",
+		NetworkAnimationView::Create())))
 		return E_FAIL;
 	// ----------------------------------------------------Script Load--------------------------------------------------------
 

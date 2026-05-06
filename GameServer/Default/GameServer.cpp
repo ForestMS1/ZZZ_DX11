@@ -32,10 +32,26 @@ int main()
 	{
 		boost::asio::io_context io_context;
 
+		// 작업이 없어도 run()이 종료되지 않도록 유지
+		auto workGuard = boost::asio::make_work_guard(io_context);
+
 		auto server = make_shared<GameUDPServer>(io_context, 9000);
 		std::cout << "Game UDP 서버 실행 중...\n" << std::endl;
 		
-		io_context.run();
+
+
+		std::vector<std::thread> workers;
+
+		for (int i = 0; i < std::thread::hardware_concurrency(); ++i)
+		{
+			workers.emplace_back([&]()
+				{
+					io_context.run();
+				});
+		}
+
+		for (auto& t : workers)
+			t.join();
 	}
 	catch (std::exception& e)
 	{

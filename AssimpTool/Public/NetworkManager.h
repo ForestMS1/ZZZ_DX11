@@ -29,12 +29,21 @@ public:
 	void AddNetworkView(shared_ptr<NetworkView> networkView);
 
 private:
+	// 응답받기(콜백 재귀)
 	void StartReceive();
+
+	// 서버 -> 클라로 온 패킷 분류
 	void HandleServerMessage(std::size_t bytesTransferred);
+
+	// 패킷타입에 따른 핸들
 	void HandleObjectSync(const GamePacket& header, const char* payload);
 	void HandleHeartbeatResponse();
 	void HandleBroadcastMessage(const char* data, uint32_t dataSize);
+
+	// 클라 -> 서버 패킷 전송
 	void SendGameData(GameDataType type, const void* data, size_t dataSize);
+
+	// Heartbeat
 	void StartHeartbeat();
 	void SendHeartbeat();
 
@@ -52,9 +61,11 @@ private:
 	std::unique_ptr<boost::asio::steady_timer> _heartbeatTimer;
 
 private:
-	std::unordered_map<uint32_t, shared_ptr<NetworkView>>	_networkViewMap;
+	std::unordered_map<uint32_t, shared_ptr<NetworkView>>	_networkViewMap; // 컴포넌트 캐싱
+	std::mutex _viewMapMutex;
 
 	shared_ptr<NetworkView> FindNetworkView(uint32_t id) {
+		std::lock_guard<std::mutex> lock(_viewMapMutex);
 		auto it = _networkViewMap.find(id);
 		return (it != _networkViewMap.end()) ? it->second : nullptr;
 	}

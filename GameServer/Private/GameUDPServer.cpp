@@ -75,7 +75,7 @@ void GameUDPServer::ProcessGamePacket(const GamePacket* packet, std::size_t tota
 	{
 	case GameDataType::OBJECT_SYNC:
 		std::cout << "OBJECT_SYNC 메시지 받음" << std::endl;
-		HandlePlayerPosition(packet, data, packet->dataSize);
+		HandleObjectSync(packet, data, packet->dataSize);
 		break;
 	case GameDataType::HEARTBEAT:
 		std::cout << "HEARTBEAT 메시지 받음" << std::endl;
@@ -91,29 +91,43 @@ void GameUDPServer::ProcessGamePacket(const GamePacket* packet, std::size_t tota
 	}
 }
 
-void GameUDPServer::HandlePlayerPosition(const GamePacket* packet, const char* data, uint32_t dataSize)
+void GameUDPServer::HandleObjectSync(const GamePacket* packet, const char* payload, uint32_t dataSize)
 {
-	if (dataSize < sizeof(PlayerPosition))
-		return;
 
-	auto pos = reinterpret_cast<const PlayerPosition*>(data);
-
-	// 1. 누가 보냈는지 식별 (IP와 Port 추출)
+	// 누가 보냈는지 식별 (IP와 Port 추출)
 	std::string clientAddr = _remoteEndpoint.address().to_string();
 	unsigned short clientPort = _remoteEndpoint.port();
 
-	// 2. 로그 출력 (형식: [IP:Port] Sync - Pos: (x, y, z))
-	// 숫자가 너무 길어지지 않게 소수점 2자리 정도로 제한하면 더 깔끔합니다.
-	printf("[%s:%d] OBJECT_SYNC -> Pos: (%.2f, %.2f, %.2f) | Rot: (%.2f, %.2f, %.2f)\n",
-		clientAddr.c_str(),
-		clientPort,
-		pos->position.x, pos->position.y, pos->position.z,
-		pos->rotation.x, pos->rotation.y, pos->rotation.z);
+	uint32_t offset = 0;
+
+	// 2. 위치 데이터 로그 (첫 번째 데이터)
+	if (packet->syncFlags & 0x01) // SyncFlag::POSITION
+	{
+		const PlayerPosition* pos = reinterpret_cast<const PlayerPosition*>(payload + offset);
+		printf("   [POS] (%.2f, %.2f, %.2f)\n", pos->posX, pos->posY, pos->posZ);
+		offset += sizeof(PlayerPosition); // 40바이트 이동
+	}
+
+	// 3. 애니메이션 데이터 로그 (두 번째 데이터)
+	if (packet->syncFlags & 0x02) // SyncFlag::ANIMATION
+	{
+		// offset이 정확해야 이 캐스팅이 성공합니다.
+		const AnimationData* anim = reinterpret_cast<const AnimationData*>(payload + offset);
+
+		printf("   [ANIM] Index: %d | Params: %d\n",
+			anim->animIndex, anim->paramCount);
+
+		// 파라미터가 있다면 첫 번째 파라미터 해시값만 확인
+		if (anim->paramCount > 0)
+		{
+			const AnimParamData* param = reinterpret_cast<const AnimParamData*>(anim + 1);
+			printf("      ㄴ First Param Hash: 0x%X | Value: %.2f\n", param->paramHash, param->value);
+		}
+	}
 
 	// 다른 클라이언트들에게 브로드캐스트
-	BroadcastPlayerPosition(packet, *pos);
+	BroadcastObjectSync(packet, payload, dataSize);
 }
-
 void GameUDPServer::HandleHeartBeat()
 {
 	SendHeartbeatResponse(_remoteEndpoint);
@@ -126,18 +140,21 @@ void GameUDPServer::HandleBroadcastMessage(const char* data, uint32_t dataSize)
 	BroadcastToAllClients(message);
 }
 
-void GameUDPServer::BroadcastPlayerPosition(const GamePacket* packet, const PlayerPosition& pos)
+void GameUDPServer::BroadcastObjectSync(const GamePacket* packet, const char* payload, uint32_t dataSize)
 {
 	GamePacket newPacket;
 	newPacket.type = GameDataType::OBJECT_SYNC;
 	newPacket.objectId = packet->objectId;
-	newPacket.sequenceNumber = ++_sequenceNumber;
+	newPacket.sequenceNumber = packet->sequenceNumber;
 	newPacket.syncFlags = packet->syncFlags;
-	newPacket.dataSize = sizeof(PlayerPosition);
+	newPacket.dataSize = dataSize;
 
-	auto buffer = make_shared<vector<char>>(sizeof(GamePacket) + sizeof(PlayerPosition));
+	auto buffer = make_shared<vector<char>>(sizeof(GamePacket) + dataSize);
 	::memcpy(buffer->data(), &newPacket, sizeof(GamePacket));
-	::memcpy(buffer->data() + sizeof(GamePacket), &pos, sizeof(PlayerPosition));	
+	if (dataSize > 0)
+	{
+		::memcpy(buffer->data() + sizeof(GamePacket), payload, dataSize);
+	}
 
 	lock_guard<mutex> lock(_clientMutex);
 	for (const auto& client : _activeClients)

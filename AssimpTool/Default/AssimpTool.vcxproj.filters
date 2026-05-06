@@ -28,9 +28,6 @@
     <Filter Include="01.Levels\Convert">
       <UniqueIdentifier>{f5c592b9-6617-4798-90e3-9ac4b6b1a755}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\StaticMeshTest">
-      <UniqueIdentifier>{02d5897f-2092-4bde-a8a8-bba1bed01790}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\TestCorin">
       <UniqueIdentifier>{cb62f88c-92fd-46a4-b4c6-55173fc513e4}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,12 @@
     </Filter>
     <Filter Include="03.Scirpts\Network\Manager">
       <UniqueIdentifier>{e5cbc62f-329e-43bb-90e2-ec9a845b6349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\StaticMeshTest">
+      <UniqueIdentifier>{02d5897f-2092-4bde-a8a8-bba1bed01790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\NetworkAnimationView">
+      <UniqueIdentifier>{1c165cb3-f1a4-463a-a556-b5130dad9fe2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +183,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\NetworkManager.h">
       <Filter>03.Scirpts\Network\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkAnimationView.h">
+      <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NetworkManager.cpp">
       <Filter>03.Scirpts\Network\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkAnimationView.cpp">
+      <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

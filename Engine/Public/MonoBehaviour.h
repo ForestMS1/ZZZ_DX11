@@ -25,6 +25,9 @@ public:
 	virtual void OnCollisionStay(const Collision& collision) {};
 	virtual void OnCollisionExit(const Collision& collision) {};
 
+	// 삭제
+	virtual void OnDestroy() override {};
+
 	// ImGui Insperctor 창 정보 
 	virtual void OnInspectorGUI() override {}
 

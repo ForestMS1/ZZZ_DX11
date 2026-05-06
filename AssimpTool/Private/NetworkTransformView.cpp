@@ -2,6 +2,15 @@
 #include "NetworkTransformView.h"
 #include "NetworkView.h"
 
+NetworkTransformView::NetworkTransformView()
+    : INetworkObservable(NetworkViewType::TransfomrView)
+{
+}
+
+NetworkTransformView::~NetworkTransformView()
+{
+}
+
 void NetworkTransformView::Awake()
 {
 	_view = GetGameObject()->GetScript<NetworkView>();
@@ -28,9 +37,19 @@ void NetworkTransformView::OnSerialize(std::vector<uint8_t>& outPayload, uint32_
 {
 	// TODO : 위치가 변했을 때만 보내는 로직을 추가
 	PlayerPosition data;
-	data.position = GetTransform()->GetPosition();
-	data.rotation = GetTransform()->GetRotation();
-	data.scale = GetTransform()->GetScale();
+    Vec3 pos = GetTransform()->GetPosition();
+    Vec3 rot = GetTransform()->GetRotation();
+    Vec3 scale = GetTransform()->GetScale();
+    data.posX = pos.x;
+    data.posY = pos.y;
+    data.posZ = pos.z;
+    data.rotX = rot.x;
+    data.rotY = rot.y;
+    data.rotZ = rot.z;
+    data.scaleX = scale.x;
+    data.scaleY = scale.y;
+    data.scaleZ = scale.z;
+
 	data.timestamp = static_cast<uint32_t>(
 		std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::steady_clock::now().time_since_epoch()).count());
@@ -60,14 +79,20 @@ void NetworkTransformView::OnDeserialize(const void* data)
     // 3. 데이터 반영 
     // [Tip] 즉시 반영하면 뚝뚝 끊길 수 있으므로, 
     // 나중에는 변수(m_targetPos)에 저장 후 Update에서 Lerp 처리를 권장합니다.
-    transform->SetPosition(receivedData->position);
-    transform->SetRotation(receivedData->rotation);
-    transform->SetScale(receivedData->scale);
+    transform->SetPosition(Vec3(receivedData->posX, receivedData->posY, receivedData->posZ));
+    transform->SetRotation(Vec3(receivedData->rotX, receivedData->rotY, receivedData->rotZ));
+    transform->SetScale(Vec3(receivedData->scaleX, receivedData->scaleY, receivedData->scaleZ));
 
     // 4. (선택 사항) 타임스탬프 확인 로그
     // uint32_t currentTick = ... (현재 시간);
     // uint32_t latency = currentTick - receivedData->timestamp;
     // std::cout << "Latency: " << latency << "ms" << std::endl;
+}
+
+void NetworkTransformView::OnDestroy()
+{
+    if (!_view.expired())
+        _view.lock()->RemoveView(_viewType);
 }
 
 void NetworkTransformView::OnInspectorGUI()
