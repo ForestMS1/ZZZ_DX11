@@ -5,6 +5,8 @@ enum class GameDataType
 	OBJECT_SYNC,
 	HEARTBEAT,
 	BROADCAST_MESSAGE,
+	ENTER_SCENE_REQUEST, // 클라 -> 서버: "나 입장 준비 끝났어"
+	ENTER_SCENE,         // 서버 -> 클라: "너랑 다른 애들 정보 줄게"
 	END
 };
 
@@ -48,6 +50,19 @@ struct GamePacket
 	uint32_t sequenceNumber;
 	uint32_t syncFlags;     // 어떤 데이터가 뒤에 붙어있는지 (1: Pos, 2: Anim, 4: HP 등)
 	uint32_t dataSize;
+};
+
+// 유저의 외형이나 초기 상태를 담는 데이터
+struct PlayerInfo {
+	uint32_t objectId;
+	char className[32]; // 팩토리 패턴용 이름 ("Player", "Warrior" 등)
+	float posX, posY, posZ;
+};
+
+// S_ENTER_SCENE: 서버가 클라이언트에게 보내는 패킷
+struct S_EnterScene {
+	PlayerInfo player;    // 본인 혹은 타인의 정보
+	bool isMine;          // true면 내 캐릭터, false면 다른 유저
 };
 
 #pragma pack(pop)

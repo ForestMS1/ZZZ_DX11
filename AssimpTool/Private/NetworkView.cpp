@@ -11,7 +11,6 @@ HRESULT NetworkView::Initialize_Prototype()
 
 void NetworkView::Awake()
 {
-    _networkID = Utils::GUIDToUint32(GetGameObject()->GetId());
 	NetworkManager::Get().AddNetworkView(SHARED_THIS(NetworkView));
 }
 
@@ -20,7 +19,7 @@ void NetworkView::Update()
 	if (_isMine) {
 		// 내 캐릭터라면 일정 주기마다 상태 전송 (Throttling)
 		auto now = std::chrono::steady_clock::now();
-		if (now - _lastSendTime >= std::chrono::milliseconds(33)) { // 30fps
+		if (now - _lastSendTime >= std::chrono::milliseconds(16)) { // 30fps
 			SerializeState();
 			_lastSendTime = now;
 		}

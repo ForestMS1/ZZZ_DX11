@@ -49,20 +49,20 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 
 	NetworkManager::Get();
-
+	NetworkManager::Get().RequestEnterScene("TestCorin");
 	return S_OK;
 }
 
 void Level_StaticMeshTest::Update()
 {
-	GAME.ShowResourceList();
-	GAME.ShowHiearchy();
-	GAME.ShowInspector();
-	GAME.RenderGizmo();
-
-	// 리소스 전부 해제하면서 씬 전환
-	if (GAME.Key_Down(DIK_BACKSPACE))
-		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
+	//GAME.ShowResourceList();
+	//GAME.ShowHiearchy();
+	//GAME.ShowInspector();
+	//GAME.RenderGizmo();
+	//
+	//// 리소스 전부 해제하면서 씬 전환
+	//if (GAME.Key_Down(DIK_BACKSPACE))
+	//	GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
 }
 
 HRESULT Level_StaticMeshTest::Render()

@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include "../../Libraries/Include/DirectXTK/SimpleMath.h"
 
-namespace Engine
+namespace Server
 {
 	using int8 = __int8;
 	using int16 = __int16;

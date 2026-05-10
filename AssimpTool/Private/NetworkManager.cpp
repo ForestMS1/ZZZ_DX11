@@ -121,6 +121,12 @@ void NetworkManager::HandleServerMessage(std::size_t bytesTransferred)
 	case GameDataType::BROADCAST_MESSAGE:
 		HandleBroadcastMessage(payload, packet->dataSize);
 		break;
+	case GameDataType::ENTER_SCENE:
+	{
+		const S_EnterScene* sceneData = reinterpret_cast<const S_EnterScene*>(payload);
+		HandleEnterScene(*sceneData);
+		break;
+	}
 	default:
 		break;
 	}
@@ -189,6 +195,39 @@ void NetworkManager::HandleBroadcastMessage(const char* data, uint32_t dataSize)
 {
 	std::string message(data, dataSize);
 	std::cout << "Broadcast: " << message << std::endl;
+}
+
+void NetworkManager::HandleEnterScene(const S_EnterScene& packet) {
+	// 1. 팩토리로 객체 생성 ("Player" 라는 이름으로 생성)
+	shared_ptr<GameObject> obj = GAME.CreateFromFactory(Utils::ToWString(packet.player.className));
+
+	if (obj == nullptr)
+		return;
+
+	// 2. 위치 및 ID 설정
+	Vec3 setPos(packet.player.posX, packet.player.posY, packet.player.posZ);
+	obj->GetTransform()->SetPosition(setPos);
+	auto netView = obj->GetScript<NetworkView>();
+	if (netView == nullptr)
+	{
+		obj->AddComponent(dynamic_pointer_cast<MonoBehaviour>(GAME.Clone_Prototype(static_cast<uint32>(LEVEL::TESTMESH), L"Script_NetworkView")));
+		obj->AddComponent(dynamic_pointer_cast<MonoBehaviour>(GAME.Clone_Prototype(static_cast<uint32>(LEVEL::TESTMESH), L"Script_NetworkTransformView")));
+		obj->AddComponent(dynamic_pointer_cast<MonoBehaviour>(GAME.Clone_Prototype(static_cast<uint32>(LEVEL::TESTMESH), L"Script_NetworkAnimationView")));
+	}
+	netView->SetNetworkID(packet.player.objectId);
+
+	// 3. 핵심: 권한 부여
+	if (packet.isMine) {
+		netView->SetIsMine(true);
+		// 내 캐릭터라면 카메라 타겟 설정 등 추가 로직 실행
+	}
+	else {
+		netView->SetIsMine(false);
+		// 타인이라면 컨트롤러는 끄고 보간 스크립트 활성화
+	}
+
+	// 4. 씬에 등록
+	GAME.Add_GameObject_toLayerNoClone(GAME.GetCurrentLevelIndex(), L"Layer_Basic", obj);
 }
 
 void NetworkManager::SendGameData(GameDataType type, const void* data, size_t dataSize)

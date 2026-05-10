@@ -3,12 +3,14 @@
 #include "AnimFSM.h"
 #include "Transition.h"
 #include "AnimState.h"
+#include "NetworkView.h"
 void TestCorinScript::Awake()
 {
 	if (auto animator = GetGameObject()->GetModelAnimator())
 	{
 		_fsm = animator->GetFSM();
 	}
+	_view = GetGameObject()->GetScript<NetworkView>();
 }
 void TestCorinScript::Start()
 {
@@ -17,6 +19,12 @@ void TestCorinScript::Start()
 
 void TestCorinScript::Update()
 {
+	if (!_view.expired())
+	{
+		if (!_view.lock()->IsMine())
+			return;
+	}
+
 	if (_fsm.expired())
 		_fsm.reset();
 	

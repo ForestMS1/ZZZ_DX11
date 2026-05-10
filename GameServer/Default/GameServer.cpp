@@ -37,9 +37,7 @@ int main()
 
 		auto server = make_shared<GameUDPServer>(io_context, 9000);
 		std::cout << "Game UDP 서버 실행 중...\n" << std::endl;
-		
-
-
+	
 		std::vector<std::thread> workers;
 
 		for (int i = 0; i < std::thread::hardware_concurrency(); ++i)

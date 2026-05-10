@@ -1,5 +1,8 @@
 #pragma once
 #include "MonoBehaviour.h"
+
+class NetworkView;
+
 class TestCorinScript : public MonoBehaviour
 {
 	virtual void Awake() override;
@@ -19,6 +22,7 @@ public:
 	static unique_ptr<TestCorinScript> Create();
 
 private:
+	weak_ptr<NetworkView> _view;
 	weak_ptr<AnimFSM> _fsm;
 	uint32 _collisionCount = 0;
 };

@@ -28,6 +28,13 @@ public:
 
 	void AddNetworkView(shared_ptr<NetworkView> networkView);
 
+	void RequestEnterScene(const string& className)
+	{
+		// 내 캐릭터의 클래스 이름을 담아서 서버에 요청
+		// (예: "TestCorin")
+		SendGameData(GameDataType::ENTER_SCENE_REQUEST, className.data(), className.size());
+	}
+
 private:
 	// 응답받기(콜백 재귀)
 	void StartReceive();
@@ -39,6 +46,7 @@ private:
 	void HandleObjectSync(const GamePacket& header, const char* payload);
 	void HandleHeartbeatResponse();
 	void HandleBroadcastMessage(const char* data, uint32_t dataSize);
+	void HandleEnterScene(const S_EnterScene& packet);
 
 	// 클라 -> 서버 패킷 전송
 	void SendGameData(GameDataType type, const void* data, size_t dataSize);

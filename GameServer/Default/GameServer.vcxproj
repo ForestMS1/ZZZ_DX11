@@ -145,9 +145,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Private\AsyncEchoServer.cpp" />
     <ClCompile Include="..\Private\GameUDPServer.cpp" />
+    <ClCompile Include="..\Private\ServerGameObject.cpp" />
+    <ClCompile Include="..\Private\ServerNPC.cpp" />
+    <ClCompile Include="..\Private\ServerPlayer.cpp" />
     <ClCompile Include="..\Private\Session.cpp" />
+    <ClCompile Include="..\Private\SessionManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -156,8 +159,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\CommonStruct.h" />
-    <ClInclude Include="..\Public\AsyncEchoServer.h" />
     <ClInclude Include="..\Public\GameUDPServer.h" />
+    <ClInclude Include="..\Public\ServerGameObject.h" />
+    <ClInclude Include="..\Public\ServerNPC.h" />
+    <ClInclude Include="..\Public\ServerPlayer.h" />
     <ClInclude Include="..\Public\Server_Defines.h" />
     <ClInclude Include="..\Public\Server_Enum.h" />
     <ClInclude Include="..\Public\Server_Function.h" />
@@ -165,6 +170,7 @@
     <ClInclude Include="..\Public\Server_Struct.h" />
     <ClInclude Include="..\Public\Server_Typedef.h" />
     <ClInclude Include="..\Public\Session.h" />
+    <ClInclude Include="..\Public\SessionManager.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

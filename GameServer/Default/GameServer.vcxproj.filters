@@ -17,8 +17,14 @@
     <Filter Include="02.Session">
       <UniqueIdentifier>{91bda370-e9eb-4f3b-84b1-f4a79903b4d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.AsyncEchoServer">
-      <UniqueIdentifier>{2c181f23-1e2d-4ac6-97ac-f809cba4c60c}</UniqueIdentifier>
+    <Filter Include="03.GameObject">
+      <UniqueIdentifier>{71f2323f-ecce-4c63-837a-436a54107594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\Player">
+      <UniqueIdentifier>{d3545452-27f7-4312-b798-32dc4080fa7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\NPC">
+      <UniqueIdentifier>{4cc88674-a933-47d1-8e16-b517593c8ff3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,19 +40,25 @@
     <ClCompile Include="..\Private\GameUDPServer.cpp">
       <Filter>01.GameUDPServer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AsyncEchoServer.cpp">
-      <Filter>03.AsyncEchoServer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Common\CommonStruct.cpp">
       <Filter>00.Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SessionManager.cpp">
+      <Filter>02.Session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ServerGameObject.cpp">
+      <Filter>03.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ServerPlayer.cpp">
+      <Filter>03.GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ServerNPC.cpp">
+      <Filter>03.GameObject\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\AsyncEchoServer.h">
-      <Filter>03.AsyncEchoServer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Session.h">
       <Filter>02.Session</Filter>
@@ -74,6 +86,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\Server_Struct.h">
       <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SessionManager.h">
+      <Filter>02.Session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ServerGameObject.h">
+      <Filter>03.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ServerPlayer.h">
+      <Filter>03.GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ServerNPC.h">
+      <Filter>03.GameObject\NPC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

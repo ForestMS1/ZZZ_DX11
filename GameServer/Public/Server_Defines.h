@@ -10,5 +10,18 @@
 #include "Server_Function.h"
 
 using namespace DirectX;
+using namespace Server;
 
+#define NO_COPY(CLASSNAME)											\
+			private:												\
+			CLASSNAME(const CLASSNAME&) = delete;					\
+			CLASSNAME& operator = (const CLASSNAME&) = delete;		
+
+#define DECLARE_SINGLETON(CLASSNAME)								\
+			NO_COPY(CLASSNAME)										\
+		public:														\
+			static CLASSNAME& Get(void) {							\
+			static CLASSNAME Instance;								\
+			return Instance;										\
+		}
 

@@ -17,6 +17,7 @@ public:
 
     // UUID -> uint32 (ID 충돌 가능성있음, 소규모라 확률 매우 희박, 일단 구현부터)
     uint32_t GetNetworkID() { return _networkID; }
+    void SetNetworkID(uint32_t id) { _networkID = id; }
 
     uint32_t GetLastSequence() const { return _lastSequence; }
     void SetLastSequence(uint32_t sequence) { _lastSequence = sequence; }
