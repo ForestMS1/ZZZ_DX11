@@ -153,6 +153,10 @@ HRESULT	GameObject::Render()
 	{
 		if (component != nullptr && component->GetLifeState() == LIFESTATE::STARTED)
 		{
+			// Renderer.cpp 에서 콜라이더는 따로 Render함수 호출
+			if (component->GetType() == ComponentType::Collider)
+				continue;
+
 			if(FAILED(component->Render()))
 				return E_FAIL;
 		}

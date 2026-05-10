@@ -14,6 +14,9 @@ OBBCollider::~OBBCollider()
 
 void OBBCollider::LateUpdate()
 {
+	// TODO : 임시 / 디버그 렌더용
+	GAME.Add_RenderObject(RENDERGROUP::COLLIDER, GetGameObject());
+
 	Matrix world = GetGameObject()->GetTransform()->GetWorldMatrix();
 
 	Vec3 scale, position;

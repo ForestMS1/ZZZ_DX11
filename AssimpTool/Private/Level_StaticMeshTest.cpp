@@ -45,7 +45,7 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 	// 충돌처리 할 레이어 쌍 정의
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Basic");
-	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
+	//GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
 
 	NetworkManager::Get();
