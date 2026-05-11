@@ -47,6 +47,10 @@ void CollisionManager::FixedUpdate()
 					// 자기 자신과 충돌처리 방지
 					if (srcGameObject == dscGameObject)
 						continue;
+					// 부모/자식 관계 충돌처리 방지
+					if ((srcGameObject->GetTransform()->GetParentTransform() == dscGameObject->GetTransform()) || 
+						(dscGameObject->GetTransform()->GetParentTransform() == srcGameObject->GetTransform()))
+						continue;
 
 					if (shared_ptr<Collider> dscCollider = dscGameObject->GetCollider())
 					{

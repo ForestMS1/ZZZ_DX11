@@ -144,6 +144,8 @@
     <ClInclude Include="..\Public\AssimpTool_Defines.h" />
     <ClInclude Include="..\Public\AsTypes.h" />
     <ClInclude Include="..\Public\Converter.h" />
+    <ClInclude Include="..\Public\CorinWeapon.h" />
+    <ClInclude Include="..\Public\CorinWeaponScript.h" />
     <ClInclude Include="..\Public\imnodes.h" />
     <ClInclude Include="..\Public\imnodes_internal.h" />
     <ClInclude Include="..\Public\INetworkObservable.h" />
@@ -183,6 +185,8 @@
   <ItemGroup>
     <ClCompile Include="..\Private\AsTypes.cpp" />
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\CorinWeapon.cpp" />
+    <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
     <ClCompile Include="..\Private\imnodes.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

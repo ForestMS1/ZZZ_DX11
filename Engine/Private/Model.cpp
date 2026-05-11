@@ -607,6 +607,17 @@ shared_ptr<ModelBone> Model::GetBoneByName(const wstring& name)
 	return nullptr;
 }
 
+uint32 Model::GetBoneIndexByName(const wstring& name)
+{
+	for (uint32 i = 0; i < _bones.size(); ++i)
+	{
+		if (_bones[i]->name == name)
+		{
+			return i;
+		}
+	}
+}
+
 shared_ptr<ModelAnimation> Model::GetAnimationByName(const wstring& name)
 {
 	for (auto& animation : _animations)

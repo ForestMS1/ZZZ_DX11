@@ -18,6 +18,7 @@
 #include "NetworkView.h"
 #include "NetworkTransformView.h"
 #include "NetworkAnimationView.h"
+#include "CorinWeaponScript.h"
 // ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -395,6 +396,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	/* Script_TestPlayCam */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_TestPlayCam",
 		TestPlayCamScript::Create())))
+		return E_FAIL;
+
+	/* Script_CorinWeapon */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_CorinWeapon",
+		CorinWeaponScript::Create())))
 		return E_FAIL;
 
 	/* NetworkView */

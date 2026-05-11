@@ -73,6 +73,9 @@
     <Filter Include="03.Scirpts\Network\NetworkAnimationView">
       <UniqueIdentifier>{1c165cb3-f1a4-463a-a556-b5130dad9fe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\CorinWeapon">
+      <UniqueIdentifier>{f53a8bd0-1287-4e1d-b80e-d8fb8e5d22ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -186,6 +189,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\NetworkAnimationView.h">
       <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinWeapon.h">
+      <Filter>02.GameObject\CorinWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinWeaponScript.h">
+      <Filter>03.Scirpts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +325,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\NetworkAnimationView.cpp">
       <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinWeapon.cpp">
+      <Filter>02.GameObject\CorinWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinWeaponScript.cpp">
+      <Filter>03.Scirpts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

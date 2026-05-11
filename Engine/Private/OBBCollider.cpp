@@ -23,6 +23,9 @@ void OBBCollider::LateUpdate()
 	Quaternion quat;
 	world.Decompose(scale, quat, position);
 
+
+	Vec3::Transform(_offset, quat);
+
 	_colliderBox.Center = position + _offset;
 	_colliderBox.Orientation = quat;
 }
@@ -69,27 +72,27 @@ void OBBCollider::OnInspectorGUI()
 	{
 		// Center
 		float center[3] = { _colliderBox.Center.x, _colliderBox.Center.y, _colliderBox.Center.z };
-		if (ImGui::DragFloat3("Center", center, 0.1f))
+		if (ImGui::DragFloat3("Center", center, 0.1f, -500.f, 500.f))
 		{
 			_colliderBox.Center = { center[0], center[1], center[2] };
 		}
 
 		// Extents
 		float extents[3] = { _colliderBox.Extents.x, _colliderBox.Extents.y, _colliderBox.Extents.z };
-		if (ImGui::DragFloat3("Extents", extents, 0.1f))
+		if (ImGui::DragFloat3("Extents", extents, 0.1f, -500.f, 500.f))
 		{
-			_colliderBox.Extents = { max(0.f, extents[0]),
-									 max(0.f, extents[1]),
-									 max(0.f, extents[2]) };
+			_colliderBox.Extents = { extents[0],
+									 extents[1],
+									 extents[2] };
 		}
 
 		// Offset
 		float offset[3] = { _offset.x, _offset.y, _offset.z };
-		if (ImGui::DragFloat3("Offset", offset, 0.1f))
+		if (ImGui::DragFloat3("Offset", offset, 0.1f, -500.f, 500.f))
 		{
-			_offset = { max(0.f, offset[0]),
-						max(0.f, offset[1]),
-						max(0.f, offset[2]) };
+			_offset = { offset[0],
+						offset[1],
+						offset[2] };
 		}
 
 		ImGui::TreePop();

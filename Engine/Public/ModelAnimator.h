@@ -59,6 +59,9 @@ public:
 	TweenDesc& GetTweenDesc() { return _tweenDesc; }
 	void SetTweenDesc(const TweenDesc& desc) { _tweenDesc = desc; }
 
+	// 키프레임별 Bone의 SRT
+	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
+
 	//ImGui
 	virtual void OnInspectorGUI() override;
 
