@@ -36,3 +36,14 @@ bool BoolCondition::IsSatisfied(shared_ptr<AnimFSM> fsm)
     // bool은 ConditionMode에 상관없이 일치하면 true 리턴
     return curBool == _value;
 }
+
+bool TriggerCondition::IsSatisfied(shared_ptr<AnimFSM> fsm)
+{
+    bool curTriggerBool = fsm->GetTrigger(_paramName);
+
+    // 트리거는 다시 false로 되돌림
+    fsm->SetTrigger(_paramName, false);
+
+    // 리턴은 트리거값으로
+    return curTriggerBool;
+}

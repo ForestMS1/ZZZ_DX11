@@ -45,8 +45,14 @@ public:
 	void SetFloat(const wstring& paramName, float value) { _floatParams[paramName] = value; }
 	void AddFloat(const wstring& paramName, float value) { _floatParams.emplace(paramName, value); }
 
+	// FSM의 trigger 파라미터 Property
+	bool GetTrigger(const wstring& paramName) { return _triggerParams[paramName]; }
+	void SetTrigger(const wstring& paramName, float value) { _triggerParams[paramName] = value; }
+	void AddTrigger(const wstring& paramName, float value) { _triggerParams.emplace(paramName, value); }
+
 	map<wstring, bool>& GetBoolMap() { return _boolParams; }
 	map<wstring, float>& GetFloatMap() { return _floatParams; }
+	map<wstring, bool>& GetTriggerMap() { return _triggerParams; }
 	// 네트워크 동기화용 함수 추가
 	void UpdateParamByHash(uint32_t paramHash, float value);
 
@@ -75,6 +81,9 @@ private:
 	// 주인 Animaotr 컴포넌트
 	weak_ptr<ModelAnimator> _animatorComponent;
 
+	// 조건 충족되면 바로 트랜지션 발동하는 Any State
+	shared_ptr<AnimState> _anyState;
+
 	// 현재 진행중인 AnimState
 	shared_ptr<AnimState> _curAnimState;
 	// 현재 Tween되어 지고있는 Transition
@@ -88,7 +97,7 @@ private:
 	// 파라미터
 	map<wstring, bool> _boolParams;
 	map<wstring, float> _floatParams;
-	// TODO : Trigger 추가
+	map<wstring, bool> _triggerParams;
 };
 
 NS_END

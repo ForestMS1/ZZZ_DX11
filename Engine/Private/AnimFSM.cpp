@@ -14,17 +14,33 @@
 AnimFSM::AnimFSM(shared_ptr<ModelAnimator> animatorComponent)
     : _animatorComponent(animatorComponent)
 {
+
 }
 
 AnimFSM::~AnimFSM()
 {
 }
 
-
 void AnimFSM::Update()
 {
+    if (_anyState == nullptr)
+    {
+        _anyState = make_shared<AnimState>(SHARED_THIS(AnimFSM));
+        Add_AnimState(L"AnyState", _anyState);
+    }
+
     if (_curAnimState == nullptr) 
         return;
+
+    // Any State먼저 검사
+    for (auto& transition : _anyState->GetTransitions())
+    {
+        if (transition->CanTransition())
+        {
+            ApplyTransition(transition);
+            return;
+        }
+    }
 
     // 현재 상태의 트랜지션들을 검사
     for (auto& transition : _curAnimState->GetTransitions())
@@ -42,6 +58,12 @@ void AnimFSM::Update()
             desc.curr.animIndex = _curAnimState->GetAnimationClipIndex();
         }
     }
+
+    //// 검사가 끝나면 Trigger들 전부 바로 false로 바꿈
+    //for (auto& trigger : _triggerParams)
+    //{
+    //    trigger.second = false;
+    //}
 
     /*{
         shared_ptr<ModelAnimator> animator = _animatorComponent.lock();
@@ -378,6 +400,13 @@ void AnimFSM::Save(const string& fileName)
         e->SetAttribute("Value", val);
         paramNode->LinkEndChild(e);
     }
+    for (auto& [name, val] : _triggerParams)
+    {
+        tinyxml2::XMLElement* e = document->NewElement("Trigger");
+        e->SetAttribute("Name", Utils::ToString(name).c_str());
+        e->SetAttribute("Value", val);
+        paramNode->LinkEndChild(e);
+    }
 
     // AnimStates 저장
     for (auto& [name, state] : _animStates)
@@ -386,7 +415,7 @@ void AnimFSM::Save(const string& fileName)
         root->LinkEndChild(stateNode);
 
         stateNode->SetAttribute("Name", Utils::ToString(state->GetName()).c_str());
-        stateNode->SetAttribute("ClipName", Utils::ToString(state->GetAnimationClip()->name).c_str());
+        stateNode->SetAttribute("ClipName", state->GetAnimationClip() ? Utils::ToString(state->GetAnimationClip()->name).c_str() : "None");
 
         // ImNodes 위치 저장 (추가한다면)
         // stateNode->SetAttribute("PosX", state->GetEditorPos().x);
@@ -423,6 +452,11 @@ void AnimFSM::Save(const string& fileName)
                     condNode->SetAttribute("Type", "Bool");
                     condNode->SetAttribute("Value", boolCond->_value);
                 }
+                else if (auto triggerCond = dynamic_pointer_cast<TriggerCondition>(condition))
+                {
+                    condNode->SetAttribute("Type", "Trigger");
+                    condNode->SetAttribute("Value", triggerCond->_value);
+                }
             }
         }
     }
@@ -448,6 +482,8 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
     _animStates.clear();
     _boolParams.clear();
     _floatParams.clear();
+    _triggerParams.clear();
+    _anyState.reset();
 
     // Parameters 로드
     tinyxml2::XMLElement* paramNode = root->FirstChildElement("Parameters");
@@ -458,6 +494,9 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
 
         for (auto* e = paramNode->FirstChildElement("Float"); e; e = e->NextSiblingElement("Float"))
             AddFloat(Utils::ToWString(e->Attribute("Name")), e->FloatAttribute("Value"));
+
+        for (auto* e = paramNode->FirstChildElement("Trigger"); e; e = e->NextSiblingElement("Trigger"))
+            AddTrigger(Utils::ToWString(e->Attribute("Name")), e->FloatAttribute("Value"));
     }
 
     // [Pass 1] 모든 AnimState 생성 (Transition 제외)
@@ -465,6 +504,13 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
     {
         wstring stateName = Utils::ToWString(stateNode->Attribute("Name"));
         string clipName = stateNode->Attribute("ClipName");
+
+        if (stateName == L"AnyState")
+        {
+            _anyState = make_shared<AnimState>(shared_from_this());
+            Add_AnimState(L"AnyState", _anyState);
+            continue;
+        }
 
         auto newState = make_shared<AnimState>(shared_from_this());
         newState->SetName(stateName);
@@ -512,6 +558,12 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
                     auto boolCond = make_shared<BoolCondition>();
                     boolCond->_value = condNode->BoolAttribute("Value");
                     condition = boolCond;
+                }
+                else if (type == "Trigger")
+                {
+                    auto triggerCond = make_shared<TriggerCondition>();
+                    triggerCond->_value = condNode->BoolAttribute("Value");
+                    condition = triggerCond;
                 }
 
                 if (condition)
@@ -584,6 +636,29 @@ void AnimFSM::RenderParameters()
         ImGui::TreePop();
     }
 
+    // --- Trigger Parameters ---
+    if (ImGui::TreeNode("Triggers"))
+    {
+        for (auto it = _triggerParams.begin(); it != _triggerParams.end(); )
+        {
+            string label = Utils::ToString(it->first);
+            ImGui::PushID(label.c_str());
+
+            if (ImGui::Button("X")) {
+                RemoveParameter(it->first, false);
+                it = _triggerParams.begin(); // 맵 변형 시 안전하게 처음부터 다시 (또는 루프 탈출)
+                ImGui::PopID();
+                continue;
+            }
+            ImGui::SameLine();
+            ImGui::Checkbox(label.c_str(), &it->second);
+
+            ImGui::PopID();
+            ++it;
+        }
+        ImGui::TreePop();
+    }
+
     ImGui::Separator();
 
     // --- 파라미터 추가 버튼 ---
@@ -595,10 +670,10 @@ void AnimFSM::RenderParameters()
     if (ImGui::BeginPopup("AddParamPopup"))
     {
         static char newParamBuffer[64] = "";
-        static int typeIdx = 0; // 0: Bool, 1: Float
+        static int typeIdx = 0; // 0: Bool, 1: Float 2: Trigger
 
         ImGui::InputText("Name", newParamBuffer, 64);
-        ImGui::Combo("Type", &typeIdx, "Boolean\0Float\0");
+        ImGui::Combo("Type", &typeIdx, "Boolean\0Float\0Trigger\0");
 
         if (ImGui::Button("Add", ImVec2(120, 0)))
         {
@@ -609,6 +684,8 @@ void AnimFSM::RenderParameters()
                     _boolParams[wName] = false;
                 else if (typeIdx == 1 && _floatParams.find(wName) == _floatParams.end())
                     _floatParams[wName] = 0.0f;
+                else if (typeIdx == 2 && _triggerParams.find(wName) == _triggerParams.end())
+                    _triggerParams[wName] = 0.0f;
 
                 newParamBuffer[0] = '\0';
                 ImGui::CloseCurrentPopup();
@@ -801,6 +878,16 @@ void AnimFSM::DrawTransitionDetailEditor(shared_ptr<Transition> trans)
             if (ImGui::Selectable(Utils::ToString(name).c_str()))
             {
                 auto newCond = make_shared<BoolCondition>();
+                newCond->_paramName = name;
+                trans->Add_Condition(newCond);
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        for (auto& [name, val] : _triggerParams)
+        {
+            if (ImGui::Selectable(Utils::ToString(name).c_str()))
+            {
+                auto newCond = make_shared<TriggerCondition>();
                 newCond->_paramName = name;
                 trans->Add_Condition(newCond);
                 ImGui::CloseCurrentPopup();

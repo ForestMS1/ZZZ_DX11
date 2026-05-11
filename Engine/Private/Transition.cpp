@@ -26,8 +26,9 @@ bool Transition::CanTransition()
 
     //  모든 조건(Condition) 만족 여부 체크
     for (auto& condition : _conditions)
-    {
-        if (!condition->IsSatisfied(fsm)) return false;
+    {   
+        if (!condition->IsSatisfied(fsm))
+            return false;
     }
 
     return true;

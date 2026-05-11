@@ -35,4 +35,12 @@ public:
 
 // TODO : Trigger Ãß°¡
 
+class ENGINE_DLL TriggerCondition : public Condition
+{
+public:
+    bool _value;
+
+    virtual bool IsSatisfied(shared_ptr<AnimFSM> fsm) override;
+};
+
 NS_END

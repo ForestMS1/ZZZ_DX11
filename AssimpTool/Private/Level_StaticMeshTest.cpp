@@ -60,9 +60,14 @@ void Level_StaticMeshTest::Update()
 	GAME.ShowInspector();
 	GAME.RenderGizmo();
 	
-	// 리소스 전부 해제하면서 씬 전환
-	if (GAME.Key_Down(DIK_BACKSPACE))
-		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
+
+	//// 리소스 전부 해제하면서 씬 전환
+	//if (GAME.Key_Down(DIK_BACKSPACE))
+	//	GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);
+
+
+	//if (GAME.Key_Down(DIK_BACKSPACE))
+	//	NetworkManager::Get().RequestEnterScene("TestCorin");
 }
 
 HRESULT Level_StaticMeshTest::Render()

@@ -22,8 +22,8 @@ public:
 	static unique_ptr<TestCorinScript> Create();
 
 private:
-	weak_ptr<NetworkView> _view;
-	weak_ptr<AnimFSM> _fsm;
+	weak_ptr<NetworkView> _view = {};
+	weak_ptr<AnimFSM> _fsm = {};
 	uint32 _collisionCount = 0;
 };
 
