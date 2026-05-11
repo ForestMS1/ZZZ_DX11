@@ -31,7 +31,9 @@ private:
 private:
 	HRESULT Ready_Layer_BackGround(const wstring& strLayerTag);
 
-
+private:
+	shared_ptr<GameObject> _loadingBackground = nullptr;
+	shared_ptr<GameObject> _loadingText = nullptr;
 public:
 	static unique_ptr<Level_Loading> Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext, LEVEL eNextLevelIndex);
 

@@ -7,9 +7,48 @@
 #include "Level_Converter.h"
 #include "GameInstance.h"
 
+#include "Texture.h"
+
 Level_Loading::Level_Loading(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
 {
+	shared_ptr<Texture> texture = make_shared<Texture>();
+	texture->Load(L"../../Resources/Textures/UI/Loading_FortuneSquare_Cam01.dds");
+	GAME.AddResource<Texture>(L"Loading_FortuneSquare_Cam01", texture);
+
+	_loadingBackground = make_shared<GameObject>(_device, _deviceContext);
+	_loadingBackground->Initialize();
+	_loadingBackground->SetName(L"Loading_Background");
+
+	shared_ptr<Shader> UIShader = Shader::Create(L"UI.fx");
+	GAME.AddResource<Shader>(L"UI.fx", UIShader);
+
+	shared_ptr<SpriteRenderer> uiRenderer = make_shared<SpriteRenderer>();
+	uiRenderer->SetShader(UIShader);
+	uiRenderer->Add_Texture(texture);
+	uiRenderer->SetUIWidth(2.f);
+	uiRenderer->SetUIHeight(2.f);
+	uiRenderer->SetUIPosX(0);
+	uiRenderer->SetUIPosY(0);
+
+	_loadingBackground->AddComponent(uiRenderer);
+
+	_loadingText = make_shared<GameObject>(_device, _deviceContext);
+	_loadingText->Initialize();
+	_loadingText->SetName(L"Loading_Text");
+
+	texture = make_shared<Texture>();
+	texture->Load(L"../../Resources/Textures/UI/LoadingText.png");
+	GAME.AddResource<Texture>(L"LoadingText", texture);
+
+	uiRenderer = make_shared<SpriteRenderer>();
+	uiRenderer->SetShader(UIShader);
+	uiRenderer->Add_Texture(texture);
+	uiRenderer->SetUIWidth(0.404f);
+	uiRenderer->SetUIHeight(0.2f);
+	uiRenderer->SetUIPosX(0.7f);
+	uiRenderer->SetUIPosY(0.7f);
+	_loadingText->AddComponent(uiRenderer);
 }
 
 Level_Loading::~Level_Loading()
@@ -34,6 +73,11 @@ HRESULT Level_Loading::Initialize(LEVEL eNextLevelIndex)
 
 void Level_Loading::Update()
 {
+	GAME.ShowResourceList();
+	GAME.ShowHiearchy();
+	GAME.ShowInspector();
+	GAME.RenderGizmo();
+
 	if (true == _loader->IsFinished() &&
 		GAME.Key_Down(DIK_RETURN))
 	{
@@ -67,6 +111,9 @@ HRESULT Level_Loading::Render()
 
 HRESULT Level_Loading::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
+	GAME.Add_GameObject_toLayerNoClone(static_cast<uint32>(LEVEL::LOADING), strLayerTag, _loadingText);
+	GAME.Add_GameObject_toLayerNoClone(static_cast<uint32>(LEVEL::LOADING), strLayerTag, _loadingBackground);
+
 	return S_OK;
 }
 

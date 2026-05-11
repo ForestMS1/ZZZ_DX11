@@ -31,7 +31,11 @@ VertexTexture VS_RENDERTARGET_UI(VertexTexture input)
 
 float4 PS(VertexTextureNormalTangent input) : SV_TARGET
 {
-    return DiffuseMap.Sample(LinearSampler, input.uv);
+    float4 output = DiffuseMap.Sample(LinearSampler, input.uv);
+    
+    clip(output.a - 0.3f);
+    
+    return output;
 }
 
 float4 PS_RENDERTARGET_UI(VertexTexture input) : SV_TARGET
