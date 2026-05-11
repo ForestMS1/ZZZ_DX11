@@ -379,6 +379,30 @@ void ModelAnimator::CreateAnimationTransform(uint32 index)
 	}
 }
 
+bool ModelAnimator::IsCurrentAnimFinished()
+{
+	if (_model == nullptr) return false;
+
+	// 현재 다음 애니메이션으로 넘어가는 중(Tweening)이라면 아직 끝난 게 아님
+	if (_tweenDesc.next.animIndex >= 0)
+	{
+		// 만약 '보간이 거의 끝나감'을 알고 싶다면 tweenRatio를 체크
+		return false;
+	}
+
+	shared_ptr<ModelAnimation> currentAnim = _model->GetAnimationByIndex(_tweenDesc.curr.animIndex);
+	if (currentAnim == nullptr) return false;
+
+	// 단일 애니메이션 재생 중 마지막 프레임 도달 여부 체크
+	// ratio가 1.0f에 근접하고 현재 프레임이 마지막일 때
+	if (_tweenDesc.curr.currFrame >= currentAnim->frameCount - 1)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void ModelAnimator::OnInspectorGUI()
 {
 	GuiRemoveButton("ModelAnimator");

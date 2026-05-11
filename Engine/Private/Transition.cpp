@@ -19,10 +19,9 @@ bool Transition::CanTransition()
 		return false;
 
     // Has Exit Time 체크 (애니메이션이 끝나야 넘어가는 경우)
-    if (_hasExitTime)
+    if (_hasExitTime == true)
     {
-        float curRatio = animator->GetTweenDesc().curr.ratio;
-        if (curRatio < _exitTimeValue) return false;
+        return animator->IsCurrentAnimFinished();
     }
 
     //  모든 조건(Condition) 만족 여부 체크

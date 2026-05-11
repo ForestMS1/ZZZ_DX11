@@ -58,7 +58,7 @@ void AnimFSM::ApplyTransition(shared_ptr<Transition> transition)
     shared_ptr<AnimState> nextState = transition->GetToState();
     shared_ptr<ModelAnimator> animator = _animatorComponent.lock();
     shared_ptr<Model> model = animator->GetModel();
-    if (!animator || !nextState || !model) return;
+    if (animator == nullptr || nextState == nullptr || model == nullptr) return;
 
 
     TweenDesc& desc = animator->GetTweenDesc();

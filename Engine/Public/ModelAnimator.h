@@ -62,6 +62,9 @@ public:
 	// 키프레임별 Bone의 SRT
 	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
 
+	// 현재 애니메이션이 끝났는가
+	bool IsCurrentAnimFinished();
+
 	//ImGui
 	virtual void OnInspectorGUI() override;
 

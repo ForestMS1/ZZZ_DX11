@@ -111,8 +111,8 @@ HRESULT Renderer::Draw()
 	GAME.MultiRenderTargetUnbind();
 
 #ifdef _DEBUG
-	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
-	GAME.RenderRTV(L"MRT_Shadow", _renderTargetShader, 1);
+//	GAME.RenderRTV(L"MRT_Deferred", _renderTargetShader, 1);
+//	GAME.RenderRTV(L"MRT_Shadow", _renderTargetShader, 1);
 #endif
 
 	if (FAILED(Render_Blend()))
