@@ -12,6 +12,7 @@
 #include "TestSphere.h"
 #include "TestUI.h"
 #include "SkyBox.h"
+#include "NetworkManager.h"
 Level_StaticMeshTest::Level_StaticMeshTest(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: Level(pDevice, pDeviceContext)
 {
@@ -44,8 +45,11 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 	// 충돌처리 할 레이어 쌍 정의
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Basic");
-	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
+	//GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
+
+	NetworkManager::Get();
+	NetworkManager::Get().RequestEnterScene("TestCorin");
 	return S_OK;
 }
 
@@ -55,7 +59,7 @@ void Level_StaticMeshTest::Update()
 	GAME.ShowHiearchy();
 	GAME.ShowInspector();
 	GAME.RenderGizmo();
-
+	
 	// 리소스 전부 해제하면서 씬 전환
 	if (GAME.Key_Down(DIK_BACKSPACE))
 		GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);

@@ -111,7 +111,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../../Libraries/Include/EngineSDK/;../../Libraries/Include\;../Default/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Common/;../../Libraries/Include/EngineSDK/;../../Libraries/Include\;../Default/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,7 +131,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../../Libraries/Include/EngineSDK/;../../Libraries/Include\;../Default/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Common/;../../Libraries/Include/EngineSDK/;../../Libraries/Include\;../Default/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,12 +144,19 @@
     <ClInclude Include="..\Public\AssimpTool_Defines.h" />
     <ClInclude Include="..\Public\AsTypes.h" />
     <ClInclude Include="..\Public\Converter.h" />
+    <ClInclude Include="..\Public\CorinWeapon.h" />
+    <ClInclude Include="..\Public\CorinWeaponScript.h" />
     <ClInclude Include="..\Public\imnodes.h" />
     <ClInclude Include="..\Public\imnodes_internal.h" />
+    <ClInclude Include="..\Public\INetworkObservable.h" />
     <ClInclude Include="..\Public\Level_Converter.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_StaticMeshTest.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\NetworkAnimationView.h" />
+    <ClInclude Include="..\Public\NetworkManager.h" />
+    <ClInclude Include="..\Public\NetworkTransformView.h" />
+    <ClInclude Include="..\Public\NetworkView.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\TestCam.h" />
     <ClInclude Include="..\Public\TestCamScript.h" />
@@ -178,14 +185,21 @@
   <ItemGroup>
     <ClCompile Include="..\Private\AsTypes.cpp" />
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\CorinWeapon.cpp" />
+    <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
     <ClCompile Include="..\Private\imnodes.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Private\INetworkObservable.cpp" />
     <ClCompile Include="..\Private\Level_Converter.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_StaticMeshTest.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\Private\NetworkAnimationView.cpp" />
+    <ClCompile Include="..\Private\NetworkManager.cpp" />
+    <ClCompile Include="..\Private\NetworkTransformView.cpp" />
+    <ClCompile Include="..\Private\NetworkView.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\TestCam.cpp" />

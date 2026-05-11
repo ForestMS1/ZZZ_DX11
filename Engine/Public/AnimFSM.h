@@ -45,6 +45,10 @@ public:
 	void SetFloat(const wstring& paramName, float value) { _floatParams[paramName] = value; }
 	void AddFloat(const wstring& paramName, float value) { _floatParams.emplace(paramName, value); }
 
+	map<wstring, bool>& GetBoolMap() { return _boolParams; }
+	map<wstring, float>& GetFloatMap() { return _floatParams; }
+	// 네트워크 동기화용 함수 추가
+	void UpdateParamByHash(uint32_t paramHash, float value);
 
 	void OnInspectorGUI();
 

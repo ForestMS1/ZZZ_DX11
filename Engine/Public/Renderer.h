@@ -22,6 +22,7 @@ private:
 	HRESULT Render_NonBlend();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
+	HRESULT Redner_Collider();
 
 	HRESULT Render_Deferred_Lighting();
 

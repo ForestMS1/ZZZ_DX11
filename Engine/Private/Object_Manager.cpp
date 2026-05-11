@@ -522,6 +522,17 @@ void Object_Manager::ShowInspector()
 		_selectedObject->Set_ClassName(Utils::ToWString(classBuf));// 수정 시 즉시 반영
 	}
 
+	// UUID
+	RPC_CSTR id = nullptr;
+	UUID tempId = _selectedObject->GetId();
+	if (UuidToStringA(&tempId, &id) == RPC_S_OK)
+	{
+		ImGui::Text("UUID:");
+		ImGui::SameLine();
+		ImGui::Text((char*)id);
+		RpcStringFreeA(&id);
+	}
+
 	ImGui::Separator();
 
 	// --- 컴포넌트 정보 ---

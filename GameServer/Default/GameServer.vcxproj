@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>../Bin/</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>../Bin/</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -103,13 +109,15 @@
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0A00;BOOST_ASIO_HAS_STD_COROUTINE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Include\;../Default/;../Public/;../Common/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,32 +129,49 @@
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0A00;BOOST_ASIO_HAS_STD_COROUTINE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Include\;../Default/;../Public/;../Common/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncEchoServer.cpp" />
+    <ClCompile Include="..\..\Common\CommonStruct.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameUDPServer.cpp" />
+    <ClCompile Include="..\Private\ServerGameObject.cpp" />
+    <ClCompile Include="..\Private\ServerNPC.cpp" />
+    <ClCompile Include="..\Private\ServerPlayer.cpp" />
+    <ClCompile Include="..\Private\Session.cpp" />
+    <ClCompile Include="..\Private\SessionManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="SimpleChatServer.cpp" />
-    <ClCompile Include="SynchronousEchoServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsyncEchoServer.h" />
+    <ClInclude Include="..\..\Common\CommonStruct.h" />
+    <ClInclude Include="..\Public\GameUDPServer.h" />
+    <ClInclude Include="..\Public\ServerGameObject.h" />
+    <ClInclude Include="..\Public\ServerNPC.h" />
+    <ClInclude Include="..\Public\ServerPlayer.h" />
+    <ClInclude Include="..\Public\Server_Defines.h" />
+    <ClInclude Include="..\Public\Server_Enum.h" />
+    <ClInclude Include="..\Public\Server_Function.h" />
+    <ClInclude Include="..\Public\Server_Macro.h" />
+    <ClInclude Include="..\Public\Server_Struct.h" />
+    <ClInclude Include="..\Public\Server_Typedef.h" />
+    <ClInclude Include="..\Public\Session.h" />
+    <ClInclude Include="..\Public\SessionManager.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="SimpleChatServer.h" />
-    <ClInclude Include="SynchronousEchoServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

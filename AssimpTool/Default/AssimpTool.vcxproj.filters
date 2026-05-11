@@ -28,9 +28,6 @@
     <Filter Include="01.Levels\Convert">
       <UniqueIdentifier>{f5c592b9-6617-4798-90e3-9ac4b6b1a755}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\StaticMeshTest">
-      <UniqueIdentifier>{02d5897f-2092-4bde-a8a8-bba1bed01790}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\TestCorin">
       <UniqueIdentifier>{cb62f88c-92fd-46a4-b4c6-55173fc513e4}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,24 @@
     </Filter>
     <Filter Include="02.GameObject\TestUI">
       <UniqueIdentifier>{bab82520-cb48-495a-bf35-77d927bad2b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network">
+      <UniqueIdentifier>{128203a3-7286-4fd0-8da8-a823255c1ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\NetworkTransformView">
+      <UniqueIdentifier>{2431a41f-b55c-4087-a745-0a115db5b129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\Manager">
+      <UniqueIdentifier>{e5cbc62f-329e-43bb-90e2-ec9a845b6349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\StaticMeshTest">
+      <UniqueIdentifier>{02d5897f-2092-4bde-a8a8-bba1bed01790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scirpts\Network\NetworkAnimationView">
+      <UniqueIdentifier>{1c165cb3-f1a4-463a-a556-b5130dad9fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\CorinWeapon">
+      <UniqueIdentifier>{f53a8bd0-1287-4e1d-b80e-d8fb8e5d22ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +174,27 @@
     </ClInclude>
     <ClInclude Include="..\Public\TestUI.h">
       <Filter>02.GameObject\TestUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkView.h">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\INetworkObservable.h">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkTransformView.h">
+      <Filter>03.Scirpts\Network\NetworkTransformView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkManager.h">
+      <Filter>03.Scirpts\Network\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NetworkAnimationView.h">
+      <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinWeapon.h">
+      <Filter>02.GameObject\CorinWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinWeaponScript.h">
+      <Filter>03.Scirpts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +310,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\TestUI.cpp">
       <Filter>02.GameObject\TestUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkView.cpp">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\INetworkObservable.cpp">
+      <Filter>03.Scirpts\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkTransformView.cpp">
+      <Filter>03.Scirpts\Network\NetworkTransformView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkManager.cpp">
+      <Filter>03.Scirpts\Network\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NetworkAnimationView.cpp">
+      <Filter>03.Scirpts\Network\NetworkAnimationView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinWeapon.cpp">
+      <Filter>02.GameObject\CorinWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinWeaponScript.cpp">
+      <Filter>03.Scirpts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

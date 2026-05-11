@@ -42,6 +42,8 @@ public:
 	vector<shared_ptr<ModelBone>>& GetBones() { return _bones; }
 	shared_ptr<ModelBone> GetBoneByIndex(uint32 index) { return (index < 0 || index >= _bones.size() ? nullptr : _bones[index]); }
 	shared_ptr<ModelBone> GetBoneByName(const wstring& name);
+	// 이름으로 인덱스 찾기
+	uint32 GetBoneIndexByName(const wstring& name);
 
 	uint32 GetAnimationCount() { return _animations.size(); }
 	vector<shared_ptr<ModelAnimation>>& GetAnimations() { return _animations; }

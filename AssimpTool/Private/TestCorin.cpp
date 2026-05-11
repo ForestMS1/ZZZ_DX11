@@ -6,6 +6,9 @@
 #include "Transition.h"
 #include "Condition.h"
 #include "AABBCollider.h"
+#include "NetworkView.h"
+#include "NetworkTransformView.h"
+#include "NetworkAnimationView.h"
 TestCorin::TestCorin(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: GameObject(pDevice, pDeviceContext)
 {
@@ -79,6 +82,16 @@ HRESULT TestCorin::Initialize(void* pArg)
 
 	GetTransform()->SetPosition(Vec3(0, 0, 0));
 	GetTransform()->SetScale(Vec3(1.f));
+
+	shared_ptr<NetworkView> networkView = make_shared<NetworkView>();
+	AddComponent(networkView);
+
+	shared_ptr<NetworkTransformView> networkTransformView = make_shared<NetworkTransformView>();
+	AddComponent(networkTransformView);
+
+	shared_ptr<NetworkAnimationView> networkAnimationView = make_shared<NetworkAnimationView>();
+	AddComponent(networkAnimationView);
+
 
 	return S_OK;
 }

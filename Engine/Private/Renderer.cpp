@@ -103,6 +103,10 @@ HRESULT Renderer::Draw()
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
 
+#ifdef _DEBUG
+	if (FAILED(Redner_Collider()))
+		return E_FAIL;
+#endif
 	// 기존 백버퍼와, DSV로 되돌림
 	GAME.MultiRenderTargetUnbind();
 
@@ -188,6 +192,22 @@ HRESULT Renderer::Render_UI()
 	}
 
 	_renderObjects[ETOUI(RENDERGROUP::UI)].clear();
+
+	return S_OK;
+}
+
+HRESULT Renderer::Redner_Collider()
+{
+	for (auto& object : _renderObjects[ETOUI(RENDERGROUP::COLLIDER)])
+	{
+		if (object != nullptr)
+		{
+			if(auto collider = object->GetCollider())
+				collider->Render();
+		}
+	}
+
+	_renderObjects[ETOUI(RENDERGROUP::COLLIDER)].clear();
 
 	return S_OK;
 }

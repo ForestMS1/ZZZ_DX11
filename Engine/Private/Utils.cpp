@@ -56,3 +56,20 @@ std::string Utils::ToString(const wstring& value)
 {
 	return string(value.begin(), value.end());
 }
+
+uint32_t Utils::GUIDToUint32(const GUID& guid)
+{
+	// GUID의 16바이트 데이터를 문자열 뷰나 바이트 배열로 취급
+	// 여기서는 간단하게 std::hash를 활용
+	std::hash<std::string_view> hasher;
+	std::string_view data(reinterpret_cast<const char*>(&guid), sizeof(GUID));
+
+	size_t hashed = hasher(data);
+
+	// size_t(8바이트)를 uint32_t(4바이트)로 압축 (상위/하위 XOR)
+#if defined(_WIN64)
+	return static_cast<uint32_t>(hashed ^ (hashed >> 32));
+#else
+	return static_cast<uint32_t>(hashed);
+#endif
+}
