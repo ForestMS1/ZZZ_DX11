@@ -394,7 +394,7 @@ bool ModelAnimator::IsCurrentAnimFinished()
 	if (currentAnim == nullptr) return false;
 
 	// 단일 애니메이션 재생 중 마지막 프레임 도달 여부 체크
-	// ratio가 1.0f에 근접하고 현재 프레임이 마지막일 때
+	// 현재 프레임이 마지막일 때
 	if (_tweenDesc.curr.currFrame >= currentAnim->frameCount - 1)
 	{
 		return true;

@@ -93,6 +93,29 @@ void TestCorinScript::Update()
 		_fsm.lock()->SetBool(L"isMove", false);
 	}
 		GetTransform()->SetPosition(pos);
+
+
+
+	// АјАн
+	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
+	{
+		if (_fsm.lock()->GetBool(L"attackNormal") == true && _fsm.lock()->GetFloat(L"attackNormalStep") == 0.f)
+		{
+			_fsm.lock()->SetFloat(L"attackNormalStep",1.f);
+		}
+		else if (_fsm.lock()->GetFloat(L"attackNormalStep") == 1.f)
+		{
+			_fsm.lock()->SetFloat(L"attackNormalStep", 2.f);
+		}
+
+		_fsm.lock()->SetBool(L"attackNormal", true);
+	}
+
+	if (_fsm.lock()->GetBool(L"attackNormal") && GetGameObject()->GetModelAnimator()->IsCurrentAnimFinished())
+	{
+		_fsm.lock()->SetBool(L"attackNormal", false);
+		_fsm.lock()->SetFloat(L"attackNormalStep", 0.f);
+	}
 }
 
 void TestCorinScript::OnCollisionEnter(const Collision& collision)

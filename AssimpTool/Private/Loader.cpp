@@ -276,15 +276,36 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Run_End");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Taunt");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_Start");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_Start");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_End");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_Ex_End");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_End");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode_End");
-	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Landed");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_End");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode_End");
+	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Landed");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Rush");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_Start");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L_End");
+
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_01");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_01_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_02");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_03");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_Explode");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_04");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_04_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_05");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_05_B");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_05_End");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_AssaultAid");
+	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_AssaultAid_End");
+
+
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_QuestStart");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_LevelSwitch");
 	CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_HitFly_Front");
