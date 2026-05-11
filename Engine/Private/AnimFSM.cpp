@@ -26,7 +26,7 @@ void AnimFSM::Update()
     if (_anyState == nullptr)
     {
         _anyState = make_shared<AnimState>(SHARED_THIS(AnimFSM));
-        Add_AnimState(L"AnyState", _anyState);
+        Add_AnimState(ANYSTATE, _anyState);
     }
 
     if (_curAnimState == nullptr) 
@@ -505,10 +505,10 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
         wstring stateName = Utils::ToWString(stateNode->Attribute("Name"));
         string clipName = stateNode->Attribute("ClipName");
 
-        if (stateName == L"AnyState")
+        if (stateName == ANYSTATE)
         {
             _anyState = make_shared<AnimState>(shared_from_this());
-            Add_AnimState(L"AnyState", _anyState);
+            Add_AnimState(ANYSTATE, _anyState);
             continue;
         }
 

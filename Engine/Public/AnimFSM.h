@@ -3,6 +3,8 @@
 
 NS_BEGIN(Engine)
 
+#define ANYSTATE L"AnyState"
+
 class ModelAnimator;
 class AnimState;
 class Transition;
