@@ -3,6 +3,14 @@
 
 NS_BEGIN(Engine)
 
+struct CameraKeyFrame
+{
+	float time;
+	Vec3 position;
+	Vec3 lookAt;
+	float fov;
+};
+
 enum class ProjectionType
 {
 	Perspective = 0, // 원근 투영
@@ -40,6 +48,14 @@ public:
 	void SetProjectionType(ProjectionType eType) { _projectionType = eType; }
 	ProjectionType GetProjectionType() const { return _projectionType; }
 
+	// 카메라 액션 Play / Stop
+	void Play(const wstring& actionName) { _curActionName = actionName; _isPlay = true; }
+	void Stop() { _curActionName = L"";  _isPlay = false; }
+
+	// 카메라 액션 Save / Load
+	void SaveAction(const wstring& filename);
+	void LoadAction(const wstring& filename);
+
 
 	// 카메라 On/Off
 	friend class Object_Manager;
@@ -70,6 +86,21 @@ public:
 	static Matrix S_MatView;
 	static Matrix S_MatProjection;
 	static BoundingFrustum S_Frustum;
+
+	// 액션~
+private:
+	map<wstring, vector<CameraKeyFrame>> _timeline; // [액션이름, 키프레임들]
+	float _elapsedTime = 0.f;  // 재생 시 DT가 누적되는 실제 진행 시간
+	float _editTime = 0.f;     // 에디터에서 슬라이더로 조절하는 편집 시점의 시간
+	uint32 _curKeyFrame = 0;
+	wstring _curActionName = L"";
+
+	bool _isPlay = false;
+
+private:
+	void PlayAction();
+	void AddKeyFrameAtCurrent(const wstring& actionName = L"NewAction");
+	void ShowKeyFrameList(const wstring& name);
 
 public:
 	shared_ptr<Prototype> Clone(void* pArg) override { return nullptr; }

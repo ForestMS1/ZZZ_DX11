@@ -176,6 +176,28 @@ void Transform::SetRotation(const Vec3& worldRotation)
 	}
 }
 
+void Transform::SetQuaternion(const Quaternion& quat)
+{
+	if (HasParent())
+	{
+		Vec3 parentScale, parentPos;
+		Quaternion parentQuat;
+		_parent.lock()->GetWorldMatrix().Decompose(parentScale, parentQuat, parentPos);
+
+		// 부모 쿼터니언의 역행렬
+		Quaternion parentInv;
+		parentQuat.Inverse(parentInv);
+
+		Quaternion localQuat = quat * parentInv;
+
+		SetLocalRotation(ToEulerAngles(localQuat));
+	}
+	else
+	{
+		SetLocalRotation(ToEulerAngles(quat));
+	}
+}
+
 void Transform::SetPosition(const Vec3& worldPosition)
 {
 	if (HasParent())
