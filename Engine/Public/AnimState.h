@@ -42,6 +42,12 @@ private:
 	UINT _clipIndex = 0;
 	// AnimState에서 뻗어 나가는 Transition들
 	vector<shared_ptr<Transition>> _transitions;
+
+	friend class AnimFSM;
+	// 루트본의 행렬을 트랜스폼에 적용할 것 인지
+	bool _isApplyAnimTransform = false;
+	// 위아래 움직임까지 적용할것인지. -> 보스나 점프있는 애니메이션에 쓸듯?
+	bool _isApplyAnimTransformY = false;
 };
 
 NS_END
