@@ -6,10 +6,11 @@
 #include "Model.h"
 #include "imnodes.h"
 #include "ModelAnimation.h"
-#include "Model.h"
+#include "Transform.h"
 #include <filesystem>
 #include "FileUtils.h"
 #include "Condition.h"
+
 
 AnimFSM::AnimFSM(shared_ptr<ModelAnimator> animatorComponent)
     : _animatorComponent(animatorComponent)
@@ -56,23 +57,45 @@ void AnimFSM::Update()
 
             TweenDesc& desc = animator->GetTweenDesc();
             desc.curr.animIndex = _curAnimState->GetAnimationClipIndex();
+
+
+            // 현재 AnimState가 애니메이션 움직임을 트랜스폼에 적용하기로했다면
+            if (_curAnimState->_isApplyAnimTransform)
+            {
+                uint32 curKeyFrame = desc.curr.currFrame;
+                uint32 prevKeyFrame = (curKeyFrame == 0) ? 0 : curKeyFrame - 1;
+
+                const auto& rootAnimTransform = animator->GetRootAnimTransform();
+                const Matrix& curRootMat = rootAnimTransform[desc.curr.animIndex][curKeyFrame];
+                const Matrix& prevRootMat = rootAnimTransform[desc.curr.animIndex][prevKeyFrame];
+
+                // 루트 본의 프레임 간 이동량(로컬 XYZ) 계산
+                Vec3 curRootPos = curRootMat.Translation();
+                Vec3 prevRootPos = prevRootMat.Translation();
+                Vec3 localDelta = curRootPos - prevRootPos;
+
+                // 캐릭터의 현재 방향(Rotation) 행렬 생성
+                auto transformCom = animator->GetTransform();
+                Vec3 currentRotation = transformCom->GetLocalRotation();
+
+                // 캐릭터의 Pitch, Yaw, Roll을 모두 고려한 회전 행렬
+                Matrix rotationMat = Matrix::CreateFromYawPitchRoll(currentRotation.y, currentRotation.x, currentRotation.z);
+
+                // 캐릭터 180도 돌려서 읽어왔다면 돌려줘야함
+                rotationMat *= Matrix::CreateRotationY(XM_PI);
+
+
+                if(_curAnimState->_isApplyAnimTransformY == false)
+                    localDelta.y = 0.f;
+                // 로컬 XYZ 이동량을 캐릭터가 바라보는 방향 기준으로 변환
+                Vec3 worldDeltaPos = Vec3::Transform(localDelta, rotationMat);
+
+                // 최종 위치 누적
+                Vec3 currentPos = transformCom->GetLocalPosition();
+                transformCom->SetLocalPosition(currentPos + worldDeltaPos);
+            }
         }
     }
-
-    //// 검사가 끝나면 Trigger들 전부 바로 false로 바꿈
-    //for (auto& trigger : _triggerParams)
-    //{
-    //    trigger.second = false;
-    //}
-
-    /*{
-        shared_ptr<ModelAnimator> animator = _animatorComponent.lock();
-        shared_ptr<Model> model = animator->GetModel();
-        shared_ptr<ModelAnimation> clip = _curAnimState->GetAnimationClip();
-
-        TweenDesc& desc = animator->GetTweenDesc();
-        desc.curr.animIndex = model->GetAnimationIndexByName(clip->name);
-    }*/
 }
 
 void AnimFSM::ApplyTransition(shared_ptr<Transition> transition)
@@ -151,9 +174,13 @@ void AnimFSM::OnInspectorGUI()
 {
     ImGui::Begin("Animator FSM Editor");
 
+
+    static char saveName[128] = "";
+    ImGui::InputText("Save Name", saveName, IM_ARRAYSIZE(saveName));
+
     if (ImGui::Button("Save"))
     {
-        Save("CorinFSM");
+        Save(saveName);
     }
     // 파라미터 확인용
     if (ImGui::CollapsingHeader("Blackboard", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -184,7 +211,25 @@ void AnimFSM::OnInspectorGUI()
         ImGui::BeginGroup();
         ImGui::Text("State: %s", Utils::ToString(name).c_str());
         ImGui::EndGroup();
-        ImGui::SameLine();
+        //ImGui::SameLine();
+
+        // --- 중앙 컨텐츠 영역 ---
+        ImGui::BeginGroup();
+        ImGui::Text("State: %s", Utils::ToString(name).c_str());
+
+        // 멤버 변수 bool 값 제어
+        if (ImGui::Checkbox("IsApplyAnimTransform", &state->_isApplyAnimTransform))
+        {
+
+        }
+        if (ImGui::Checkbox("ApplyY", &state->_isApplyAnimTransformY))
+        {
+
+        }
+        ImGui::EndGroup();
+        // -----------------------
+
+        //ImGui::SameLine();
 
         ImNodes::BeginOutputAttribute((nodeID << 1) | 1);
         ImGui::Dummy(ImVec2(10, 20)); // 오른쪽 판정 범위
@@ -459,6 +504,9 @@ void AnimFSM::Save(const string& fileName)
                 }
             }
         }
+        // [추가] 루트 모션 관련 속성 저장
+        stateNode->SetAttribute("ApplyAnimTransform", state->_isApplyAnimTransform);
+        stateNode->SetAttribute("ApplyAnimTransformY", state->_isApplyAnimTransformY);
     }
 
     document->SaveFile(fullPath.c_str());
@@ -514,6 +562,16 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
 
         auto newState = make_shared<AnimState>(shared_from_this());
         newState->SetName(stateName);
+
+        // [추가] 루트 모션 관련 bool 변수 로드
+        // QueryBoolAttribute는 해당 속성이 없을 경우 기존 값을 유지하므로 안전
+        bool applyTransform = false;
+        stateNode->QueryBoolAttribute("ApplyAnimTransform", &applyTransform);
+        newState->_isApplyAnimTransform = applyTransform;
+
+        bool applyTransformY = false;
+        stateNode->QueryBoolAttribute("ApplyAnimTransformY", &applyTransformY);
+        newState->_isApplyAnimTransformY = applyTransformY;
 
         // 모델에서 애니메이션 클립 찾아 연결
         if (clipName != "None" && animatorComponent->GetModel())

@@ -257,6 +257,7 @@ void ModelAnimator::CreateTexture()
 	if (_model->GetAnimationCount() == 0)
 		return;
 
+	_rootBoneAnimTransforms.resize(_model->GetAnimationCount());
 	_animTransforms.resize(_model->GetAnimationCount());
 	for (uint32 i = 0; i < _model->GetAnimationCount(); i++)
 		CreateAnimationTransform(i);
@@ -355,6 +356,21 @@ void ModelAnimator::CreateAnimationTransform(uint32 index)
 				T = Matrix::CreateTranslation(data.translation.x, data.translation.y, data.translation.z);
 
 				matAnimation = S * R * T;
+
+				if (bone->name == L"Bip001")
+				{
+					// 루트 모션용으로는 원본을 저장
+					_rootBoneAnimTransforms[index].push_back(matAnimation);
+
+					// 렌더링용 행렬 계산 (캐릭터 메쉬가 원점을 벗어나지 않게 X, Z 제거)
+					Vec3 renderingTranslation = data.translation;
+					renderingTranslation.x = 0.f;
+					renderingTranslation.z = 0.f;
+
+					// matAnimation을 렌더링용(제자리)으로 교체
+					matAnimation = S * R * Matrix::CreateTranslation(renderingTranslation);
+				}
+
 			}
 			else
 			{
@@ -372,7 +388,6 @@ void ModelAnimator::CreateAnimationTransform(uint32 index)
 				matParent = tempAnimBoneTransforms[parentIndex];
 
 			tempAnimBoneTransforms[b] = matAnimation * matParent;
-
 			// 결론
 			_animTransforms[index].transforms[f][b] = invGlobal * tempAnimBoneTransforms[b];
 		}

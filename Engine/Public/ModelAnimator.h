@@ -61,7 +61,7 @@ public:
 
 	// 키프레임별 Bone의 SRT
 	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
-
+	const vector<vector<Matrix>>& GetRootAnimTransform() { return _rootBoneAnimTransforms; }
 	// 현재 애니메이션이 끝났는가
 	bool IsCurrentAnimFinished();
 
@@ -79,6 +79,10 @@ private:
 private:
 	// 애니메이션(키프레임별 Bone의 SRT)
 	vector<AnimTransform> _animTransforms;
+	
+	// 루트본의 순수 애니메이션 이동량을 담을 벡터
+	vector<vector<Matrix>> _rootBoneAnimTransforms; // _rootBoneAnimTransforms[현재애니메이션인덱스][현재애니메이션의 현재키프레임]
+
 	// 쉐이더에 넘겨 줄 Texture, SRV
 	ComPtr<ID3D11Texture2D> _texture;
 	ComPtr<ID3D11ShaderResourceView> _srv;

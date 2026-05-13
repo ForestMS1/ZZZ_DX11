@@ -7,7 +7,7 @@
         <Trigger Name="goIdle" Value="false"/>
         <Trigger Name="onHit" Value="false"/>
     </Parameters>
-    <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle">
+    <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk_Start" Duration="0" HasExitTime="false">
             <Condition ParamName="isMove" Mode="0" Type="Bool" Value="true"/>
         </Transition>
@@ -15,21 +15,21 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="true"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start">
+    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk" Duration="0.5" HasExitTime="false"/>
     </AnimState>
-    <AnimState Name="attackNormal02End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End">
+    <AnimState Name="attackNormal02End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
-    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End">
+    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0.02" HasExitTime="true"/>
     </AnimState>
-    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk">
+    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0.039999999" HasExitTime="false">
             <Condition ParamName="isMove" Mode="0" Type="Bool" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="AnyState" ClipName="None">
+    <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="false">
             <Condition ParamName="goIdle" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
@@ -37,7 +37,7 @@
             <Condition ParamName="onHit" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="attackNormal02" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02">
+    <AnimState Name="attackNormal02" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="attackNormal02End" Duration="0" HasExitTime="false">
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="false"/>
         </Transition>
@@ -45,7 +45,7 @@
             <Condition ParamName="attackNormalStep" Mode="0" Type="Float" Value="2"/>
         </Transition>
     </AnimState>
-    <AnimState Name="attackNormal01" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01">
+    <AnimState Name="attackNormal01" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="attackNormal01End" Duration="0" HasExitTime="false">
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="false"/>
         </Transition>
@@ -53,20 +53,20 @@
             <Condition ParamName="attackNormalStep" Mode="0" Type="Float" Value="1"/>
         </Transition>
     </AnimState>
-    <AnimState Name="attackNormal01End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01_End">
+    <AnimState Name="attackNormal01End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true">
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="attackNormal03" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03">
+    <AnimState Name="attackNormal03" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="attackNormal03End" Duration="0" HasExitTime="false">
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="attackNormal03End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_End">
+    <AnimState Name="attackNormal03End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
-    <AnimState Name="Hit_L_Front" ClipName="Avatar_Female_Size01_Corin_Ani_Hit_L_Front">
+    <AnimState Name="Hit_L_Front" ClipName="Avatar_Female_Size01_Corin_Ani_Hit_L_Front" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
 </AnimFSM>
