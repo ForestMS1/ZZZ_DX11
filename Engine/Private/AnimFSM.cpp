@@ -174,9 +174,13 @@ void AnimFSM::OnInspectorGUI()
 {
     ImGui::Begin("Animator FSM Editor");
 
+
+    static char saveName[128] = "";
+    ImGui::InputText("Save Name", saveName, IM_ARRAYSIZE(saveName));
+
     if (ImGui::Button("Save"))
     {
-        Save("CorinFSM");
+        Save(saveName);
     }
     // 파라미터 확인용
     if (ImGui::CollapsingHeader("Blackboard", ImGuiTreeNodeFlags_DefaultOpen)) {
