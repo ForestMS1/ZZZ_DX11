@@ -95,8 +95,23 @@ void Resource_Manager::ShowResourceList()
 
 					if (ImGui::ImageButton("##icon", texID, ImVec2(button_size, button_size)))
 					{
-						// 클릭 시 로직
-						//_selectedMaterial = static_pointer_cast<Material>(pair.second);
+
+					}
+
+					// 2. 버튼 바로 다음에 드래그 소스 로직을 배치 (클릭 체크문 밖)
+					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+						// wstring 키값 전달
+						const wstring& textureKey = pair.first;
+
+						// 주의: wstring 객체 자체의 주소를 보낼 때는 드래그가 끝날 때까지 데이터가 유지되어야 함
+						// 매니저의 맵에 들어있는 pair.first는 안전
+						ImGui::SetDragDropPayload("CONTENT_BROWSER_TEXTURE", &textureKey, sizeof(wstring));
+
+						// 드래그 중 마우스 커서 옆에 보일 미리보기
+						string name(textureKey.begin(), textureKey.end());
+						ImGui::Text("Adding Texture: %s", name.c_str());
+
+						ImGui::EndDragDropSource();
 					}
 
 					// 리소스 키(이름) 출력

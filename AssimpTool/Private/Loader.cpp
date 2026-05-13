@@ -70,6 +70,15 @@ HRESULT Loader::Loading()
 
 	HRESULT hr = {};
 
+	if (_isFinishedStaticLoading == false)
+	{
+		if (FAILED(Loading_For_Static()))
+		{
+			LeaveCriticalSection(&_criticalSection);
+			return E_FAIL;
+		}
+	}
+
 	switch (_nextLevelIndex)
 	{
 	case LEVEL::CONVERT:
@@ -105,29 +114,28 @@ void Loader::Output_LoadingText()
 HRESULT Loader::Loading_For_Static()
 {
 	_loadingText = L"텍스쳐를 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
+
+
 
 	_loadingText = L"모델을 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
+	
+
+
+
 	_loadingText = L"셰이더를 로딩 중 입니다.";
-	for (size_t i = 0; i < 99999999; i++)
-	{
-		int a = 10;
-	}
+	
+
+
 
 	_loadingText = L"객체원형 생성 중 입니다.";
 
 
 	_loadingText = L"로딩이 완료되었습니다.";
 
-	_isFinished = true;
 
+
+	//_isFinished = true;
+	_isFinishedStaticLoading = true;
 	return S_OK;
 }
 
@@ -171,6 +179,53 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		GAME.AddResource(L"LogoBack_" + to_wstring(i), texture);
 	}
 
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillNormal.dds");
+		GAME.AddResource(L"SkillNormal", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillEvade.dds");
+		GAME.AddResource(L"SkillEvade", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillSpecial.dds");
+		GAME.AddResource(L"SkillSpecial", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillSwitch.dds");
+		GAME.AddResource(L"SkillSwitch", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillBg.dds");
+		GAME.AddResource(L"SkillBg", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/SkillBtnUlt.dds");
+		GAME.AddResource(L"SkillBtnUlt", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/MouseLIcon.png");
+		GAME.AddResource(L"MouseLIcon", texture);
+	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/MouseRIcon.png");
+		GAME.AddResource(L"MouseRIcon", texture);
+	}
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
 

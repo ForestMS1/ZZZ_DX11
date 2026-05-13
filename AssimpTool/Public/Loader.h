@@ -31,6 +31,7 @@ private: // For.Thread
 private: // For.Loading
 	bool		_isFinished = { false };
 	wstring		_loadingText = {};
+	bool		_isFinishedStaticLoading = { false };
 
 private:
 	HRESULT Loading_For_Static();
