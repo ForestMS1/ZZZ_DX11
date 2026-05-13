@@ -587,14 +587,14 @@ void Object_Manager::ShowInspector()
 			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
 			if (ImGui::DragFloat3("Position", (float*)&pos, 0.1f, 0, 0))
 			{
-				pTransform->SetPosition(pos);
+				pTransform->SetLocalPosition(pos);
 			}
 			ImGui::PopItemWidth();
 
 			ImGui::SameLine(); // 같은 줄에 배치
 			if (ImGui::Button("R##ResetPos")) // ## 뒤의 이름은 ID로 작동하여 중복 방지
 			{
-				pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
+				pTransform->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Position");
 
@@ -603,14 +603,14 @@ void Object_Manager::ShowInspector()
 			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
 			if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.5f))
 			{
-				pTransform->SetRotation(rot);
+				pTransform->SetLocalRotation(rot);
 			}
 			ImGui::PopItemWidth();
 
 			ImGui::SameLine();
 			if (ImGui::Button("R##ResetRot"))
 			{
-				pTransform->SetRotation(Vec3(0.f, 0.f, 0.f));
+				pTransform->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reset Rotation");
 
@@ -619,7 +619,7 @@ void Object_Manager::ShowInspector()
 			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.7f);
 			if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, -1000, 1000))
 			{
-				pTransform->SetScale(scale);
+				pTransform->SetLocalScale(scale);
 			}
 			ImGui::PopItemWidth();
 		}

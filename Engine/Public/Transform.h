@@ -45,6 +45,7 @@ public:
 	void SetScale(const Vec3& scale);
 	Vec3 GetRotation() { return _rotation; }
 	void SetRotation(const Vec3& rotation);
+	void SetQuaternion(const Quaternion& quat);
 	Vec3 GetPosition() { return _position; }
 	void SetPosition(const Vec3& position);
 

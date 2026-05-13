@@ -101,6 +101,39 @@ void SpriteRenderer::OnInspectorGUI()
 
     if (ImGui::CollapsingHeader("SpriteRenderer", ImGuiTreeNodeFlags_DefaultOpen))
     {
+		// Shader 변경 버튼
+		if (ImGui::Button("Change Shader##Shader", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
+		{
+			ImGui::OpenPopup("ShaderResourceSearchPopup");
+		}
+
+		// 팝업 내부 로직
+		if (ImGui::BeginPopup("ShaderResourceSearchPopup"))
+		{
+			ImGui::TextDisabled("Shaders");
+			ImGui::Separator();
+
+			const auto& resources = GAME.GetResourceArray();
+
+			for (const auto& pair : resources[static_cast<uint8>(ResourceType::SHADER)])
+			{
+				const auto& shader = pair.second;
+				if (ImGui::Selectable(Utils::ToString(shader->GetName()).c_str()))
+				{
+					_shader = static_pointer_cast<Shader>(shader);
+					_textureEffectBuffer = _shader->GetSRV("DiffuseMap");
+					_viewX = GAME.GetEngineDesc().iWinSizeX;
+					_viewY = GAME.GetEngineDesc().iWinSizeY;
+					_x = _viewX * 0.5f;
+					_y = _viewY * 0.5f;
+					_width = _viewX * 0.5f;
+					_height = _viewY * 0.5f;
+					_uiProj = Matrix::CreateOrthographic(_viewX, _viewY, 0.f, 1.f);
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		// Shader
 		string shaderName = _shader ? Utils::ToString(_shader->GetName()) : "None";
 		ImGui::Text("Shader: ");
@@ -143,6 +176,17 @@ void SpriteRenderer::OnInspectorGUI()
             }
             ImGui::TreePop();
         }
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			// 모델 리소스 매니저로부터 드래그 온 경우
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_TEXTURE"))
+			{
+				const wstring& textureKey = *(const wstring*)payload->Data;
+				_textures.push_back(GAME.GetResource<Texture>(textureKey));
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 
 		// 렌더그룹 설정

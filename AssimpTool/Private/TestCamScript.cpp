@@ -3,10 +3,13 @@
 
 void TestCamScript::LateUpdate()
 {
-	if (auto camera = GetGameObject()->GetCamera())
-		if(!camera->IsActive())
+	auto camera = GetGameObject()->GetCamera();
+
+	if (camera == nullptr || !camera->IsActive())
 		return;
 
+	if (camera->IsPlaying())
+		return;
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 look = GetTransform()->GetLook();
@@ -39,19 +42,6 @@ void TestCamScript::LateUpdate()
 		pos -= up * DT * 5.f;
 	}
 
-	if (GAME.Key_Pressing(DIK_Z))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.y -= DT;
-		GetTransform()->SetLocalRotation(rotation);
-	}
-	if (GAME.Key_Pressing(DIK_C))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.y += DT;
-		GetTransform()->SetLocalRotation(rotation);
-	}
-
 	if (GAME.Mouse_Pressing(DIM_RB))
 	{
 		signed long moveX = GAME.Get_DIMouseMove(DIMS_X);
@@ -72,8 +62,6 @@ void TestCamScript::LateUpdate()
 			GetTransform()->SetLocalRotation(rotation);
 		}
 	}
-
-
 
 	GetTransform()->SetLocalPosition(pos);
 }
