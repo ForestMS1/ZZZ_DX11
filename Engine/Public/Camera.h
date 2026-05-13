@@ -51,6 +51,8 @@ public:
 	// 카메라 액션 Play / Stop
 	void Play(const wstring& actionName) { _curActionName = actionName; _isPlay = true; }
 	void Stop() { _curActionName = L"";  _isPlay = false; }
+	// 카메라 액션 Play중인지
+	bool IsPlaying() const { return _isPlay; }
 
 	// 카메라 액션 Save / Load
 	void SaveAction(const wstring& filename);

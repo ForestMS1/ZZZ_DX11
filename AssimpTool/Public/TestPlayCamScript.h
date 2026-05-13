@@ -19,4 +19,7 @@ private:
 	float _roll = 0.f;
 
 	bool _mouseFix = true;
+
+private:
+	bool _isPrevActionPlay = false;
 };

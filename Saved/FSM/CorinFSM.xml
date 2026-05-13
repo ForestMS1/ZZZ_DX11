@@ -15,19 +15,11 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="true"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start">
-        <Transition ToState="Walk" Duration="0.5" HasExitTime="false"/>
-    </AnimState>
     <AnimState Name="attackNormal02End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
-    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End">
-        <Transition ToState="Idle" Duration="0.02" HasExitTime="true"/>
-    </AnimState>
-    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk">
-        <Transition ToState="Run_End" Duration="0.039999999" HasExitTime="false">
-            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="false"/>
-        </Transition>
+    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start">
+        <Transition ToState="Walk" Duration="0.5" HasExitTime="false"/>
     </AnimState>
     <AnimState Name="AnyState" ClipName="None">
         <Transition ToState="Idle" Duration="0" HasExitTime="false">
@@ -44,6 +36,14 @@
         <Transition ToState="attackNormal03" Duration="0" HasExitTime="false">
             <Condition ParamName="attackNormalStep" Mode="0" Type="Float" Value="2"/>
         </Transition>
+    </AnimState>
+    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk">
+        <Transition ToState="Run_End" Duration="0.039999999" HasExitTime="false">
+            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="false"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End">
+        <Transition ToState="Idle" Duration="0.02" HasExitTime="true"/>
     </AnimState>
     <AnimState Name="attackNormal01" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01">
         <Transition ToState="attackNormal01End" Duration="0" HasExitTime="false">

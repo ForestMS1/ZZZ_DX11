@@ -64,7 +64,6 @@ void Camera::PlayAction()
 		_curKeyFrame = 0;
 		_isPlay = false;
 
-		UpdateMatrix();
 		return;
 	}
 
@@ -343,6 +342,14 @@ void Camera::AddKeyFrameAtCurrent(const wstring& actionName)
 
 void Camera::ShowKeyFrameList(const wstring& name)
 {
+	auto transform = GetTransform();
+
+	Vec3 curPos = transform->GetLocalPosition();
+	Vec3 curLook = transform->GetLook();
+
+	ImGui::DragFloat3("Pos", (float*)&curPos, 0.1f);
+	ImGui::DragFloat3("LookAt", (float*)&curLook, 0.1f);
+
 	auto& frames = _timeline[name];
 	for (int i = 0; i < frames.size(); ++i)
 	{
@@ -352,6 +359,7 @@ void Camera::ShowKeyFrameList(const wstring& name)
 		{
 			ImGui::DragFloat("Time", &frames[i].time, 0.1f);
 			ImGui::DragFloat3("Pos", (float*)&frames[i].position, 0.1f);
+			ImGui::DragFloat3("LookAt", (float*)&frames[i].lookAt, 0.1f);
 			ImGui::DragFloat("FOV", &frames[i].fov, 0.5f);
 
 			if (ImGui::Button("Delete")) {

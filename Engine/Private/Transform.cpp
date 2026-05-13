@@ -125,21 +125,40 @@ void Transform::Chase(Vec3 targetWorldPos, float offsetLength, float speed)
 void Transform::LookAt(Vec3 targetWorldPos)
 {
 	Vec3 worldPos = GetPosition();
-
-	//  방향 벡터 계산 (타겟 - 현재위치)
 	Vec3 newLook = targetWorldPos - worldPos;
+
 	if (newLook.LengthSquared() < 0.001f) return;
 	newLook.Normalize();
 
-	Vec3 newRight = ::XMVector3Cross(Vec3(0.f, 1.f, 0.f), newLook);
-	Vec3 newUp = ::XMVector3Cross(newLook, newRight);
-	newRight.Normalize();
-	newUp.Normalize();
+	// 월드 기준 회전 행렬 생성
+	Matrix matWorldRotation = Matrix::CreateWorld(worldPos, -newLook, Vec3::Up);
 
+	Matrix matLocalRotation;
 
-	SetRight(newRight * GetLocalScale().x);
-	SetUp(newUp * GetLocalScale().y);
-	SetLook(newLook * GetLocalScale().z);
+	// 부모의 회전 영향 제거
+	if (HasParent())
+	{
+		// 부모의 월드 행렬에서 위치 정보를 제외한 회전/스케일 성분의 역행렬만 필요
+		Matrix matParentWorld = _parent.lock()->GetWorldMatrix();
+
+		// 위치를 제거하고 순수하게 방향만 역계산하기 위해 역행렬 곱
+		matLocalRotation = matWorldRotation * matParentWorld.Invert();
+	}
+	else
+	{
+		matLocalRotation = matWorldRotation;
+	}
+
+	// 로컬 행렬에서 회전값 추출하여 멤버 변수 갱신
+	Quaternion quat;
+	Vec3 dummyPos, dummyScale;
+	matLocalRotation.Decompose(dummyScale, quat, dummyPos);
+
+	// 로컬 회전값 업데이트 (Euler 변환)
+	_localRotation = ToEulerAngles(quat);
+
+	// 변수들이 갱신되었으므로 최종 행렬들 재계산
+	UpdateTransform();
 }
 
 void Transform::SetScale(const Vec3& worldScale)

@@ -15,14 +15,14 @@ Level_Loading::Level_Loading(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCo
 	shared_ptr<Texture> texture = make_shared<Texture>();
 	texture->Load(L"../../Resources/Textures/UI/Loading_FortuneSquare_Cam01.dds");
 	GAME.AddResource<Texture>(L"Loading_FortuneSquare_Cam01", texture);
-
+	
 	_loadingBackground = make_shared<GameObject>(_device, _deviceContext);
 	_loadingBackground->Initialize();
 	_loadingBackground->SetName(L"Loading_Background");
-
+	
 	shared_ptr<Shader> UIShader = Shader::Create(L"UI.fx");
 	GAME.AddResource<Shader>(L"UI.fx", UIShader);
-
+	
 	shared_ptr<SpriteRenderer> uiRenderer = make_shared<SpriteRenderer>();
 	uiRenderer->SetShader(UIShader);
 	uiRenderer->Add_Texture(texture);
@@ -30,17 +30,17 @@ Level_Loading::Level_Loading(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCo
 	uiRenderer->SetUIHeight(2.f);
 	uiRenderer->SetUIPosX(0);
 	uiRenderer->SetUIPosY(0);
-
+	
 	_loadingBackground->AddComponent(uiRenderer);
-
+	
 	_loadingText = make_shared<GameObject>(_device, _deviceContext);
 	_loadingText->Initialize();
 	_loadingText->SetName(L"Loading_Text");
-
+	
 	texture = make_shared<Texture>();
 	texture->Load(L"../../Resources/Textures/UI/LoadingText.png");
 	GAME.AddResource<Texture>(L"LoadingText", texture);
-
+	
 	uiRenderer = make_shared<SpriteRenderer>();
 	uiRenderer->SetShader(UIShader);
 	uiRenderer->Add_Texture(texture);

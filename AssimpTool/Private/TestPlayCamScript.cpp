@@ -14,9 +14,17 @@ void TestPlayCamScript::LateUpdate()
         _target.reset();
         return;
     }
-    if (auto camera = GetGameObject()->GetCamera())
-        if(!camera->IsActive())
-            return;
+
+    auto camera = GetGameObject()->GetCamera();
+
+    if (camera == nullptr || !camera->IsActive())
+        return;
+
+    if (_isPrevActionPlay && !camera->IsPlaying())
+    {
+        _pitch = 0.f;
+        _yaw = 0.f;
+    }
 
     if (g_hWnd != GetFocus())
     {
@@ -63,6 +71,8 @@ void TestPlayCamScript::LateUpdate()
 
     GetTransform()->SetLocalPosition(finalPos);
     GetTransform()->LookAt(targetPos + Vec3(0.f, 1.0f, 0.f)); // 플레이어의 허리/머리 쪽을 응시
+
+    _isPrevActionPlay = camera->IsPlaying();
 }
 
 void TestPlayCamScript::OnInspectorGUI()
