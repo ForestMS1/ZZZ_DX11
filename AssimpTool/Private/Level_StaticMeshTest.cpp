@@ -36,10 +36,10 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
@@ -48,8 +48,8 @@ HRESULT Level_StaticMeshTest::Initialize()
 	//GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
 
-	NetworkManager::Get();
-	NetworkManager::Get().RequestEnterScene("TestCorin");
+	//NetworkManager::Get();
+	//NetworkManager::Get().RequestEnterScene("TestCorin");
 	return S_OK;
 }
 

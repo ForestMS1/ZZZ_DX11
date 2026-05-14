@@ -19,6 +19,7 @@
 #include "NetworkTransformView.h"
 #include "NetworkAnimationView.h"
 #include "CorinWeaponScript.h"
+#include "CorinStateMachineScript.h"
 // ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -340,7 +341,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode");
 	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Explode_End");
 	//CorinAnimModel->ReadAnimationRotatedY180NoMove(L"Corin/Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_02_Landed");
-	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Rush");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_Start");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L_End");
@@ -359,6 +359,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Normal_05_End");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_AssaultAid");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_AssaultAid_End");
+
+
+	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Rush");
+	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Attack_Rush_End");
+
 
 
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_QuestStart");
@@ -477,6 +482,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	/* Script_CorinWeapon */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_CorinWeapon",
 		CorinWeaponScript::Create())))
+		return E_FAIL;
+
+	/* Script_CorinStateMachineScript */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_CorinStateMachineScript",
+		CorinStateMachineScript::Create())))
 		return E_FAIL;
 
 	/* NetworkView */

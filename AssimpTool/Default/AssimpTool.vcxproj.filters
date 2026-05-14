@@ -76,6 +76,24 @@
     <Filter Include="02.GameObject\CorinWeapon">
       <UniqueIdentifier>{f53a8bd0-1287-4e1d-b80e-d8fb8e5d22ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.StateMachine">
+      <UniqueIdentifier>{f3da060b-f673-4438-8293-cf5909395278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin">
+      <UniqueIdentifier>{d6156c2e-cdcc-4ed0-abc9-458c7028b67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\Idle">
+      <UniqueIdentifier>{4678ce10-9bef-44ec-93bb-d523b03184ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\Evade">
+      <UniqueIdentifier>{d7ebe104-2c6a-4564-8efd-aec37ed56f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\NormalAttack">
+      <UniqueIdentifier>{3bc928da-b27b-4460-9260-8af051705321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\DashAttack">
+      <UniqueIdentifier>{062a4823-e965-4f5b-9bfe-814d7500b34b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -195,6 +213,27 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorinWeaponScript.h">
       <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BaseState.h">
+      <Filter>04.StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinIdle.h">
+      <Filter>04.StateMachine\Corin\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>04.StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinStateMachineScript.h">
+      <Filter>04.StateMachine\Corin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinEvade.h">
+      <Filter>04.StateMachine\Corin\Evade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinNormalAttack.h">
+      <Filter>04.StateMachine\Corin\NormalAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinDashAttack.h">
+      <Filter>04.StateMachine\Corin\DashAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +370,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorinWeaponScript.cpp">
       <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BaseState.cpp">
+      <Filter>04.StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinIdle.cpp">
+      <Filter>04.StateMachine\Corin\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachine.cpp">
+      <Filter>04.StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinStateMachineScript.cpp">
+      <Filter>04.StateMachine\Corin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinEvade.cpp">
+      <Filter>04.StateMachine\Corin\Evade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinNormalAttack.cpp">
+      <Filter>04.StateMachine\Corin\NormalAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinDashAttack.cpp">
+      <Filter>04.StateMachine\Corin\DashAttack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

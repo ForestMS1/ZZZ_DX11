@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimFSM>
     <Parameters>
+        <Bool Name="IsMove" Value="true"/>
         <Bool Name="attackNormal" Value="false"/>
         <Bool Name="isMove" Value="false"/>
         <Float Name="attackNormalStep" Value="0"/>
@@ -18,6 +19,10 @@
     </AnimState>
     <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk" Duration="0.5" HasExitTime="false"/>
+        <Transition ToState="attackNormal01" Duration="0.5" HasExitTime="false">
+            <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="true"/>
+            <Condition ParamName="attackNormalStep" Mode="0" Type="Float" Value="0"/>
+        </Transition>
     </AnimState>
     <AnimState Name="attackNormal02End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
@@ -31,6 +36,10 @@
     <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0.039999999" HasExitTime="false">
             <Condition ParamName="isMove" Mode="0" Type="Bool" Value="false"/>
+        </Transition>
+        <Transition ToState="attackNormal01" Duration="0" HasExitTime="false">
+            <Condition ParamName="attackNormal" Mode="0" Type="Bool" Value="true"/>
+            <Condition ParamName="attackNormalStep" Mode="0" Type="Float" Value="0"/>
         </Transition>
     </AnimState>
     <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
@@ -78,5 +87,8 @@
     </AnimState>
     <AnimState Name="evadeFront" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Front" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
+        <Transition ToState="Walk" Duration="0.5" HasExitTime="false">
+            <Condition ParamName="IsMove" Mode="0" Type="Bool" Value="true"/>
+        </Transition>
     </AnimState>
 </AnimFSM>

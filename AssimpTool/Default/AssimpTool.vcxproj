@@ -143,7 +143,18 @@
   <ItemGroup>
     <ClInclude Include="..\Public\AssimpTool_Defines.h" />
     <ClInclude Include="..\Public\AsTypes.h" />
+    <ClInclude Include="..\Public\BaseState.h" />
     <ClInclude Include="..\Public\Converter.h" />
+    <ClInclude Include="..\Public\CorinDashAttack.h" />
+    <ClInclude Include="..\Public\CorinEvade.h" />
+    <ClInclude Include="..\Public\CorinIdle.h" />
+    <ClInclude Include="..\Public\CorinNormalAttack.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinStateMachineScript.h" />
     <ClInclude Include="..\Public\CorinWeapon.h" />
     <ClInclude Include="..\Public\CorinWeaponScript.h" />
     <ClInclude Include="..\Public\imnodes.h" />
@@ -158,6 +169,7 @@
     <ClInclude Include="..\Public\NetworkTransformView.h" />
     <ClInclude Include="..\Public\NetworkView.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
+    <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\Public\TestCam.h" />
     <ClInclude Include="..\Public\TestCamScript.h" />
     <ClInclude Include="..\Public\TestCorin.h" />
@@ -184,7 +196,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\AsTypes.cpp" />
+    <ClCompile Include="..\Private\BaseState.cpp" />
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\CorinDashAttack.cpp" />
+    <ClCompile Include="..\Private\CorinEvade.cpp" />
+    <ClCompile Include="..\Private\CorinIdle.cpp" />
+    <ClCompile Include="..\Private\CorinNormalAttack.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinStateMachineScript.cpp" />
     <ClCompile Include="..\Private\CorinWeapon.cpp" />
     <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
     <ClCompile Include="..\Private\imnodes.cpp">
@@ -202,6 +225,7 @@
     <ClCompile Include="..\Private\NetworkView.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
+    <ClCompile Include="..\Private\StateMachine.cpp" />
     <ClCompile Include="..\Private\TestCam.cpp" />
     <ClCompile Include="..\Private\TestCamScript.cpp" />
     <ClCompile Include="..\Private\TestCorin.cpp" />
