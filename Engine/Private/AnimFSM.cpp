@@ -100,6 +100,12 @@ void AnimFSM::Update()
 
 void AnimFSM::ApplyTransition(shared_ptr<Transition> transition)
 {
+    // 트리거 초기화
+    for (auto& tirgger : _triggerParams)
+    {
+        tirgger.second = false;
+    }
+
     shared_ptr<AnimState> nextState = transition->GetToState();
     shared_ptr<ModelAnimator> animator = _animatorComponent.lock();
     shared_ptr<Model> model = animator->GetModel();

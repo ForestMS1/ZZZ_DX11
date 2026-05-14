@@ -41,9 +41,6 @@ bool TriggerCondition::IsSatisfied(shared_ptr<AnimFSM> fsm)
 {
     bool curTriggerBool = fsm->GetTrigger(_paramName);
 
-    // 트리거는 다시 false로 되돌림
-    fsm->SetTrigger(_paramName, false);
-
     // 리턴은 트리거값으로
     return curTriggerBool;
 }
