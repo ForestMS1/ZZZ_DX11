@@ -44,30 +44,39 @@ Vec3 Transform::ToEulerAngles(Quaternion q)
 {
 	Vec3 angles;
 
-	// roll (x-axis rotation)
-	double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
-	double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
-	angles.x = std::atan2(sinr_cosp, cosr_cosp);
+	// Pitch (X-axis rotation)
+	// sinp가 1 또는 -1에 가까워지면 짐벌락 발생
+	double sinp = 2.0 * (q.w * q.x - q.y * q.z);
+	if (std::abs(sinp) >= 1.0)
+		angles.x = std::copysign(3.14159265358979323846 / 2.0, sinp); // 90도 혹은 -90도
+	else
+		angles.x = std::asin(sinp);
 
-	// pitch (y-axis rotation)
-	double sinp = std::sqrt(1 + 2 * (q.w * q.y - q.x * q.z));
-	double cosp = std::sqrt(1 - 2 * (q.w * q.y - q.x * q.z));
-	angles.y = 2 * std::atan2(sinp, cosp) - 3.14159f / 2;
+	// Yaw (Y-axis rotation)
+	double siny_cosp = 2.0 * (q.w * q.y + q.z * q.x);
+	double cosy_cosp = 1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+	angles.y = std::atan2(siny_cosp, cosy_cosp);
 
-	// yaw (z-axis rotation)
-	double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
-	double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
-	angles.z = std::atan2(siny_cosp, cosy_cosp);
+	// Roll (Z-axis rotation)
+	double sinr_cosp = 2.0 * (q.w * q.z + q.x * q.y);
+	double cosr_cosp = 1.0 - 2.0 * (q.z * q.z + q.x * q.x);
+	angles.z = std::atan2(sinr_cosp, cosr_cosp);
 
 	return angles;
+
+	return angles;
+}
+
+Quaternion ToQuaternion(Vec3 euler)
+{
+	// 매개변수 pitch yaw roll임
+	return ::XMQuaternionRotationRollPitchYaw(euler.x, euler.y, euler.z);
 }
 
 void Transform::UpdateTransform()
 {
 	Matrix matScale = Matrix::CreateScale(_localScale);
-	Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
-	matRotation *= Matrix::CreateRotationY(_localRotation.y);
-	matRotation *= Matrix::CreateRotationZ(_localRotation.z);
+	Matrix matRotation = Matrix::CreateFromQuaternion(ToQuaternion(_localRotation));
 	Matrix matTranslation = Matrix::CreateTranslation(_localPosition);
 
 	_matLocal = matScale * matRotation * matTranslation;

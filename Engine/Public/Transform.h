@@ -76,7 +76,7 @@ private:
 	void SetLook(const Vec3& v) { _matWorld.Backward(v); }
 private:
 	Vec3 _localScale = { 1.f, 1.f, 1.f };
-	Vec3 _localRotation = { 0.f, 0.f, 0.f };
+	Vec3 _localRotation = { 0.f, 0.f, 0.f }; // pitch // yaw // roll
 	Vec3 _localPosition = { 0.f, 0.f, 0.f };
 
 	Matrix _matLocal = Matrix::Identity;
