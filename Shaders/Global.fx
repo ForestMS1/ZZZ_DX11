@@ -149,6 +149,20 @@ DepthStencilState DepthDisable
 
 //---------------------------RasterizerState----------------------------------------
 
+//---------------------------BlendState---------------------------------------------
+
+BlendState BS_Alpha
+{
+    BlendEnable[0] = true;
+    BlendEnable[1] = true;
+    BlendEnable[2] = true;
+
+    SrcBlend = SRC_ALPHA;
+    DestBlend = INV_SRC_ALPHA;
+    BlendOp = ADD;
+};
+
+//---------------------------BlendState---------------------------------------------
 
 ///////////
 // Macro //

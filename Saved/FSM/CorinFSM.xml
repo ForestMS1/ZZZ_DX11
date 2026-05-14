@@ -4,6 +4,7 @@
         <Bool Name="attackNormal" Value="false"/>
         <Bool Name="isMove" Value="false"/>
         <Float Name="attackNormalStep" Value="0"/>
+        <Trigger Name="evade" Value="false"/>
         <Trigger Name="goIdle" Value="false"/>
         <Trigger Name="onHit" Value="false"/>
     </Parameters>
@@ -23,6 +24,9 @@
     </AnimState>
     <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0.02" HasExitTime="true"/>
+        <Transition ToState="Walk_Start" Duration="0.34999999" HasExitTime="false">
+            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="true"/>
+        </Transition>
     </AnimState>
     <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0.039999999" HasExitTime="false">
@@ -35,6 +39,9 @@
         </Transition>
         <Transition ToState="Hit_L_Front" Duration="0" HasExitTime="false">
             <Condition ParamName="onHit" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="evadeFront" Duration="0" HasExitTime="false">
+            <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
     <AnimState Name="attackNormal02" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02" ApplyAnimTransform="true" ApplyAnimTransformY="false">
@@ -67,6 +74,9 @@
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
     <AnimState Name="Hit_L_Front" ClipName="Avatar_Female_Size01_Corin_Ani_Hit_L_Front" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
+    </AnimState>
+    <AnimState Name="evadeFront" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Front" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true"/>
     </AnimState>
 </AnimFSM>

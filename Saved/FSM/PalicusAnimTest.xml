@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimFSM>
+    <Parameters>
+        <Trigger Name="attack" Value="false"/>
+        <Trigger Name="goIdle" Value="false"/>
+    </Parameters>
+    <AnimState Name="Idle" ClipName="Death_Ani_Walk_L" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Attack01" Duration="0" HasExitTime="false">
+            <Condition ParamName="attack" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Attack01" ClipName="Monster_Palicus_Ani_Attack_08_01" ApplyAnimTransform="true" ApplyAnimTransformY="true">
+        <Transition ToState="Attack02" Duration="0" HasExitTime="true"/>
+    </AnimState>
+    <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="false">
+            <Condition ParamName="goIdle" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Attack02" ClipName="Monster_Palicus_Ani_Attack_08_03" ApplyAnimTransform="true" ApplyAnimTransformY="true">
+        <Transition ToState="Attack03" Duration="0" HasExitTime="true"/>
+    </AnimState>
+    <AnimState Name="Attack03" ClipName="Monster_Palicus_Ani_Attack_08_03" ApplyAnimTransform="true" ApplyAnimTransformY="true"/>
+</AnimFSM>

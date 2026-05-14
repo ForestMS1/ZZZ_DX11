@@ -26,10 +26,14 @@ void TestCorinScript::Update()
 	}
 
 	if (_fsm.expired())
+	{
 		_fsm.reset();
+		return;
+	}
 	
-	if(!_fsm.expired())
-		_fsm.lock()->SetBool(L"isMove", true);
+	auto animFSM = _fsm.lock();
+
+	animFSM->SetBool(L"isMove", true);
 
 	Vec3 pos = GetTransform()->GetPosition();
 	Vec3 look = GetTransform()->GetLook();
@@ -38,18 +42,22 @@ void TestCorinScript::Update()
 
 	if (GAME.Key_Pressing(DIK_UP))
 	{
-		pos += look * DT * 5.f;
+		_moveSpeed += DT * 10.f;
+		if (_moveSpeed >= 5.f)
+			_moveSpeed = 5.f;
+
+		pos += look * DT * _moveSpeed;
 
 		if (GAME.Key_Pressing(DIK_LEFT))
 		{
 			Vec3 rotation = GetTransform()->GetLocalRotation();
-			rotation.y -= DT * 5.f;
+			rotation.y -= DT * _moveSpeed;
 			GetTransform()->SetLocalRotation(rotation);
 		}
 		if (GAME.Key_Pressing(DIK_RIGHT))
 		{
 			Vec3 rotation = GetTransform()->GetLocalRotation();
-			rotation.y += DT * 5.f;
+			rotation.y += DT * _moveSpeed;
 			GetTransform()->SetLocalRotation(rotation);
 		}
 	}
@@ -61,36 +69,47 @@ void TestCorinScript::Update()
 	}
 	else if (GAME.Key_Pressing(DIK_DOWN))
 	{
-		pos += look * DT * 5.f;
+		_moveSpeed += DT * 1.5f;
+		if (_moveSpeed >= 5.f)
+			_moveSpeed = 5.f;
+
+		pos += look * DT * _moveSpeed;
 
 		if (GAME.Key_Pressing(DIK_LEFT))
 		{
 			Vec3 rotation = GetTransform()->GetLocalRotation();
-			rotation.y -= DT * 5.f;
+			rotation.y -= DT * _moveSpeed;
 			GetTransform()->SetLocalRotation(rotation);
 		}
 		if (GAME.Key_Pressing(DIK_RIGHT))
 		{
 			Vec3 rotation = GetTransform()->GetLocalRotation();
-			rotation.y += DT * 5.f;
+			rotation.y += DT * _moveSpeed;
 			GetTransform()->SetLocalRotation(rotation);
 		}
 	}
 	else if (GAME.Key_Down(DIK_LEFT))
 	{
+		_moveSpeed = 0.f;
+
 		Vec3 rotation = GetTransform()->GetLocalRotation();
 		rotation.y -= XM_PI * 0.25f;
 		GetTransform()->SetLocalRotation(rotation);
+		animFSM->SetBool(L"isMove", false);
 	}
 	else if (GAME.Key_Down(DIK_RIGHT))
 	{
+		_moveSpeed = 0.f;
+
 		Vec3 rotation = GetTransform()->GetLocalRotation();
 		rotation.y += XM_PI * 0.25f;
 		GetTransform()->SetLocalRotation(rotation);
+		animFSM->SetBool(L"isMove", false);
 	}
 	else if(!_fsm.expired())
 	{
-		_fsm.lock()->SetBool(L"isMove", false);
+		_moveSpeed = 0.f;
+		animFSM->SetBool(L"isMove", false);
 	}
 		GetTransform()->SetPosition(pos);
 
@@ -99,22 +118,28 @@ void TestCorinScript::Update()
 	// °ø°İ
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
-		if (_fsm.lock()->GetBool(L"attackNormal") == true && _fsm.lock()->GetFloat(L"attackNormalStep") == 0.f)
+		if (animFSM->GetBool(L"attackNormal") == true && animFSM->GetFloat(L"attackNormalStep") == 0.f)
 		{
-			_fsm.lock()->SetFloat(L"attackNormalStep",1.f);
+			animFSM->SetFloat(L"attackNormalStep",1.f);
 		}
-		else if (_fsm.lock()->GetFloat(L"attackNormalStep") == 1.f)
+		else if (animFSM->GetFloat(L"attackNormalStep") == 1.f)
 		{
-			_fsm.lock()->SetFloat(L"attackNormalStep", 2.f);
+			animFSM->SetFloat(L"attackNormalStep", 2.f);
 		}
 
-		_fsm.lock()->SetBool(L"attackNormal", true);
+		animFSM->SetBool(L"attackNormal", true);
 	}
 
-	if (_fsm.lock()->GetBool(L"attackNormal") && GetGameObject()->GetModelAnimator()->IsCurrentAnimFinished())
+	if (animFSM->GetBool(L"attackNormal") && GetGameObject()->GetModelAnimator()->IsCurrentAnimFinished())
 	{
-		_fsm.lock()->SetBool(L"attackNormal", false);
-		_fsm.lock()->SetFloat(L"attackNormalStep", 0.f);
+		animFSM->SetBool(L"attackNormal", false);
+		animFSM->SetFloat(L"attackNormalStep", 0.f);
+	}
+
+	// Evade
+	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
+	{
+		animFSM->SetTrigger(L"evade", true);
 	}
 }
 

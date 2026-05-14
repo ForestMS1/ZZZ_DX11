@@ -25,5 +25,8 @@ private:
 	weak_ptr<NetworkView> _view = {};
 	weak_ptr<AnimFSM> _fsm = {};
 	uint32 _collisionCount = 0;
+
+private:
+	float _moveSpeed = 0.f;
 };
 

@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimFSM>
     <Parameters>
-        <Bool Name="isMove" Value="false"/>
     </Parameters>
-    <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle">
-        <Transition ToState="Walk_Start" Duration="0.2" HasExitTime="false">
-            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="true"/>
-        </Transition>
-    </AnimState>
-    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start">
-        <Transition ToState="Walk" Duration="0.5" HasExitTime="false"/>
-    </AnimState>
-    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk">
-        <Transition ToState="Run_End" Duration="0.5" HasExitTime="false">
-            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="false"/>
-        </Transition>
-    </AnimState>
-    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End">
-        <Transition ToState="Idle" Duration="0.5" HasExitTime="false"/>
+    <AnimState Name="Idle" ClipName="None">
     </AnimState>
 </AnimFSM>
