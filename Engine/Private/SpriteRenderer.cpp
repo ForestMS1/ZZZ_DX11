@@ -142,6 +142,23 @@ void SpriteRenderer::OnInspectorGUI()
 
 		ImGui::Separator();
 
+		// --- Pass 선택 ---
+		uint32 maxPassCount = _shader->GetPassCount(_techniqueIndex);
+		int p = static_cast<int>(_pass);
+
+		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.6f);
+		// 해당 Technique이 가진 Pass 개수 내에서만 조절 가능하게 제한
+		if (ImGui::SliderInt("Pass", &p, 0, maxPassCount - 1))
+		{
+			_pass = static_cast<uint32>(p);
+		}
+		ImGui::PopItemWidth();
+
+		ImGui::SameLine();
+		if (ImGui::Button("R##Pass")) _pass = 0;
+
+		ImGui::Separator();
+
         // Mesh
         string meshName = (_mesh != nullptr) ? Utils::ToString(_mesh->GetName()) : "None";
         ImGui::Text("Mesh: %s", meshName.c_str());
