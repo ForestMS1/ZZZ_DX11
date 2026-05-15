@@ -14,24 +14,23 @@ CorinNormalAttack::~CorinNormalAttack()
 
 void CorinNormalAttack::OnEnter()
 {
-	auto animFSM = _animStateMachine.lock();
-	animFSM->SetBool(L"attackNormal", true);
-	animFSM->SetFloat(L"attackNormalStep", 0.f);
+	_animator.lock()->SetBool(L"attackNormal", true);
+	_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
 }
 
 void CorinNormalAttack::Input()
 {
-	auto animFSM = _animStateMachine.lock();
+	auto animator = _animator.lock();
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
-		if (animFSM->GetFloat(L"attackNormalStep") == 0.f)
+		if (animator->GetFloat(L"attackNormalStep") == 0.f)
 		{
-			animFSM->SetFloat(L"attackNormalStep", 1.f);
+			animator->SetFloat(L"attackNormalStep", 1.f);
 		}
-		else if (animFSM->GetFloat(L"attackNormalStep") == 1.f)
+		else if (animator->GetFloat(L"attackNormalStep") == 1.f)
 		{
-			animFSM->SetFloat(L"attackNormalStep", 2.f);
+			animator->SetFloat(L"attackNormalStep", 2.f);
 		}
 	}
 }
@@ -76,7 +75,6 @@ void CorinNormalAttack::OnCollisionExit(const Collision& collision)
 
 void CorinNormalAttack::OnExit()
 {
-	auto animFSM = _animStateMachine.lock();
-	animFSM->SetBool(L"attackNormal", false);
-	animFSM->SetFloat(L"attackNormalStep", 0.f);
+	_animator.lock()->SetBool(L"attackNormal", false);
+	_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
 }

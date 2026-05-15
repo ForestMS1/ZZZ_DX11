@@ -13,26 +13,23 @@ CorinEvade::~CorinEvade()
 
 void CorinEvade::OnEnter()
 {
-	auto animFSM = _animStateMachine.lock();
-	animFSM->SetTrigger(L"evade", true);
+	_animator.lock()->SetTrigger(L"evade", true);
 
 	// TODO : 여기에 근처 몹 공격중인지 판단하는거 넣으면 될듯
 }
 
 void CorinEvade::Input()
 {
-	auto animFSM = _animStateMachine.lock();
-
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
 		_stateMachine.lock()->ChangeState(L"CorinDashAttack");
 	}
 
-	const auto& desc = _gameObject.lock()->GetModelAnimator()->GetTweenDesc();
+	const auto& animator = _gameObject.lock()->GetModelAnimator();
 	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
-		if (desc.curr.ratio > 0.9f)
+		if (animator->GetProgress() > 0.5f)
 		{
-			animFSM->SetBool(L"IsMove", true);
+			_animator.lock()->SetBool(L"IsMove", true);
 			_stateMachine.lock()->ChangeState(L"CorinIdle");
 		}
 }

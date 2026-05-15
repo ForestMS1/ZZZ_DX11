@@ -11,6 +11,7 @@ public:
 	virtual ~StateMachine();
 
 public:
+	virtual void Awake() override;
 	void ChangeState(const wstring& stateName);
 
 protected:
@@ -18,8 +19,7 @@ protected:
 
 protected:
 	friend class BaseState;
-	// 애니메이션 상태머신
-	weak_ptr<AnimFSM> _animStateMachine = {};
+	weak_ptr<ModelAnimator> _animator = {};
 
 
 protected:

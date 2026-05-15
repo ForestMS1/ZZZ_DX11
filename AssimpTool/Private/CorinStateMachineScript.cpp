@@ -6,6 +6,7 @@
 #include "CorinIdle.h"
 #include "CorinEvade.h"
 #include "CorinNormalAttack.h"
+#include "CorinDashAttack.h"
 //--------------------------------------
 
 CorinStateMachineScript::CorinStateMachineScript()
@@ -29,19 +30,18 @@ HRESULT CorinStateMachineScript::Initialize(void* pArg)
 
 void CorinStateMachineScript::Awake()
 {
-	if (auto animator = GetGameObject()->GetModelAnimator())
-	{
-		_animStateMachine = animator->GetFSM();
-	}
+	StateMachine::Awake();
 
 	// 상태들 추가~
 	shared_ptr<CorinIdle> corinIdle = make_shared<CorinIdle>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinEvade> corinEvade = make_shared<CorinEvade>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinNormalAttack> corinNormalAttack = make_shared<CorinNormalAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinDashAttack> corinDashAttack = make_shared<CorinDashAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 
 	AddState(L"CorinIdle", corinIdle);
 	AddState(L"CorinEvade", corinEvade);
 	AddState(L"CorinNormalAttack", corinNormalAttack);
+	AddState(L"CorinDashAttack", corinDashAttack);
 
 
 	_curState->Awake();

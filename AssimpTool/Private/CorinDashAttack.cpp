@@ -14,7 +14,7 @@ CorinDashAttack::~CorinDashAttack()
 
 void CorinDashAttack::OnEnter()
 {
-
+	_animator.lock()->SetTrigger(L"attackRush", true);
 }
 
 void CorinDashAttack::Input()
@@ -34,7 +34,9 @@ void CorinDashAttack::Update()
 {
 	Input();
 
-	
+
+	if (_gameObject.lock()->GetModelAnimator()->IsCurrentAnimFinished())
+		_stateMachine.lock()->ChangeState(L"CorinIdle");
 }
 
 void CorinDashAttack::LateUpdate()
@@ -60,4 +62,5 @@ void CorinDashAttack::OnCollisionExit(const Collision& collision)
 
 void CorinDashAttack::OnExit()
 {
+
 }

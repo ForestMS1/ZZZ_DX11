@@ -13,21 +13,18 @@ CorinIdle::~CorinIdle()
 
 void CorinIdle::OnEnter()
 {
-	auto animFSM = _animStateMachine.lock();
 	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
-		animFSM->SetBool(L"isMove", true);
+		_animator.lock()->SetBool(L"isMove", true);
 	else
-		animFSM->SetBool(L"isMove", false);
+		_animator.lock()->SetBool(L"isMove", false);
 }
 
 void CorinIdle::Input()
 {
-	auto animFSM = _animStateMachine.lock();
-
 	if(GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
-		animFSM->SetBool(L"isMove", true);
+		_animator.lock()->SetBool(L"isMove", true);
 	else
-		animFSM->SetBool(L"isMove", false);
+		_animator.lock()->SetBool(L"isMove", false);
 
 
 	auto transform = _gameObject.lock()->GetTransform();
@@ -114,8 +111,8 @@ void CorinIdle::Input()
 	// АјАн
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
-		animFSM->SetBool(L"attackNormal", true);
-		animFSM->SetFloat(L"attackNormalStep", 0.f);
+		_animator.lock()->SetBool(L"attackNormal", true);
+		_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
 		_stateMachine.lock()->ChangeState(L"CorinNormalAttack");
 	}
 

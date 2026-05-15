@@ -15,6 +15,11 @@ StateMachine::~StateMachine()
 {
 }
 
+void StateMachine::Awake()
+{
+	_animator = GetGameObject()->GetModelAnimator();
+}
+
 void StateMachine::AddState(const wstring& stateName, shared_ptr<BaseState> state)
 {
 	if (state == nullptr)
@@ -24,11 +29,13 @@ void StateMachine::AddState(const wstring& stateName, shared_ptr<BaseState> stat
 	if (_curState == nullptr)
 	{
 		_curStateName = Utils::ToString(stateName);
-		ChangeState(stateName);
+		_curState = state;
+		_curState->OnEnter();
 	}
 
 	_states.insert({ stateName, state });
 }
+
 
 void StateMachine::ChangeState(const wstring& stateName)
 {

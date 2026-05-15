@@ -28,6 +28,6 @@ public:
 protected:
 	weak_ptr<GameObject> _gameObject;
 	weak_ptr<StateMachine> _stateMachine;
-	weak_ptr<AnimFSM> _animStateMachine;
+	weak_ptr<ModelAnimator> _animator;
 };
 
