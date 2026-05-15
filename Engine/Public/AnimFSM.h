@@ -49,8 +49,8 @@ public:
 
 	// FSM의 trigger 파라미터 Property
 	bool GetTrigger(const wstring& paramName) { return _triggerParams[paramName]; }
-	void SetTrigger(const wstring& paramName, float value) { _triggerParams[paramName] = value; }
-	void AddTrigger(const wstring& paramName, float value) { _triggerParams.emplace(paramName, value); }
+	void SetTrigger(const wstring& paramName, float value = true) { _triggerParams[paramName] = value; }
+	void AddTrigger(const wstring& paramName, float value = true) { _triggerParams.emplace(paramName, value); }
 
 	map<wstring, bool>& GetBoolMap() { return _boolParams; }
 	map<wstring, float>& GetFloatMap() { return _floatParams; }

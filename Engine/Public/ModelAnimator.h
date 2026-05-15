@@ -65,9 +65,24 @@ public:
 
 	// 현재 애니메이션 진행률
 	float GetProgress();
-
 	// 현재 애니메이션이 끝났는가
 	bool IsCurrentAnimFinished();
+
+	// FSM의 bool 파라미터 Property
+	bool GetBool(const wstring& paramName) { return _animFSM->GetBool(paramName); }
+	void SetBool(const wstring& paramName, bool cond) { _animFSM->SetBool(paramName, cond); }
+	void AddBool(const wstring& paramName, bool cond) { _animFSM->AddBool(paramName, cond); }
+
+	// FSM의 float 파라미터 Property
+	float GetFloat(const wstring& paramName) { return _animFSM->GetFloat(paramName); }
+	void SetFloat(const wstring& paramName, float value) { _animFSM->SetFloat(paramName, value); }
+	void AddFloat(const wstring& paramName, float value) { _animFSM->AddFloat(paramName, value); }
+
+	// FSM의 trigger 파라미터 Property
+	bool GetTrigger(const wstring& paramName) { return _animFSM->GetTrigger(paramName); }
+	void SetTrigger(const wstring& paramName, float value = true) { _animFSM->SetTrigger(paramName, value); }
+	void AddTrigger(const wstring& paramName, float value = true) { _animFSM->AddTrigger(paramName, value); }
+
 
 	//ImGui
 	virtual void OnInspectorGUI() override;
