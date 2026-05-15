@@ -394,6 +394,20 @@ void ModelAnimator::CreateAnimationTransform(uint32 index)
 	}
 }
 
+float ModelAnimator::GetProgress()
+{
+	// 현재 재생 중인 애니메이션 정보 가져오기
+	shared_ptr<ModelAnimation> currentAnim = _model->GetAnimationByIndex(_tweenDesc.curr.animIndex);
+	if (currentAnim == nullptr || currentAnim->frameCount <= 1)
+		return 0.0f;
+
+	// 현재 프레임과 ratio를 합쳐 실제 위치 계산
+	float currentPos = static_cast<float>(_tweenDesc.curr.currFrame) + _tweenDesc.curr.ratio;
+
+	// 전체 프레임 수로 나누어 진행률 반환
+	return currentPos / static_cast<float>(currentAnim->frameCount-1);
+}
+
 bool ModelAnimator::IsCurrentAnimFinished()
 {
 	if (_model == nullptr) return false;

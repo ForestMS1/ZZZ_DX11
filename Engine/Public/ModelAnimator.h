@@ -62,6 +62,10 @@ public:
 	// 키프레임별 Bone의 SRT
 	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
 	const vector<vector<Matrix>>& GetRootAnimTransform() { return _rootBoneAnimTransforms; }
+
+	// 현재 애니메이션 진행률
+	float GetProgress();
+
 	// 현재 애니메이션이 끝났는가
 	bool IsCurrentAnimFinished();
 
