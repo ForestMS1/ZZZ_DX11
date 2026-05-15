@@ -54,6 +54,13 @@ void CorinStateMachineScript::Start()
 
 void CorinStateMachineScript::Update()
 {
+	// AnyState 여기서 전역적으로 전이
+
+	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
+	{
+		ChangeState(L"CorinEvade");
+	}
+
 	_curState->Update();
 
 }

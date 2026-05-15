@@ -33,6 +33,9 @@ public:
 	// 게임데이터 (hp, speed같은 값)
 private:
 	friend class CorinIdle;
+	friend class CorinNormalAttack;
+	friend class CorinEvade;
+	friend class CorinDashAttack;
 
 	float _maxHp = 1000.f;
 	float _hp = _maxHp;

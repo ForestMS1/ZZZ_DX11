@@ -13,28 +13,25 @@ CorinIdle::~CorinIdle()
 
 void CorinIdle::OnEnter()
 {
-	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
-		_animator.lock()->SetBool(L"isMove", true);
-	else
-		_animator.lock()->SetBool(L"isMove", false);
+	auto stateMachine = static_pointer_cast<CorinStateMachineScript>(_stateMachine.lock());
+	_animator.lock()->SetFloat(L"speed", stateMachine->_moveSpeed);
 }
 
 void CorinIdle::Input()
 {
-	if(GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
-		_animator.lock()->SetBool(L"isMove", true);
-	else
-		_animator.lock()->SetBool(L"isMove", false);
-
-
 	auto transform = _gameObject.lock()->GetTransform();
+	auto stateMachine = static_pointer_cast<CorinStateMachineScript>(_stateMachine.lock());
+
+	// Run_End 중 일땐 입력무시
+	if (stateMachine->GetCurAnimStateName() == L"Run_End")
+		return;
 
 	Vec3 pos = transform->GetPosition();
 	Vec3 look = transform->GetLook();
 	Vec3 right = transform->GetRight();
 	Vec3 up = transform->GetUp();
 
-	auto stateMachine = static_pointer_cast<CorinStateMachineScript>(_stateMachine.lock());
+	_animator.lock()->SetFloat(L"speed", stateMachine->_moveSpeed);
 
 	if (GAME.Key_Pressing(DIK_UP))
 	{
@@ -111,16 +108,7 @@ void CorinIdle::Input()
 	// 공격
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
-		_animator.lock()->SetBool(L"attackNormal", true);
-		_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
 		_stateMachine.lock()->ChangeState(L"CorinNormalAttack");
-	}
-
-
-	// Evade
-	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
-	{
-		_stateMachine.lock()->ChangeState(L"CorinEvade");
 	}
 }
 
@@ -139,6 +127,7 @@ void CorinIdle::Update()
 
 void CorinIdle::LateUpdate()
 {
+
 }
 
 void CorinIdle::FixedUpdate()
@@ -160,6 +149,5 @@ void CorinIdle::OnCollisionExit(const Collision& collision)
 
 void CorinIdle::OnExit()
 {
-	//auto animFSM = _animStateMachine.lock();
-	//animFSM->SetBool(L"isMove", false);
+
 }

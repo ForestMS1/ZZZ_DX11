@@ -14,7 +14,7 @@ CorinDashAttack::~CorinDashAttack()
 
 void CorinDashAttack::OnEnter()
 {
-	_animator.lock()->SetTrigger(L"attackRush", true);
+	_animator.lock()->SetTrigger(L"attackRush");
 }
 
 void CorinDashAttack::Input()

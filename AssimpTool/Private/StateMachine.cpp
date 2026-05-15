@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "StateMachine.h"
 #include "BaseState.h"
-
+#include "AnimState.h"
 StateMachine::StateMachine()
 {
 }
@@ -39,7 +39,7 @@ void StateMachine::AddState(const wstring& stateName, shared_ptr<BaseState> stat
 
 void StateMachine::ChangeState(const wstring& stateName)
 {
-	if (_states[stateName] == nullptr || _curState == _states[stateName])
+	if (_states[stateName] == nullptr /*|| _curState == _states[stateName]*/)
 		return;
 
 	if(_curState != nullptr)
@@ -49,4 +49,14 @@ void StateMachine::ChangeState(const wstring& stateName)
 	_curStateName = Utils::ToString(stateName);
 
 	_curState->OnEnter();
+}
+
+wstring StateMachine::GetCurAnimStateName()
+{
+	return _animator.lock()->GetFSM()->GetCurAnimState()->GetName();
+}
+
+void StateMachine::ChangeCurAnimState(const wstring& animStateName)
+{
+	_animator.lock()->GetFSM()->ChangeState(animStateName);
 }

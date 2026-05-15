@@ -14,8 +14,7 @@ CorinNormalAttack::~CorinNormalAttack()
 
 void CorinNormalAttack::OnEnter()
 {
-	_animator.lock()->SetBool(L"attackNormal", true);
-	_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
+	_animator.lock()->SetTrigger(L"attackNormal");
 }
 
 void CorinNormalAttack::Input()
@@ -24,14 +23,7 @@ void CorinNormalAttack::Input()
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
-		if (animator->GetFloat(L"attackNormalStep") == 0.f)
-		{
-			animator->SetFloat(L"attackNormalStep", 1.f);
-		}
-		else if (animator->GetFloat(L"attackNormalStep") == 1.f)
-		{
-			animator->SetFloat(L"attackNormalStep", 2.f);
-		}
+		animator->SetTrigger(L"attackNormal");
 	}
 }
 
@@ -47,7 +39,7 @@ void CorinNormalAttack::Update()
 {
 	Input();
 
-	if (_gameObject.lock()->GetModelAnimator()->IsCurrentAnimFinished())
+	if (_stateMachine.lock()->GetCurAnimStateName() == L"Idle")
 		_stateMachine.lock()->ChangeState(L"CorinIdle");
 }
 
@@ -75,6 +67,4 @@ void CorinNormalAttack::OnCollisionExit(const Collision& collision)
 
 void CorinNormalAttack::OnExit()
 {
-	_animator.lock()->SetBool(L"attackNormal", false);
-	_animator.lock()->SetFloat(L"attackNormalStep", 0.f);
 }

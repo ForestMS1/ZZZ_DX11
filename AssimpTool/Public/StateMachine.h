@@ -14,6 +14,11 @@ public:
 	virtual void Awake() override;
 	void ChangeState(const wstring& stateName);
 
+	// BaseState에서 현재 애니메이션State 이름 가져오도록 열어줌
+	wstring GetCurAnimStateName();
+	// BaseState에서 그냥 xml파일 무시하고 애니메이션 State를 바꿔버리는 함수
+	void ChangeCurAnimState(const wstring& animStateName);
+
 protected:
 	void AddState(const wstring& stateName, shared_ptr<BaseState> state);
 
