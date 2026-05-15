@@ -12,11 +12,11 @@ bool FloatCondition::IsSatisfied(shared_ptr<AnimFSM> fsm)
                 return true;
             break;
         case ConditionMode::Greater:
-            if (curFloat < _value)
+            if (curFloat > _value)
                 return true;
             break;
         case ConditionMode::Less:
-            if (curFloat > _value)
+            if (curFloat < _value)
                 return true;
             break;
         case ConditionMode::NotEqual:

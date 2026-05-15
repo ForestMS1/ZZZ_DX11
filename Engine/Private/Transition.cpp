@@ -18,18 +18,23 @@ bool Transition::CanTransition()
     if (!fsm || !animator) 
 		return false;
 
-    // Has Exit Time 체크 (애니메이션이 끝나야 넘어가는 경우)
-    if (_hasExitTime == true)
+    // Has Exit Time 체크되어 있으면 _exitTime까지 버틴다
+    if (_hasExitTime == true && animator->GetProgress() < _exitTime)
     {
-        return animator->IsCurrentAnimFinished();
+        return false;
     }
+
+    //----------------------------- Has Exit Time 체크x or _exitTime 통과 -------------------------------
+
 
     //  모든 조건(Condition) 만족 여부 체크
     for (auto& condition : _conditions)
-    {   
+    {
+        // 조건 하나라도 안맞으면 전환x
         if (!condition->IsSatisfied(fsm))
             return false;
     }
+
 
     return true;
 }

@@ -29,6 +29,9 @@ public:
     // HasExitTime Property
     bool HasExitTime() { return _hasExitTime; }
     void SetHasExitTime(bool hasExit) { _hasExitTime = hasExit; }
+    // ExitTime Property
+    float GetExitTime() { return _exitTime; }
+    void SetExitTime(float exitTime) { _exitTime = exitTime; }
 
     // Condition
     void Add_Condition(shared_ptr<Condition> condition) { _conditions.push_back(condition); }
@@ -45,7 +48,7 @@ private:
     // 애니메이션이 일정 비율 이상 재생되어야 넘어가는지
     bool _hasExitTime = false;
     // 재생 비율 (0.0 ~ 1.0)
-    float _exitTimeValue = 1.f;
+    float _exitTime = 1.f; // -> 이 값을 넘기면 조건체크하고 전환
 
     // 여러 조건을 관리 (예: Speed > 0.5 && IsGrounded == true)
     vector<shared_ptr<Condition>> _conditions;

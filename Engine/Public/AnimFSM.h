@@ -38,18 +38,18 @@ public:
 	shared_ptr<ModelAnimator> GetAnimator() { return _animatorComponent.lock(); }
 
 	// FSM의 bool 파라미터 Property
-	bool GetBool(const wstring& paramName) { return _boolParams[paramName]; }
-	void SetBool(const wstring& paramName, bool cond) { _boolParams[paramName] = cond; }
+	bool GetBool(const wstring& paramName) { return _boolParams.at(paramName); }
+	void SetBool(const wstring& paramName, bool cond) { _boolParams.at(paramName) = cond; }
 	void AddBool(const wstring& paramName, bool cond) { _boolParams.emplace(paramName, cond); }
 
 	// FSM의 float 파라미터 Property
-	float GetFloat(const wstring& paramName) { return _floatParams[paramName]; }
-	void SetFloat(const wstring& paramName, float value) { _floatParams[paramName] = value; }
+	float GetFloat(const wstring& paramName) { return _floatParams.at(paramName); }
+	void SetFloat(const wstring& paramName, float value) { _floatParams.at(paramName) = value; }
 	void AddFloat(const wstring& paramName, float value) { _floatParams.emplace(paramName, value); }
 
 	// FSM의 trigger 파라미터 Property
-	bool GetTrigger(const wstring& paramName) { return _triggerParams[paramName]; }
-	void SetTrigger(const wstring& paramName, float value = true) { _triggerParams[paramName] = value; }
+	bool GetTrigger(const wstring& paramName) { return _triggerParams.at(paramName); }
+	void SetTrigger(const wstring& paramName, float value = true) { _triggerParams.at(paramName) = value; }
 	void AddTrigger(const wstring& paramName, float value = true) { _triggerParams.emplace(paramName, value); }
 
 	map<wstring, bool>& GetBoolMap() { return _boolParams; }

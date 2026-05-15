@@ -481,6 +481,7 @@ void AnimFSM::Save(const string& fileName)
             transNode->SetAttribute("ToState", Utils::ToString(transition->GetToState()->GetName()).c_str());
             transNode->SetAttribute("Duration", transition->GetTransitionDuration());
             transNode->SetAttribute("HasExitTime", transition->HasExitTime());
+            transNode->SetAttribute("ExitTime", transition->GetExitTime());
 
             // Transition::Save 로직의 일부라고 가정
             for (auto& condition : transition->GetConditions())
@@ -604,6 +605,7 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
             transition->SetToState(_animStates[toName]);
             transition->SetTransitionDuration(transNode->FloatAttribute("Duration"));
             transition->SetHasExitTime(transNode->BoolAttribute("HasExitTime"));
+            transition->SetExitTime(transNode->FloatAttribute("ExitTime"));
 
             // Condition 로드
             for (auto* condNode = transNode->FirstChildElement("Condition"); condNode; condNode = condNode->NextSiblingElement("Condition"))
@@ -847,6 +849,10 @@ void AnimFSM::DrawStateDetailEditor(shared_ptr<AnimState> state)
             if (ImGui::Checkbox("Has Exit Time", &hasExit))
                 trans->SetHasExitTime(hasExit);
 
+            float exitTime = trans->GetExitTime();
+            if (ImGui::DragFloat("Exit Time", &exitTime, 0.01f, 0.0f, 2.0f))
+                trans->SetExitTime(exitTime);
+
             // 삭제 버튼
             if (ImGui::Button("Delete Transition"))
             {
@@ -878,6 +884,12 @@ void AnimFSM::DrawTransitionDetailEditor(shared_ptr<Transition> trans)
     bool hasExit = trans->HasExitTime();
     if (ImGui::Checkbox("Has Exit Time", &hasExit))
         trans->SetHasExitTime(hasExit);
+
+    ImGui::SameLine();
+
+    float exitTime = trans->GetExitTime();
+    if (ImGui::DragFloat("Exit Time : ", &exitTime, 0.01f, 0.0f, 1.0f))
+        trans->SetExitTime(exitTime);
 
     ImGui::Separator();
 

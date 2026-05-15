@@ -577,9 +577,12 @@ void ModelAnimator::OnInspectorGUI()
 		{
 			// --- FSM 정보 ---
 			string fsmName = _animFSM ? Utils::ToString(_animFSM->GetFileName()) : "None";
+			string curStateName = _animFSM ? Utils::ToString(_animFSM->GetCurAnimState()->GetName()) : "None";
 			ImGui::Text("animFSM: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), fsmName.c_str());
+			ImGui::Text("animFSM: ");
+			ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), curStateName.c_str());
 
 			// AnimFSM 변경 버튼
 			if (ImGui::Button("Change AnimFSM##AnimFSM", ImVec2(-1, 0))) // 너비를 가득 채우려면 ImVec2(-1, 0)
