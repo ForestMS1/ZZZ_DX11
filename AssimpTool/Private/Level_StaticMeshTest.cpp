@@ -53,6 +53,14 @@ HRESULT Level_StaticMeshTest::Initialize()
 	return S_OK;
 }
 
+void Level_StaticMeshTest::Awake()
+{
+	shared_ptr<EventDesc> eventDesc = make_shared<EventDesc>();
+	eventDesc->eventType = static_cast<uint32>(EventType::LEVEL_START);
+	eventDesc->sender = this;
+	GAME.PushEvent(eventDesc);
+}
+
 void Level_StaticMeshTest::Update()
 {
 	GAME.ShowResourceList();
@@ -60,7 +68,6 @@ void Level_StaticMeshTest::Update()
 	GAME.ShowInspector();
 	GAME.RenderGizmo();
 	
-
 	//// 리소스 전부 해제하면서 씬 전환
 	//if (GAME.Key_Down(DIK_BACKSPACE))
 	//	GAME.Change_Level(ETOUI(LEVEL::LOADING), Level_Loading::Create(_device, _deviceContext, LEVEL::CONVERT), true);

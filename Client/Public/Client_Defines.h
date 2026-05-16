@@ -11,6 +11,8 @@ namespace Client
 
 	enum class LEVEL { STATIC, LOADING, LOGO, GAMEPLAY, END };
 	inline const char* LEVEL_NAMES[] = { "STATIC", "LOADING", "LOGO", "GAMEPLAY", "END" };
+
+	enum class EventType { LEVEL_START, BOSS_SPAWN, WIPEOUT, END };
 }
 
 extern HWND			g_hWnd;

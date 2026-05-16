@@ -5,6 +5,10 @@
 void TestPlayCamScript::Awake()
 {
 	_target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin");
+
+    GetGameObject()->GetCamera()->LoadAction(L"NewAction");
+    // 이벤트함수 등록
+    GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
 }
 
 void TestPlayCamScript::LateUpdate()
@@ -82,6 +86,13 @@ void TestPlayCamScript::OnInspectorGUI()
     {
 
     }
+}
+
+void TestPlayCamScript::OnQuestStart()
+{
+    auto camera = GetGameObject()->GetCamera();
+    camera->CameraOn();
+    camera->Play(L"NewAction");
 }
 
 unique_ptr<TestPlayCamScript> TestPlayCamScript::Create()

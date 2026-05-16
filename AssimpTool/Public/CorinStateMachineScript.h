@@ -30,6 +30,10 @@ public:
 public:
 	static unique_ptr<CorinStateMachineScript> Create();
 
+	// 이벤트 함수
+private:
+	void OnQuestStart();
+
 	// 게임데이터 (hp, speed같은 값)
 private:
 	friend class CorinIdle;

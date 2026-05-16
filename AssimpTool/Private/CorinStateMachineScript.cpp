@@ -10,6 +10,8 @@
 //--------------------------------------
 #include "NetworkView.h"
 
+#include "ModelAnimator.h"
+
 CorinStateMachineScript::CorinStateMachineScript()
 {
 }
@@ -43,6 +45,10 @@ void CorinStateMachineScript::Awake()
 	AddState(L"CorinEvade", corinEvade);
 	AddState(L"CorinNormalAttack", corinNormalAttack);
 	AddState(L"CorinDashAttack", corinDashAttack);
+
+
+	// 이벤트 함수 등록
+	GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc){ this->OnQuestStart(); });
 
 
 	_curState->Awake();
@@ -140,4 +146,9 @@ void CorinStateMachineScript::OnInspectorGUI()
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), _curStateName.c_str());
 	}
+}
+
+void CorinStateMachineScript::OnQuestStart()
+{
+	_animator.lock()->SetTrigger(L"questStart");
 }

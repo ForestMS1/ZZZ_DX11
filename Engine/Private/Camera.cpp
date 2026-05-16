@@ -183,7 +183,7 @@ void Camera::LoadAction(const wstring& filename)
 	std::ifstream ifs(savePath, std::ios::binary);
 	if (!ifs.is_open()) return;
 
-	_timeline.clear();
+	//_timeline.clear();
 
 	// 액션 개수 읽기
 	uint32 timelineCount = 0;

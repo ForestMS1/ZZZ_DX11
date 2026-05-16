@@ -164,6 +164,15 @@ public:
 	list<shared_ptr<class Light>>& GetLigthList();
 #pragma endregion
 
+#pragma region EVENTQUEUEMANAGER
+	void Subscribe(uint32 eventType, const EventCallback& callback);
+	// 기본 이벤트용 (추가 데이터가 없을 때 파라미터 넘기기 편한 오버로딩)
+	void PushEvent(uint32 eventType, void* sender = nullptr);
+	void PushEvent(uint32 eventType, shared_ptr<EventDesc> desc);
+	void PushEvent(shared_ptr<EventDesc> desc);
+	void ClearSubscribers();
+#pragma endregion
+
 	void SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext = nullptr);
 
 private:
@@ -177,6 +186,7 @@ private:
 	unique_ptr<Resource_Manager> _resourceManager = { nullptr };
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
+	unique_ptr<class EventQueueManager> _eventQueueManager = { nullptr };
 	//임시
 	unique_ptr<class LightManager> _lightManager = { nullptr };
 	unique_ptr<class RenderTargetManager> _renderTargetManager = { nullptr };

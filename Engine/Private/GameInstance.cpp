@@ -16,6 +16,7 @@
 #include "imnodes.h"
 #include "Layer.h"
 #include "CollisionManager.h"
+#include "EventQueueManager.h"
 #include "LightManager.h"
 
 #include "RenderTargetManager.h"
@@ -81,6 +82,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	if (nullptr == _gameObjectFactory)
 		return E_FAIL;
 
+	_eventQueueManager = EventQueueManager::Create();
+	if (nullptr == _eventQueueManager)
+		return E_FAIL;
+
 	_lightManager = LightManager::Create(pOutDevice, pOutDeviceContext);
 	if (nullptr == _lightManager)
 		return E_FAIL;
@@ -121,6 +126,10 @@ void GameInstance::Update_Engine()
 {
 	_inputManager->Update_InputDev();
 
+	_levelManager->Awake();
+
+	_levelManager->Start();
+
 	_objectManager->BeginFrame();
 
 	_objectManager->Update();
@@ -134,6 +143,8 @@ void GameInstance::Update_Engine()
 	_objectManager->EndOfFrame();
 
 	_levelManager->Update();
+
+	_eventQueueManager->Update();
 }
 
 HRESULT GameInstance::Draw()
@@ -555,6 +566,34 @@ list<shared_ptr<Light>>& GameInstance::GetLigthList()
 	return _lightManager->GetLigthList();
 }
 #pragma endregion
+
+#pragma region EVENTQUEUEMANAGER
+// 객체들이 특정 이벤트에 자신의 멤버 함수를 등록할 때 사용
+void GameInstance::Subscribe(uint32 eventType, const EventCallback& callback)
+{
+	_eventQueueManager->Subscribe(eventType, callback);
+}
+// 기본 이벤트용 (추가 데이터가 없을 때 파라미터 넘기기 편한 오버로딩)
+void GameInstance::PushEvent(uint32 eventType, void* sender)
+{
+	_eventQueueManager->PushEvent(eventType, sender);
+}
+void GameInstance::PushEvent(uint32 eventType, shared_ptr<EventDesc> desc)
+{
+	_eventQueueManager->PushEvent(eventType, desc);
+}
+void GameInstance::PushEvent(shared_ptr<EventDesc> desc)
+{
+	_eventQueueManager->PushEvent(desc);
+}
+
+void GameInstance::ClearSubscribers()
+{
+	_eventQueueManager->ClearSubscribers();
+}
+#pragma endregion
+
+
 void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext)
 {
 	// DLL 영역의 전역 변수 GImGui를 EXE에서 만든 컨텍스트로 셋팅
@@ -583,6 +622,7 @@ void GameInstance::Release_Engine()
 	_prototypeManager.reset();
 	_resourceManager.reset();
 	_gameObjectFactory.reset();
+	_eventQueueManager.reset();
 	_renderTargetManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();

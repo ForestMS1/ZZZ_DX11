@@ -9,6 +9,11 @@ class TestPlayCamScript : public MonoBehaviour
 
 	virtual void OnInspectorGUI() override;
 
+
+	// 이벤트 함수
+private:
+	void OnQuestStart();
+
 public:
 	static unique_ptr<TestPlayCamScript> Create();
 

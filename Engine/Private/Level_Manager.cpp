@@ -30,7 +30,11 @@ void Level_Manager::Awake()
 	if (_currentLevel == nullptr)
 		return;
 
-	_currentLevel->Awake();
+	if (_currentLevel->GetLifeState() == LIFESTATE::NONE)
+	{
+		_currentLevel->Awake();
+		_currentLevel->SetLifeState(LIFESTATE::AWAKED);
+	}
 }
 
 void Level_Manager::Start()
@@ -38,7 +42,11 @@ void Level_Manager::Start()
 	if (_currentLevel == nullptr)
 		return;
 
-	_currentLevel->Start();
+	if (_currentLevel->GetLifeState() == LIFESTATE::AWAKED)
+	{
+		_currentLevel->Start();
+		_currentLevel->SetLifeState(LIFESTATE::STARTED);
+	}
 }
 
 void Level_Manager::Update()
