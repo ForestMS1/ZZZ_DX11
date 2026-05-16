@@ -48,8 +48,8 @@ HRESULT Level_StaticMeshTest::Initialize()
 	//GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
 
-	//NetworkManager::Get();
-	//NetworkManager::Get().RequestEnterScene("TestCorin");
+	NetworkManager::Get();
+	NetworkManager::Get().RequestEnterScene("TestCorin");
 	return S_OK;
 }
 

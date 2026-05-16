@@ -50,6 +50,7 @@ void NetworkAnimationView::OnSerialize(std::vector<uint8_t>& outPayload, uint32_
 
 	auto& boolMap = fsm->GetBoolMap();
 	auto& floatMap = fsm->GetFloatMap();
+	auto& triggerMap = fsm->GetTriggerMap();
 
 	// FSM의 모든 파라미터 수집 (예: _floatParams 맵 전체)
 	// wstring 키를 FNV-1a 해시로 변환해서 담습니다.
@@ -58,6 +59,9 @@ void NetworkAnimationView::OnSerialize(std::vector<uint8_t>& outPayload, uint32_
 		allParams.push_back({ Utils::Hash(name), value });
 	}
 	for (auto& [name, value] : boolMap) {
+		allParams.push_back({ Utils::Hash(name), value ? 1.0f : 0.0f });
+	}
+	for (auto& [name, value] : triggerMap) {
 		allParams.push_back({ Utils::Hash(name), value ? 1.0f : 0.0f });
 	}
 

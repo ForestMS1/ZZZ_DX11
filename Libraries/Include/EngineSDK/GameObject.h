@@ -97,6 +97,16 @@ public:
 			}
 		}
 	}
+	void RemoveScriptComponentAll()
+	{
+		for (auto& script : _scripts)
+		{
+			if (script)
+			{
+				script->SetLifeState(LIFESTATE::REMOVE);
+			}
+		}
+	}
 
 	// name
 	void SetName(const wstring& name) { _name = name; }

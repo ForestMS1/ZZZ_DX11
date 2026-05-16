@@ -8,6 +8,7 @@
 #include "CorinNormalAttack.h"
 #include "CorinDashAttack.h"
 //--------------------------------------
+#include "NetworkView.h"
 
 CorinStateMachineScript::CorinStateMachineScript()
 {
@@ -54,6 +55,12 @@ void CorinStateMachineScript::Start()
 
 void CorinStateMachineScript::Update()
 {
+	if (auto view = GetGameObject()->GetScript<NetworkView>())
+	{
+		if (view->IsMine() == false)
+			return;
+	}
+
 	// AnyState 여기서 전역적으로 전이
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
@@ -67,11 +74,21 @@ void CorinStateMachineScript::Update()
 
 void CorinStateMachineScript::LateUpdate()
 {
+	if (auto view = GetGameObject()->GetScript<NetworkView>())
+	{
+		if (view->IsMine() == false)
+			return;
+	}
 	_curState->LateUpdate();
 }
 
 void CorinStateMachineScript::FixedUpdate()
 {
+	if (auto view = GetGameObject()->GetScript<NetworkView>())
+	{
+		if (view->IsMine() == false)
+			return;
+	}
 	_curState->FixedUpdate();
 
 }

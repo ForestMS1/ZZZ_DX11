@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TestCorin.h"
 #include "TestCorinScript.h"
-
+#include "CorinStateMachineScript.h"
 #include "AnimState.h"
 #include "Transition.h"
 #include "Condition.h"
@@ -35,7 +35,7 @@ HRESULT TestCorin::Initialize(void* pArg)
 	GameObject::Initialize(pArg);
 	GameObject::SetName(L"TestCorin");
 	GameObject::Set_ClassName(L"TestCorin");
-	AddComponent(make_shared<TestCorinScript>());
+	AddComponent(make_shared<CorinStateMachineScript>());
 
 	shared_ptr<Shader> shader = GAME.GetResource<Shader>(L"TweenTest.fx");
 	shared_ptr<Model> model = GAME.GetResource<Model>(L"CorinAnimModel");

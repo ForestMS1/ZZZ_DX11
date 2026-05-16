@@ -174,6 +174,16 @@ void AnimFSM::UpdateParamByHash(uint32_t paramHash, float value)
             return;
         }
     }
+
+    // Trigger 파라미터에서 찾기
+    for (auto& [name, val] : _triggerParams)
+    {
+        if (Utils::Hash(name) == paramHash)
+        {
+            val = (value != 0.0f); // 0이 아니면 true
+            return;
+        }
+    }
 }
 
 void AnimFSM::OnInspectorGUI()
