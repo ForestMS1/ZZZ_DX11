@@ -5,14 +5,6 @@ NS_BEGIN(Engine)
 
 //class AnimFSM;
 
-struct ENGINE_DLL AnimTransform
-{
-	// [ ][ ][ ][ ][ ][ ][ ] ... 350개
-	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
-	// [ ][ ][ ][ ][ ][ ][ ] ... 700 개
-	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
-};
-
 //		     Bone1  Bone2  Bone3 ...  Bone350
 //	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
 //  Frame2   [SRT]
@@ -60,8 +52,8 @@ public:
 	void SetTweenDesc(const TweenDesc& desc) { _tweenDesc = desc; }
 
 	// 키프레임별 Bone의 SRT
-	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
-	const vector<vector<Matrix>>& GetRootAnimTransform() { return _rootBoneAnimTransforms; }
+	const vector<AnimTransform>& GetAnimTransforms() { return _model->GetAnimTransforms(); }
+	const vector<vector<Matrix>>& GetRootAnimTransform() { return _model->GetRootAnimTransform(); }
 
 	// 현재 애니메이션 진행률
 	float GetProgress();
@@ -92,16 +84,8 @@ public:
 private:
 	// 쉐이더에 넘겨 줄 Texture, SRV 만들어 줌
 	void CreateTexture();
-	// 애니메이션 (키프레임별 Bone의 SRT 생성)
-	void CreateAnimationTransform(uint32 index);
 
 private:
-	// 애니메이션(키프레임별 Bone의 SRT)
-	vector<AnimTransform> _animTransforms;
-	
-	// 루트본의 순수 애니메이션 이동량을 담을 벡터
-	vector<vector<Matrix>> _rootBoneAnimTransforms; // _rootBoneAnimTransforms[현재애니메이션인덱스][현재애니메이션의 현재키프레임]
-
 	// 쉐이더에 넘겨 줄 Texture, SRV
 	ComPtr<ID3D11Texture2D> _texture;
 	ComPtr<ID3D11ShaderResourceView> _srv;

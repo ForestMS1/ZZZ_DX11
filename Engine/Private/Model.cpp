@@ -695,3 +695,71 @@ void Model::BindCacheInfo()
 		}
 	}
 }
+
+void Model::CreateAnimationTransform()
+{
+	_rootBoneAnimTransforms.resize(GetAnimationCount());
+	_animTransforms.resize(GetAnimationCount());
+	vector<Matrix> tempAnimBoneTransforms(MAX_MODEL_TRANSFORMS, Matrix::Identity);
+
+	for (uint32 i = 0; i < _animations.size(); ++i)
+	{
+		auto& animation = _animations[i];
+
+		for (uint32 f = 0; f < animation->frameCount; f++)
+		{
+			for (uint32 b = 0; b < GetBoneCount(); b++)
+			{
+				shared_ptr<ModelBone> bone = GetBoneByIndex(b);
+
+				Matrix matAnimation;
+
+				shared_ptr<ModelKeyframe> frame = animation->GetKeyframe(bone->name);
+				if (frame != nullptr)
+				{
+					ModelKeyframeData& data = frame->transforms[f];
+
+					Matrix S, R, T;
+					S = Matrix::CreateScale(data.scale.x, data.scale.y, data.scale.z);
+					R = Matrix::CreateFromQuaternion(data.rotation);
+					T = Matrix::CreateTranslation(data.translation.x, data.translation.y, data.translation.z);
+
+					matAnimation = S * R * T;
+
+					if (bone->name == L"Bip001")
+					{
+						// 루트 모션용으로는 원본을 저장
+						_rootBoneAnimTransforms[i].push_back(matAnimation);
+
+						// 렌더링용 행렬 계산 (캐릭터 메쉬가 원점을 벗어나지 않게 X, Z 제거)
+						Vec3 renderingTranslation = data.translation;
+						renderingTranslation.x = 0.f;
+						renderingTranslation.z = 0.f;
+
+						// matAnimation을 렌더링용(제자리)으로 교체
+						matAnimation = S * R * Matrix::CreateTranslation(renderingTranslation);
+					}
+
+				}
+				else
+				{
+					matAnimation = Matrix::Identity;
+				}
+
+				// [ !!!!!!! ]
+				Matrix toRootMatrix = bone->transform;
+				Matrix invGlobal = toRootMatrix.Invert();
+
+				int32 parentIndex = bone->parentIndex;
+
+				Matrix matParent = Matrix::Identity;
+				if (parentIndex >= 0)
+					matParent = tempAnimBoneTransforms[parentIndex];
+
+				tempAnimBoneTransforms[b] = matAnimation * matParent;
+				// 결론
+				_animTransforms[i].transforms[f][b] = invGlobal * tempAnimBoneTransforms[b];
+			}
+		}
+	}
+}
