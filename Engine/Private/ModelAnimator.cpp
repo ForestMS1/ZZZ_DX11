@@ -43,9 +43,6 @@ void ModelAnimator::Update()
 	if (_model == nullptr)
 		return;
 
-	if (_texture == nullptr)
-		CreateTexture();
-
 	//TODO 임시, 렌더그룹변경하자
 	GAME.Add_RenderObject(_renderGroup, GetGameObject());
 
@@ -117,8 +114,6 @@ HRESULT ModelAnimator::Render()
 		return E_FAIL;
 	if (_shader == nullptr)
 		return E_FAIL;
-	if (_texture == nullptr)
-		CreateTexture();
 
 	_shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
 	// Transform
@@ -129,7 +124,7 @@ HRESULT ModelAnimator::Render()
 	//_shader->PushKeyframeData(_keyframeDesc);
 
 	// SRV를 통해 정보 전달
-	_shader->GetSRV("TransformMap")->SetResource(_srv.Get());
+	_shader->GetSRV("TransformMap")->SetResource(_model->GetTransformSRV().Get());
 
 	//auto& lightList = GAME.GetLigthList();
 	//if (!lightList.empty())
@@ -190,8 +185,6 @@ HRESULT ModelAnimator::RenderShadow()
 		return E_FAIL;
 	if (_shadowShader == nullptr)
 		return E_FAIL;
-	if (_texture == nullptr)
-		CreateTexture();
 
 	auto& lightList = GAME.GetLigthList();
 	if (!lightList.empty())
@@ -211,7 +204,7 @@ HRESULT ModelAnimator::RenderShadow()
 	_shadowShader->PushTweenTempData(_tweenDesc);
 
 
-	_shadowShader->GetSRV("TransformMap")->SetResource(_srv.Get());
+	_shadowShader->GetSRV("TransformMap")->SetResource(_model->GetTransformSRV().Get());
 
 	BoneDesc boneDesc;
 
@@ -249,81 +242,6 @@ void ModelAnimator::SetModel(shared_ptr<Model> model)
 	for (auto& material : materials)
 	{
 		material->SetShader(_shader);
-	}
-	CreateTexture();
-}
-
-void ModelAnimator::CreateTexture()
-{
-	if (_model->GetAnimationCount() == 0)
-		return;
-
-	// Creature Texture
-	{
-		//		     Bone1  Bone2  Bone3 ...  Bone350
-		//	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
-		//  Frame2   [SRT]
-		//  Frame3   [SRT]
-		//	...		 ...
-		//	Frame500 [SRT]
-		//
-		D3D11_TEXTURE2D_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
-		desc.Width = MAX_MODEL_TRANSFORMS * 4;
-		desc.Height = MAX_MODEL_KEYFRAMES;
-		desc.ArraySize = _model->GetAnimationCount();
-		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 16바이트
-		desc.Usage = D3D11_USAGE_IMMUTABLE;
-		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		desc.MipLevels = 1;
-		desc.SampleDesc.Count = 1;
-
-		const uint32 dataSize = MAX_MODEL_TRANSFORMS * sizeof(Matrix);
-		const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES;
-		void* mallocPtr = ::malloc(pageSize * _model->GetAnimationCount());
-
-		// 파편화된 데이터를 조립한다.
-		for (uint32 c = 0; c < _model->GetAnimationCount(); c++)
-		{
-			uint32 startOffset = c * pageSize;
-
-			BYTE* pageStartPtr = reinterpret_cast<BYTE*>(mallocPtr) + startOffset;
-
-			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++)
-			{
-				void* ptr = pageStartPtr + dataSize * f;
-				::memcpy(ptr, _model->GetAnimTransforms()[c].transforms[f].data(), dataSize);
-			}
-		}
-
-		// 리소스 만들기
-		vector<D3D11_SUBRESOURCE_DATA> subResources(_model->GetAnimationCount());
-
-		for (uint32 c = 0; c < _model->GetAnimationCount(); c++)
-		{
-			void* ptr = (BYTE*)mallocPtr + c * pageSize;
-			subResources[c].pSysMem = ptr;
-			subResources[c].SysMemPitch = dataSize;
-			subResources[c].SysMemSlicePitch = pageSize;
-		}
-
-		HRESULT hr = DEVICE->CreateTexture2D(&desc, subResources.data(), _texture.GetAddressOf());
-		CHECK(hr);
-
-		::free(mallocPtr);
-	}
-
-	// Create SRV
-	{
-		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
-		desc.Texture2DArray.MipLevels = 1;
-		desc.Texture2DArray.ArraySize = _model->GetAnimationCount();
-
-		HRESULT hr = DEVICE->CreateShaderResourceView(_texture.Get(), &desc, _srv.GetAddressOf());
-		CHECK(hr);
 	}
 }
 

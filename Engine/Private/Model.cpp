@@ -696,6 +696,83 @@ void Model::BindCacheInfo()
 	}
 }
 
+
+void Model::CreateTexture()
+{
+	if (_animations.size() == 0)
+		return;
+
+	CreateAnimationTransform();
+	// Creature Texture
+	{
+		//		     Bone1  Bone2  Bone3 ...  Bone350
+		//	Frame1   [SRT]  [SRT]  [SRT]  ...  [SRT]
+		//  Frame2   [SRT]
+		//  Frame3   [SRT]
+		//	...		 ...
+		//	Frame500 [SRT]
+		//
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+		desc.Width = MAX_MODEL_TRANSFORMS * 4;
+		desc.Height = MAX_MODEL_KEYFRAMES;
+		desc.ArraySize = _animations.size();
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 16바이트
+		desc.Usage = D3D11_USAGE_IMMUTABLE;
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+
+		const uint32 dataSize = MAX_MODEL_TRANSFORMS * sizeof(Matrix);
+		const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES;
+		void* mallocPtr = ::malloc(pageSize * _animations.size());
+
+		// 파편화된 데이터를 조립한다.
+		for (uint32 c = 0; c < _animations.size(); c++)
+		{
+			uint32 startOffset = c * pageSize;
+
+			BYTE* pageStartPtr = reinterpret_cast<BYTE*>(mallocPtr) + startOffset;
+
+			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++)
+			{
+				void* ptr = pageStartPtr + dataSize * f;
+				::memcpy(ptr, _animTransforms[c].transforms[f].data(), dataSize);
+			}
+		}
+
+		// 리소스 만들기
+		vector<D3D11_SUBRESOURCE_DATA> subResources(_animations.size());
+
+		for (uint32 c = 0; c < _animations.size(); c++)
+		{
+			void* ptr = (BYTE*)mallocPtr + c * pageSize;
+			subResources[c].pSysMem = ptr;
+			subResources[c].SysMemPitch = dataSize;
+			subResources[c].SysMemSlicePitch = pageSize;
+		}
+
+		HRESULT hr = DEVICE->CreateTexture2D(&desc, subResources.data(), _texture.GetAddressOf());
+		CHECK(hr);
+
+		::free(mallocPtr);
+	}
+
+	// Create SRV
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		desc.Texture2DArray.MipLevels = 1;
+		desc.Texture2DArray.ArraySize = _animations.size();
+
+		HRESULT hr = DEVICE->CreateShaderResourceView(_texture.Get(), &desc, _srv.GetAddressOf());
+		CHECK(hr);
+	}
+}
+
+
 void Model::CreateAnimationTransform()
 {
 	_rootBoneAnimTransforms.resize(GetAnimationCount());

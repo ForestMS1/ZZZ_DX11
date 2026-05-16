@@ -36,10 +36,13 @@ public:
 	void ReadAnimationRotatedY180NoMove(const wstring& filename); // 제자리 걸음 (루트모션 적용x) 버전으로 애니메이션을 불러온다 + -z를 바라보는 모델
 
 	// 애니메이션 다 읽었으면 호출
-	void CreateAnimationTransform();
+	// 쉐이더에 넘겨 줄 Texture, SRV 만들어 줌
+	void CreateTexture();
 	// 키프레임별 Bone의 SRT
 	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
 	const vector<vector<Matrix>>& GetRootAnimTransform() { return _rootBoneAnimTransforms; }
+	ComPtr<ID3D11Texture2D> GetTransformTexture() { return _texture; }
+	ComPtr<ID3D11ShaderResourceView> GetTransformSRV() { return _srv; }
 
 public:
 	uint32 GetMaterialCount() { return static_cast<uint32>(_materials.size()); }
@@ -79,10 +82,18 @@ private:
 	vector<shared_ptr<ModelMesh>> _meshes;
 	vector<shared_ptr<ModelAnimation>> _animations;
 
+private:
+	void CreateAnimationTransform();
 	// 애니메이션(키프레임별 Bone의 SRT)
 	vector<AnimTransform> _animTransforms;
 	// 루트본의 순수 애니메이션 이동량을 담을 벡터
 	vector<vector<Matrix>> _rootBoneAnimTransforms; // _rootBoneAnimTransforms[현재애니메이션인덱스][현재애니메이션의 현재키프레임]
+
+
+private:
+	// 쉐이더에 넘겨 줄 Texture, SRV
+	ComPtr<ID3D11Texture2D> _texture;
+	ComPtr<ID3D11ShaderResourceView> _srv;
 };
 
 NS_END

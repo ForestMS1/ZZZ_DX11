@@ -82,15 +82,6 @@ public:
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) { return nullptr; }
 
 private:
-	// 쉐이더에 넘겨 줄 Texture, SRV 만들어 줌
-	void CreateTexture();
-
-private:
-	// 쉐이더에 넘겨 줄 Texture, SRV
-	ComPtr<ID3D11Texture2D> _texture;
-	ComPtr<ID3D11ShaderResourceView> _srv;
-
-private:
 	KeyframeDesc _keyframeDesc;
 	TweenDesc _tweenDesc;
 	shared_ptr<AnimFSM> _animFSM;

@@ -378,7 +378,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Front");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Back");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Die");
-	CorinAnimModel->CreateAnimationTransform();
+	CorinAnimModel->CreateTexture();
 	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
 
 	// Ellen 기본 T자 모델
@@ -401,7 +401,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Attack_Ex_Start");
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchIn_Normal");
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_SwitchOut_Normal");
-	EllenAnimModel->CreateAnimationTransform();
+	EllenAnimModel->CreateTexture();
 	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
 
 	// Alice 애니메이션 담은 모델
@@ -412,7 +412,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	AliceAnimModel->ReadAnimationRotatedY180(L"Alice/Avatar_Female_Size02_Alice_Ani_QuestStart");
 	AliceAnimModel->ReadAnimationRotatedY180(L"Alice/Avatar_Female_Size02_Alice_Ani_Idle_Loop");
-	AliceAnimModel->CreateAnimationTransform();
+	AliceAnimModel->CreateTexture();
 	GAME.AddResource<Model>(L"AliceAnimModel", AliceAnimModel);
 
 	// Stage
@@ -457,7 +457,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Monster_Palicus_Ani_Attack_08_03");
 	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Death_Ani_Walk_L");
 	PalicusAnimModel->ReadAnimationRotatedY180(L"Monster_Palicus/Death_Ani_Walk_R");
-	PalicusAnimModel->CreateAnimationTransform();
+	PalicusAnimModel->CreateTexture();
 	GAME.AddResource<Model>(L"Monster_Palicus", PalicusAnimModel);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
