@@ -2,7 +2,7 @@
 <AnimFSM>
     <Parameters>
         <Bool Name="evadeToRun" Value="false"/>
-        <Bool Name="isFront" Value="true"/>
+        <Bool Name="isFront" Value="false"/>
         <Float Name="speed" Value="0"/>
         <Trigger Name="attackNormal" Value="false"/>
         <Trigger Name="attackRush" Value="false"/>
@@ -16,22 +16,6 @@
         <Transition ToState="AttackNormal_01" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
-    </AnimState>
-    <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
-        <Transition ToState="Evade_Front" Duration="0" HasExitTime="false" ExitTime="1">
-            <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
-            <Condition ParamName="isFront" Mode="0" Type="Bool" Value="true"/>
-        </Transition>
-        <Transition ToState="Evade_Back" Duration="0" HasExitTime="false" ExitTime="1">
-            <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
-            <Condition ParamName="isFront" Mode="0" Type="Bool" Value="false"/>
-        </Transition>
-        <Transition ToState="QuestStart" Duration="0" HasExitTime="false" ExitTime="1">
-            <Condition ParamName="questStart" Mode="0" Type="Trigger" Value="false"/>
-        </Transition>
-    </AnimState>
-    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
-        <Transition ToState="Idle" Duration="0.5" HasExitTime="true" ExitTime="0.5"/>
     </AnimState>
     <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0" HasExitTime="false" ExitTime="1">
@@ -48,6 +32,22 @@
         </Transition>
         <Transition ToState="AttackNormal_01" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0.5" HasExitTime="true" ExitTime="0.5"/>
+    </AnimState>
+    <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Evade_Front" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
+            <Condition ParamName="isFront" Mode="0" Type="Bool" Value="true"/>
+        </Transition>
+        <Transition ToState="Evade_Back" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
+            <Condition ParamName="isFront" Mode="0" Type="Bool" Value="false"/>
+        </Transition>
+        <Transition ToState="QuestStart" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="questStart" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
     <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">

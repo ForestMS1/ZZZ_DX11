@@ -39,6 +39,8 @@ public:
 	void Chase(Vec3 target, float offsetLength = 0.f, float speed = 1.f);
 	// LookAt
 	void LookAt(Vec3 lookAt);
+	// [추가] 인자를 로컬(상대) 좌표로 취급하는 LookAt
+	void LookAtLocal(Vec3 targetLocalPos, Vec3 localUp = Vec3::Up);
 
 	// World S R T(인게임 월드 좌표 기준 의미 (부모오브젝트 상관x))
 	Vec3 GetScale() { return _scale; }
@@ -53,6 +55,8 @@ public:
 	Vec3 GetRight() { return _matWorld.Right(); }
 	Vec3 GetUp() { return _matWorld.Up(); }
 	Vec3 GetLook() { return _matWorld.Backward(); } // SimpleMath 좌표계 기준이 오른손 좌표계라서 BackWard
+
+	Vec3 GetLocalLook() { return _matLocal.Backward(); }
 
 	// 월드 행렬 Property
 	Matrix GetWorldMatrix() { return _matWorld; }
