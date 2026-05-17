@@ -13,6 +13,7 @@ public:
 
 public:
 	virtual HRESULT Initialize() override;
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual HRESULT Render() override;
 

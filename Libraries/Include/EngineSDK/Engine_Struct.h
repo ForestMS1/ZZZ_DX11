@@ -13,4 +13,11 @@ namespace Engine
 		const char** ppLevelNames = nullptr;
 	}ENGINE_DESC;
 
+	// 필요하면 구조체 상속
+	struct ENGINE_DLL EventDesc
+	{
+		void* sender;
+		uint32 eventType;
+		virtual ~EventDesc() = default;
+	};
 }

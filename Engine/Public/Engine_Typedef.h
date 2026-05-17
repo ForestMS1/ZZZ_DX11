@@ -27,4 +27,7 @@ namespace Engine
 	// MeshID / MaterialID
 	using InstanceID = std::pair<uint64, uint64>;
 
+	struct EventDesc;
+	using EventCallback = std::function<void(const EventDesc&)>;
+
 }

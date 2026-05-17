@@ -57,7 +57,7 @@ void Camera::PlayAction()
 	if (_elapsedTime >= keyFrames.back().time)
 	{
 		transform->SetLocalPosition(keyFrames.back().position);
-		transform->LookAt(keyFrames.back().lookAt);
+		transform->LookAtLocal(keyFrames.back().lookAt);
 		_fov = keyFrames.back().fov;
 
 		_elapsedTime = 0.f;
@@ -100,7 +100,7 @@ void Camera::PlayAction()
 
 	// 시선보간
 	Vec3 lerpLookAt = Vec3::CatmullRom(f0.lookAt, f1.lookAt, f2.lookAt, f3.lookAt, t);
-	transform->LookAt(lerpLookAt);
+	transform->LookAtLocal(lerpLookAt);
 	
 
 	// fov보간
@@ -183,7 +183,7 @@ void Camera::LoadAction(const wstring& filename)
 	std::ifstream ifs(savePath, std::ios::binary);
 	if (!ifs.is_open()) return;
 
-	_timeline.clear();
+	//_timeline.clear();
 
 	// 액션 개수 읽기
 	uint32 timelineCount = 0;
@@ -327,8 +327,8 @@ void Camera::AddKeyFrameAtCurrent(const wstring& actionName)
 {
 	CameraKeyFrame n;
 	n.time = _editTime;
-	n.position = GetTransform()->GetPosition();
-	n.lookAt = n.position + GetTransform()->GetLook();
+	n.position = GetTransform()->GetLocalPosition();
+	n.lookAt = n.position + GetTransform()->GetLocalLook();
 	n.fov = _fov;
 
 	auto& frames = _timeline[actionName];
@@ -345,7 +345,7 @@ void Camera::ShowKeyFrameList(const wstring& name)
 	auto transform = GetTransform();
 
 	Vec3 curPos = transform->GetLocalPosition();
-	Vec3 curLook = transform->GetLook();
+	Vec3 curLook = transform->GetLocalLook();
 
 	ImGui::DragFloat3("Pos", (float*)&curPos, 0.1f);
 	ImGui::DragFloat3("LookAt", (float*)&curLook, 0.1f);

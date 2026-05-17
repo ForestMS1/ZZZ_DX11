@@ -163,6 +163,9 @@
     <Filter Include="08.UI&amp;Effect">
       <UniqueIdentifier>{d64ee036-4599-4cde-b2fd-9d37a5138c51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="09.EventSystem">
+      <UniqueIdentifier>{da78d7e9-23ce-419c-a9b9-da5d602c5961}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -415,6 +418,9 @@
     <ClInclude Include="..\Public\BillBoard.h">
       <Filter>08.UI&amp;Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EventQueueManager.h">
+      <Filter>09.EventSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -650,6 +656,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BillBoard.cpp">
       <Filter>08.UI&amp;Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EventQueueManager.cpp">
+      <Filter>09.EventSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

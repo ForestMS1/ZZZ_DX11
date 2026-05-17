@@ -18,10 +18,13 @@ public:
 	virtual void FixedUpdate();
 	virtual HRESULT Render();
 
+	LIFESTATE GetLifeState() const { return _lifeState; }
+	void	  SetLifeState(LIFESTATE eLifeState) { _lifeState = eLifeState; }
+
 protected:
 	ComPtr<ID3D11Device> _device = { nullptr };
 	ComPtr<ID3D11DeviceContext> _deviceContext = { nullptr };
-
+	LIFESTATE			_lifeState = { LIFESTATE::NONE };
 
 };
 

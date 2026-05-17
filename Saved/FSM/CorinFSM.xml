@@ -2,11 +2,12 @@
 <AnimFSM>
     <Parameters>
         <Bool Name="evadeToRun" Value="false"/>
-        <Bool Name="isFront" Value="true"/>
+        <Bool Name="isFront" Value="false"/>
         <Float Name="speed" Value="0"/>
         <Trigger Name="attackNormal" Value="false"/>
         <Trigger Name="attackRush" Value="false"/>
         <Trigger Name="evade" Value="false"/>
+        <Trigger Name="questStart" Value="false"/>
     </Parameters>
     <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk_Start" Duration="0" HasExitTime="false" ExitTime="1">
@@ -44,6 +45,9 @@
         <Transition ToState="Evade_Back" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
             <Condition ParamName="isFront" Mode="0" Type="Bool" Value="false"/>
+        </Transition>
+        <Transition ToState="QuestStart" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="questStart" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
     <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">
@@ -101,6 +105,9 @@
         <Transition ToState="AttackRush_End" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
     <AnimState Name="AttackRush_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+    <AnimState Name="QuestStart" ClipName="Avatar_Female_Size01_Corin_Ani_QuestStart" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
 </AnimFSM>

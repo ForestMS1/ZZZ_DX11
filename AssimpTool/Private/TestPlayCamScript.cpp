@@ -5,6 +5,10 @@
 void TestPlayCamScript::Awake()
 {
 	_target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin");
+
+    GetGameObject()->GetCamera()->LoadAction(L"NewAction");
+    // 이벤트함수 등록
+    GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
 }
 
 void TestPlayCamScript::LateUpdate()
@@ -73,6 +77,9 @@ void TestPlayCamScript::LateUpdate()
     GetTransform()->LookAt(targetPos + Vec3(0.f, 1.0f, 0.f)); // 플레이어의 허리/머리 쪽을 응시
 
     _isPrevActionPlay = camera->IsPlaying();
+
+    if (!camera->IsPlaying())
+        GetTransform()->SetParent(nullptr);
 }
 
 void TestPlayCamScript::OnInspectorGUI()
@@ -82,6 +89,14 @@ void TestPlayCamScript::OnInspectorGUI()
     {
 
     }
+}
+
+void TestPlayCamScript::OnQuestStart()
+{
+    _target.lock()->GetTransform()->AddChild(GetTransform());
+    auto camera = GetGameObject()->GetCamera();
+    camera->CameraOn();
+    camera->Play(L"NewAction");
 }
 
 unique_ptr<TestPlayCamScript> TestPlayCamScript::Create()
