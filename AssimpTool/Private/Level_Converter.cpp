@@ -46,6 +46,12 @@ HRESULT Level_Converter::Initialize()
 	//converter->ExportModelData(L"Monster_Palicus/Monster_Palicus");
 	//converter->ExportAnimationDataAll(L"Monster_Palicus");
 
+	//shared_ptr<Converter> converter = make_shared<Converter>();
+	//converter->ReadAssetFile(L"Monster_AlpecaInfested_Model/Monster_AlpecaInfested_Model.fbx");
+	//converter->ExportMaterialData(L"Monster_AlpecaInfested_Model/Monster_AlpecaInfested_Model");
+	//converter->ExportModelData(L"Monster_AlpecaInfested_Model/Monster_AlpecaInfested_Model");
+	//converter->ExportAnimationDataAll(L"Monster_AlpecaInfested_Model");
+
 	return S_OK;
 }
 

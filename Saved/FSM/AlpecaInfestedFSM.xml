@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimFSM>
+    <Parameters>
+        <Trigger Name="born" Value="false"/>
+        <Trigger Name="idle" Value="false"/>
+        <Trigger Name="onHit" Value="false"/>
+        <Trigger Name="run" Value="false"/>
+        <Trigger Name="walk" Value="false"/>
+    </Parameters>
+    <AnimState Name="Idle" ClipName="AlpecaInfested_Ani_Idle" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="AnyState" ClipName="None" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Born" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="born" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="Walk" Duration="0.5" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="walk" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="Run_Start" Duration="0.2" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="run" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="Idle" Duration="0.5" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="idle" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="Hit_Front" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="onHit" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Born" ClipName="AlpecaInfested_Ani_Born" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Walk" ClipName="AlpecaInfested_Ani_Walk_F" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Run_End" ClipName="AlpecaInfested_Ani_Run_End" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Run_Start" ClipName="AlpecaInfested_Ani_Run_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Run_Loop" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+    <AnimState Name="Run_Loop" ClipName="AlpecaInfested_Ani_Run_Loop" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Run_End" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+    <AnimState Name="Hit_Front" ClipName="AlpecaInfested_Ani_Hit_H_Front" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0.5" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+</AnimFSM>

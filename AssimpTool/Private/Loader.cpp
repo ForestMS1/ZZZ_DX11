@@ -20,6 +20,7 @@
 #include "NetworkAnimationView.h"
 #include "CorinWeaponScript.h"
 #include "CorinStateMachineScript.h"
+#include "AlpecaInfestedScript.h"
 // ---------------------------------------------
 Loader::Loader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pDeviceContext)
 	: _device(pDevice)
@@ -460,6 +461,28 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	PalicusAnimModel->CreateTexture();
 	GAME.AddResource<Model>(L"Monster_Palicus", PalicusAnimModel);
 
+	// 몬스터 애니메이션 담은 모델
+	shared_ptr<Model> Monster_AlpecaInfested_Model = make_shared<Model>();
+	Monster_AlpecaInfested_Model->ReadModelRotatedY180(L"Monster_AlpecaInfested_Model/Monster_AlpecaInfested_Model");
+	Monster_AlpecaInfested_Model->ReadMaterial(L"Monster_AlpecaInfested_Model/Monster_AlpecaInfested_Model");
+	Monster_AlpecaInfested_Model->GetMaterialByIndex(0)->SetShader(TweenTestShader);
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Born");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Idle");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Walk_F");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Run_Start");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Run_Loop");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Run_End");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Death_Front");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Hit_H_Back");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Hit_H_Front");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_01");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_02");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_03");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_04");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_05");
+	Monster_AlpecaInfested_Model->CreateTexture();
+	GAME.AddResource<Model>(L"Monster_AlpecaInfested_Model", Monster_AlpecaInfested_Model);
+
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 
 	// ----------------------------------------------------Script Load--------------------------------------------------------
@@ -491,6 +514,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	/* Script_CorinStateMachineScript */
 	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_CorinStateMachineScript",
 		CorinStateMachineScript::Create())))
+		return E_FAIL;
+
+	/* Script_AlpecaInfestedScript */
+	if (FAILED(GameInstance::Get().Add_Prototype(ETOUI(LEVEL::TESTMESH), L"Script_AlpecaInfestedScript",
+		AlpecaInfestedScript::Create())))
 		return E_FAIL;
 
 	/* NetworkView */
