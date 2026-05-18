@@ -49,6 +49,10 @@ public:
 	bool IsFix() const { return _isFix; }
 	void SetFix(bool fix = true) { _isFix = fix; }
 
+	// 콜라이더 활성화상태 on/off off면 충돌처리에서 제외
+	bool IsActive() const { return _isActive; }
+	void SetActive(bool isActive) { _isActive = isActive; }
+
 	ColliderType GetColliderType() const { return _colliderType; }
 
 	// 디버그 컬러 변경
@@ -65,6 +69,10 @@ protected:
 	bool _isTrigger = false;
 	// 충돌한만큼 밀려날것인지 (벽, 맵, 몬스터 같은 애들 true)
 	bool _isFix = true;
+
+
+	// 콜라이더 on/off
+	bool _isActive = true;
 };
 
 NS_END

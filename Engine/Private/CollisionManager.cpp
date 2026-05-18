@@ -39,6 +39,10 @@ void CollisionManager::FixedUpdate()
 
 			if (shared_ptr<Collider> srcCollider = srcGameObject->GetCollider())
 			{
+				// 활성화 off된 콜라이더는 충돌처리에서 제외
+				if (srcCollider->IsActive() == false)
+					continue;
+
 				for (auto& dscGameObject : dscLayer->Get_GameObjects())
 				{
 					// 한 프레임도 안돈 애들 충돌처리 x (바운딩 박스 위치, 크기 안정해짐)
@@ -54,6 +58,10 @@ void CollisionManager::FixedUpdate()
 
 					if (shared_ptr<Collider> dscCollider = dscGameObject->GetCollider())
 					{
+						// 활성화 off된 콜라이더는 충돌처리에서 제외
+						if (dscCollider->IsActive() == false)
+							continue;
+
 						//충돌 검사.
 						if (srcCollider->Intersects(dscCollider))
 						{

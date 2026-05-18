@@ -202,8 +202,11 @@ HRESULT Renderer::Redner_Collider()
 	{
 		if (object != nullptr)
 		{
-			if(auto collider = object->GetCollider())
-				collider->Render();
+			if (auto collider = object->GetCollider())
+			{
+				if(collider->IsActive())
+					collider->Render();
+			}
 		}
 	}
 
