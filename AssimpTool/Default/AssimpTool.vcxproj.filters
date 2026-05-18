@@ -235,6 +235,9 @@
     <ClInclude Include="..\Public\CorinDashAttack.h">
       <Filter>04.StateMachine\Corin\DashAttack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AlpecaInfestedScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AssimpTool.ico">
@@ -391,6 +394,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorinDashAttack.cpp">
       <Filter>04.StateMachine\Corin\DashAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AlpecaInfestedScript.cpp">
+      <Filter>03.Scirpts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

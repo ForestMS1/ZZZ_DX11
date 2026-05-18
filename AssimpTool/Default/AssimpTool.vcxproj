@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\AlpecaInfestedScript.h" />
     <ClInclude Include="..\Public\AssimpTool_Defines.h" />
     <ClInclude Include="..\Public\AsTypes.h" />
     <ClInclude Include="..\Public\BaseState.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\AlpecaInfestedScript.cpp" />
     <ClCompile Include="..\Private\AsTypes.cpp" />
     <ClCompile Include="..\Private\BaseState.cpp" />
     <ClCompile Include="..\Private\Converter.cpp" />

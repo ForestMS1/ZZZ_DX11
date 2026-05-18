@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CorinWeaponScript.h"
-
+#include "CorinStateMachineScript.h"
 void CorinWeaponScript::Awake()
 {
 	_transformCom = GetTransform();
@@ -53,6 +53,23 @@ void CorinWeaponScript::Update()
 	weaponOffsetMatrix *= Matrix::CreateTranslation(finalPosition);
 
 	_transformCom->SetLocalMatrix(weaponOffsetMatrix);
+}
+
+void CorinWeaponScript::LateUpdate()
+{
+	if (auto stateMachine = _transformCom->GetParentTransform()->GetGameObject()->GetScript<CorinStateMachineScript>())
+	{
+		string curStateName = stateMachine->GetCurStateName();
+		auto collider = GetGameObject()->GetCollider();
+		if (curStateName == "CorinDashAttack" || curStateName == "CorinNormalAttack")
+		{
+			collider->SetActive(true);
+		}
+		else
+		{
+			collider->SetActive(false);
+		}
+	}
 }
 
 void CorinWeaponScript::OnCollisionEnter(const Collision& collision)

@@ -14,6 +14,9 @@ public:
 	virtual void Awake() override;
 	void ChangeState(const wstring& stateName);
 
+	// 다른곳에서 현재 어느 State인지 확인할 수 있도록
+	string GetCurStateName() const { return _curStateName; }
+
 	// BaseState에서 현재 애니메이션State 이름 가져오도록 열어줌
 	wstring GetCurAnimStateName();
 	// BaseState에서 그냥 xml파일 무시하고 애니메이션 State를 바꿔버리는 함수
@@ -34,6 +37,6 @@ protected:
 	// 상태들 보관
 	map<wstring, shared_ptr<BaseState>> _states;
 
-	// ImGui용 현재상태 이름
+	// 현재상태 이름
 	string _curStateName;
 };

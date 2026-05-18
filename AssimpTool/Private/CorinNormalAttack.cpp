@@ -39,7 +39,9 @@ void CorinNormalAttack::Update()
 {
 	Input();
 
-	if (_stateMachine.lock()->GetCurAnimStateName() == L"Idle")
+
+	const wstring& curAnimName = _stateMachine.lock()->GetCurAnimStateName();
+	if (curAnimName == L"AttackNormal_01_End" || curAnimName == L"AttackNormal_02_End" || curAnimName == L"AttackNormal_03_End")
 		_stateMachine.lock()->ChangeState(L"CorinIdle");
 }
 
