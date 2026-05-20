@@ -39,13 +39,14 @@ void StateMachine::AddState(const wstring& stateName, shared_ptr<BaseState> stat
 
 void StateMachine::ChangeState(const wstring& stateName)
 {
-	if (_states[stateName] == nullptr /*|| _curState == _states[stateName]*/)
+	auto iter = _states.find(stateName);
+	if (iter == _states.end())
 		return;
 
 	if(_curState != nullptr)
 		_curState->OnExit();
 
-	_curState = _states[stateName];
+	_curState = iter->second;
 	_curStateName = Utils::ToString(stateName);
 
 	_curState->OnEnter();

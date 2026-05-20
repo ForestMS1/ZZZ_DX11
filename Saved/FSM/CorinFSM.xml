@@ -4,10 +4,13 @@
         <Bool Name="evadeToRun" Value="false"/>
         <Bool Name="isFront" Value="false"/>
         <Float Name="speed" Value="0"/>
+        <Trigger Name="ParryAid" Value="false"/>
         <Trigger Name="attackNormal" Value="false"/>
         <Trigger Name="attackRush" Value="false"/>
         <Trigger Name="evade" Value="false"/>
         <Trigger Name="questStart" Value="false"/>
+        <Trigger Name="switchInAttack" Value="false"/>
+        <Trigger Name="switchOut" Value="false"/>
     </Parameters>
     <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk_Start" Duration="0" HasExitTime="false" ExitTime="1">
@@ -48,6 +51,15 @@
         </Transition>
         <Transition ToState="QuestStart" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="questStart" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="SwitchOut" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="switchOut" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="SwitchIn_Attack" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="switchInAttack" Mode="0" Type="Trigger" Value="false"/>
+        </Transition>
+        <Transition ToState="ParryAid" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="ParryAid" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
     <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false">
@@ -104,10 +116,24 @@
     <AnimState Name="AttackRush" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="AttackRush_End" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
+    <AnimState Name="ParryAid_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
     <AnimState Name="AttackRush_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush_End" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+    <AnimState Name="SwitchOut" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
     <AnimState Name="QuestStart" ClipName="Avatar_Female_Size01_Corin_Ani_QuestStart" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
+    <AnimState Name="SwitchIn_Attack" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+        <Transition ToState="SwitchIn_Attack_End" Duration="0" HasExitTime="true" ExitTime="1"/>
+    </AnimState>
+    <AnimState Name="SwitchIn_Attack_End" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_End" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="ParryAid" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="ParryAid_End" Duration="0" HasExitTime="true" ExitTime="0.69999999"/>
+    </AnimState>
+    <AnimState Name="ParryAid_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_Start" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
 </AnimFSM>

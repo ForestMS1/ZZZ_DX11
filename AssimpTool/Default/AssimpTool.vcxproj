@@ -155,9 +155,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CorinSleep.h" />
     <ClInclude Include="..\Public\CorinStateMachineScript.h" />
+    <ClInclude Include="..\Public\CorinSwitchIn.h" />
+    <ClInclude Include="..\Public\CorinSwitchOut.h" />
     <ClInclude Include="..\Public\CorinWeapon.h" />
     <ClInclude Include="..\Public\CorinWeaponScript.h" />
+    <ClInclude Include="..\Public\EllenEvade.h" />
+    <ClInclude Include="..\Public\EllenIdle.h" />
+    <ClInclude Include="..\Public\EllenNormalAttack.h" />
+    <ClInclude Include="..\Public\EllenStateMachineScript.h" />
+    <ClInclude Include="..\Public\EllenSwitchIn.h" />
+    <ClInclude Include="..\Public\EllenSwitchOut.h" />
+    <ClInclude Include="..\Public\EllenWeaponScript.h" />
     <ClInclude Include="..\Public\imnodes.h" />
     <ClInclude Include="..\Public\imnodes_internal.h" />
     <ClInclude Include="..\Public\INetworkObservable.h" />
@@ -171,6 +181,12 @@
     <ClInclude Include="..\Public\NetworkView.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
+    <ClInclude Include="..\Public\TagManagerScript.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\TestCam.h" />
     <ClInclude Include="..\Public\TestCamScript.h" />
     <ClInclude Include="..\Public\TestCorin.h" />
@@ -209,9 +225,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CorinSleep.cpp" />
     <ClCompile Include="..\Private\CorinStateMachineScript.cpp" />
+    <ClCompile Include="..\Private\CorinSwitchIn.cpp" />
+    <ClCompile Include="..\Private\CorinSwitchOut.cpp" />
     <ClCompile Include="..\Private\CorinWeapon.cpp" />
     <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
+    <ClCompile Include="..\Private\EllenEvade.cpp" />
+    <ClCompile Include="..\Private\EllenIdle.cpp" />
+    <ClCompile Include="..\Private\EllenNormalAttack.cpp" />
+    <ClCompile Include="..\Private\EllenStateMachineScript.cpp" />
+    <ClCompile Include="..\Private\EllenSwitchIn.cpp" />
+    <ClCompile Include="..\Private\EllenSwitchOut.cpp" />
+    <ClCompile Include="..\Private\EllenWeaponScript.cpp" />
     <ClCompile Include="..\Private\imnodes.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -228,6 +254,12 @@
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
+    <ClCompile Include="..\Private\TagManagerScript.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\TestCam.cpp" />
     <ClCompile Include="..\Private\TestCamScript.cpp" />
     <ClCompile Include="..\Private\TestCorin.cpp" />

@@ -94,6 +94,36 @@
     <Filter Include="04.StateMachine\Corin\DashAttack">
       <UniqueIdentifier>{062a4823-e965-4f5b-9bfe-814d7500b34b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.StateMachine\Corin\Sleep">
+      <UniqueIdentifier>{afc277e5-75db-4c11-b973-be01613ccccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen">
+      <UniqueIdentifier>{0d34b12d-ba95-4cb5-a93d-a282f7bcbd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\Idle">
+      <UniqueIdentifier>{ade43434-4e5a-40cb-9897-a354c0bae38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\Evade">
+      <UniqueIdentifier>{91ef74c0-7b12-466b-b15c-2eacde793481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\Sleep">
+      <UniqueIdentifier>{94c1179b-fa21-4988-9bff-f3d2c6722d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\NormalAttack">
+      <UniqueIdentifier>{03cc91d7-19c0-417f-8814-7c00611dcbb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\SwitchIn">
+      <UniqueIdentifier>{f124e048-38fd-4f2c-b953-bd904ed2aa7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\SwitchOut">
+      <UniqueIdentifier>{b5d3996d-45ad-4bc1-8094-1c0f735a647f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\SwitchOut">
+      <UniqueIdentifier>{3ec9fa98-ae2f-4117-8d6f-b48016f6b580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\SwitchIn">
+      <UniqueIdentifier>{e88a9700-675a-430a-bee5-9b974a9da0e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -237,6 +267,39 @@
     </ClInclude>
     <ClInclude Include="..\Public\AlpecaInfestedScript.h">
       <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TagManagerScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinSleep.h">
+      <Filter>04.StateMachine\Corin\Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenStateMachineScript.h">
+      <Filter>04.StateMachine\Ellen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenIdle.h">
+      <Filter>04.StateMachine\Ellen\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenWeaponScript.h">
+      <Filter>03.Scirpts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenEvade.h">
+      <Filter>04.StateMachine\Ellen\Evade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenNormalAttack.h">
+      <Filter>04.StateMachine\Ellen\NormalAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinSwitchOut.h">
+      <Filter>04.StateMachine\Corin\SwitchOut</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinSwitchIn.h">
+      <Filter>04.StateMachine\Corin\SwitchIn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenSwitchOut.h">
+      <Filter>04.StateMachine\Ellen\SwitchOut</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenSwitchIn.h">
+      <Filter>04.StateMachine\Ellen\SwitchIn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +460,39 @@
     </ClCompile>
     <ClCompile Include="..\Private\AlpecaInfestedScript.cpp">
       <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TagManagerScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinSleep.cpp">
+      <Filter>04.StateMachine\Corin\Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenStateMachineScript.cpp">
+      <Filter>04.StateMachine\Ellen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenIdle.cpp">
+      <Filter>04.StateMachine\Ellen\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenWeaponScript.cpp">
+      <Filter>03.Scirpts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenEvade.cpp">
+      <Filter>04.StateMachine\Ellen\Evade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenNormalAttack.cpp">
+      <Filter>04.StateMachine\Ellen\NormalAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinSwitchOut.cpp">
+      <Filter>04.StateMachine\Corin\SwitchOut</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinSwitchIn.cpp">
+      <Filter>04.StateMachine\Corin\SwitchIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenSwitchOut.cpp">
+      <Filter>04.StateMachine\Ellen\SwitchOut</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenSwitchIn.cpp">
+      <Filter>04.StateMachine\Ellen\SwitchIn</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

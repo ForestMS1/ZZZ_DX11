@@ -253,9 +253,6 @@
     <Text Include="..\..\Shaders\Light.fx">
       <Filter>97.Shaders\Common</Filter>
     </Text>
-    <Text Include="..\..\Shaders\Render.fx">
-      <Filter>97.Shaders\Common</Filter>
-    </Text>
     <Text Include="..\..\Shaders\ShadowAnim.fx">
       <Filter>97.Shaders\Common</Filter>
     </Text>

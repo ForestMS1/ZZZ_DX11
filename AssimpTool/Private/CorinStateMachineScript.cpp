@@ -7,6 +7,9 @@
 #include "CorinEvade.h"
 #include "CorinNormalAttack.h"
 #include "CorinDashAttack.h"
+#include "CorinSwitchOut.h"
+#include "CorinSwitchIn.h"
+#include "CorinSleep.h"
 //--------------------------------------
 #include "NetworkView.h"
 
@@ -41,10 +44,20 @@ void CorinStateMachineScript::Awake()
 	shared_ptr<CorinNormalAttack> corinNormalAttack = make_shared<CorinNormalAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinDashAttack> corinDashAttack = make_shared<CorinDashAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 
+
 	AddState(L"CorinIdle", corinIdle);
 	AddState(L"CorinEvade", corinEvade);
 	AddState(L"CorinNormalAttack", corinNormalAttack);
 	AddState(L"CorinDashAttack", corinDashAttack);
+
+
+	shared_ptr<CorinSwitchOut> corinSwitchOut = make_shared<CorinSwitchOut>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinSwitchIn> corinSwitchIn = make_shared<CorinSwitchIn>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinSleep> corinSleepState = make_shared<CorinSleep>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	
+	AddState(L"SwitchOut", corinSwitchOut);
+	AddState(L"SwitchIn", corinSwitchIn);
+	AddState(L"Sleep", corinSleepState);
 
 
 	// 이벤트 함수 등록
