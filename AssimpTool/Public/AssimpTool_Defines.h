@@ -13,7 +13,7 @@ namespace AssimpTool
 	enum class LEVEL { STATIC, LOADING, CONVERT, TESTMESH, END };
 	inline const char* LEVEL_NAMES[] = { "STATIC", "LOADING", "CONVERT", "TESTMESH", "END" };
 	
-	enum class EventType { LEVEL_START, BOSS_SPAWN, WIPEOUT, END };
+	enum class EventType { LEVEL_START, CHARACTER_SWITCH, BOSS_SPAWN, WIPEOUT, END };
 }
 
 extern HWND			g_hWnd;

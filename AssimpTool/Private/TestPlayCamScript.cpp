@@ -1,14 +1,18 @@
 #include "pch.h"
 #include "TestPlayCamScript.h"
-
+#include "TagManagerScript.h"
 
 void TestPlayCamScript::Awake()
 {
 	_target = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin");
 
-    GetGameObject()->GetCamera()->LoadAction(L"NewAction");
+    auto camera = GetGameObject()->GetCamera();
+    camera->LoadAction(L"NewAction");
+    camera->LoadAction(L"CharacterChange");
+
     // 이벤트함수 등록
     GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
+    GAME.Subscribe(static_cast<uint32>(EventType::CHARACTER_SWITCH), [this](const EventDesc& desc) { this->OnCharacterSwitch(desc); });
 }
 
 void TestPlayCamScript::LateUpdate()
@@ -79,7 +83,10 @@ void TestPlayCamScript::LateUpdate()
     _isPrevActionPlay = camera->IsPlaying();
 
     if (!camera->IsPlaying())
+    {
         GetTransform()->SetParent(nullptr);
+        GetTransform()->UpdateTransform();
+    }
 }
 
 void TestPlayCamScript::OnInspectorGUI()
@@ -97,6 +104,17 @@ void TestPlayCamScript::OnQuestStart()
     auto camera = GetGameObject()->GetCamera();
     camera->CameraOn();
     camera->Play(L"NewAction");
+}
+
+void TestPlayCamScript::OnCharacterSwitch(const EventDesc& desc)
+{
+    // 타겟 바꾸고 보간
+    auto tagManager = reinterpret_cast<TagManagerScript*>(desc.sender);
+    _target = tagManager->GetCurCharacter();
+    auto camera = GetGameObject()->GetCamera();
+    _target.lock()->GetTransform()->AddChild(GetTransform());
+    camera->CameraOn();
+    camera->Play(L"CharacterChange");
 }
 
 unique_ptr<TestPlayCamScript> TestPlayCamScript::Create()

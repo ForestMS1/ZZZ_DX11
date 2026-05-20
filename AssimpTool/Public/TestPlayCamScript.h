@@ -13,6 +13,7 @@ class TestPlayCamScript : public MonoBehaviour
 	// 이벤트 함수
 private:
 	void OnQuestStart();
+	void OnCharacterSwitch(const EventDesc& desc);
 
 public:
 	static unique_ptr<TestPlayCamScript> Create();

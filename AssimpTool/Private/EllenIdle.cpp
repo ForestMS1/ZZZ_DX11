@@ -99,14 +99,6 @@ void EllenIdle::Input()
 		stateMachine->_moveSpeed = 0.f;
 	}
 	transform->SetPosition(pos);
-
-
-
-	// АјАн
-	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
-	{
-		_stateMachine.lock()->ChangeState(L"EllenNormalAttack");
-	}
 }
 
 void EllenIdle::Awake()
@@ -146,5 +138,6 @@ void EllenIdle::OnCollisionExit(const Collision& collision)
 
 void EllenIdle::OnExit()
 {
-
+	auto stateMachine = static_pointer_cast<EllenStateMachineScript>(_stateMachine.lock());
+	stateMachine->_moveSpeed = 0.f;
 }

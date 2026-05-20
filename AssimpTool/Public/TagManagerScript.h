@@ -16,11 +16,14 @@ class TagManagerScript : public MonoBehaviour
 	virtual void OnInspectorGUI() override;
 
 public:
+	shared_ptr<GameObject> GetCurCharacter();
+
+public:
 	static unique_ptr<TagManagerScript> Create();
 
 private:
 	void ChangeCharacter(); // 현재 캐릭터 빼고 다음 캐릭터 진입
-
+	void OnQuestStart();
 
 private:
 	vector<shared_ptr<StateMachine>> _playerCharacters;

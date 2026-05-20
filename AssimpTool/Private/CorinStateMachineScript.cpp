@@ -80,6 +80,9 @@ void CorinStateMachineScript::Update()
 			return;
 	}
 
+
+	if (_curStateName == "Sleep")
+		return;
 	// AnyState 여기서 전역적으로 전이
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))

@@ -75,11 +75,26 @@ void EllenStateMachineScript::Update()
 			return;
 	}
 
+	if (_curStateName == "Sleep")
+		return;
 	// AnyState 여기서 전역적으로 전이
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
 	{
+		_moveSpeed = 0.f;
+		_animator.lock()->SetFloat(L"speed", _moveSpeed);
 		ChangeState(L"EllenEvade");
+	}
+
+	// 공격
+	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
+	{
+		ChangeState(L"EllenNormalAttack");
+	}
+
+	if (GAME.Key_Down(DIK_UP) || GAME.Key_Down(DIK_DOWN))
+	{
+		ChangeState(L"EllenIdle");
 	}
 
 	_curState->Update();
