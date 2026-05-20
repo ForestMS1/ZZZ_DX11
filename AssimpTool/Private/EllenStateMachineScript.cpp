@@ -8,6 +8,7 @@
 #include "EllenNormalAttack.h"
 #include "EllenSwitchOut.h"
 #include "EllenSwitchIn.h"
+#include "EllenSleep.h"
 //--------------------------------------
 #include "NetworkView.h"
 
@@ -47,9 +48,11 @@ void EllenStateMachineScript::Awake()
 
 	shared_ptr<EllenSwitchOut> ellenSwitchOut = make_shared<EllenSwitchOut>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
 	shared_ptr<EllenSwitchIn> ellenSwitchIn = make_shared<EllenSwitchIn>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
+	shared_ptr<EllenSleep> ellenSleep = make_shared<EllenSleep>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
+
 	AddState(L"SwitchOut", ellenSwitchOut);
 	AddState(L"SwitchIn", ellenSwitchIn);
-	//AddState(L"EllenSleep", ellenSleep);
+	AddState(L"Sleep", ellenSleep);
 
 
 	// 이벤트 함수 등록

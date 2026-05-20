@@ -301,6 +301,9 @@
     <ClInclude Include="..\Public\EllenSwitchIn.h">
       <Filter>04.StateMachine\Ellen\SwitchIn</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EllenSleep.h">
+      <Filter>04.StateMachine\Ellen\Sleep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AssimpTool.ico">
@@ -493,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\EllenSwitchIn.cpp">
       <Filter>04.StateMachine\Ellen\SwitchIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenSleep.cpp">
+      <Filter>04.StateMachine\Ellen\Sleep</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

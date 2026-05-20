@@ -39,7 +39,9 @@ void EllenSwitchIn::Start()
 
 void EllenSwitchIn::Update()
 {
-
+	const auto& stateMachine = _stateMachine.lock();
+	if (stateMachine->GetCurAnimStateName() == L"Idle")
+		_stateMachine.lock()->ChangeState(L"EllenIdle");
 }
 
 void EllenSwitchIn::LateUpdate()

@@ -39,7 +39,9 @@ void CorinSwitchIn::Start()
 
 void CorinSwitchIn::Update()
 {
-
+	const auto& stateMachine = _stateMachine.lock();
+	if (stateMachine->GetCurAnimStateName() == L"Idle")
+		_stateMachine.lock()->ChangeState(L"CorinIdle");
 }
 
 void CorinSwitchIn::LateUpdate()

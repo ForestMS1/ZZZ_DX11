@@ -164,6 +164,7 @@
     <ClInclude Include="..\Public\EllenEvade.h" />
     <ClInclude Include="..\Public\EllenIdle.h" />
     <ClInclude Include="..\Public\EllenNormalAttack.h" />
+    <ClInclude Include="..\Public\EllenSleep.h" />
     <ClInclude Include="..\Public\EllenStateMachineScript.h" />
     <ClInclude Include="..\Public\EllenSwitchIn.h" />
     <ClInclude Include="..\Public\EllenSwitchOut.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="..\Private\EllenEvade.cpp" />
     <ClCompile Include="..\Private\EllenIdle.cpp" />
     <ClCompile Include="..\Private\EllenNormalAttack.cpp" />
+    <ClCompile Include="..\Private\EllenSleep.cpp" />
     <ClCompile Include="..\Private\EllenStateMachineScript.cpp" />
     <ClCompile Include="..\Private\EllenSwitchIn.cpp" />
     <ClCompile Include="..\Private\EllenSwitchOut.cpp" />

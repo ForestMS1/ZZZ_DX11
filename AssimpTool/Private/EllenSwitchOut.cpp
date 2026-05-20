@@ -37,6 +37,10 @@ void EllenSwitchOut::Start()
 void EllenSwitchOut::Update()
 {
 	// TODO : 애니메이션이 끝났다면 Sleep상태로 전환
+	if (_animator.lock()->IsCurrentAnimFinished())
+	{
+		_stateMachine.lock()->ChangeState(L"Sleep");
+	}
 }
 
 void EllenSwitchOut::LateUpdate()
