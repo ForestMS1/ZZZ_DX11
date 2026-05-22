@@ -100,7 +100,8 @@ void TestPlayCamScript::OnInspectorGUI()
 
 void TestPlayCamScript::OnQuestStart()
 {
-    _target.lock()->GetTransform()->AddChild(GetTransform());
+    auto target = _target.lock();
+    target->GetTransform()->AddChild(GetTransform());
     auto camera = GetGameObject()->GetCamera();
     camera->CameraOn();
     camera->Play(L"NewAction");

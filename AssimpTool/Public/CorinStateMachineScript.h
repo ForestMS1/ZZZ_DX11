@@ -37,6 +37,7 @@ private:
 	// 게임데이터 (hp, speed같은 값)
 private:
 	friend class CorinIdle;
+	friend class CorinMove;
 	friend class CorinNormalAttack;
 	friend class CorinEvade;
 	friend class CorinDashAttack;

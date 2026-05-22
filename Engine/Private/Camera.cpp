@@ -147,20 +147,17 @@ void Camera::SaveAction(const wstring& filename)
 	std::ofstream outFile(savePath, std::ios::binary);
 	if (!outFile.is_open()) return;
 
-	// 저장할 액션의 개수
-	uint32 timelineCount = static_cast<uint32>(_timeline.size());
-	outFile.write(reinterpret_cast<const char*>(&timelineCount), sizeof(uint32));
-
-	for (auto& pair : _timeline)
+	auto iter = _timeline.find(filename);
+	if (iter != _timeline.end())
 	{
 		// 액션 이름 (wstring) 저장
-		const wstring& name = pair.first;
+		const wstring& name = iter->first;
 		uint32 nameLength = static_cast<uint32>(name.size());
 		outFile.write(reinterpret_cast<const char*>(&nameLength), sizeof(uint32));
 		outFile.write(reinterpret_cast<const char*>(name.data()), nameLength * sizeof(wchar_t));
 
 		// 키프레임 개수 저장
-		const auto& frames = pair.second;
+		const auto& frames = iter->second;
 		uint32 frameCount = static_cast<uint32>(frames.size());
 		outFile.write(reinterpret_cast<const char*>(&frameCount), sizeof(uint32));
 
@@ -183,13 +180,8 @@ void Camera::LoadAction(const wstring& filename)
 	std::ifstream ifs(savePath, std::ios::binary);
 	if (!ifs.is_open()) return;
 
-	//_timeline.clear();
-
-	// 액션 개수 읽기
-	uint32 timelineCount = 0;
-	ifs.read(reinterpret_cast<char*>(&timelineCount), sizeof(uint32));
-
-	for (uint32 i = 0; i < timelineCount; ++i)
+	auto iter = _timeline.find(filename);
+	if (iter == _timeline.end())
 	{
 		// 액션 이름 읽기
 		uint32 nameLength = 0;
@@ -212,7 +204,6 @@ void Camera::LoadAction(const wstring& filename)
 
 		_timeline[name] = std::move(frames);
 	}
-
 	ifs.close();
 }
 

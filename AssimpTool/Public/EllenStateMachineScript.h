@@ -37,6 +37,7 @@ private:
 	// 게임데이터 (hp, speed같은 값)
 private:
 	friend class EllenIdle;
+	friend class EllenMove;
 	friend class EllenNormalAttack;
 	friend class EllenEvade;
 	friend class EllenDashAttack;

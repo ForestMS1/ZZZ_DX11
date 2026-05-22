@@ -149,6 +149,7 @@
     <ClInclude Include="..\Public\CorinDashAttack.h" />
     <ClInclude Include="..\Public\CorinEvade.h" />
     <ClInclude Include="..\Public\CorinIdle.h" />
+    <ClInclude Include="..\Public\CorinMove.h" />
     <ClInclude Include="..\Public\CorinNormalAttack.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -163,6 +164,7 @@
     <ClInclude Include="..\Public\CorinWeaponScript.h" />
     <ClInclude Include="..\Public\EllenEvade.h" />
     <ClInclude Include="..\Public\EllenIdle.h" />
+    <ClInclude Include="..\Public\EllenMove.h" />
     <ClInclude Include="..\Public\EllenNormalAttack.h" />
     <ClInclude Include="..\Public\EllenSleep.h" />
     <ClInclude Include="..\Public\EllenStateMachineScript.h" />
@@ -220,6 +222,7 @@
     <ClCompile Include="..\Private\CorinDashAttack.cpp" />
     <ClCompile Include="..\Private\CorinEvade.cpp" />
     <ClCompile Include="..\Private\CorinIdle.cpp" />
+    <ClCompile Include="..\Private\CorinMove.cpp" />
     <ClCompile Include="..\Private\CorinNormalAttack.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -234,6 +237,7 @@
     <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
     <ClCompile Include="..\Private\EllenEvade.cpp" />
     <ClCompile Include="..\Private\EllenIdle.cpp" />
+    <ClCompile Include="..\Private\EllenMove.cpp" />
     <ClCompile Include="..\Private\EllenNormalAttack.cpp" />
     <ClCompile Include="..\Private\EllenSleep.cpp" />
     <ClCompile Include="..\Private\EllenStateMachineScript.cpp" />

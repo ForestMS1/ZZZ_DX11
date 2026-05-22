@@ -4,6 +4,7 @@
 
 //-----------------State----------------
 #include "EllenIdle.h"
+#include "EllenMove.h"
 #include "EllenEvade.h"
 #include "EllenNormalAttack.h"
 #include "EllenSwitchOut.h"
@@ -39,10 +40,12 @@ void EllenStateMachineScript::Awake()
 
 	// 상태들 추가~
 	shared_ptr<EllenIdle> ellenIdle = make_shared<EllenIdle>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
+	shared_ptr<EllenMove> ellenMove = make_shared<EllenMove>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
 	shared_ptr<EllenEvade> ellenEvade = make_shared<EllenEvade>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
 	shared_ptr<EllenNormalAttack> ellenNormalAttack = make_shared<EllenNormalAttack>(GetGameObject(), SHARED_THIS(EllenStateMachineScript));
 
 	AddState(L"EllenIdle", ellenIdle);
+	AddState(L"EllenMove", ellenMove);
 	AddState(L"EllenEvade", ellenEvade);
 	AddState(L"EllenNormalAttack", ellenNormalAttack);
 
@@ -79,22 +82,23 @@ void EllenStateMachineScript::Update()
 		return;
 	// AnyState 여기서 전역적으로 전이
 
-	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
+	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
+	{
+		_moveSpeed += DT * 10.f;
+		if (_moveSpeed >= _moveSpeedMax)
+			_moveSpeed = _moveSpeedMax;
+
+		_animator.lock()->SetFloat(L"speed", _moveSpeed);
+	}
+	else
 	{
 		_moveSpeed = 0.f;
 		_animator.lock()->SetFloat(L"speed", _moveSpeed);
+	}
+
+	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
+	{
 		ChangeState(L"EllenEvade");
-	}
-
-	// 공격
-	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
-	{
-		ChangeState(L"EllenNormalAttack");
-	}
-
-	if (GAME.Key_Down(DIK_UP) || GAME.Key_Down(DIK_DOWN))
-	{
-		ChangeState(L"EllenIdle");
 	}
 
 	_curState->Update();

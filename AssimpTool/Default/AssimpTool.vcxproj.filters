@@ -124,6 +124,12 @@
     <Filter Include="04.StateMachine\Ellen\SwitchIn">
       <UniqueIdentifier>{e88a9700-675a-430a-bee5-9b974a9da0e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.StateMachine\Corin\Move">
+      <UniqueIdentifier>{b0450d90-47fe-45d2-ac59-7ab9548b57ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Ellen\Move">
+      <UniqueIdentifier>{6f62803d-ab3f-452e-ae8d-6134b8dbfdb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -303,6 +309,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\EllenSleep.h">
       <Filter>04.StateMachine\Ellen\Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinMove.h">
+      <Filter>04.StateMachine\Corin\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EllenMove.h">
+      <Filter>04.StateMachine\Ellen\Move</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +511,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\EllenSleep.cpp">
       <Filter>04.StateMachine\Ellen\Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinMove.cpp">
+      <Filter>04.StateMachine\Corin\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EllenMove.cpp">
+      <Filter>04.StateMachine\Ellen\Move</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
