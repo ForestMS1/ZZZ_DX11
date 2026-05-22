@@ -209,7 +209,7 @@ void AnimFSM::OnInspectorGUI()
     // State 그리기
     for (auto& [name, state] : _animStates)
     {
-        int nodeID = (int)state.get();//state->GetID();
+        int nodeID = (int)Utils::GUIDToUint32(state->GetNodeId());
 
         ImNodes::BeginNode(nodeID);
 
@@ -263,14 +263,14 @@ void AnimFSM::OnInspectorGUI()
     int linkID = 0;
     for (auto& [name, state] : _animStates)
     {
-        int fromNodeID = (int)state.get(); //state->GetID();
+        int fromNodeID = (int)Utils::GUIDToUint32(state->GetNodeId()); //state->GetID();
         for (auto& trans : state->GetTransitions())
         {
             auto toState = trans->GetToState();
             if (!toState) continue;
 
             // Link ID, FromPin ID, ToPin ID
-            ImNodes::Link(linkID++, (fromNodeID << 1) | 1, (/*toState->GetID()*/(int)toState.get() << 1));
+            ImNodes::Link(linkID++, (fromNodeID << 1) | 1, ((int)Utils::GUIDToUint32(toState->GetNodeId()) << 1));
         }
     }
 
@@ -373,7 +373,7 @@ void AnimFSM::OnInspectorGUI()
                 Add_AnimState(newName, newState);
 
                 // 팝업이 열렸던 마우스 위치에 노드 배치 (이전 프레임의 마우스 위치 활용)
-                ImNodes::SetNodeScreenSpacePos((int)newState.get(), ImGui::GetMousePos());
+                ImNodes::SetNodeScreenSpacePos((int)Utils::GUIDToUint32(newState->GetNodeId()), ImGui::GetMousePos());
 
                 // 버퍼 초기화 및 팝업 닫기
                 newNameBuffer[0] = '\0';
@@ -403,25 +403,27 @@ void AnimFSM::HandleLinkCreation()
     // 새로운 링크가 연결되었는지 체크
     if (ImNodes::IsLinkCreated(&start_pin, &end_pin))
     {
-        // 핀 ID 규칙: nodeID << 1 (In), (nodeID << 1) | 1 (Out)
-        // 거꾸로 계산해서 노드 주소(ID)를 알아냄
-        AnimState* fromStatePtr = (AnimState*)(start_pin >> 1);
-        AnimState* toStatePtr = (AnimState*)(end_pin >> 1);
+        // 핀 ID로부터 원래의 32비트 정수 노드 ID 추출
+        int fromNodeID = start_pin >> 1;
+        int toNodeID = end_pin >> 1;
 
-        // 만약 거꾸로 연결했다면 (In -> Out) 스왑 처리
-        if (start_pin % 2 == 0) std::swap(fromStatePtr, toStatePtr);
+        if (start_pin % 2 == 0) std::swap(fromNodeID, toNodeID);
 
-        if (fromStatePtr && toStatePtr)
+        shared_ptr<AnimState> fromState = nullptr;
+        shared_ptr<AnimState> toState = nullptr;
+
+        for (auto& [name, state] : _animStates)
         {
-            // 실제 데이터 구조에 Transition 추가
+            int checkID = (int)Utils::GUIDToUint32(state->GetNodeId());
+            if (checkID == fromNodeID) fromState = state;
+            if (checkID == toNodeID) toState = state;
+        }
+
+        if (fromState && toState)
+        {
             auto newTrans = make_shared<Transition>(shared_from_this());
-
-            // 포인터로부터 shared_ptr를 안전하게 가져오는 로직 필요
-            // (예: _animStates 맵에서 검색하거나 State가 shared_from_this() 지원)
-            auto toStateShared = _animStates[toStatePtr->GetName()];
-            newTrans->SetToState(toStateShared);
-
-            fromStatePtr->Add_Transition(newTrans);
+            newTrans->SetToState(toState);
+            fromState->Add_Transition(newTrans);
         }
     }
 }
@@ -478,9 +480,18 @@ void AnimFSM::Save(const string& fileName)
         stateNode->SetAttribute("Name", Utils::ToString(state->GetName()).c_str());
         stateNode->SetAttribute("ClipName", state->GetAnimationClip() ? Utils::ToString(state->GetAnimationClip()->name).c_str() : "None");
 
-        // ImNodes 위치 저장 (추가한다면)
-        // stateNode->SetAttribute("PosX", state->GetEditorPos().x);
-        // stateNode->SetAttribute("PosY", state->GetEditorPos().y);
+        UUID uuid = state->GetNodeId();
+        RPC_WSTR uuidW;
+        UuidToStringW(&uuid, &uuidW);
+        // 주의: UuidToStringW 결과물 포맷에 맞춤 캐스팅 필요할 수 있음
+        stateNode->SetAttribute("UUID", (const char*)uuidW);
+        RpcStringFreeW(&uuidW); // RPC 스트링 메모리 해제 필수
+
+        // --- [개선] ImNodes 실제 배치 포지션 획득 및 세이브 ---
+        int nodeID = (int)Utils::GUIDToUint32(state->GetNodeId());
+        ImVec2 pos = ImNodes::GetNodeEditorSpacePos(nodeID);
+        stateNode->SetAttribute("PosX", pos.x);
+        stateNode->SetAttribute("PosY", pos.y);
 
         // Transitions 저장
         for (auto& transition : state->GetTransitions())
@@ -529,6 +540,26 @@ void AnimFSM::Save(const string& fileName)
     document->SaveFile(fullPath.c_str());
 }
 
+
+// 새로운 UUID 문자열을 생성하는 헬퍼 함수
+std::string GenerateNewUUID()
+{
+    UUID uuid;
+    // 1. 하드웨어/시간 기반으로 고유한 UUID 생성
+    UuidCreate(&uuid);
+
+    RPC_CSTR rpcStr = nullptr;
+    // 2. UUID 구조체를 문자열로 변환 (형식: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+    UuidToStringA(&uuid, &rpcStr);
+
+    std::string uuidStr(reinterpret_cast<char*>(rpcStr));
+
+    // 3. 변환에 사용된 RPC 문자열 메모리 해제
+    RpcStringFreeA(&rpcStr);
+
+    return uuidStr;
+}
+
 void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorComponent)
 {
     _animatorComponent = animatorComponent;
@@ -561,14 +592,32 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
             AddFloat(Utils::ToWString(e->Attribute("Name")), e->FloatAttribute("Value"));
 
         for (auto* e = paramNode->FirstChildElement("Trigger"); e; e = e->NextSiblingElement("Trigger"))
-            AddTrigger(Utils::ToWString(e->Attribute("Name")), e->FloatAttribute("Value"));
+            AddTrigger(Utils::ToWString(e->Attribute("Name")), e->BoolAttribute("Value"));
     }
+
+    // 구조체 지연 세팅을 위해 위치 정보를 임시 보관할 컨테이너
+    std::vector<std::pair<int, ImVec2>> nodePositionsToSet;
 
     // [Pass 1] 모든 AnimState 생성 (Transition 제외)
     for (auto* stateNode = root->FirstChildElement("AnimState"); stateNode; stateNode = stateNode->NextSiblingElement("AnimState"))
     {
         wstring stateName = Utils::ToWString(stateNode->Attribute("Name"));
         string clipName = stateNode->Attribute("ClipName");
+        const char* uuidAttr = stateNode->Attribute("UUID");
+        std::string uuidStr;
+
+        if (uuidAttr != nullptr)
+        {
+            uuidStr = uuidAttr;
+        }
+        else
+        {
+            // 구버전 파일이라 UUID가 없으므로 즉석에서 생성하여 할당
+            uuidStr = GenerateNewUUID();
+
+            // [선택 사항] 로드 직후 바로 세이브파일을 최신 버전으로 갱신하고 싶다면 노드에 속성을 추가해 둡니다.
+            // stateNode->SetAttribute("UUID", uuidStr.c_str());
+        }
 
         if (stateName == ANYSTATE)
         {
@@ -579,6 +628,14 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
 
         auto newState = make_shared<AnimState>(shared_from_this());
         newState->SetName(stateName);
+
+        // --- [개선] 기존에 백업된 UUID 복구 로직 (있다면 적용, 없으면 새로 할당) ---
+        UUID originalUuid;
+        if (UuidFromStringA((RPC_CSTR)uuidStr.c_str(), &originalUuid) == RPC_S_OK) {
+            // AnimState에 SetNodeId(UUID id) 오버로딩이 있다고 가정하겠습니다.
+            // 없으시다면 직접 맴버에 대입해주시면 됩니다.
+            newState->SetNodeId(originalUuid);
+        }
 
         // [추가] 루트 모션 관련 bool 변수 로드
         // QueryBoolAttribute는 해당 속성이 없을 경우 기존 값을 유지하므로 안전
@@ -598,6 +655,15 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
         }
 
         Add_AnimState(stateName, newState);
+
+        // --- [개선] 로드된 UI 좌표 보관 ---
+        float posX = 0.0f, posY = 0.0f;
+        if (stateNode->QueryFloatAttribute("PosX", &posX) == tinyxml2::XML_SUCCESS &&
+            stateNode->QueryFloatAttribute("PosY", &posY) == tinyxml2::XML_SUCCESS)
+        {
+            int nodeID = (int)Utils::GUIDToUint32(newState->GetNodeId());
+            nodePositionsToSet.push_back({ nodeID, ImVec2(posX, posY) });
+        }
     }
 
     // [Pass 2] Transition 및 Condition 연결
@@ -653,7 +719,13 @@ void AnimFSM::Load(const string& fileName, shared_ptr<ModelAnimator> animatorCom
         }
     }
 
-    // 초기 상태 설정
+    // --- [개선] 로드 완료 후 ImNodes 좌표 일괄 복구 ---
+    // ImNodes::BeginNodeEditor() 호출 영역 밖에서 안전하게 세팅하려면 순회하며 적용
+    for (const auto& posData : nodePositionsToSet)
+    {
+        ImNodes::SetNodeEditorSpacePos(posData.first, posData.second);
+    }
+
     if (!_animStates.empty())
     {
         if (_animStates.count(L"Idle")) _curAnimState = _animStates[L"Idle"];
@@ -991,9 +1063,11 @@ void AnimFSM::RemoveState(int nodeID)
     shared_ptr<AnimState> targetState = nullptr;
     wstring targetName = L"";
 
+    // --- [버그 수정] 포인터 주소 대신 GUID 기반 ID를 매칭하도록 변경 ---
     for (auto it = _animStates.begin(); it != _animStates.end(); ++it)
     {
-        if ((int)it->second.get() == nodeID)
+        int checkID = (int)Utils::GUIDToUint32(it->second->GetNodeId());
+        if (checkID == nodeID)
         {
             targetState = it->second;
             targetName = it->first;

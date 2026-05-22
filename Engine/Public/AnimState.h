@@ -29,6 +29,10 @@ public:
 	void Add_Transition(shared_ptr<Transition> transition) { _transitions.push_back(transition); }
 	vector<shared_ptr<Transition>>& GetTransitions() { return _transitions; }
 
+	UUID GetNodeId() const { return _nodeId; }
+	void SetNodeId(UUID nodeId) { _nodeId = nodeId; }
+
+
 private:
 	// 주인 FSM
 	weak_ptr<AnimFSM> _animFSM;
@@ -48,6 +52,10 @@ private:
 	bool _isApplyAnimTransform = false;
 	// 위아래 움직임까지 적용할것인지. -> 보스나 점프있는 애니메이션에 쓸듯?
 	bool _isApplyAnimTransformY = false;
+
+
+	// ImNodes :: nodeId
+	UUID _nodeId = {};
 };
 
 NS_END

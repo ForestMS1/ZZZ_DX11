@@ -6,6 +6,7 @@
 AnimState::AnimState(shared_ptr<AnimFSM> fsm)
 	: _animFSM(fsm)
 {
+	UuidCreate(&_nodeId);
 }
 
 AnimState::~AnimState()
