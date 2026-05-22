@@ -19,9 +19,6 @@ void CorinSwitchIn::OnEnter()
 
 	//animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
 	//animator->SetPass(1);
-
-	// 조건문 잡고 
-	// switchInAttack으로도 가능하게
 }
 
 void CorinSwitchIn::Input()

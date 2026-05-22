@@ -41,10 +41,8 @@ void EllenNormalAttack::Update()
 
 
 	const wstring& curAnimName = _stateMachine.lock()->GetCurAnimStateName();
-	if (curAnimName == L"AttackNormal_01_End" || curAnimName == L"AttackNormal_02_End" || curAnimName == L"AttackNormal_03_End")
-	{
+	if (curAnimName == L"Idle" || curAnimName == L"Walk_Start")
 		_stateMachine.lock()->ChangeState(L"EllenIdle");
-	}
 }
 
 void EllenNormalAttack::LateUpdate()

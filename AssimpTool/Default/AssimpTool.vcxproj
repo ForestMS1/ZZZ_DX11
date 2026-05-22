@@ -164,6 +164,7 @@
     <ClInclude Include="..\Public\CorinWeaponScript.h" />
     <ClInclude Include="..\Public\EllenEvade.h" />
     <ClInclude Include="..\Public\EllenIdle.h" />
+    <ClInclude Include="..\Public\EllenMove.h" />
     <ClInclude Include="..\Public\EllenNormalAttack.h" />
     <ClInclude Include="..\Public\EllenSleep.h" />
     <ClInclude Include="..\Public\EllenStateMachineScript.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="..\Private\CorinWeaponScript.cpp" />
     <ClCompile Include="..\Private\EllenEvade.cpp" />
     <ClCompile Include="..\Private\EllenIdle.cpp" />
+    <ClCompile Include="..\Private\EllenMove.cpp" />
     <ClCompile Include="..\Private\EllenNormalAttack.cpp" />
     <ClCompile Include="..\Private\EllenSleep.cpp" />
     <ClCompile Include="..\Private\EllenStateMachineScript.cpp" />

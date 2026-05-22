@@ -39,8 +39,8 @@ void EllenSwitchIn::Start()
 
 void EllenSwitchIn::Update()
 {
-	const auto& stateMachine = _stateMachine.lock();
-	if (stateMachine->GetCurAnimStateName() == L"Idle")
+	const wstring& curAnimName = _stateMachine.lock()->GetCurAnimStateName();
+	if (curAnimName == L"Idle" || curAnimName == L"Walk_Start")
 		_stateMachine.lock()->ChangeState(L"EllenIdle");
 }
 
