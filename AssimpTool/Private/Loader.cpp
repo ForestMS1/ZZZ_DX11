@@ -315,13 +315,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	// ----------------------------------------------------Model Load--------------------------------------------------------
 	_loadingText = L"모델을 로딩 중 입니다.";
 
-	// Corin 기본 T자 모델
-	//shared_ptr<Model> CorinModel = make_shared<Model>();
-	//CorinModel->ReadModelRotatedY180(L"Corin/Corin");
-	//CorinModel->ReadMaterial(L"Corin/Corin");
-	//CorinModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"CorinModel", CorinModel);
-
 	// Corin 애니메이션 담은 모델
 	shared_ptr<Model> CorinAnimModel = make_shared<Model>();
 	CorinAnimModel->ReadModelRotatedY180(L"Corin/Corin");
@@ -383,15 +376,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Front");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Evade_Back");
 	CorinAnimModel->ReadAnimationRotatedY180(L"Corin/Avatar_Female_Size01_Corin_Ani_Die");
-	CorinAnimModel->CreateTexture();
-	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
-
-	// Ellen 기본 T자 모델
-	//shared_ptr<Model> EllenModel = make_shared<Model>();
-	//EllenModel->ReadModelRotatedY180(L"Ellen/Ellen");
-	//EllenModel->ReadMaterial(L"Ellen/Ellen");
-	//EllenModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"EllenModel", EllenModel);
 
 	// Ellen 애니메이션 담은 모델
 	shared_ptr<Model> EllenAnimModel = make_shared<Model>();
@@ -453,9 +437,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Hit_H_Back");
 	EllenAnimModel->ReadAnimationRotatedY180(L"Ellen/Avatar_Female_Size02_Ellen_Ani_Hit_L_Back");
 
-	EllenAnimModel->CreateTexture();
-	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
-
 	// Alice 애니메이션 담은 모델
 	shared_ptr<Model> AliceAnimModel = make_shared<Model>();
 	AliceAnimModel->ReadModelRotatedY180(L"Alice/Alice");
@@ -464,15 +445,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	AliceAnimModel->ReadAnimationRotatedY180(L"Alice/Avatar_Female_Size02_Alice_Ani_QuestStart");
 	AliceAnimModel->ReadAnimationRotatedY180(L"Alice/Avatar_Female_Size02_Alice_Ani_Idle_Loop");
-	AliceAnimModel->CreateTexture();
-	GAME.AddResource<Model>(L"AliceAnimModel", AliceAnimModel);
-
-	// Stage
-	//shared_ptr<Model> StageModel = make_shared<Model>();
-	//StageModel->ReadModelCombined(L"StageRoot/StageRoot");
-	//StageModel->ReadMaterial(L"StageRoot/StageRoot");
-	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"Stage", StageModel);
 
 	//ExaPlaceBasement
 	//shared_ptr<Model> StageModel = make_shared<Model>();
@@ -486,18 +458,6 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	VR2Model->ReadMaterial(L"VR2/VR2");
 	VR2Model->GetMaterialByIndex(0)->SetShader(TestShader);
 	GAME.AddResource<Model>(L"VR2", VR2Model);
-
-	//shared_ptr<Model> StageRoot = make_shared<Model>();
-	//StageRoot->ReadModel(L"StageRoot/StageRoot");
-	//StageRoot->ReadMaterial(L"StageRoot/StageRoot");
-	//StageRoot->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"StageRoot", StageRoot);
-
-	//StageModel = make_shared<Model>();
-	//StageModel->ReadModel(L"MetroCol/MetroCol");
-	//StageModel->ReadMaterial(L"MetroCol/MetroCol");
-	//StageModel->GetMaterialByIndex(0)->SetShader(TestShader);
-	//GAME.AddResource<Model>(L"MetroCol", StageModel);
 
 	// 몬스터 애니메이션 담은 모델
 	//shared_ptr<Model> PalicusAnimModel = make_shared<Model>();
@@ -531,10 +491,30 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_03");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_04");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_05");
-	Monster_AlpecaInfested_Model->CreateTexture();
-	GAME.AddResource<Model>(L"Monster_AlpecaInfested_Model", Monster_AlpecaInfested_Model);
 
 	// ----------------------------------------------------Model Load--------------------------------------------------------
+
+	// 비동기(멀티스레드)로 본 행렬 연산 연산 시작
+	_loadingText = L"모델 본 행렬을 계산 중 입니다.";
+	
+	std::vector<std::future<void>> futures;
+	
+	// std::launch::async 옵션을 주면 별도의 스레드가 파져서 동시에 실행.
+	futures.push_back(std::async(std::launch::async, [=]() { CorinAnimModel->CreateTexture(); }));
+	futures.push_back(std::async(std::launch::async, [=]() { EllenAnimModel->CreateTexture(); }));
+	futures.push_back(std::async(std::launch::async, [=]() { AliceAnimModel->CreateTexture(); }));
+	futures.push_back(std::async(std::launch::async, [=]() { Monster_AlpecaInfested_Model->CreateTexture(); }));
+	
+	// 모든 스레드가 본 계산을 완료할 때까지 대기
+	for (auto& f : futures)
+	{
+		f.wait();
+	}
+
+	GAME.AddResource<Model>(L"CorinAnimModel", CorinAnimModel);
+	GAME.AddResource<Model>(L"EllenAnimModel", EllenAnimModel);
+	GAME.AddResource<Model>(L"AliceAnimModel", AliceAnimModel);
+	GAME.AddResource<Model>(L"Monster_AlpecaInfested_Model", Monster_AlpecaInfested_Model);
 
 	// ----------------------------------------------------Script Load--------------------------------------------------------
 
