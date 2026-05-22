@@ -12,7 +12,7 @@
         <Trigger Name="switchInAttack" Value="false"/>
         <Trigger Name="switchOut" Value="false"/>
     </Parameters>
-    <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle" UUID="9" PosX="130.99207" PosY="93.280396" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Idle" ClipName="Avatar_Female_Size01_Corin_Ani_Idle" UUID="d" PosX="142.65399" PosY="-369.89258" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk_Start" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
         </Transition>
@@ -20,7 +20,7 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="AnyState" ClipName="None" UUID="3" PosX="50" PosY="-170" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="AnyState" ClipName="None" UUID="f" PosX="495" PosY="-183" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Evade_Front" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="evade" Mode="0" Type="Trigger" Value="false"/>
             <Condition ParamName="isFront" Mode="0" Type="Bool" Value="true"/>
@@ -42,10 +42,10 @@
             <Condition ParamName="ParryAid" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" UUID="9" PosX="1289.1638" PosY="-121.96313" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Run_End" ClipName="Avatar_Female_Size01_Corin_Ani_Run_End" UUID="d" PosX="1300.8257" PosY="-585.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0.5" HasExitTime="true" ExitTime="0.5"/>
     </AnimState>
-    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" UUID="b" PosX="619.16376" PosY="-125.96317" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Walk" ClipName="Avatar_Female_Size01_Corin_Ani_Walk" UUID="4" PosX="630.82568" PosY="-589.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="speed" Mode="2" Type="Float" Value="0.0099999998"/>
         </Transition>
@@ -54,7 +54,7 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Run" ClipName="Avatar_Female_Size01_Corin_Ani_Run" UUID="0" PosX="1066.1638" PosY="-121.96313" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Run" ClipName="Avatar_Female_Size01_Corin_Ani_Run" UUID="6" PosX="1077.8257" PosY="-585.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="speed" Mode="2" Type="Float" Value="0.0099999998"/>
         </Transition>
@@ -62,7 +62,7 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" UUID="7" PosX="373.69476" PosY="-126.41348" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Walk_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Walk_Start" UUID="9" PosX="346.35675" PosY="-610.58643" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Walk" Duration="0" HasExitTime="true" ExitTime="1"/>
         <Transition ToState="Run_End" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="speed" Mode="2" Type="Float" Value="0.0099999998"/>
@@ -71,7 +71,7 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Run_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Run_Start" UUID="b" PosX="840.16382" PosY="-121.96313" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Run_Start" ClipName="Avatar_Female_Size01_Corin_Ani_Run_Start" UUID="7" PosX="851.82574" PosY="-585.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_End" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="speed" Mode="2" Type="Float" Value="0.0099999998"/>
         </Transition>
@@ -80,61 +80,82 @@
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="AttackNormal_01" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01" UUID="5" PosX="148.58862" PosY="472.97095" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_01" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01" UUID="f" PosX="160.25055" PosY="9.7979736" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="AttackNormal_01_End" Duration="0" HasExitTime="true" ExitTime="1"/>
         <Transition ToState="AttackNormal_02" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="AttackNormal_01_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01_End" UUID="9" PosX="135.06879" PosY="629.38068" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_01_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_01_End" UUID="2" PosX="152.73071" PosY="178.20764" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="true" ExitTime="0.44999999">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
     </AnimState>
-    <AnimState Name="AttackNormal_02" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02" UUID="e" PosX="391.92114" PosY="475.74878" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_02" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02" UUID="8" PosX="403.58307" PosY="12.575813" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="AttackNormal_02_End" Duration="0" HasExitTime="true" ExitTime="1"/>
         <Transition ToState="AttackNormal_03" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="attackNormal" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="AttackNormal_02_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End" UUID="8" PosX="384.21228" PosY="627.84033" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_02_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_02_End" UUID="4" PosX="396.87427" PosY="178.66736" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="true" ExitTime="0.64999998">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
     </AnimState>
-    <AnimState Name="AttackNormal_03" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03" UUID="c" PosX="631.16382" PosY="475.03687" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_03" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03" UUID="b" PosX="642.82574" PosY="11.863892" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="AttackNormal_03_End" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="AttackNormal_03_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_End" UUID="0" PosX="630.16382" PosY="632.03687" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="AttackNormal_03_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Normal_03_End" UUID="6" PosX="644.82568" PosY="178.86389" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="true" ExitTime="0.69999999">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
     </AnimState>
-    <AnimState Name="Evade_Front" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Front" UUID="0" PosX="878.16382" PosY="266.03687" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="Evade_Front" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Front" UUID="0" PosX="880.16382" PosY="-207.96313" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
         <Transition ToState="AttackRush" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="attackRush" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="true" ExitTime="0.64999998">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
     </AnimState>
-    <AnimState Name="Evade_Back" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Back" UUID="c" PosX="1084.4806" PosY="429.37866" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="Evade_Back" ClipName="Avatar_Female_Size01_Corin_Ani_Evade_Back" UUID="1" PosX="1095.1426" PosY="-33.794312" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="true" ExitTime="0.64999998">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="ParryAid_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L_End" UUID="8" PosX="1090.8257" PosY="-201.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="ParryAid_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L_End" UUID="4" PosX="1079.1638" PosY="262.03687" ApplyAnimTransform="false" ApplyAnimTransformY="false">
-        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
-    </AnimState>
-    <AnimState Name="AttackRush" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush" UUID="8" PosX="881.1637" PosY="434.03687" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="AttackRush" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush" UUID="2" PosX="892.82562" PosY="-29.136108" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="AttackRush_End" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="SwitchOut" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal" UUID="0" PosX="865.16382" PosY="94.036865" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="SwitchOut" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchOut_Normal" UUID="b" PosX="876.82574" PosY="-369.13611" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="AttackRush_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush_End" UUID="2" PosX="881.43616" PosY="599.86621" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="AttackRush_End" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_Rush_End" UUID="3" PosX="893.09814" PosY="136.69324" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="QuestStart" ClipName="Avatar_Female_Size01_Corin_Ani_QuestStart" UUID="c" PosX="670.2735" PosY="-367.20441" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="QuestStart" ClipName="Avatar_Female_Size01_Corin_Ani_QuestStart" UUID="7" PosX="658.61157" PosY="95.968567" ApplyAnimTransform="false" ApplyAnimTransformY="false">
-        <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
-    </AnimState>
-    <AnimState Name="SwitchIn_Attack" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack" UUID="a" PosX="1295.464" PosY="92.830872" ApplyAnimTransform="true" ApplyAnimTransformY="false">
+    <AnimState Name="SwitchIn_Attack" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack" UUID="0" PosX="1307.126" PosY="-370.3421" ApplyAnimTransform="true" ApplyAnimTransformY="false">
         <Transition ToState="SwitchIn_Attack_End" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="SwitchIn_Attack_End" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_End" UUID="3" PosX="1297.1638" PosY="264.03687" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="SwitchIn_Attack_End" ClipName="Avatar_Female_Size01_Corin_Ani_SwitchIn_Attack_End" UUID="7" PosX="1304.8257" PosY="-197.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="0.56999999"/>
+        <Transition ToState="Walk_Start" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="speed" Mode="1" Type="Float" Value="0.0099999998"/>
+        </Transition>
     </AnimState>
-    <AnimState Name="ParryAid" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L" UUID="2" PosX="1078.1638" PosY="103.03687" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="ParryAid" ClipName="Avatar_Female_Size01_Corin_Ani_Attack_ParryAid_L" UUID="e" PosX="1089.8257" PosY="-360.13611" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="ParryAid_End" Duration="0" HasExitTime="true" ExitTime="0.69999999"/>
     </AnimState>
 </AnimFSM>

@@ -4,6 +4,7 @@
 
 //-----------------State----------------
 #include "CorinIdle.h"
+#include "CorinMove.h"
 #include "CorinEvade.h"
 #include "CorinNormalAttack.h"
 #include "CorinDashAttack.h"
@@ -40,12 +41,14 @@ void CorinStateMachineScript::Awake()
 
 	// 상태들 추가~
 	shared_ptr<CorinIdle> corinIdle = make_shared<CorinIdle>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinMove> corinMove = make_shared<CorinMove>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinEvade> corinEvade = make_shared<CorinEvade>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinNormalAttack> corinNormalAttack = make_shared<CorinNormalAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinDashAttack> corinDashAttack = make_shared<CorinDashAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 
 
 	AddState(L"CorinIdle", corinIdle);
+	AddState(L"CorinMove", corinMove);
 	AddState(L"CorinEvade", corinEvade);
 	AddState(L"CorinNormalAttack", corinNormalAttack);
 	AddState(L"CorinDashAttack", corinDashAttack);
@@ -84,6 +87,20 @@ void CorinStateMachineScript::Update()
 	if (_curStateName == "Sleep")
 		return;
 	// AnyState 여기서 전역적으로 전이
+
+	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
+	{
+		_moveSpeed += DT * 10.f;
+		if (_moveSpeed >= _moveSpeedMax)
+			_moveSpeed = _moveSpeedMax;
+
+		_animator.lock()->SetFloat(L"speed", _moveSpeed);
+	}
+	else
+	{
+		_moveSpeed = 0.f;
+		_animator.lock()->SetFloat(L"speed", _moveSpeed);
+	}
 
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_RB))
 	{
