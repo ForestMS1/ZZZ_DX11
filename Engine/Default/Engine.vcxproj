@@ -25,6 +25,7 @@
     <ClInclude Include="..\Public\BillBoard.h" />
     <ClInclude Include="..\Public\BindShaderDesc.h" />
     <ClInclude Include="..\Public\Camera.h" />
+    <ClInclude Include="..\Public\CameraManager.h" />
     <ClInclude Include="..\Public\Collider.h" />
     <ClInclude Include="..\Public\CollisionManager.h" />
     <ClInclude Include="..\Public\Component.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="..\Private\BillBoard.cpp" />
     <ClCompile Include="..\Private\BindShaderDesc.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
+    <ClCompile Include="..\Private\CameraManager.cpp" />
     <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\Private\CollisionManager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />

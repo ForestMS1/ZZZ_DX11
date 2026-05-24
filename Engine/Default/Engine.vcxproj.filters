@@ -166,6 +166,9 @@
     <Filter Include="09.EventSystem">
       <UniqueIdentifier>{da78d7e9-23ce-419c-a9b9-da5d602c5961}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\Camera\Manager">
+      <UniqueIdentifier>{2262606c-0133-42f8-86f9-0d8d2c53677b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -421,6 +424,9 @@
     <ClInclude Include="..\Public\EventQueueManager.h">
       <Filter>09.EventSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CameraManager.h">
+      <Filter>06.Component\Camera\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -659,6 +665,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\EventQueueManager.cpp">
       <Filter>09.EventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraManager.cpp">
+      <Filter>06.Component\Camera\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

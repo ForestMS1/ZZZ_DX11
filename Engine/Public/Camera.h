@@ -27,6 +27,7 @@ public:
 
 public:
 	// 생명주기 함수
+	virtual void Awake() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 
@@ -35,10 +36,15 @@ public:
 
 	// 카메라 세팅값 Set
 	void SetNear(float value) { _near = value; }
+	float GetNear() const { return _near; }
 	void SetFar(float value) { _far = value; }
+	float GetFar() const { return _far; }
 	void SetFOV(float value) { _fov = value; }
+	float GetFov() const { return _fov; }
 	void SetWidth(float value) { _width = value; }
+	float GetWidth() const { return _width; }
 	void SetHeight(float value) { _height = value; }
+	float GetHeight() const { return _height; }
 
 	// V, P Getter
 	Matrix& GetViewMatrix() { return _matView; }
@@ -61,8 +67,8 @@ public:
 
 	// 카메라 On/Off
 	friend class Object_Manager;
-	void CameraOn() { GAME.DisableCameras(); _isActive = true; }
-	void CameraOff() { _isActive = false;  GAME.firstFindCamOn(); }
+	void CameraOn() { _isActive = true; }
+	void CameraOff() { _isActive = false; }
 	bool IsActive() const { return _isActive; }
 
 	

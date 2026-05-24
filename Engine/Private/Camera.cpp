@@ -22,6 +22,12 @@ Camera::~Camera()
 
 }
 
+void Camera::Awake()
+{
+	const wstring& name = GetGameObject()->GetName();
+	GAME.AddCamera(name, SHARED_THIS(Camera));
+}
+
 void Camera::Update()
 {
 	if(_isPlay)
@@ -217,7 +223,7 @@ void Camera::OnInspectorGUI()
 		ImGui::Indent();
 
 		if (ImGui::Button(_isActive ? "OFF" : "ON")) {
-			_isActive ? CameraOff() : CameraOn();
+			_isActive ? CameraOff() : GAME.ChangeCurCamera(GetGameObject()->GetName());
 		}
 
 		// --- Perspective Or Orthographic ---

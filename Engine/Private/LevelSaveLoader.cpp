@@ -36,7 +36,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
 
     for (const auto& gameObject : gameObjectList)
     {
-        shared_ptr<newGameObjectData> data = make_shared<newGameObjectData>();
+        shared_ptr<GameObjectData> data = make_shared<GameObjectData>();
         // 고유 타입 설정
         const wstring& className = gameObject->Get_ClassName();
         const wstring& objectName = gameObject->GetName();
@@ -154,10 +154,6 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             auto fsm = modelAnimator->GetFSM();
             if (fsm != nullptr)
             {
-                // fsm 먼저 xml파일로 저장 (게임오브젝트 이름 + FSM으로 저장하자)
-                string fsmSaveName = Utils::ToString(fsm->GetAnimator()->GetGameObject()->GetName()) + "FSM";
-                fsm->Save(fsmSaveName);
-
                 size_t copyLen = std::min((int)fsm->GetFileName().size(), 63); // 마지막 널 문자를 위해 63자 제한
                 wcsncpy_s(data->modelAnimData.animFSMFileName, fsm->GetFileName().c_str(), copyLen);
                 data->modelAnimData.animFSMFileName[copyLen] = L'\0';
@@ -229,6 +225,19 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             data->lightData.desc.direction = lightDesc.direction;
         }
 
+        // Camera 컴포넌트 저장
+        auto camera = gameObject->GetCamera();
+        if (camera != nullptr)
+        {
+            data->cameraData.isSave = true;
+
+            data->cameraData._near      = camera->GetNear();
+            data->cameraData._far       = camera->GetFar();
+            data->cameraData._fov       = camera->GetFov();
+            data->cameraData._width     = camera->GetWidth();
+            data->cameraData._height    = camera->GetHeight();
+        }
+
 
 
 
@@ -253,6 +262,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
         outFile.write(reinterpret_cast<char*>(&data->scriptData), sizeof(MonoBehaviourData));
         outFile.write(reinterpret_cast<char*>(&data->meshRenderData), sizeof(MeshRenderData));
         outFile.write(reinterpret_cast<char*>(&data->lightData), sizeof(LightData));
+        outFile.write(reinterpret_cast<char*>(&data->cameraData), sizeof(CameraData));
     }
 
     outFile.close();
@@ -316,6 +326,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         shared_ptr<MonoBehaviourData> scriptData = make_shared<MonoBehaviourData>();
         shared_ptr<MeshRenderData> meshRenderData = make_shared<MeshRenderData>();
         shared_ptr<LightData> lightData = make_shared<LightData>();
+        shared_ptr<CameraData> cameraData = make_shared<CameraData>();
 
         inFile.read(reinterpret_cast<char*>(&objId), sizeof(UUID));
         inFile.read(reinterpret_cast<char*>(&parentId), sizeof(UUID));
@@ -327,6 +338,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         inFile.read(reinterpret_cast<char*>(scriptData.get()), sizeof(MonoBehaviourData));
         inFile.read(reinterpret_cast<char*>(meshRenderData.get()), sizeof(MeshRenderData));
         inFile.read(reinterpret_cast<char*>(lightData.get()), sizeof(LightData));
+        inFile.read(reinterpret_cast<char*>(cameraData.get()), sizeof(CameraData));
 
         // 객체 생성 Factory 패턴
         // className에 따라 실제 클라이언트 객체를 생성해야 함
@@ -528,6 +540,30 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
         {
             light->SetLightDesc(lightData->desc);
             light->SetLightType(lightData->type);
+        }
+
+        // Camera
+        auto camera = newObj->GetCamera();
+        if (cameraData->isSave == true && camera == nullptr) // 데이터 저장은 했는데 해당 컴포넌트가 오브젝트에 없다면
+        {
+            shared_ptr<Camera> newCamera = make_shared<Camera>();
+
+            newCamera->SetNear(cameraData->_near);
+            newCamera->SetFar(cameraData->_far);
+            newCamera->SetFOV(cameraData->_fov);
+            newCamera->SetWidth(cameraData->_width);
+            newCamera->SetHeight(cameraData->_height);
+
+
+            newObj->AddComponent(newCamera);
+        }
+        else if (camera != nullptr)
+        {
+            camera->SetNear(cameraData->_near);
+            camera->SetFar(cameraData->_far);
+            camera->SetFOV(cameraData->_fov);
+            camera->SetWidth(cameraData->_width);
+            camera->SetHeight(cameraData->_height);
         }
         
 

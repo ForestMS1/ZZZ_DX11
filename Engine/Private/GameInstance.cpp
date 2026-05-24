@@ -17,6 +17,7 @@
 #include "Layer.h"
 #include "CollisionManager.h"
 #include "EventQueueManager.h"
+#include "CameraManager.h"
 #include "LightManager.h"
 
 #include "RenderTargetManager.h"
@@ -86,6 +87,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID
 	if (nullptr == _eventQueueManager)
 		return E_FAIL;
 
+	_cameraManager = CameraManager::Create(pOutDevice, pOutDeviceContext);
+	if (nullptr == _cameraManager)
+		return E_FAIL;
+
 	_lightManager = LightManager::Create(pOutDevice, pOutDeviceContext);
 	if (nullptr == _lightManager)
 		return E_FAIL;
@@ -139,6 +144,8 @@ void GameInstance::Update_Engine()
 	_objectManager->FixedUpdate();
 
 	_collisionManager->FixedUpdate();
+
+	_cameraManager->Update();
 	
 	_objectManager->EndOfFrame();
 
@@ -164,6 +171,8 @@ HRESULT GameInstance::Draw()
 void GameInstance::Clear_Resource(uint32 iClearLevelIndex)
 {
 	_objectManager->Clear(iClearLevelIndex);
+
+	_cameraManager->ClearCameraMap();
 
 	_prototypeManager->Clear(iClearLevelIndex);
 
@@ -276,16 +285,6 @@ HRESULT GameInstance::Add_GameObject_toLayer(uint32 iPrototypeLevelIndex, const 
 shared_ptr<GameObject> GameInstance::Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName)
 {
 	return _objectManager->Find_GameObject_fromLayer(strLayerTag, objName);
-}
-
-void GameInstance::DisableCameras()
-{
-	_objectManager->DisableCameras();
-}
-
-void GameInstance::firstFindCamOn()
-{
-	_objectManager->firstFindCamOn();
 }
 
 void GameInstance::ShowHiearchy()
@@ -593,6 +592,33 @@ void GameInstance::ClearSubscribers()
 }
 #pragma endregion
 
+#pragma region CAMERAMANAGER
+void GameInstance::AddCamera(const wstring& name, shared_ptr<Camera> camera)
+{
+	_cameraManager->AddCamera(name, camera);
+}
+void GameInstance::ChangeCurCamera(const wstring& name)
+{
+	_cameraManager->ChangeCurCamera(name);
+}
+void GameInstance::ClearCameraMap()
+{
+	_cameraManager->ClearCameraMap();
+}
+void GameInstance::InterpolateTo(const wstring& targetName, float duration)
+{
+	_cameraManager->InterpolateTo(targetName, duration);
+}
+shared_ptr<Camera> GameInstance::FindCamera(const wstring& name)
+{
+	return _cameraManager->FindCamera(name);
+}
+bool GameInstance::IsInterpolating() const
+{ 
+	return _cameraManager->IsInterpolating();
+}
+#pragma endregion
+
 
 void GameInstance::SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext)
 {
@@ -623,6 +649,7 @@ void GameInstance::Release_Engine()
 	_resourceManager.reset();
 	_gameObjectFactory.reset();
 	_eventQueueManager.reset();
+	_cameraManager.reset();
 	_renderTargetManager.reset();
 	_graphicDevice->ShutDown();
 	_graphicDevice.reset();

@@ -35,9 +35,6 @@ void Object_Manager::BeginFrame()
 {
 	_currentLevelIndex = GameInstance::Get().GetCurrentLevelIndex();
 
-	if (isEveryCameraOff())
-		firstFindCamOn();
-
 	for (auto& pair : _layerMaps[_currentLevelIndex])
 	{
 		pair.second->BeginFrame();
@@ -185,54 +182,6 @@ shared_ptr<GameObject> Object_Manager::Find_GameObject_fromLayer(const wstring& 
 			return gameObject;
 	}
 	return nullptr;
-}
-
-void Object_Manager::DisableCameras()
-{
-	for (auto& pair : _layerMaps[_currentLevelIndex])
-	{
-		for (auto& gameObject : pair.second->Get_GameObjects())
-		{
-			shared_ptr<Camera> pCam = gameObject->GetCamera();
-			if (pCam)
-			{
-				pCam->_isActive = false;
-			}
-		}
-	}
-}
-
-void Object_Manager::firstFindCamOn()
-{
-	for (auto& pair : _layerMaps[_currentLevelIndex])
-	{
-		for (auto& gameObject : pair.second->Get_GameObjects())
-		{
-			shared_ptr<Camera> pCam = gameObject->GetCamera();
-			if (pCam)
-			{
-				pCam->_isActive = true;
-				return;
-			}
-		}
-	}
-}
-
-bool Object_Manager::isEveryCameraOff()
-{
-	for (auto& pair : _layerMaps[_currentLevelIndex])
-	{
-		for (auto& gameObject : pair.second->Get_GameObjects())
-		{
-			shared_ptr<Camera> pCam = gameObject->GetCamera();
-			if (pCam)
-			{
-				if(pCam->_isActive == true)
-					return false;
-			}
-		}
-	}
-	return true;
 }
 
 shared_ptr<Layer> Object_Manager::Find_CurrentLevel_Layer(const wstring& strLayerTag)
