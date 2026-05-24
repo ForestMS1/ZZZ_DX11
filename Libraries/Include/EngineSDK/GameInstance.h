@@ -62,8 +62,6 @@ public:
 		uint32 iLayerLevelIndex, const wstring& strLayerTag, void* pArg = nullptr);
 
 	shared_ptr<class GameObject> Find_GameObject_fromLayer(const wstring& strLayerTag, const wstring& objName);
-	void DisableCameras();
-	void firstFindCamOn();
 
 	void ShowHiearchy();
 	void ShowInspector();
@@ -173,6 +171,15 @@ public:
 	void ClearSubscribers();
 #pragma endregion
 
+#pragma region CAMERAMANAGER
+	void AddCamera(const wstring& name, shared_ptr<class Camera> camera);
+	void ChangeCurCamera(const wstring& name);
+	void ClearCameraMap();
+	void InterpolateTo(const wstring& targetName, float duration);
+	shared_ptr<Camera> FindCamera(const wstring& name);
+	bool IsInterpolating() const;
+#pragma endregion
+
 	void SetEngineContext(ImGuiContext* pContext, ImNodesContext* pNodesContext = nullptr);
 
 private:
@@ -187,6 +194,7 @@ private:
 	unique_ptr<class Input_Manager> _inputManager = { nullptr };
 	unique_ptr<class GameObjectFactory> _gameObjectFactory = { nullptr };
 	unique_ptr<class EventQueueManager> _eventQueueManager = { nullptr };
+	unique_ptr<class CameraManager> _cameraManager = { nullptr };
 	//임시
 	unique_ptr<class LightManager> _lightManager = { nullptr };
 	unique_ptr<class RenderTargetManager> _renderTargetManager = { nullptr };

@@ -30,8 +30,13 @@ void TestPlayCamScript::LateUpdate()
 
     if (_isPrevActionPlay && !camera->IsPlaying())
     {
-        _pitch = 0.f;
-        _yaw = 0.f;
+        
+    }
+
+    if (GAME.IsInterpolating())
+    {
+        _isPrevActionPlay = camera->IsPlaying();
+        return;
     }
 
     if (g_hWnd != GetFocus())
@@ -82,7 +87,7 @@ void TestPlayCamScript::LateUpdate()
 
     _isPrevActionPlay = camera->IsPlaying();
 
-    if (!camera->IsPlaying())
+    if (!camera->IsPlaying() && !GAME.IsInterpolating())
     {
         GetTransform()->SetParent(nullptr);
         GetTransform()->UpdateTransform();
@@ -102,8 +107,9 @@ void TestPlayCamScript::OnQuestStart()
 {
     auto target = _target.lock();
     target->GetTransform()->AddChild(GetTransform());
+    const auto& cameraName = GetGameObject()->GetName();
     auto camera = GetGameObject()->GetCamera();
-    camera->CameraOn();
+    GAME.ChangeCurCamera(cameraName);
     camera->Play(L"NewAction");
 }
 
@@ -114,7 +120,8 @@ void TestPlayCamScript::OnCharacterSwitch(const EventDesc& desc)
     _target = tagManager->GetCurCharacter();
     auto camera = GetGameObject()->GetCamera();
     _target.lock()->GetTransform()->AddChild(GetTransform());
-    camera->CameraOn();
+    const auto& cameraName = GetGameObject()->GetName();
+    GAME.ChangeCurCamera(cameraName);
     camera->Play(L"CharacterChange");
 }
 
