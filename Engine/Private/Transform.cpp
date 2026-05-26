@@ -67,7 +67,7 @@ Vec3 Transform::ToEulerAngles(Quaternion q)
 	return angles;
 }
 
-Quaternion ToQuaternion(Vec3 euler)
+Quaternion Transform::ToQuaternion(Vec3 euler)
 {
 	// 매개변수 pitch yaw roll임
 	return ::XMQuaternionRotationRollPitchYaw(euler.x, euler.y, euler.z);

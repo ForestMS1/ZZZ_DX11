@@ -1,7 +1,7 @@
 #pragma once
-#include "MonoBehaviour.h"
+#include "MonsterScript.h"
 
-class AlpecaInfestedScript : public MonoBehaviour
+class AlpecaInfestedScript : public MonsterScript
 {
 	virtual void Awake() override;
 	virtual void Start() override;
@@ -21,7 +21,15 @@ public:
 	static unique_ptr<AlpecaInfestedScript> Create();
 
 private:
-	float _onHitDelay = 0.5f;
-	float _curHitDelay = 0.f;
+	shared_ptr<GameObject> _targetPlayer;
+
+	virtual void ExitState(MonsterState state) override;
+	virtual void EnterState(MonsterState state) override;
+
+	void BornUpdate();
+	void IdleUpdate();
+	void ChaseUpdate();
+	void AttackReadyUpdate();
+	void AttackUpdate();
 };
 

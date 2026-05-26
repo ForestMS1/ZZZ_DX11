@@ -282,6 +282,10 @@ bool ModelAnimator::IsCurrentAnimFinished()
 
 	return false;
 }
+wstring ModelAnimator::GetCurAnimStateName()
+{
+	 return _animFSM->GetCurAnimState()->GetName();
+}
 
 void ModelAnimator::OnInspectorGUI()
 {

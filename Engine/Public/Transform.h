@@ -73,6 +73,7 @@ public:
 	void AddChild(shared_ptr<Transform> pChildTransform) { pChildTransform->SetParent(SHARED_THIS(Transform)); _children.push_back(pChildTransform); }
 
 	static Vec3 ToEulerAngles(Quaternion q);
+	static Quaternion ToQuaternion(Vec3 euler);
 
 private:
 	void SetRight(const Vec3& v) { _matWorld.Right(v); }

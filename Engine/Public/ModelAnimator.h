@@ -59,6 +59,8 @@ public:
 	float GetProgress();
 	// 현재 애니메이션이 끝났는가
 	bool IsCurrentAnimFinished();
+	// 현재 애니메이션State 이름 얻기
+	wstring GetCurAnimStateName();
 
 	// FSM의 bool 파라미터 Property
 	bool GetBool(const wstring& paramName) { return _animFSM->GetBool(paramName); }
