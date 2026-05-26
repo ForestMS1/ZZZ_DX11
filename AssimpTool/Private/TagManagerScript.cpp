@@ -5,9 +5,12 @@
 #include "Texture.h"
 void TagManagerScript::Awake()
 {
+	// 씬에 있는 플레이어블 캐릭터 캐싱
 	_playerCharacters.push_back(GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin")->GetScript<CorinStateMachineScript>());
 	_playerCharacters.push_back(GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Ellen")->GetScript<EllenStateMachineScript>());
 
+
+	// 플레이어 수에 맞게 좌상단 UI 텍스쳐 변경
 	_playerHpUIBg = GAME.Find_GameObject_fromLayer(L"Layer_UI", L"HPUIBG");
 	vector<shared_ptr<Texture>>& textures = _playerHpUIBg->GetSpriteRenderer()->GetTextures();
 	textures.clear();
@@ -32,7 +35,8 @@ void TagManagerScript::Awake()
 }
 void TagManagerScript::Start()
 {
-
+	_playerIconUIs.push_back(GAME.Find_GameObject_fromLayer(L"Layer_UI", L"IconRole01"));
+	_playerIconUIs.push_back(GAME.Find_GameObject_fromLayer(L"Layer_UI", L"IconRole02"));
 }
 
 void TagManagerScript::Update()
@@ -84,6 +88,18 @@ void TagManagerScript::ChangeCharacter()
 	nextPosition = _lastPosition + nextCharacterTransform->GetRight() * 2.f;
 	nextCharacterTransform->SetLocalPosition(nextPosition);
 	nextCharacterTransform->SetLocalRotation(_lastRotation);
+
+
+	// UI 전환
+	for (int i = 0; i < _playerIconUIs.size(); ++i)
+	{
+		int index = (_curActivePlayerIndex + i) % _playerIconUIs.size();
+		shared_ptr<StateMachine> player = _playerCharacters[index]->GetGameObject()->GetScript<StateMachine>();
+		if (dynamic_pointer_cast<CorinStateMachineScript>(player) != nullptr)
+			_playerIconUIs[i]->GetSpriteRenderer()->GetTextures()[0] = GAME.GetResource<Texture>(L"IconRoleGeneral09"); // 코린
+		else if(dynamic_pointer_cast<EllenStateMachineScript>(player) != nullptr)
+			_playerIconUIs[i]->GetSpriteRenderer()->GetTextures()[0] = GAME.GetResource<Texture>(L"IconRoleGeneral21"); // 엘렌
+	}
 
 
 	_playerCharacters[_curActivePlayerIndex]->ChangeState(L"SwitchIn");

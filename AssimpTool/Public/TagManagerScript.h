@@ -26,8 +26,15 @@ private:
 	void OnQuestStart();
 
 private:
+	// 좌상단 검은 배경 (인원수에맞게 길이조절)
 	shared_ptr<GameObject> _playerHpUIBg;
+	// 좌상단 플레이어 아이콘
+	vector<shared_ptr<GameObject>> _playerIconUIs;
 
+
+	// TODO : 체력 바 연동
+
+	// 플레이 캐릭터
 	vector<shared_ptr<StateMachine>> _playerCharacters;
 	uint8 _curActivePlayerIndex = 0;
 	Vec3 _lastPosition;
