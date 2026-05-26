@@ -98,6 +98,27 @@ unique_ptr<AlpecaInfestedScript> AlpecaInfestedScript::Create()
 
 void AlpecaInfestedScript::ExitState(MonsterState state)
 {
+	auto animator = GetGameObject()->GetModelAnimator();
+	switch (state)
+	{
+	case MonsterState::BORN:
+		break;
+	case MonsterState::IDLE:
+		break;
+	case MonsterState::CHASE:
+		animator->SetBool(L"isMove", false);
+		break;
+	case MonsterState::ATTACK_READY:
+		break;
+	case MonsterState::ATTACK:
+		break;
+	case MonsterState::ONHIT:
+		break;
+	case MonsterState::DIE:
+		break;
+	default:
+		break;
+	}
 }
 
 void AlpecaInfestedScript::EnterState(MonsterState state)
@@ -135,13 +156,21 @@ void AlpecaInfestedScript::BornUpdate()
 
 	// Born 애니메이션 끝났으면
 	if(animator->IsCurrentAnimFinished())
-		ChangeState(MonsterState::CHASE);
+		ChangeState(MonsterState::IDLE);
 }
 
 void AlpecaInfestedScript::IdleUpdate()
 {
+	_targetPlayer = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TagManager")->GetScript<TagManagerScript>()->GetCurCharacter();
+	if (_targetPlayer == nullptr)
+		return;
+
 	// 추격감지 범위 내에 들어왔다면
-	//ChangeState(MonsterState::CHASE);
+	auto targetTransform = _targetPlayer->GetTransform();
+	float length = (GetTransform()->GetPosition() - targetTransform->GetPosition()).Length();
+
+	if (_chaseZoneRange >= length);
+		ChangeState(MonsterState::CHASE);
 }
 
 void AlpecaInfestedScript::ChaseUpdate()
@@ -149,6 +178,9 @@ void AlpecaInfestedScript::ChaseUpdate()
 	_targetPlayer = GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"TagManager")->GetScript<TagManagerScript>()->GetCurCharacter();
 	if (_targetPlayer == nullptr)
 		return;
+
+	auto animator = GetGameObject()->GetModelAnimator();
+	animator->SetBool(L"isMove", true);
 
 	auto targetTransform = _targetPlayer->GetTransform();
 	GetTransform()->Chase(targetTransform->GetPosition(), 0.5f, 2.f);
@@ -169,7 +201,7 @@ void AlpecaInfestedScript::AttackReadyUpdate()
 	auto targetTransform = _targetPlayer->GetTransform();
 	float length = (GetTransform()->GetPosition() - targetTransform->GetPosition()).Length();
 	if (_attackZoneRange <= length)
-		ChangeState(MonsterState::CHASE);
+		ChangeState(MonsterState::IDLE);
 
 	// TODO : 눈 번쩍
 	auto animator = GetGameObject()->GetModelAnimator();

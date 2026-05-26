@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimFSM>
     <Parameters>
+        <Bool Name="isMove" Value="false"/>
         <Trigger Name="attack01" Value="false"/>
         <Trigger Name="attack02" Value="false"/>
         <Trigger Name="born" Value="false"/>
@@ -9,16 +10,15 @@
         <Trigger Name="run" Value="false"/>
         <Trigger Name="walk" Value="false"/>
     </Parameters>
-    <AnimState Name="Idle" ClipName="AlpecaInfested_Ani_Idle" UUID="a" PosX="46" PosY="-240" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
-    <AnimState Name="Walk" ClipName="AlpecaInfested_Ani_Walk_F" UUID="7" PosX="291" PosY="-478" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
-    <AnimState Name="Attack01" ClipName="AlpecaInfested_Ani_Attack_01" UUID="b" PosX="849" PosY="-331" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
-    <AnimState Name="Born" ClipName="AlpecaInfested_Ani_Born" UUID="b" PosX="748" PosY="179" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
-    <AnimState Name="AnyState" ClipName="None" UUID="c" PosX="454" PosY="-224" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Idle" ClipName="AlpecaInfested_Ani_Idle" UUID="c" PosX="25" PosY="239" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+        <Transition ToState="Walk" Duration="0" HasExitTime="false" ExitTime="1">
+            <Condition ParamName="isMove" Mode="0" Type="Bool" Value="true"/>
+        </Transition>
+    </AnimState>
+    <AnimState Name="Born" ClipName="AlpecaInfested_Ani_Born" UUID="e" PosX="776" PosY="734" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="AnyState" ClipName="None" UUID="6" PosX="28" PosY="554" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Born" Duration="0" HasExitTime="false" ExitTime="1">
             <Condition ParamName="born" Mode="0" Type="Trigger" Value="false"/>
-        </Transition>
-        <Transition ToState="Walk" Duration="0" HasExitTime="false" ExitTime="1">
-            <Condition ParamName="walk" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
         <Transition ToState="Run_Start" Duration="0.2" HasExitTime="false" ExitTime="1">
             <Condition ParamName="run" Mode="0" Type="Trigger" Value="false"/>
@@ -36,12 +36,14 @@
             <Condition ParamName="attack02" Mode="0" Type="Trigger" Value="false"/>
         </Transition>
     </AnimState>
-    <AnimState Name="Run_Start" ClipName="AlpecaInfested_Ani_Run_Start" UUID="9" PosX="526" PosY="-491" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Walk" ClipName="AlpecaInfested_Ani_Walk_F" UUID="f" PosX="270" PosY="31" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Attack01" ClipName="AlpecaInfested_Ani_Attack_01" UUID="8" PosX="877" PosY="224" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Run_Start" ClipName="AlpecaInfested_Ani_Run_Start" UUID="3" PosX="554" PosY="64" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Run_Loop" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="Run_Loop" ClipName="AlpecaInfested_Ani_Run_Loop" UUID="8" PosX="763" PosY="-482" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
-    <AnimState Name="Hit_Front" ClipName="AlpecaInfested_Ani_Hit_H_Front" UUID="3" PosX="242" PosY="108" ApplyAnimTransform="false" ApplyAnimTransformY="false">
+    <AnimState Name="Run_Loop" ClipName="AlpecaInfested_Ani_Run_Loop" UUID="1" PosX="791" PosY="73" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Hit_Front" ClipName="AlpecaInfested_Ani_Hit_H_Front" UUID="b" PosX="270" PosY="663" ApplyAnimTransform="false" ApplyAnimTransformY="false">
         <Transition ToState="Idle" Duration="0" HasExitTime="true" ExitTime="1"/>
     </AnimState>
-    <AnimState Name="Attack02" ClipName="AlpecaInfested_Ani_Attack_02" UUID="7" PosX="1048" PosY="-200" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
+    <AnimState Name="Attack02" ClipName="AlpecaInfested_Ani_Attack_02" UUID="8" PosX="1076" PosY="355" ApplyAnimTransform="false" ApplyAnimTransformY="false"/>
 </AnimFSM>

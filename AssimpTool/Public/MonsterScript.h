@@ -40,5 +40,6 @@ protected:
 	float _onHitDelay = 0.5f;
 	float _curHitDelay = 0.f;
 	float _attackZoneRange = 1.5f;
+	float _chaseZoneRange = 10.f;
 };
 

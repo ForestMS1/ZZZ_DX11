@@ -19,6 +19,7 @@ public:
 
 private:
 	HRESULT Ready_Layer_Basic(const wstring& strLayerTag);
+	HRESULT Ready_Layer_Monster(const wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT Ready_Layer_UI(const wstring& strLayerTag);
 

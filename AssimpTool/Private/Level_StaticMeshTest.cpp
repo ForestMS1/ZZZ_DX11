@@ -36,6 +36,9 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 	if (FAILED(Ready_Layer_Basic(L"Layer_Basic")))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
+		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
@@ -45,6 +48,7 @@ HRESULT Level_StaticMeshTest::Initialize()
 
 	// 충돌처리 할 레이어 쌍 정의
 	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Basic");
+	GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Monster");
 	//GAME.AddCollisionLayer(ETOUI(LEVEL::TESTMESH), L"Layer_Basic", L"Layer_Camera");
 
 
@@ -100,6 +104,14 @@ HRESULT Level_StaticMeshTest::Ready_Layer_Basic(const wstring& strLayerTag)
 	//	ETOUI(LEVEL::TESTMESH), strLayerTag)))
 	//	return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT Level_StaticMeshTest::Ready_Layer_Monster(const wstring& strLayerTag)
+{
+	GAME.Add_Layer(ETOUI(LEVEL::TESTMESH), strLayerTag);
+	GAME.LoadLevel(ETOUI(LEVEL::TESTMESH), strLayerTag);
 
 	return S_OK;
 }
