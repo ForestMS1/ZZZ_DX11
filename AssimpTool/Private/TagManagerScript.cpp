@@ -2,13 +2,33 @@
 #include "TagManagerScript.h"
 #include "CorinStateMachineScript.h"
 #include "EllenStateMachineScript.h"
+#include "Texture.h"
 void TagManagerScript::Awake()
 {
 	_playerCharacters.push_back(GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Corin")->GetScript<CorinStateMachineScript>());
 	_playerCharacters.push_back(GAME.Find_GameObject_fromLayer(L"Layer_Basic", L"Ellen")->GetScript<EllenStateMachineScript>());
 
+	_playerHpUIBg = GAME.Find_GameObject_fromLayer(L"Layer_UI", L"HPUIBG");
+	vector<shared_ptr<Texture>>& textures = _playerHpUIBg->GetSpriteRenderer()->GetTextures();
+	textures.clear();
+
+	int playerCnt = _playerCharacters.size();
+	switch (playerCnt)
+	{
+	case 2:
+		textures.push_back(GAME.GetResource<Texture>(L"HpBarBg2"));
+		break;
+	case 3:
+		textures.push_back(GAME.GetResource<Texture>(L"HpBarBg3"));
+		break;
+	default:
+		break;
+	}
+
 	// 이벤트 함수 등록
 	GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
+
+
 }
 void TagManagerScript::Start()
 {
@@ -47,6 +67,7 @@ void TagManagerScript::ChangeCharacter()
 {
 	// 나와있는 캐릭터의 마지막 위치 저장
 	_lastPosition = _playerCharacters[_curActivePlayerIndex]->GetTransform()->GetPosition();
+	_lastRotation = _playerCharacters[_curActivePlayerIndex]->GetTransform()->GetRotation();
 
 	_playerCharacters[_curActivePlayerIndex]->ChangeState(L"SwitchOut");
 
@@ -62,6 +83,7 @@ void TagManagerScript::ChangeCharacter()
 	Vec3 nextPosition;
 	nextPosition = _lastPosition + nextCharacterTransform->GetRight() * 2.f;
 	nextCharacterTransform->SetLocalPosition(nextPosition);
+	nextCharacterTransform->SetLocalRotation(_lastRotation);
 
 
 	_playerCharacters[_curActivePlayerIndex]->ChangeState(L"SwitchIn");

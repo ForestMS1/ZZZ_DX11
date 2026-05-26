@@ -88,6 +88,7 @@ void LevelSaveLoader::Save(uint32 iLevelIndex, const wstring& strLayerTag)
             data->uiData.speed = spriteRenderer->GetSpeed();
             data->uiData.loop = spriteRenderer->IsLoop();
             data->uiData.play = spriteRenderer->IsPlay();
+            data->uiData.zOrder = spriteRenderer->GetZOrder();
         }
 
         // 콜라이더 저장
@@ -373,6 +374,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             newSpriteRenderer->SetSpeed(uData->speed);
             newSpriteRenderer->SetLoop(uData->loop);
             newSpriteRenderer->SetPlay(uData->play);
+            newSpriteRenderer->SetZOrder(uData->zOrder);
             newObj->AddComponent(newSpriteRenderer);
         }
         else if (spriteRenderer != nullptr)
@@ -393,6 +395,7 @@ void LevelSaveLoader::Load(uint32 iLevelIndex, const wstring& strLayerTag)
             spriteRenderer->SetSpeed(uData->speed);
             spriteRenderer->SetLoop(uData->loop);
             spriteRenderer->SetPlay(uData->play);
+            spriteRenderer->SetZOrder(uData->zOrder);
         }
 
         auto collider = newObj->GetCollider();

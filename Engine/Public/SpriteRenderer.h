@@ -49,6 +49,10 @@ public:
 	float GetUIPosX() const { return _x; }
 	float GetUIPosY() const { return _y; }
 
+	// zOrder Property
+	float GetZOrder() const { return _zOrder; }
+	void SetZOrder(float zOrder) { _zOrder = zOrder; }
+
 	// UI Scale Property
 	void SetUIWidth(float width) { _width = width; }
 	void SetUIHeight(float height) { _height = height; }
@@ -99,6 +103,8 @@ private:
 	float _viewX = 0.f;
 	float _viewY = 0.f;
 	Matrix _uiProj;
+
+	float _zOrder = 0.f;
 };
 
 NS_END

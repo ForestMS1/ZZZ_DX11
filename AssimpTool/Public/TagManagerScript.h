@@ -26,9 +26,11 @@ private:
 	void OnQuestStart();
 
 private:
+	shared_ptr<GameObject> _playerHpUIBg;
+
 	vector<shared_ptr<StateMachine>> _playerCharacters;
 	uint8 _curActivePlayerIndex = 0;
 	Vec3 _lastPosition;
-	
+	Vec3 _lastRotation;
 };
 

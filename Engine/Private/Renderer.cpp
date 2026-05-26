@@ -185,6 +185,21 @@ HRESULT Renderer::Render_Blend()
 
 HRESULT Renderer::Render_UI()
 {
+	auto& uiObjects = _renderObjects[ETOUI(RENDERGROUP::UI)];
+
+	uiObjects.sort([](const auto& a, const auto& b)
+		{
+			auto aSpriteRenderer = a->GetSpriteRenderer();
+			auto bSpriteRenderer = b->GetSpriteRenderer();
+
+			if (aSpriteRenderer == nullptr || bSpriteRenderer == nullptr)
+				return false;
+
+			return aSpriteRenderer->GetZOrder() < bSpriteRenderer->GetZOrder();
+		});
+
+
+
 	for (auto& object : _renderObjects[ETOUI(RENDERGROUP::UI)])
 	{
 		if (object != nullptr)

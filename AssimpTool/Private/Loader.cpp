@@ -231,6 +231,58 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		texture->Load(L"../../Resources/Textures/UI/MouseRIcon.png");
 		GAME.AddResource(L"MouseRIcon", texture);
 	}
+
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/RoleHPFill01.png");
+		GAME.AddResource(L"RoleHPFill01", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/RoleHPFill02.png");
+		GAME.AddResource(L"RoleHPFill02", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/HpBarBg3.png");
+		GAME.AddResource(L"HpBarBg3", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/HpBarBg2.png");
+		GAME.AddResource(L"HpBarBg2", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/RoleSPFill01.png");
+		GAME.AddResource(L"RoleSPFill01", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/RoleSPFill02.png");
+		GAME.AddResource(L"RoleSPFill02", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/IconPauseBtn.png");
+		GAME.AddResource(L"IconPauseBtn", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/IconRoleGeneral09.png");
+		GAME.AddResource(L"IconRoleGeneral09", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/IconRoleGeneral21.png");
+		GAME.AddResource(L"IconRoleGeneral21", texture);
+	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/IconRoleGeneral46.png");
+		GAME.AddResource(L"IconRoleGeneral46", texture);
+	}
+
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
 

@@ -110,6 +110,8 @@ struct UIData
 	bool loop = false;
 	// 재생 여부
 	bool play = true;
+
+	float zOrder = 0.f;
 };
 
 
@@ -137,6 +139,7 @@ struct newGameObjectData
 	MonoBehaviourData scriptData;
 	MeshRenderData meshRenderData;
 	LightData lightData;
+	CameraData cameraData;
 };
 
 struct GameObjectData
