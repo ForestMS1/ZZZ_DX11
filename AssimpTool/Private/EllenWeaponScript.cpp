@@ -60,19 +60,19 @@ void EllenWeaponScript::Update()
 
 void EllenWeaponScript::LateUpdate()
 {
-	//if (auto stateMachine = _transformCom->GetParentTransform()->GetGameObject()->GetScript<EllenStateMachineScript>())
-	//{
-	//	string curStateName = stateMachine->GetCurStateName();
-	//	auto collider = GetGameObject()->GetCollider();
-	//	if (curStateName == "CorinDashAttack" || curStateName == "CorinNormalAttack")
-	//	{
-	//		collider->SetActive(true);
-	//	}
-	//	else
-	//	{
-	//		collider->SetActive(false);
-	//	}
-	//}
+	if (auto stateMachine = _transformCom->GetParentTransform()->GetGameObject()->GetScript<EllenStateMachineScript>())
+	{
+		string curStateName = stateMachine->GetCurStateName();
+		auto collider = GetGameObject()->GetCollider();
+		if (curStateName == "EllenNormalAttack")
+		{
+			collider->SetActive(true);
+		}
+		else
+		{
+			collider->SetActive(false);
+		}
+	}
 }
 
 void EllenWeaponScript::OnCollisionEnter(const Collision& collision)

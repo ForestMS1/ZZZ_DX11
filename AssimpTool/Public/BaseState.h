@@ -26,6 +26,9 @@ public:
 	virtual void OnExit() = 0;  // 상태 탈출 시 한번만 실행
 
 protected:
+	void ToTarget();
+
+protected:
 	weak_ptr<GameObject> _gameObject;
 	weak_ptr<StateMachine> _stateMachine;
 	weak_ptr<ModelAnimator> _animator;

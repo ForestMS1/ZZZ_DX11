@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "BaseState.h"
 #include "AnimState.h"
+#include "Layer.h"
 StateMachine::StateMachine()
 {
 }
@@ -60,4 +61,29 @@ wstring StateMachine::GetCurAnimStateName()
 void StateMachine::ChangeCurAnimState(const wstring& animStateName)
 {
 	_animator.lock()->GetFSM()->ChangeState(animStateName);
+}
+
+void StateMachine::CollectNearMonster(const wstring& layerTag)
+{
+	auto layer = GAME.Find_CurrentLevel_Layer(layerTag);
+	const auto& gameObjects = layer->Get_GameObjects();
+
+	for (const auto& obj : gameObjects)
+	{
+		_nearMonsters.push_back(obj);
+	}
+
+	Vec3 curPos = GetTransform()->GetPosition();
+
+	_nearMonsters.sort([=](const auto& a, const auto& b) 
+		{
+			Vec3 aMonsterPos = a->GetTransform()->GetPosition();
+			Vec3 bMonsterPos = b->GetTransform()->GetPosition();
+
+			float aDistance = Vec3::Distance(curPos, aMonsterPos);
+			float bDistance = Vec3::Distance(curPos, bMonsterPos);
+
+			return aDistance < bDistance;
+		}
+	);
 }

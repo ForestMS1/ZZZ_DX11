@@ -86,8 +86,10 @@ void CorinStateMachineScript::Update()
 
 	if (_curStateName == "Sleep")
 		return;
-	// AnyState 여기서 전역적으로 전이
 
+	StateMachine::CollectNearMonster(L"Layer_Monster");
+
+	// AnyState 여기서 전역적으로 전이
 	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
 	{
 		_moveSpeed += DT * 10.f;
@@ -130,6 +132,8 @@ void CorinStateMachineScript::FixedUpdate()
 	}
 	_curState->FixedUpdate();
 
+
+	StateMachine::ClearNearMonsters();
 }
 
 HRESULT CorinStateMachineScript::Render()

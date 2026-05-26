@@ -41,6 +41,8 @@ public:
 	void LookAt(Vec3 lookAt);
 	// [추가] 인자를 로컬(상대) 좌표로 취급하는 LookAt
 	void LookAtLocal(Vec3 targetLocalPos, Vec3 localUp = Vec3::Up);
+	// y축기준으로만 돌면서 LookAt하는 함수
+	void LookAtLocalY(Vec3 targetLocalPos, Vec3 localUp = Vec3::Up);
 
 	// World S R T(인게임 월드 좌표 기준 의미 (부모오브젝트 상관x))
 	Vec3 GetScale() { return _scale; }

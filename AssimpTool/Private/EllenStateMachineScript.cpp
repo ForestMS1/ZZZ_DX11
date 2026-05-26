@@ -80,6 +80,9 @@ void EllenStateMachineScript::Update()
 
 	if (_curStateName == "Sleep")
 		return;
+
+	StateMachine::CollectNearMonster(L"Layer_Monster");
+
 	// AnyState 여기서 전역적으로 전이
 
 	if (GAME.Key_Pressing(DIK_UP) || GAME.Key_Pressing(DIK_DOWN))
@@ -124,6 +127,7 @@ void EllenStateMachineScript::FixedUpdate()
 	}
 	_curState->FixedUpdate();
 
+	StateMachine::ClearNearMonsters();
 }
 
 HRESULT EllenStateMachineScript::Render()

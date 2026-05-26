@@ -11,3 +11,14 @@ BaseState::BaseState(shared_ptr<GameObject> gameObject, shared_ptr<StateMachine>
 BaseState::~BaseState()
 {
 }
+
+void BaseState::ToTarget()
+{
+	auto transform = _gameObject.lock()->GetTransform();
+	auto target = _stateMachine.lock()->GetNearMonster();
+	if (target != nullptr)
+	{
+		Vec3 targetPos = target->GetTransform()->GetPosition();
+		transform->LookAtLocalY(targetPos);
+	}
+}

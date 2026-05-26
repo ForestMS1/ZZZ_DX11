@@ -196,6 +196,40 @@ void Transform::LookAtLocal(Vec3 targetLocalPos, Vec3 localUp)
 	UpdateTransform();
 }
 
+// y축기준으로만 돌면서 LookAt하는 함수
+void Transform::LookAtLocalY(Vec3 targetLocalPos, Vec3 localUp)
+{
+	// 현재 나의 로컬 위치 (키프레임에서 이미 세팅된 lerpPos)
+	Vec3 localPos = _localPosition;
+
+	// 로컬 공간 상에서 나로부터 타겟을 향하는 방향 벡터
+	Vec3 newLook = targetLocalPos - localPos;
+
+	// Y축(높낮이) 차이 제거
+	newLook.y = 0.f;
+
+	if (newLook.LengthSquared() < 0.001f) return;
+	newLook.Normalize();
+
+	// 로컬 기준의 회전 행렬
+	Matrix matLocalRotation = Matrix::CreateWorld(localPos, -newLook, localUp);
+
+	// 로컬 행렬에서 회전값 추출하여 멤버 변수 갱신
+	Quaternion quat;
+	Vec3 dummyPos, dummyScale;
+	matLocalRotation.Decompose(dummyScale, quat, dummyPos);
+
+	// 로컬 회전값 업데이트 (Euler 변환)
+	_localRotation = ToEulerAngles(quat);
+
+	// 확실하게 X축(Pitch) Z축(Roll) 회전을 0으로 초기화
+	_localRotation.x = 0.f;
+	_localRotation.z = 0.f;
+
+	// 변수들이 갱신되었으므로 최종 행렬들 재계산
+	UpdateTransform();
+}
+
 void Transform::SetScale(const Vec3& worldScale)
 {
 	if (HasParent())

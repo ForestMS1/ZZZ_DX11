@@ -22,6 +22,12 @@ public:
 	// BaseState에서 그냥 xml파일 무시하고 애니메이션 State를 바꿔버리는 함수
 	void ChangeCurAnimState(const wstring& animStateName);
 
+public:
+	void CollectNearMonster(const wstring& layerTag);
+	void ClearNearMonsters() { _nearMonsters.clear(); };
+	list<shared_ptr<GameObject>>& GetNearMonsters() { return _nearMonsters; }
+	shared_ptr<GameObject> GetNearMonster() { return _nearMonsters.front(); }
+
 protected:
 	void AddState(const wstring& stateName, shared_ptr<BaseState> state);
 
@@ -39,4 +45,7 @@ protected:
 
 	// 현재상태 이름
 	string _curStateName;
+
+protected:
+	list<shared_ptr<GameObject>> _nearMonsters;
 };

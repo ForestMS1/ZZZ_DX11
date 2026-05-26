@@ -15,6 +15,7 @@ EllenNormalAttack::~EllenNormalAttack()
 void EllenNormalAttack::OnEnter()
 {
 	_animator.lock()->SetTrigger(L"attackNormal");
+	BaseState::ToTarget();
 }
 
 void EllenNormalAttack::Input()
@@ -24,6 +25,7 @@ void EllenNormalAttack::Input()
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
 		animator->SetTrigger(L"attackNormal");
+		BaseState::ToTarget();
 	}
 }
 

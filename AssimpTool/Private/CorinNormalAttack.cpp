@@ -15,6 +15,8 @@ CorinNormalAttack::~CorinNormalAttack()
 void CorinNormalAttack::OnEnter()
 {
 	_animator.lock()->SetTrigger(L"attackNormal");
+
+	BaseState::ToTarget();
 }
 
 void CorinNormalAttack::Input()
@@ -24,6 +26,7 @@ void CorinNormalAttack::Input()
 	if (GAME.Mouse_Down(MOUSEKEYSTATE::DIM_LB))
 	{
 		animator->SetTrigger(L"attackNormal");
+		BaseState::ToTarget();
 	}
 }
 
