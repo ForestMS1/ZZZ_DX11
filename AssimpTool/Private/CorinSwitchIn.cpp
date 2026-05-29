@@ -19,6 +19,12 @@ void CorinSwitchIn::OnEnter()
 
 	animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
 	animator->SetPass(0);
+
+	auto shader = _animator.lock()->GetShader();
+	shader->GetScalar("g_AlphaValue")->SetFloat(1.f);
+
+	auto collider = _gameObject.lock()->GetCollider();
+	collider->SetActive(true);
 }
 
 void CorinSwitchIn::Input()

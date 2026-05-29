@@ -19,6 +19,11 @@ void EllenSwitchOut::OnEnter()
 
 	animator->SetCurRenderGroup(RENDERGROUP::BLEND);
 	animator->SetPass(2);
+
+	_alphaValue = 1.f;
+
+	auto collider = _gameObject.lock()->GetCollider();
+	collider->SetActive(false);
 }
 
 void EllenSwitchOut::Input()
@@ -36,11 +41,22 @@ void EllenSwitchOut::Start()
 
 void EllenSwitchOut::Update()
 {
-	// TODO : 애니메이션이 끝났다면 Sleep상태로 전환
-	if (_animator.lock()->IsCurrentAnimFinished())
+	_alphaValue -= _fadeSpeed * DT;
+	if (_alphaValue < 0.f)
 	{
 		_stateMachine.lock()->ChangeState(L"Sleep");
+		_alphaValue = 0.f;
 	}
+
+	auto shader = _animator.lock()->GetShader();
+	shader->GetScalar("g_AlphaValue")->SetFloat(_alphaValue);
+
+
+	// TODO : 애니메이션이 끝났다면 Sleep상태로 전환
+	//if (_animator.lock()->IsCurrentAnimFinished())
+	//{
+	//	_stateMachine.lock()->ChangeState(L"Sleep");
+	//}
 }
 
 void EllenSwitchOut::LateUpdate()

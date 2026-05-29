@@ -20,6 +20,12 @@ void EllenSwitchIn::OnEnter()
 	animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
 	animator->SetPass(0);
 
+	auto shader = _animator.lock()->GetShader();
+	shader->GetScalar("g_AlphaValue")->SetFloat(1.f);
+
+	auto collider = _gameObject.lock()->GetCollider();
+	collider->SetActive(true);
+
 	// 조건문 잡고 
 	// switchInAttack으로도 가능하게
 }

@@ -130,6 +130,7 @@ MeshOutput VS(VertexTextureNormalTangentBlend input)
 }
 
 float _StariNum = 50;
+float g_AlphaValue = 1.f;
 
 PixelOutput PS(MeshOutput input) : SV_TARGET
 {
@@ -167,7 +168,7 @@ float4 PS_RED(MeshOutput input) : SV_TARGET
 float4 PS_Alpha(MeshOutput input) : SV_TARGET
 {
     float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
-    color.a = 0.3f;
+    color.a = color.a * g_AlphaValue;
     return color;
 }
 

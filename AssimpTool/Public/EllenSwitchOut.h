@@ -23,5 +23,9 @@ public:
 	virtual void OnCollisionExit(const Collision& collision) override;
 
 	virtual void OnExit() override;  // 상태 탈출 시 한번만 실행
+
+private:
+	float _alphaValue = 1.f;
+	float _fadeSpeed = 1.f;
 };
 
