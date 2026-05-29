@@ -17,8 +17,8 @@ void CorinSwitchIn::OnEnter()
 	auto animator = _animator.lock();
 	animator->SetTrigger(L"switchInAttack");
 
-	//animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
-	//animator->SetPass(1);
+	animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
+	animator->SetPass(0);
 }
 
 void CorinSwitchIn::Input()

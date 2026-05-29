@@ -43,9 +43,6 @@ void ModelAnimator::Update()
 	if (_model == nullptr)
 		return;
 
-	//TODO 임시, 렌더그룹변경하자
-	GAME.Add_RenderObject(_renderGroup, GetGameObject());
-
 	TweenDesc& desc = _tweenDesc;
 
 	if(_animFSM)
@@ -106,6 +103,12 @@ void ModelAnimator::Update()
 			desc.next.ratio = desc.next.sumTime / timePerFrame;
 		}
 	}
+}
+
+void ModelAnimator::FixedUpdate()
+{
+	//TODO 임시, 렌더그룹변경하자
+	GAME.Add_RenderObject(_renderGroup, GetGameObject());
 }
 
 HRESULT ModelAnimator::Render()

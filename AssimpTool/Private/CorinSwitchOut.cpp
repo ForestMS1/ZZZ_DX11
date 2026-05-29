@@ -17,8 +17,8 @@ void CorinSwitchOut::OnEnter()
 	auto animator = _animator.lock();
 	animator->SetTrigger(L"switchOut");
 
-	//animator->SetCurRenderGroup(RENDERGROUP::BLEND);
-	//animator->SetPass(2);
+	animator->SetCurRenderGroup(RENDERGROUP::BLEND);
+	animator->SetPass(2);
 }
 
 void CorinSwitchOut::Input()

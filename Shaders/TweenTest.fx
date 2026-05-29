@@ -164,9 +164,16 @@ float4 PS_RED(MeshOutput input) : SV_TARGET
     return float4(1, 0, 0, 1);
 }
 
+float4 PS_Alpha(MeshOutput input) : SV_TARGET
+{
+    float4 color = DiffuseMap.Sample(LinearSampler, input.uv);
+    color.a = 0.3f;
+    return color;
+}
+
 technique11 T0
 {
 	PASS_VP(P0, VS, PS)
     PASS_RS_VP(P1, FillModeWireFrame, VS, PS)
-	PASS_RS_VP(P2, FillModeWireFrame, VS, PS_RED)
+	PASS_BS_VP(P2, BS_Alpha, VS, PS_Alpha)
 };

@@ -23,6 +23,7 @@ public:
 	// 생명주기 함수
 	virtual void Awake() override;
 	virtual void Update() override;
+	virtual void FixedUpdate() override;
 	virtual HRESULT Render() override;
 	HRESULT RenderShadow() override;
 

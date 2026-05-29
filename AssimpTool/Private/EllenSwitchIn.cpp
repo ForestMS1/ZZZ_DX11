@@ -17,8 +17,8 @@ void EllenSwitchIn::OnEnter()
 	auto animator = _animator.lock();
 	animator->SetTrigger(L"switchIn");
 
-	//animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
-	//animator->SetPass(1);
+	animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
+	animator->SetPass(0);
 
 	// 조건문 잡고 
 	// switchInAttack으로도 가능하게

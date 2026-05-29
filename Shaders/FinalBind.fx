@@ -42,8 +42,8 @@ float4 PS_Main(VS_OUT input) : SV_Target
     float3 normal = g_NormalTex.Sample(LinearSampler, input.uv).xyz;
     float4 worldPosData = g_WorldTex.Sample(LinearSampler, input.uv);
 
-    if (albedo.a == 0)
-        discard;
+    //if (albedo.a == 0)
+    //    discard;
 
     // 데이터 복원
     normal = normalize(normal * 2.0f - 1.0f);
@@ -83,10 +83,23 @@ float4 PS_Main(VS_OUT input) : SV_Target
     // 최종 색상 결정
     float3 finalColor =  ComputeToonDefferedLight(albedo, normal, input.uv, worldPos).rgb *  albedo.rgb * shadowFactor;
     
-   return float4(finalColor, albedo.a);
+   return float4(finalColor, 1.f);
 }
+
+DepthStencilState DisableDepth
+{
+    DepthEnable = FALSE;
+    DepthWriteMask = ZERO;
+};
 
 technique11 T0
 {
-    PASS_VP(P0, VS_Main, PS_Main)
+    pass P0
+    {
+        SetVertexShader(CompileShader(vs_5_0, VS_Main()));
+        SetPixelShader(CompileShader(ps_5_0, PS_Main()));
+        
+        // 이 패스가 실행되는 동안에는 뎁스 버퍼를 건드리지 않음!
+        SetDepthStencilState(DisableDepth, 0);
+    }
 };

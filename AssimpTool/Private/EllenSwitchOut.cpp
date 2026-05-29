@@ -17,8 +17,8 @@ void EllenSwitchOut::OnEnter()
 	auto animator = _animator.lock();
 	animator->SetTrigger(L"switchOut");
 
-	//animator->SetCurRenderGroup(RENDERGROUP::BLEND);
-	//animator->SetPass(2);
+	animator->SetCurRenderGroup(RENDERGROUP::BLEND);
+	animator->SetPass(2);
 }
 
 void EllenSwitchOut::Input()
