@@ -31,5 +31,8 @@ private:
 	void ChaseUpdate();
 	void AttackReadyUpdate();
 	void AttackUpdate();
+
+private:
+	void CreateOnHitParticle();
 };
 

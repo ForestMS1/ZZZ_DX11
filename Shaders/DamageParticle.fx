@@ -1,6 +1,8 @@
 #include "Global.fx"
 #include "Light.fx"
 
+// 일반 Texture2D 대신 Texture2DArray 변수를 선언
+Texture2DArray DamageTexArray;
 
 struct VS_INPUT
 {
@@ -47,14 +49,17 @@ VS_OUTPUT VS(VS_INPUT input)
 
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
-    float4 output = DiffuseMap.Sample(LinearSampler, input.uv);
+    
+    // Texture2DArray를 샘플링할 때는 UV 좌표로 float3(U, V, SliceIndex)를 넘겨야
+    float3 uvw = float3(input.uv, input.texIndex);
+    float4 color = DamageTexArray.Sample(LinearSampler, uvw);
     
     // C++ 연산으로 계산된 투명도 멀티플라이
-    output.a *= input.alpha;
+    color.a *= input.alpha;
     
-    clip(output.a - 0.01f);
+    clip(color.a - 0.01f);
     
-    return output;
+    return color;
 }
 
 technique11 T0

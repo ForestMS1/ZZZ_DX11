@@ -288,6 +288,18 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		GAME.AddResource(L"Eff_Assault_LC_06", texture);
 	}
 
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		vector<wstring> paths;
+		for (int i = 0; i <= 9; ++i) // 0부터 9까지 다 채워넣기
+		{
+			wstring path = L"../../Resources/Textures/UI/Skill_0" + to_wstring(i) + L".png";
+			paths.push_back(path);
+		}
+		texture->LoadTexture2DArray(paths);
+		GAME.AddResource(L"Skill_0N", texture);
+	}
+
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
 
@@ -318,6 +330,9 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	shared_ptr<Shader> ParticleShader = Shader::Create(L"Particle.fx");
 	GAME.AddResource<Shader>(L"Particle.fx", ParticleShader);
+
+	shared_ptr<Shader> DamageParticleShader = Shader::Create(L"DamageParticle.fx");
+	GAME.AddResource<Shader>(L"DamageParticle.fx", DamageParticleShader);
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 

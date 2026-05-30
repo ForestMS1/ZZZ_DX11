@@ -11,6 +11,7 @@ struct ParticleInfo
 	Vec3 velocity;
 	float age = 0.f;
 	float lifeTime = 1.f;
+	float textureIndex = 0.f;
 };
 
 class InstancingBuffer;
@@ -19,7 +20,7 @@ class ENGINE_DLL ParticleSystem : public Component
 {
 public:
 	ParticleSystem();
-	~ParticleSystem();
+	virtual ~ParticleSystem();
 
 public:
 	virtual void Update() override;
@@ -31,9 +32,10 @@ public:
 
 	void CreateParticles(const Vec3& startPos, const Vec3& minVelocity, const Vec3& maxVelocity, const Vec3& scale, float lifeTime, uint32 count);
 
+
 	virtual void OnInspectorGUI() override;
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }
-private:
+protected:
 	vector<ParticleInfo> _particles;
 	shared_ptr<InstancingBuffer> _instancingBuffer;
 
@@ -47,10 +49,6 @@ private:
 	// 무작위 속도를 주기 위한 난수 생성용 헬퍼 변수 (선택)
 	std::random_device _rd;
 	std::mt19937 _gen{ _rd() };
-
-private:
-	float _alphaValue = 1.f;
-	float _fadeSpeed = 1.f;
 };
 
 NS_END

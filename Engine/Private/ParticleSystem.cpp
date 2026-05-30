@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Texture.h"
 #include "GameObject.h"
+#include "DamageParticleSystem.h"
 
 ParticleSystem::ParticleSystem()
 	: Component(ComponentType::ParticleSystem)
@@ -28,12 +29,6 @@ void ParticleSystem::Update()
 
 		particle.position += particle.velocity * DT;
 	}
-
-	_alphaValue -= _fadeSpeed * DT;
-	if (_alphaValue < 0.f)
-		_alphaValue = 0.f;
-
-	_shader->GetScalar("g_AlphaValue")->SetFloat(_alphaValue);
 }
 
 void ParticleSystem::FixedUpdate()
@@ -88,6 +83,8 @@ HRESULT ParticleSystem::Render()
 
 		InstancingData data;
 		data.world = world;
+		data.etcInfo.x = particle.textureIndex;
+		data.etcInfo.y = (1.f - (particle.age / particle.lifeTime));
 
 		_instancingBuffer->AddData(data);
 		aliveCount++;

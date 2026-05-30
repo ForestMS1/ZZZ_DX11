@@ -436,6 +436,9 @@
     <ClInclude Include="..\Public\ParticleSystem.h">
       <Filter>06.Component\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DamageParticleSystem.h">
+      <Filter>06.Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -682,6 +685,9 @@
       <Filter>97.Graphics\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ParticleSystem.cpp">
+      <Filter>06.Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DamageParticleSystem.cpp">
       <Filter>06.Component\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>

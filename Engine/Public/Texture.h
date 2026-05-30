@@ -24,6 +24,8 @@ public:
 	// Texture 파일 Load 후 Create SRV
 	virtual void Load(const wstring& path) override;
 
+	void LoadTexture2DArray(const vector<wstring>& paths);
+
 
 private:
 	// 쉐이더에 넘겨줄 SRV

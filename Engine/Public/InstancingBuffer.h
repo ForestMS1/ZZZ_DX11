@@ -7,6 +7,10 @@ class VertexBuffer;
 struct InstancingData
 {
 	Matrix world;
+	// X: Texture Array Index (0~9)
+	// Y: Alpha Value (시간이 지나면 서서히 사라지게 만들기 위함)
+	// Z, W: 여분 변수
+	Vec4   etcInfo;
 };
 
 #define MAX_MESH_INSTANCE 500

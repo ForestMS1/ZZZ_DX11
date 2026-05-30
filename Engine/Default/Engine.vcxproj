@@ -31,6 +31,7 @@
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Condition.h" />
     <ClInclude Include="..\Public\ConstantBuffer.h" />
+    <ClInclude Include="..\Public\DamageParticleSystem.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\Private\ConstantBuffer.cpp" />
+    <ClCompile Include="..\Private\DamageParticleSystem.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
