@@ -282,6 +282,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		texture->Load(L"../../Resources/Textures/UI/IconRoleGeneral46.png");
 		GAME.AddResource(L"IconRoleGeneral46", texture);
 	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/Eff_Assault_LC_06.png");
+		GAME.AddResource(L"Eff_Assault_LC_06", texture);
+	}
 
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
@@ -310,6 +315,9 @@ HRESULT Loader::Loading_FOR_TestMesh()
 
 	shared_ptr<Shader> BillBoardShader = Shader::Create(L"BillBoard.fx");
 	GAME.AddResource<Shader>(L"BillBoard.fx", BillBoardShader);
+
+	shared_ptr<Shader> ParticleShader = Shader::Create(L"Particle.fx");
+	GAME.AddResource<Shader>(L"Particle.fx", ParticleShader);
 
 	// ----------------------------------------------------Shader Load--------------------------------------------------------
 

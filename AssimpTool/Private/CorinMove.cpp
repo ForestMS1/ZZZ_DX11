@@ -23,8 +23,8 @@ void CorinMove::Input()
 	auto stateMachine = static_pointer_cast<CorinStateMachineScript>(_stateMachine.lock());
 
 	// Run_End 중 일땐 입력무시
-	if (stateMachine->GetCurAnimStateName() == L"Run_End")
-		return;
+	//if (stateMachine->GetCurAnimStateName() == L"Run_End")
+	//	return;
 
 	Vec3 pos = transform->GetPosition();
 	Vec3 look = transform->GetLook();

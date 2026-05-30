@@ -4,8 +4,6 @@
 
 NS_BEGIN(Engine)
 
-#define MAX_MESH_INSTANCE 500
-
 class ENGINE_DLL MeshRenderer : public Component
 {
 public:

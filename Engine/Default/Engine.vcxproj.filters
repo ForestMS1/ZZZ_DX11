@@ -169,6 +169,9 @@
     <Filter Include="06.Component\Camera\Manager">
       <UniqueIdentifier>{2262606c-0133-42f8-86f9-0d8d2c53677b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Component\ParticleSystem">
+      <UniqueIdentifier>{28d3aa0e-b088-40fb-92d2-cdf24e9a01a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -427,6 +430,12 @@
     <ClInclude Include="..\Public\CameraManager.h">
       <Filter>06.Component\Camera\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\InstancingBuffer.h">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ParticleSystem.h">
+      <Filter>06.Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -668,6 +677,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CameraManager.cpp">
       <Filter>06.Component\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InstancingBuffer.cpp">
+      <Filter>97.Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ParticleSystem.cpp">
+      <Filter>06.Component\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

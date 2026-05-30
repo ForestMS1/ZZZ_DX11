@@ -144,11 +144,11 @@ void TestPlayCamScript::OnCharacterSwitch(const EventDesc& desc)
     // 타겟 바꾸고 보간
     auto tagManager = reinterpret_cast<TagManagerScript*>(desc.sender);
     _target = tagManager->GetCurCharacter();
-    auto camera = GetGameObject()->GetCamera();
-    _target.lock()->GetTransform()->AddChild(GetTransform());
-    const auto& cameraName = GetGameObject()->GetName();
-    GAME.ChangeCurCamera(cameraName);
-    camera->Play(L"CharacterChange");
+    //auto camera = GetGameObject()->GetCamera();
+    //_target.lock()->GetTransform()->AddChild(GetTransform());
+    //const auto& cameraName = GetGameObject()->GetName();
+    //GAME.ChangeCurCamera(cameraName);
+    //camera->Play(L"CharacterChange");
 }
 
 void TestPlayCamScript::MouseFix()

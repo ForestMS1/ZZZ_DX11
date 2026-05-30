@@ -293,4 +293,9 @@
       <Filter>97.Shaders</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Shaders\Particle.fx">
+      <Filter>97.Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

@@ -54,6 +54,7 @@
     <ClInclude Include="..\Public\ImZoomSlider.h" />
     <ClInclude Include="..\Public\IndexBuffer.h" />
     <ClInclude Include="..\Public\Input_Manager.h" />
+    <ClInclude Include="..\Public\InstancingBuffer.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Level.h" />
     <ClInclude Include="..\Public\LevelSaveLoader.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="..\Public\MonoBehaviour.h" />
     <ClInclude Include="..\Public\OBBCollider.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
+    <ClInclude Include="..\Public\ParticleSystem.h" />
     <ClInclude Include="..\Public\Pass.h" />
     <ClInclude Include="..\Public\Prototype.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
@@ -160,6 +162,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\IndexBuffer.cpp" />
     <ClCompile Include="..\Private\Input_Manager.cpp" />
+    <ClCompile Include="..\Private\InstancingBuffer.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Level.cpp" />
     <ClCompile Include="..\Private\LevelSaveLoader.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="..\Private\MonoBehaviour.cpp" />
     <ClCompile Include="..\Private\OBBCollider.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
+    <ClCompile Include="..\Private\ParticleSystem.cpp" />
     <ClCompile Include="..\Private\Pass.cpp" />
     <ClCompile Include="..\Private\Prototype.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />

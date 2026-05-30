@@ -15,6 +15,7 @@ enum class ComponentType : uint8
 	Collider,
 	Light,
 	BillBoard,
+	ParticleSystem,
 	//...
 	Script,
 
