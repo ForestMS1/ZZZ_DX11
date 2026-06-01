@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CorinWeaponScript.h"
 #include "CorinStateMachineScript.h"
+#include "MonsterScript.h"
 void CorinWeaponScript::Awake()
 {
 	_transformCom = GetTransform();
@@ -80,6 +81,19 @@ void CorinWeaponScript::OnCollisionEnter(const Collision& collision)
 
 	collider->SetDebugColor(Colors::Red);
 	_collisionCount++;
+}
+
+void CorinWeaponScript::OnCollisionStay(const Collision& collision)
+{
+	shared_ptr<MonsterScript> monsterScript;
+	if (monsterScript = collision.colliderA.lock()->GetGameObject()->GetScript<MonsterScript>())
+	{
+		monsterScript->OnHit(3000.f);
+	}
+	else if (monsterScript = collision.colliderB.lock()->GetGameObject()->GetScript<MonsterScript>())
+	{
+		monsterScript->OnHit(3000.f);
+	}
 }
 
 void CorinWeaponScript::OnCollisionExit(const Collision& collision)

@@ -62,7 +62,7 @@ void Level_StaticMeshTest::Awake()
 	shared_ptr<EventDesc> eventDesc = make_shared<EventDesc>();
 	eventDesc->eventType = static_cast<uint32>(EventType::LEVEL_START);
 	eventDesc->sender = this;
-	GAME.PushEvent(eventDesc);
+	//GAME.PushEvent(eventDesc);
 }
 
 void Level_StaticMeshTest::Update()

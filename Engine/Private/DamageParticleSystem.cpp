@@ -1,15 +1,20 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "DamageParticleSystem.h"
 #include "Texture.h"
-
+#include "Transform.h"
+#include "Camera.h"
+#include "InstancingBuffer.h"
 DamageParticleSystem::DamageParticleSystem()
 {
-    _shader = GAME.GetResource<Shader>(L"DamageParticle.fx"); // µ•πÃ¡ˆ ¿¸øÎ ºŒ¿Ã¥ı ¿Ã∏ß
+    _shader = GAME.GetResource<Shader>(L"DamageParticle.fx"); // Îç∞ÎØ∏ÏßÄ Ï†ÑÏö© ÏÖ∞Ïù¥Îçî Ïù¥Î¶Ñ
 
 	_texture = GAME.GetResource<Texture>(L"Skill_0N");
 
-    // ºŒ¿Ã¥ı¿« πËø≠ ∫Øºˆ ¿Ã∏ß∞˙ πŸ¿Œµ˘ ∏≈ƒ™
+    // ÏÖ∞Ïù¥ÎçîÏùò Î∞∞Ïó¥ Î≥ÄÏàò Ïù¥Î¶ÑÍ≥º Î∞îÏù∏Îî© Îß§Ïπ≠
     _textureEffectBuffer = _shader->GetSRV("DamageTexArray");
+
+	_fontColorTexture = GAME.GetResource<Texture>(L"DamageTextPhysDmg");
+	__fontColorTextureEffectBuffer = _shader->GetSRV("ColorTex");
 }
 
 DamageParticleSystem::~DamageParticleSystem()
@@ -18,7 +23,18 @@ DamageParticleSystem::~DamageParticleSystem()
 
 void DamageParticleSystem::Update()
 {
-	ParticleSystem::Update();
+	//ParticleSystem::Update();
+    for (auto& particle : _particles)
+    {
+        particle.age += DT;
+        if (particle.age >= particle.lifeTime) continue;
+
+        if (particle.age <= particle.lifeTime * 0.5f)
+            particle.position += particle.velocity * DT;
+
+        if (particle.age >= particle.lifeTime * 0.75f)
+            _alphaValue = (1 - (particle.lifeTime - particle.age));
+    }
 }
 
 void DamageParticleSystem::FixedUpdate()
@@ -28,48 +44,113 @@ void DamageParticleSystem::FixedUpdate()
 
 HRESULT DamageParticleSystem::Render()
 {
-	return ParticleSystem::Render();
+    // Ïù¥Î≤à ÌîÑÎ†àÏûÑÏóê ÏÇ¥ÏïÑÏûàÎäî ÌååÌã∞ÌÅ¥Ïù¥ ÌïòÎÇòÎèÑ ÏóÜÏúºÎ©¥ Íµ≥Ïù¥ Í∑∏Î¶¥ ÌïÑÏöî ÏóÜÏùå
+    if (_particles.empty())
+        return S_OK;
+
+    if (_mesh == nullptr || _shader == nullptr)
+        return E_FAIL;
+
+    _instancingBuffer->ClearData();
+
+    Matrix billboardRot = Camera::S_MatView.Invert();
+    billboardRot._41 = 0.f;
+    billboardRot._42 = 0.f;
+    billboardRot._43 = 0.f;
+
+    uint32 aliveCount = 0;
+
+
+    for (const auto& particle : _particles)
+    {
+        if (particle.age >= particle.lifeTime) continue;
+
+        Matrix world = Matrix::CreateScale(particle.scale) * billboardRot;
+        world._41 = particle.position.x;
+        world._42 = particle.position.y;
+        world._43 = particle.position.z;
+
+        InstancingData data;
+        data.world = world;
+        data.etcInfo.x = particle.textureIndex;
+        data.etcInfo.y = _alphaValue;
+        //data.etcInfo.y = (1.f - (particle.age / particle.lifeTime));
+
+        _instancingBuffer->AddData(data);
+        aliveCount++;
+    }
+
+    if (aliveCount == 0)
+        return S_OK;
+
+    _instancingBuffer->PushData();
+
+    _mesh->GetVertexBuffer()->PushData();
+    _mesh->GetIndexBuffer()->PushData();
+
+    if (_texture && _textureEffectBuffer)
+        _textureEffectBuffer->SetResource(_texture->GetComPtr().Get());
+    _shader->PushGlobalData(Camera::S_MatView, Camera::S_MatProjection);
+
+    _shader->DrawIndexedInstanced(0, 0, _mesh->GetIndexBuffer()->GetCount(), aliveCount);
+
+	if (_fontColorTexture && __fontColorTextureEffectBuffer)
+		__fontColorTextureEffectBuffer->SetResource(_fontColorTexture->GetComPtr().Get());
+	//return ParticleSystem::Render();
 }
 
-void DamageParticleSystem::SpawnDamageText(Vec3 startPos, int32 damageValue)
+void DamageParticleSystem::SpawnDamageText(Vec3 startPos, Vec3 monsterScale, int32 damageValue, Vec3 minVelocity, Vec3 maxVelocity, float scale, float lifeTime)
 {
-	string damageStr = to_string(damageValue);
+    string damageStr = to_string(damageValue);
 
-	// ±€¿⁄∞° ª˝º∫µ… ∂ß ¡ﬂæ” ¡§∑ƒ¿ª ∏¬√ﬂ±‚ ¿ß«ÿ 
-	// ¿¸√º ±€¿⁄ ±Ê¿Ã¿« ¿˝π›∏∏≈≠ øﬁ¬ ¿∏∑Œ ªÏ¬¶ ¥Á∞‹º≠ Ω√¿€
-	float charOffset = 0.4f;
-	float startX = startPos.x - ((damageStr.size() - 1) * charOffset * 0.5f);
+    std::uniform_real_distribution<float> offsetX(-monsterScale.x * 0.5f, monsterScale.x * 0.5f);
+    std::uniform_real_distribution<float> offsetY(-monsterScale.y * 0.5f, monsterScale.y * 0.5f);
+    std::uniform_real_distribution<float> offsetZ(-monsterScale.z * 0.5f, monsterScale.z * 0.5f);
 
-	for (size_t i = 0; i < damageStr.size(); ++i)
-	{
-		int32 num = damageStr[i] - '0';
+    startPos += Vec3(offsetX(_gen), offsetY(_gen), offsetZ(_gen));
 
-		ParticleInfo newParticle;
+	// Í∏ÄÏûêÍ∞Ä ÏÉùÏÑ±Îê† Îïå Ï§ëÏïô Ï†ïÎ†¨ÏùÑ ÎßûÏ∂îÍ∏∞ ÏúÑÌï¥ 
+	// Ï†ÑÏ≤¥ Í∏ÄÏûê Í∏∏Ïù¥Ïùò Ï†àÎ∞òÎßåÌÅº ÏôºÏ™ΩÏúºÎ°ú ÏÇ¥Ïßù ÎãπÍ≤®ÏÑú ÏãúÏûë
 
-		newParticle.position = Vec3(startX + (i * charOffset), startPos.y, startPos.z);
-		newParticle.scale = Vec3(0.5f, 0.5f, 0.5f);
+    float charOffset = 0.8f * scale;
+    float startX = startPos.x - ((damageStr.size() - 1) * charOffset * 0.5f);
 
+    // ÎÇúÏàò Î≤îÏúÑ ÏÑ§Ï†ï (X, Y, Z Í∞ÅÍ∞Å Î¨¥ÏûëÏúÑ ÏÜçÎèÑÎ•º Î∂ÄÏó¨ÌïòÍ∏∞ ÏúÑÌï®)
+    std::uniform_real_distribution<float> distX(minVelocity.x, maxVelocity.x);
+    std::uniform_real_distribution<float> distY(minVelocity.y, maxVelocity.y);
+    std::uniform_real_distribution<float> distZ(minVelocity.z, maxVelocity.z);
 
-		newParticle.velocity = Vec3(0.f, 2.5f, 0.f);
-		newParticle.age = 0.f;
-		newParticle.lifeTime = 0.8f;
-		newParticle.textureIndex = static_cast<float>(num);
+    Vec3 newVelocity(distX(_gen), distY(_gen), distZ(_gen));
 
-		// ¡◊¿∫ ¿⁄∏Æ∞° ¿÷¥Ÿ∏È µ§æÓæ≤±‚ (∏ﬁ∏∏Æ ¿Á»∞øÎ)
-		bool bReused = false;
-		for (auto& particle : _particles)
-		{
-			if (particle.age >= particle.lifeTime)
-			{
-				particle = newParticle;
-				bReused = true;
-				break;
-			}
-		}
+    for (size_t i = 0; i < damageStr.size(); ++i)
+    {
+        int32 num = damageStr[i] - '0';
 
-		if (!bReused)
-		{
-			_particles.push_back(newParticle);
-		}
-	}
+        ParticleInfo newParticle;
+
+        newParticle.position = Vec3(startX + (i * charOffset), startPos.y, startPos.z);
+		newParticle.scale = Vec3(scale);
+
+        newParticle.velocity = newVelocity;
+        newParticle.age = 0.f;
+		newParticle.lifeTime = lifeTime;
+        newParticle.textureIndex = static_cast<float>(num);
+
+		// Ï£ΩÏùÄ ÏûêÎ¶¨Í∞Ä ÏûàÎã§Î©¥ ÎçÆÏñ¥Ïì∞Í∏∞ (Î©îÎ™®Î¶¨ Ïû¨ÌôúÏö©)
+        bool bReused = false;
+        for (auto& particle : _particles)
+        {
+            if (particle.age >= particle.lifeTime)
+            {
+                particle = newParticle;
+                bReused = true;
+                break;
+            }
+        }
+
+        if (!bReused)
+        {
+            _particles.push_back(newParticle);
+        }
+    }
 }

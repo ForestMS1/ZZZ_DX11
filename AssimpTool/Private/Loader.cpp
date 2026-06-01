@@ -300,6 +300,12 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		GAME.AddResource(L"Skill_0N", texture);
 	}
 
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/DamageTextPhysDmg.png");
+		GAME.AddResource(L"DamageTextPhysDmg", texture);
+	}
+
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
 

@@ -84,7 +84,8 @@ HRESULT ParticleSystem::Render()
 		InstancingData data;
 		data.world = world;
 		data.etcInfo.x = particle.textureIndex;
-		data.etcInfo.y = (1.f - (particle.age / particle.lifeTime));
+		data.etcInfo.y = _alphaValue;
+		//data.etcInfo.y = (1.f - (particle.age / particle.lifeTime));
 
 		_instancingBuffer->AddData(data);
 		aliveCount++;
