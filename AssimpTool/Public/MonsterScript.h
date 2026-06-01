@@ -43,9 +43,9 @@ protected:
 
 protected:
 	MonsterState _curState = MonsterState::BORN;
-	uint32 _maxHp = 1000;
+	uint32 _maxHp = 10000;
 	uint32 _hp = _maxHp;
-	float _hitDelayLimit = 0.5f;
+	float _hitDelayLimit = 0.25f;
 	float _hitDelayTimer = 0.f;
 	float _attackZoneRange = 1.5f;
 	float _chaseZoneRange = 10.f;

@@ -12,6 +12,7 @@ struct ParticleInfo
 	float age = 0.f;
 	float lifeTime = 1.f;
 	float textureIndex = 0.f;
+	float localXOffset = 0.f;
 };
 
 class InstancingBuffer;
@@ -49,8 +50,6 @@ protected:
 	// 무작위 속도를 주기 위한 난수 생성용 헬퍼 변수 (선택)
 	std::random_device _rd;
 	std::mt19937 _gen{ _rd() };
-
-	float _alphaValue = 1.f;
 };
 
 NS_END

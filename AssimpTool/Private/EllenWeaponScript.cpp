@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EllenWeaponScript.h"
 #include "EllenStateMachineScript.h"
+#include "MonsterScript.h"
 void EllenWeaponScript::Awake()
 {
 	_transformCom = GetTransform();
@@ -83,6 +84,19 @@ void EllenWeaponScript::OnCollisionEnter(const Collision& collision)
 
 	collider->SetDebugColor(Colors::Red);
 	_collisionCount++;
+}
+
+void EllenWeaponScript::OnCollisionStay(const Collision& collision)
+{
+	shared_ptr<MonsterScript> monsterScript;
+	if (monsterScript = collision.colliderA.lock()->GetGameObject()->GetScript<MonsterScript>())
+	{
+		monsterScript->OnHit(3000.f);
+	}
+	else if (monsterScript = collision.colliderB.lock()->GetGameObject()->GetScript<MonsterScript>())
+	{
+		monsterScript->OnHit(3000.f);
+	}
 }
 
 void EllenWeaponScript::OnCollisionExit(const Collision& collision)

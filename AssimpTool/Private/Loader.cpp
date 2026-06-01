@@ -565,6 +565,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Run_Loop");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Run_End");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Death_Front");
+	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Death_Stay");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Hit_H_Back");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Hit_H_Front");
 	Monster_AlpecaInfested_Model->ReadAnimationRotatedY180(L"Monster_AlpecaInfested_Model/AlpecaInfested_Ani_Attack_01");

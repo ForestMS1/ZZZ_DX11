@@ -76,7 +76,20 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
     return color;
 }
 
+DepthStencilState DSS_DisableDepth
+{
+    DepthEnable = false; // 깊이 테스트 안 함 (무조건 덮어씀)
+    DepthWriteMask = zero; // 깊이 버퍼에 기록도 안 함
+};
+
 technique11 T0
 {
-    PASS_BS_VP(P0, BS_Alpha, VS, PS)
+    pass P0
+    {
+        SetBlendState(BS_Alpha, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+        SetDepthStencilState(DSS_DisableDepth, 0); // 깊이 버퍼 끄기
+        
+        SetVertexShader(CompileShader(vs_5_0, VS()));
+        SetPixelShader(CompileShader(ps_5_0, PS()));
+    }
 }

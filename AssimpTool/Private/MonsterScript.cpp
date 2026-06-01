@@ -28,7 +28,10 @@ void MonsterScript::OnHit(uint32 damage)
 	uint32 finalDamage = static_cast<uint32>(randomDamage(_gen));
 
 	if (_hp <= finalDamage)
+	{
 		_hp = 0;
+		ChangeState(MonsterState::DIE);
+	}
 	else
 		_hp -= finalDamage;
 
@@ -54,9 +57,9 @@ void MonsterScript::CreateOnHitParticle(uint32 damage)
 	particleObj->AddComponent(ps);
 
 
-	Vec3 scale = transform->GetLocalScale();
-	Vec3 startPos = transform->GetLocalPosition() + Vec3(0.f, scale.y, 0.f);
+	Vec3 monsterScale = transform->GetLocalScale();
+	Vec3 startPos = transform->GetLocalPosition() + Vec3(0.f, monsterScale.y, 0.f);
 
-	ps->SpawnDamageText(startPos, scale, damage);
+	ps->SpawnDamageText(startPos, monsterScale, damage);
 	GAME.Add_GameObject_toLayerNoClone(ETOUI(LEVEL::TESTMESH), L"Layer_UI", particleObj);
 }
