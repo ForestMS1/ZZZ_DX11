@@ -31,5 +31,9 @@ private:
 	void ChaseUpdate();
 	void AttackReadyUpdate();
 	void AttackUpdate();
+
+private:
+	float _alphaValue = 1.f;
+	float _fadeSpeed = 1.f;
 };
 

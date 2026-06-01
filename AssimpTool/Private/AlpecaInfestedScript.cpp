@@ -11,7 +11,7 @@
 #include "TagManagerScript.h"
 void AlpecaInfestedScript::Awake()
 {
-
+	ChangeState(MonsterState::BORN);
 }
 void AlpecaInfestedScript::Start()
 {
@@ -91,6 +91,8 @@ void AlpecaInfestedScript::ExitState(MonsterState state)
 	switch (state)
 	{
 	case MonsterState::BORN:
+		animator->SetCurRenderGroup(RENDERGROUP::NONBLEND);
+		animator->SetPass(0);
 		break;
 	case MonsterState::IDLE:
 		break;
@@ -117,6 +119,9 @@ void AlpecaInfestedScript::EnterState(MonsterState state)
 	{
 	case MonsterState::BORN:
 		animator->SetTrigger(L"born");
+		_alphaValue = 0.f;
+		animator->SetCurRenderGroup(RENDERGROUP::BLEND);
+		animator->SetPass(2);
 		break;
 	case MonsterState::IDLE:
 		animator->SetTrigger(L"idle");
@@ -142,6 +147,13 @@ void AlpecaInfestedScript::EnterState(MonsterState state)
 void AlpecaInfestedScript::BornUpdate()
 {
 	auto animator = GetGameObject()->GetModelAnimator();
+
+	_alphaValue += _fadeSpeed * DT;
+	if (_alphaValue > 1.f)
+		_alphaValue = 1.f;
+
+	auto shader = animator->GetShader();
+	shader->GetScalar("g_AlphaValue")->SetFloat(_alphaValue);
 
 	// Born 애니메이션 끝났으면
 	if(animator->IsCurrentAnimFinished())

@@ -9,7 +9,8 @@ enum class MonsterState
 	ATTACK_READY,
 	ATTACK,
 	ONHIT,
-	DIE
+	DIE,
+	NONE
 };
 
 class MonsterScript abstract : public MonoBehaviour
@@ -42,7 +43,7 @@ protected:
 	}
 
 protected:
-	MonsterState _curState = MonsterState::BORN;
+	MonsterState _curState = MonsterState::NONE;
 	uint32 _maxHp = 10000;
 	uint32 _hp = _maxHp;
 	float _hitDelayLimit = 0.25f;
