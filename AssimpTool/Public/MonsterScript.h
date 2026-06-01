@@ -26,6 +26,7 @@ public:
 
 protected:
 	virtual void CreateOnHitParticle(uint32 damage);
+	virtual void CreateAttackReadyParticle();
 
 protected:
 	virtual void EnterState(MonsterState state) {}
@@ -48,7 +49,8 @@ protected:
 	uint32 _hp = _maxHp;
 	float _hitDelayLimit = 0.25f;
 	float _hitDelayTimer = 0.f;
-	float _attackZoneRange = 1.5f;
+	float _attackZoneRange = 3.f;
 	float _chaseZoneRange = 10.f;
+	float _curAttackTime = 0.f;
 };
 

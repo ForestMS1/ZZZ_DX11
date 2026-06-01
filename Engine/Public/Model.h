@@ -37,7 +37,7 @@ public:
 
 	// 애니메이션 다 읽었으면 호출
 	// 쉐이더에 넘겨 줄 Texture, SRV 만들어 줌
-	void CreateTexture();
+	void CreateTexture(bool rootBoneKeyFrameBake = true);
 	// 키프레임별 Bone의 SRT
 	const vector<AnimTransform>& GetAnimTransforms() { return _animTransforms; }
 	const vector<vector<Matrix>>& GetRootAnimTransform() { return _rootBoneAnimTransforms; }
@@ -83,7 +83,7 @@ private:
 	vector<shared_ptr<ModelAnimation>> _animations;
 
 private:
-	void CreateAnimationTransform();
+	void CreateAnimationTransform(bool rootBoneKeyFrameBake);
 	// 애니메이션(키프레임별 Bone의 SRT)
 	vector<AnimTransform> _animTransforms;
 	// 루트본의 순수 애니메이션 이동량을 담을 벡터

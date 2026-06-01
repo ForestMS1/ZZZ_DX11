@@ -9,10 +9,12 @@ void TestPlayCamScript::Awake()
     auto camera = GetGameObject()->GetCamera();
     camera->LoadAction(L"NewAction");
     camera->LoadAction(L"CharacterChange");
+    camera->LoadAction(L"Parry");
 
     // 이벤트함수 등록
     GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
     GAME.Subscribe(static_cast<uint32>(EventType::CHARACTER_SWITCH), [this](const EventDesc& desc) { this->OnCharacterSwitch(desc); });
+    GAME.Subscribe(static_cast<uint32>(EventType::PARRY), [this](const EventDesc& desc) { this->OnParry(desc); });
 }
 
 void TestPlayCamScript::LateUpdate()
@@ -149,6 +151,16 @@ void TestPlayCamScript::OnCharacterSwitch(const EventDesc& desc)
     //const auto& cameraName = GetGameObject()->GetName();
     //GAME.ChangeCurCamera(cameraName);
     //camera->Play(L"CharacterChange");
+}
+
+void TestPlayCamScript::OnParry(const EventDesc& desc)
+{
+    auto target = _target.lock();
+    target->GetTransform()->AddChild(GetTransform());
+    const auto& cameraName = GetGameObject()->GetName();
+    auto camera = GetGameObject()->GetCamera();
+    GAME.ChangeCurCamera(cameraName);
+    camera->Play(L"Parry");
 }
 
 void TestPlayCamScript::MouseFix()

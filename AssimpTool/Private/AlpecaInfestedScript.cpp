@@ -9,9 +9,11 @@
 #include "DamageParticleSystem.h"
 
 #include "TagManagerScript.h"
+
 void AlpecaInfestedScript::Awake()
 {
-	ChangeState(MonsterState::BORN);
+	GAME.Subscribe(static_cast<uint32>(EventType::QUEST_START_END), [this](const EventDesc& desc) { this->ChangeState(MonsterState::BORN); });
+	//ChangeState(MonsterState::BORN);
 }
 void AlpecaInfestedScript::Start()
 {
@@ -88,6 +90,7 @@ unique_ptr<AlpecaInfestedScript> AlpecaInfestedScript::Create()
 void AlpecaInfestedScript::ExitState(MonsterState state)
 {
 	auto animator = GetGameObject()->GetModelAnimator();
+
 	switch (state)
 	{
 	case MonsterState::BORN:
@@ -131,6 +134,7 @@ void AlpecaInfestedScript::EnterState(MonsterState state)
 		break;
 	case MonsterState::ATTACK_READY:
 		animator->SetTrigger(L"attack01");
+		CreateAttackReadyParticle();
 		break;
 	case MonsterState::ATTACK:
 		break;

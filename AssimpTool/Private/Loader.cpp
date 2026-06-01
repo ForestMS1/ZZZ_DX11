@@ -305,6 +305,11 @@ HRESULT Loader::Loading_FOR_TestMesh()
 		texture->Load(L"../../Resources/Textures/UI/DamageTextPhysDmg.png");
 		GAME.AddResource(L"DamageTextPhysDmg", texture);
 	}
+	{
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		texture->Load(L"../../Resources/Textures/UI/Eff_Flare_126.png");
+		GAME.AddResource(L"Eff_Flare_126", texture);
+	}
 
 	// ----------------------------------------------------Texture Load--------------------------------------------------------
 
@@ -585,7 +590,7 @@ HRESULT Loader::Loading_FOR_TestMesh()
 	futures.push_back(std::async(std::launch::async, [=]() { CorinAnimModel->CreateTexture(); }));
 	futures.push_back(std::async(std::launch::async, [=]() { EllenAnimModel->CreateTexture(); }));
 	futures.push_back(std::async(std::launch::async, [=]() { AliceAnimModel->CreateTexture(); }));
-	futures.push_back(std::async(std::launch::async, [=]() { Monster_AlpecaInfested_Model->CreateTexture(); }));
+	futures.push_back(std::async(std::launch::async, [=]() { Monster_AlpecaInfested_Model->CreateTexture(false); }));
 	
 	// 모든 스레드가 본 계산을 완료할 때까지 대기
 	for (auto& f : futures)

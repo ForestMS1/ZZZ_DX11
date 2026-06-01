@@ -156,6 +156,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CorinParry.h" />
+    <ClInclude Include="..\Public\CorinQuestStart.h" />
     <ClInclude Include="..\Public\CorinSleep.h" />
     <ClInclude Include="..\Public\CorinStateMachineScript.h" />
     <ClInclude Include="..\Public\CorinSwitchIn.h" />
@@ -230,6 +232,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CorinParry.cpp" />
+    <ClCompile Include="..\Private\CorinQuestStart.cpp" />
     <ClCompile Include="..\Private\CorinSleep.cpp" />
     <ClCompile Include="..\Private\CorinStateMachineScript.cpp" />
     <ClCompile Include="..\Private\CorinSwitchIn.cpp" />

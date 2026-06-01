@@ -14,6 +14,7 @@ class TestPlayCamScript : public MonoBehaviour
 private:
 	void OnQuestStart();
 	void OnCharacterSwitch(const EventDesc& desc);
+	void OnParry(const EventDesc& desc);
 
 private:
 	void MouseFix();

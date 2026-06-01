@@ -91,11 +91,11 @@ void EllenWeaponScript::OnCollisionStay(const Collision& collision)
 	shared_ptr<MonsterScript> monsterScript;
 	if (monsterScript = collision.colliderA.lock()->GetGameObject()->GetScript<MonsterScript>())
 	{
-		monsterScript->OnHit(3000.f);
+		monsterScript->OnHit(300.f);
 	}
 	else if (monsterScript = collision.colliderB.lock()->GetGameObject()->GetScript<MonsterScript>())
 	{
-		monsterScript->OnHit(3000.f);
+		monsterScript->OnHit(300.f);
 	}
 }
 

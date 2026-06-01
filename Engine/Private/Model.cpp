@@ -697,12 +697,12 @@ void Model::BindCacheInfo()
 }
 
 
-void Model::CreateTexture()
+void Model::CreateTexture(bool rootBoneKeyFrameBake)
 {
 	if (_animations.size() == 0)
 		return;
 
-	CreateAnimationTransform();
+	CreateAnimationTransform(rootBoneKeyFrameBake);
 	// Creature Texture
 	{
 		//		     Bone1  Bone2  Bone3 ...  Bone350
@@ -773,9 +773,10 @@ void Model::CreateTexture()
 }
 
 
-void Model::CreateAnimationTransform()
+void Model::CreateAnimationTransform(bool rootBoneKeyFrameBake)
 {
-	_rootBoneAnimTransforms.resize(GetAnimationCount());
+	if(rootBoneKeyFrameBake)
+		_rootBoneAnimTransforms.resize(GetAnimationCount());
 	_animTransforms.resize(GetAnimationCount());
 	vector<Matrix> tempAnimBoneTransforms(MAX_MODEL_TRANSFORMS, Matrix::Identity);
 
@@ -806,7 +807,8 @@ void Model::CreateAnimationTransform()
 					if (bone->name == L"Bip001")
 					{
 						// 루트 모션용으로는 원본을 저장
-						_rootBoneAnimTransforms[i].push_back(matAnimation);
+						if (rootBoneKeyFrameBake)
+							_rootBoneAnimTransforms[i].push_back(matAnimation);
 
 						// 렌더링용 행렬 계산 (캐릭터 메쉬가 원점을 벗어나지 않게 X, Z 제거)
 						Vec3 renderingTranslation = data.translation;

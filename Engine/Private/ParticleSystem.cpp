@@ -28,6 +28,7 @@ void ParticleSystem::Update()
 		if (particle.age >= particle.lifeTime) continue;
 
 		particle.position += particle.velocity * DT;
+		particle.scale += particle.scaleVelocity * DT;
 	}
 }
 
@@ -107,7 +108,7 @@ HRESULT ParticleSystem::Render()
 	return S_OK;
 }
 
-void ParticleSystem::CreateParticles(const Vec3& startPos, const Vec3& minVelocity, const Vec3& maxVelocity, const Vec3& scale, float lifeTime, uint32 count)
+void ParticleSystem::CreateParticles(const Vec3& startPos, const Vec3& minVelocity, const Vec3& maxVelocity, const Vec3& scale, Vec3 scaleVelocity, float lifeTime, uint32 count)
 {
 	// 난수 범위 설정 (X, Y, Z 각각 무작위 속도를 부여하기 위함)
 	std::uniform_real_distribution<float> distX(minVelocity.x, maxVelocity.x);
@@ -119,6 +120,7 @@ void ParticleSystem::CreateParticles(const Vec3& startPos, const Vec3& minVeloci
 		ParticleInfo newParticle;
 		newParticle.position = startPos;
 		newParticle.scale = scale;
+		newParticle.scaleVelocity = scaleVelocity;
 		newParticle.age = 0.0f;
 		newParticle.lifeTime = lifeTime;
 

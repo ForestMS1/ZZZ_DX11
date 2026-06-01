@@ -133,6 +133,12 @@
     <Filter Include="03.Scirpts\Monster">
       <UniqueIdentifier>{7842011d-16bb-4a6f-9b65-6057207c5d05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.StateMachine\Corin\Parry">
+      <UniqueIdentifier>{c0176c05-22ab-47a0-8457-bb7387cf891f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.StateMachine\Corin\QuestStart">
+      <UniqueIdentifier>{d4369a4f-4e1d-4df9-a4aa-511304d6607c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpTool.h">
@@ -321,6 +327,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\MonsterScript.h">
       <Filter>03.Scirpts\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinParry.h">
+      <Filter>04.StateMachine\Corin\Parry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorinQuestStart.h">
+      <Filter>04.StateMachine\Corin\QuestStart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterScript.cpp">
       <Filter>03.Scirpts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinParry.cpp">
+      <Filter>04.StateMachine\Corin\Parry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorinQuestStart.cpp">
+      <Filter>04.StateMachine\Corin\QuestStart</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

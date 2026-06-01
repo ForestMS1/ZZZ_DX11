@@ -9,6 +9,7 @@ struct ParticleInfo
 	Vec3 position;
 	Vec3 scale;
 	Vec3 velocity;
+	Vec3 scaleVelocity;
 	float age = 0.f;
 	float lifeTime = 1.f;
 	float textureIndex = 0.f;
@@ -31,8 +32,7 @@ public:
 	void SetShader(shared_ptr<Shader> shader) { _shader = shader; _textureEffectBuffer = _shader->GetSRV("DiffuseMap"); }
 	void SetTexture(shared_ptr<Texture> texture) { _texture = texture; }
 
-	void CreateParticles(const Vec3& startPos, const Vec3& minVelocity, const Vec3& maxVelocity, const Vec3& scale, float lifeTime, uint32 count);
-
+	void CreateParticles(const Vec3& startPos, const Vec3& minVelocity, const Vec3& maxVelocity, const Vec3& scale, Vec3 scaleVelocity, float lifeTime, uint32 count);
 
 	virtual void OnInspectorGUI() override;
 	virtual shared_ptr<Prototype> Clone(void* pArg = nullptr) override { return nullptr; }

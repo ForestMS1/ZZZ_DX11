@@ -3,6 +3,7 @@
 #include "BaseState.h"
 
 //-----------------State----------------
+#include "CorinQuestStart.h"
 #include "CorinIdle.h"
 #include "CorinMove.h"
 #include "CorinEvade.h"
@@ -10,6 +11,7 @@
 #include "CorinDashAttack.h"
 #include "CorinSwitchOut.h"
 #include "CorinSwitchIn.h"
+#include "CorinParry.h"
 #include "CorinSleep.h"
 //--------------------------------------
 #include "NetworkView.h"
@@ -41,17 +43,21 @@ void CorinStateMachineScript::Awake()
 
 	// 상태들 추가~
 	shared_ptr<CorinIdle> corinIdle = make_shared<CorinIdle>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinQuestStart> corinQuestStart = make_shared<CorinQuestStart>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinMove> corinMove = make_shared<CorinMove>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinEvade> corinEvade = make_shared<CorinEvade>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinNormalAttack> corinNormalAttack = make_shared<CorinNormalAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 	shared_ptr<CorinDashAttack> corinDashAttack = make_shared<CorinDashAttack>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
+	shared_ptr<CorinParry> corinParry = make_shared<CorinParry>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
 
 
 	AddState(L"CorinIdle", corinIdle);
+	AddState(L"CorinQuestStart", corinQuestStart);
 	AddState(L"CorinMove", corinMove);
 	AddState(L"CorinEvade", corinEvade);
 	AddState(L"CorinNormalAttack", corinNormalAttack);
 	AddState(L"CorinDashAttack", corinDashAttack);
+	AddState(L"CorinParry", corinParry);
 
 
 	shared_ptr<CorinSwitchOut> corinSwitchOut = make_shared<CorinSwitchOut>(GetGameObject(), SHARED_THIS(CorinStateMachineScript));
@@ -64,7 +70,7 @@ void CorinStateMachineScript::Awake()
 
 
 	// 이벤트 함수 등록
-	GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc){ this->OnQuestStart(); });
+	GAME.Subscribe(static_cast<uint32>(EventType::LEVEL_START), [this](const EventDesc& desc) { this->OnQuestStart(); });
 
 
 	_curState->Awake();
@@ -187,5 +193,5 @@ void CorinStateMachineScript::OnInspectorGUI()
 
 void CorinStateMachineScript::OnQuestStart()
 {
-	_animator.lock()->SetTrigger(L"questStart");
+	ChangeState(L"CorinQuestStart");
 }
